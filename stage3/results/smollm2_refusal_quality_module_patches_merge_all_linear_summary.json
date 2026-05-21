@@ -1,0 +1,21 @@
+{
+  "recipient": "merge_all_linear",
+  "donors": [
+    "merge_arith_polite",
+    "base"
+  ],
+  "patch_specs": [
+    "20:block",
+    "25:block",
+    "29:block",
+    "20+25+29:attn",
+    "20+25+29:mlp",
+    "20+25+29:block"
+  ],
+  "examples": 16,
+  "outputs": {
+    "records": "/home/gavin/model_merging/stage3/results/smollm2_refusal_quality_module_patches_merge_all_linear_records.jsonl",
+    "summary_csv": "/home/gavin/model_merging/stage3/results/smollm2_refusal_quality_module_patches_merge_all_linear_summary.csv",
+    "summary_md": "/home/gavin/model_merging/stage3/results/SMOLLM2_REFUSAL_QUALITY_MODULE_PATCHES_MERGE_ALL_LINEAR.md"
+  }
+}

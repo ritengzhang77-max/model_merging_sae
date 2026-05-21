@@ -1,0 +1,19 @@
+{
+  "audit_input": "/home/gavin/model_merging/stage3/results/smollm2_refusal_manual_audit_sample.csv",
+  "activation_cache": "/home/gavin/model_merging/stage3/cache/smollm2_refusal_basis_activations.pt",
+  "labeled_rows": 94,
+  "labels": [
+    "clean_refusal",
+    "messy_refusal_repetition",
+    "messy_refusal_artifact",
+    "contradictory_or_unsafe",
+    "no_refusal",
+    "invalid_generation"
+  ],
+  "outputs": {
+    "labeled": "/home/gavin/model_merging/stage3/results/smollm2_refusal_assistant_audit_labeled.csv",
+    "summary": "/home/gavin/model_merging/stage3/results/smollm2_refusal_assistant_audit_summary.csv",
+    "basis_metrics": "/home/gavin/model_merging/stage3/results/smollm2_refusal_assistant_audit_basis_metrics.csv",
+    "summary_md": "/home/gavin/model_merging/stage3/results/SMOLLM2_REFUSAL_ASSISTANT_AUDIT_SUMMARY.md"
+  }
+}

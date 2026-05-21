@@ -1,0 +1,9 @@
+{
+  "predictor_rows": 15,
+  "patch_rows": 21,
+  "outputs": {
+    "predictors": "/home/gavin/model_merging/stage1/results/smollm2_rq0_predictors.csv",
+    "patch_effects": "/home/gavin/model_merging/stage1/results/smollm2_rq0_patch_effects.csv",
+    "correlations": "/home/gavin/model_merging/stage1/results/smollm2_rq0_correlations.csv"
+  }
+}

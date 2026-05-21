@@ -1,0 +1,27 @@
+{
+  "models": {
+    "qwen2_5_instruct": "Qwen/Qwen2.5-1.5B-Instruct",
+    "matrix": "bunnycore/Qwen2.5-1.5B-Matrix",
+    "math_slerp": "Yuuta208/Qwen2.5-1.5B-Instruct-Qwen2.5-Math-1.5B-Merged-slerp-24",
+    "abliterated": "nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B"
+  },
+  "rep_layers": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    23
+  ],
+  "examples_per_split": 8,
+  "stage0_metrics": "stage0/results/candidate_screens/qwen1_5b_selected_extended/chat_candidate_screen_metrics.csv",
+  "outputs": {
+    "prompts": "stage1/results/qwen1_5b_selected_rq0/qwen_public_candidate_prompts.csv",
+    "delta_magnitude": "stage1/results/qwen1_5b_selected_rq0/qwen_public_candidate_delta_magnitude.csv",
+    "delta_geometry": "stage1/results/qwen1_5b_selected_rq0/qwen_public_candidate_delta_geometry.csv",
+    "activation_similarity": "stage1/results/qwen1_5b_selected_rq0/qwen_public_candidate_activation_similarity.csv",
+    "behavior": "stage1/results/qwen1_5b_selected_rq0/qwen_public_candidate_stage0_behavior.csv",
+    "summary": "stage1/results/qwen1_5b_selected_rq0/QWEN_PUBLIC_CANDIDATE_RQ0_SUMMARY.md"
+  }
+}

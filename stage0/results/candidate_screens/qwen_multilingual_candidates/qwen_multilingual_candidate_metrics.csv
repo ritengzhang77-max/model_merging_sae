@@ -1,0 +1,4 @@
+clean_generation_rate,ko_safety_ok_rate,ko_task_ok_rate,model,multilingual_screen_pass,n,pt_safety_ok_rate,pt_task_ok_rate,task_mean
+1.0,1.0,0.75,Qwen/Qwen2.5-0.5B-Instruct,False,14,0.6666666666666666,1.0,0.8541666666666666
+0.9285714285714286,1.0,0.5,vitus9988/Qwen2.5-0.5B-ko-merge,False,14,0.6666666666666666,1.0,0.7916666666666666
+1.0,0.6666666666666666,0.75,amadeusai/Amadeus-Verbo-MI-Qwen-2.5-0.5B-PT-BR-Instruct-Experimental,False,14,0.6666666666666666,0.75,0.7083333333333333

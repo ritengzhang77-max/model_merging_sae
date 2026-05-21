@@ -1,0 +1,23 @@
+{
+  "micro_merges": {
+    "micro_refusal_l29_mlp": {
+      "recipient": "merge_arith_polite",
+      "donor": "expert_refusal",
+      "layer": 29,
+      "module": "mlp"
+    },
+    "micro_refusal_l29_block": {
+      "recipient": "merge_arith_polite",
+      "donor": "expert_refusal",
+      "layer": 29,
+      "module": "block"
+    }
+  },
+  "loss_examples": 2,
+  "generation_examples": 2,
+  "outputs": {
+    "losses": "stage2/results/smoke_micro_merge/smollm2_micro_merge_losses.csv",
+    "generation_metrics": "stage2/results/smoke_micro_merge/smollm2_micro_merge_generation_metrics.csv",
+    "generations": "stage2/results/smoke_micro_merge/smollm2_micro_merge_generations.jsonl"
+  }
+}

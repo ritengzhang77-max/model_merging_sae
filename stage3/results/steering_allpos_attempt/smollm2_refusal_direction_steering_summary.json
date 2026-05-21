@@ -1,0 +1,23 @@
+{
+  "rep_name": "mlp_out_l20",
+  "target": "failure_attempted_refusal",
+  "layer": 20,
+  "position": "all",
+  "direction_norm": 31.286361694335938,
+  "examples": 16,
+  "alphas": [
+    0.0,
+    0.25,
+    0.5,
+    1.0,
+    2.0
+  ],
+  "models": [
+    "merge_arith_polite"
+  ],
+  "outputs": {
+    "records": "stage3/results/steering_allpos_attempt/smollm2_refusal_direction_steering_records.jsonl",
+    "summary_csv": "stage3/results/steering_allpos_attempt/smollm2_refusal_direction_steering_summary.csv",
+    "summary_md": "stage3/results/steering_allpos_attempt/SMOLLM2_REFUSAL_DIRECTION_STEERING_SUMMARY.md"
+  }
+}

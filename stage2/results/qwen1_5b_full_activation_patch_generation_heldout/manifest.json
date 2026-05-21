@@ -1,0 +1,38 @@
+{
+  "models": {
+    "donor": "Qwen/Qwen2.5-1.5B-Instruct",
+    "recipient": "nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B"
+  },
+  "layers": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "variants": [
+    "full_12_24_mlp"
+  ],
+  "prompt_set": "heldout",
+  "skip_baselines": true,
+  "examples_per_split": 12,
+  "basis_examples_per_split": 8,
+  "max_pca_rows_per_layer": 512,
+  "pca_oversample": 8,
+  "pca_n_iter": 1,
+  "random_seed": 0,
+  "max_new_tokens": 64,
+  "outputs": {
+    "metrics": "stage2/results/qwen1_5b_full_activation_patch_generation_heldout/qwen1_5b_lowdim_activation_patch_generation_metrics.csv",
+    "records": "stage2/results/qwen1_5b_full_activation_patch_generation_heldout/qwen1_5b_lowdim_activation_patch_generation_records.jsonl",
+    "summary": "stage2/results/qwen1_5b_full_activation_patch_generation_heldout/QWEN1_5B_LOWDIM_ACTIVATION_PATCH_GENERATION_SUMMARY.md"
+  }
+}

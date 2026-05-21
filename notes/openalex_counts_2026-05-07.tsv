@@ -1,0 +1,24 @@
+short	arxiv	authors	title	year	source	cited_by_count	openalex_id
+FedAvg	1602.05629	Xiang Lisa Li, Percy Liang	Prefix-Tuning: Optimizing Continuous Prompts for Generation	2021		2159	https://openalex.org/W3174770825
+Mode Connectivity	1802.10026	Sultan Daud Khan, Louai Alarabi, Saleh Basalamah	Deep Hybrid Network for Land Cover Semantic Segmentation in High-Spatial Resolution Satellite Images	2021	Information	50	https://openalex.org/W3164083096
+No Barriers	1803.00885	Mengjie Zhao, Tao Lin, Fei Mi et al.	Masking as an Efficient Alternative to Finetuning for Pretrained Language Models	2020		60	https://openalex.org/W3020268419
+SWA	1803.05407	Haoyang Zhang, Ying Wang, Feras Dayoub et al.	SWA Object Detection	2020	arXiv (Cornell University)	6	https://openalex.org/W3116756016
+Git Re-Basin	2209.04836	Charles Goddard, Shamane Siriwardhana, Malikeh Ehghaghi et al.	Arcee’s MergeKit: A Toolkit for Merging Large Language Models	2024		30	https://openalex.org/W4404783473
+Fisher Merging	2111.09832	Yaqing Wang, Sahaj Agarwal, Subhabrata Mukherjee et al.	AdaMix: Mixture-of-Adaptations for Parameter-efficient Model Tuning	2022		64	https://openalex.org/W4385572883
+Model Soups	2203.05482	Charles Dansereau, Milo Sobral, Maninder Bhogal et al.	Model soups to increase inference without increasing compute time	2023	arXiv (Cornell University)	1	https://openalex.org/W4318145964
+Task Arithmetic	2212.04089	Simian Luo, Yiqin Tan, Suraj Patil et al.	LCM-LoRA: A Universal Stable-Diffusion Acceleration Module	2023	arXiv (Cornell University)	23	https://openalex.org/W4388585612
+Tangent Task Arithmetic	2305.12827	Simian Luo, Yiqin Tan, Suraj Patil et al.	LCM-LoRA: A Universal Stable-Diffusion Acceleration Module	2023	arXiv (Cornell University)	23	https://openalex.org/W4388585612
+TIES	2306.01708	Alex Warstadt, Aaron Mueller, Leshem Choshen et al.	Findings of the BabyLM Challenge: Sample-Efficient Pretraining on Developmentally Plausible Corpora	2023		68	https://openalex.org/W4389519222
+AdaMerging	2310.02575	Fei Wu, Fei Wu, Tao Shen et al.	Knowledge-Empowered, Collaborative, and Co-Evolving AI Models: The Post-LLM Roadmap	2024	Engineering	28	https://openalex.org/W4405612257
+DARE	2311.03099	Iñigo Alonso, Maite Oronoz, Rodrigo Agerri	MedExpQA: Multilingual benchmarking of Large Language Models for Medical Question Answering	2024	Artificial Intelligence in Medicine	42	https://openalex.org/W4401198848
+Model Breadcrumbs	2312.06795	Charles Goddard, Shamane Siriwardhana, Malikeh Ehghaghi et al.	Arcee’s MergeKit: A Toolkit for Merging Large Language Models	2024		30	https://openalex.org/W4404783473
+Representation Surgery	2402.02705	Jinliang Lu, Ziliang Pang, Li Xu et al.	Merge, Ensemble, and Cooperate! A Survey on Collaborative Strategies in the Era of Large Language Models	2024	arXiv (Cornell University)	5	https://openalex.org/W4400488119
+DELLA	2406.11617	Xin Yi, Shunfan Zheng, Linlin Wang et al.	NLSR: Neuron-Level Safety Realignment of Large Language Models Against Harmful Fine-Tuning	2025	Proceedings of the AAAI Conference on Artificial Intelligence	1	https://openalex.org/W4409362484
+MergeKit	2403.13257	Seungone Kim, Juyoung Suk, Shayne Longpre et al.	Prometheus 2: An Open Source Language Model Specialized in Evaluating Other Language Models	2024		37	https://openalex.org/W4404783034
+What Matters Scale	2410.03617	Niveen O. Jaffal, Mohammad AlKhanafseh, Aziz Mohaisen	Large Language Models in Cybersecurity: A Survey of Applications, Vulnerabilities, and Defense Techniques	2025	AI	21	https://openalex.org/W4414013482
+Task Singular Vectors	2412.00081	Zheng, Shenghe, Hongzhi Wang, Chenyu Huang et al.	Decouple and Orthogonalize: A Data-Free Framework for LoRA Merging	2025	ArXiv.org	0	https://openalex.org/W4416445924
+Activation-Informed Merging	2502.02421	Yuxuan Yao, Haonan Sheng, Qingsong Lv et al.	Merging Beyond: Streaming LLM Updates via Activation-Guided Rotations	2026	ArXiv.org	0	https://openalex.org/W7127739480
+Superpose Task-specific Features	2502.10698	Z. Wang, Yongkang Liu, Yingfeng Luo et al.	Scaling Intelligence Through Model Merging: A Comprehensive Survey	2025		0	https://openalex.org/W4416220943
+Activation-Guided Consensus Merging	2505.14009	Yuxuan Yao, Haonan Sheng, Qingsong Lv et al.	Merging Beyond: Streaming LLM Updates via Activation-Guided Rotations	2026	ArXiv.org	0	https://openalex.org/W7127739480
+Demystifying Mergeability	2601.22285		NOT FOUND				
+Weight Patching	2604.13694		NOT FOUND				

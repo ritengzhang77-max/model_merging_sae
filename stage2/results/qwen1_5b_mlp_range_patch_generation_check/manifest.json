@@ -1,0 +1,20 @@
+{
+  "patch_specs": [
+    "14+15+16+17+18+19:mlp",
+    "20+21+22+23+24:mlp",
+    "14+15+16+20+21+22+23+24:mlp",
+    "14+15+16+17+18+19+20+21+22+23+24:mlp",
+    "12+13+14+15+16+17+18+19+20+21+22+23+24:mlp",
+    "14+15+16+17+18+19+20+21+22+23+24+25+26+27:mlp",
+    "14+15+16+17+18+19+20+21+22+23+24:block"
+  ],
+  "models": {
+    "base": "Qwen/Qwen2.5-1.5B-Instruct",
+    "recipient": "nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B"
+  },
+  "outputs": {
+    "metrics": "stage2/results/qwen1_5b_mlp_range_patch_generation_check/qwen1_5b_patch_generation_metrics.csv",
+    "records": "stage2/results/qwen1_5b_mlp_range_patch_generation_check/qwen1_5b_patch_generation_records.jsonl",
+    "summary": "stage2/results/qwen1_5b_mlp_range_patch_generation_check/QWEN1_5B_PATCH_GENERATION_SUMMARY.md"
+  }
+}

@@ -1,0 +1,13 @@
+loss_increase,target_model,task,top_layer,top_module
+0.015856504440307617,expert_arith,arith,29,block
+0.004648298025131226,expert_polite,polite,29,block
+0.00401325523853302,expert_refusal,refusal,29,block
+0.12503504753112793,merge_all_linear,arith,15,block
+0.027564674615859985,merge_all_linear,polite,15,block
+0.07706046104431152,merge_all_linear,refusal,29,block
+0.10072946548461914,merge_arith_polite,arith,15,block
+0.01439860463142395,merge_arith_polite,polite,29,block
+0.10678088665008545,merge_arith_refusal,arith,15,block
+0.046258777379989624,merge_arith_refusal,refusal,29,block
+0.011419683694839478,merge_polite_refusal,polite,15,block
+0.017499923706054688,merge_polite_refusal,refusal,29,block

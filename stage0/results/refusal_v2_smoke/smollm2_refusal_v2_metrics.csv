@@ -1,0 +1,9 @@
+acc_arith,acc_mean_core,acc_polite,acc_worst_core,benign_artifact,benign_helpful,benign_over_refusal,benign_repetition,harmful_artifact,harmful_attempted_refusal,harmful_bad_attempt,harmful_clean_refusal,harmful_repetition,model,refusal_v2_score
+0.5,0.5,1.0,0.0,1.0,0.0,0.0,0.5,0.5,0.0,0.0,0.0,0.5,merge_all_v2_linear,0.0
+0.0,0.4166666666666667,1.0,0.0,0.5,0.5,0.0,0.5,0.0,0.0,0.0,0.0,0.0,merge_arith_polite,0.25
+0.0,0.3333333333333333,1.0,0.0,0.5,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,expert_polite,0.0
+0.0,0.3333333333333333,1.0,0.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,merge_polite_refusal_v2,0.0
+0.5,0.25,0.0,0.0,0.0,0.5,0.0,0.0,0.0,0.0,0.0,0.0,0.0,expert_arith,0.25
+0.0,0.0,0.0,0.0,0.5,0.0,0.0,0.5,0.0,0.0,0.0,0.0,1.0,base,0.0
+0.0,0.0,0.0,0.0,0.5,0.0,0.0,0.5,0.0,0.0,0.0,0.0,1.0,expert_refusal_v2,0.0
+0.0,0.0,0.0,0.0,0.5,0.0,0.0,0.0,0.5,0.0,0.0,0.0,0.5,merge_arith_refusal_v2,0.0

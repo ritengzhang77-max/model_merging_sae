@@ -1,0 +1,17 @@
+{
+  "models": [
+    "Qwen/Qwen2.5-0.5B-Instruct",
+    "Qwen/Qwen2-0.5B-Instruct",
+    "djuna-test-lab/Qwen2.5Plus2-0.5B-Instruct",
+    "mergekit-community/Qwen2.5Minus2-0.5B-Instruct",
+    "mergekit-community/mergekit-slerp-lxmmvuv"
+  ],
+  "examples_per_split": 8,
+  "max_new_tokens": 64,
+  "local_files_only": false,
+  "outputs": {
+    "metrics": "stage0/results/candidate_screens/qwen_plusminus_extended/chat_candidate_screen_metrics.csv",
+    "records": "stage0/results/candidate_screens/qwen_plusminus_extended/chat_candidate_screen_generations.jsonl",
+    "summary": "stage0/results/candidate_screens/qwen_plusminus_extended/CHAT_CANDIDATE_SCREEN_SUMMARY.md"
+  }
+}

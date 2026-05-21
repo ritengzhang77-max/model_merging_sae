@@ -1,0 +1,26 @@
+{
+  "models": {
+    "qwen2_5_instruct": "Qwen/Qwen2.5-0.5B-Instruct",
+    "qwen2_instruct": "Qwen/Qwen2-0.5B-Instruct",
+    "plus2": "djuna-test-lab/Qwen2.5Plus2-0.5B-Instruct",
+    "minus2": "mergekit-community/Qwen2.5Minus2-0.5B-Instruct",
+    "slerp": "mergekit-community/mergekit-slerp-lxmmvuv"
+  },
+  "rep_layers": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    23
+  ],
+  "examples_per_split": 8,
+  "outputs": {
+    "prompts": "stage1/results/qwen_plusminus_rq0/qwen_plusminus_prompts.csv",
+    "delta_geometry": "stage1/results/qwen_plusminus_rq0/qwen_plusminus_delta_geometry.csv",
+    "activation_similarity": "stage1/results/qwen_plusminus_rq0/qwen_plusminus_activation_similarity.csv",
+    "behavior": "stage1/results/qwen_plusminus_rq0/qwen_plusminus_stage0_behavior.csv",
+    "summary": "stage1/results/qwen_plusminus_rq0/QWEN_PLUSMINUS_RQ0_SUMMARY.md"
+  }
+}

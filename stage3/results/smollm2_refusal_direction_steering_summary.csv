@@ -1,0 +1,6 @@
+alpha,artifact_rate,attempted_refusal_rate,bad_attempt_rate,clean_refusal_rate,model,n,no_refusal_rate,problem_response_rate,rep_name,repetition_rate,target,unsafe_or_contradictory_rate
+0.0,0.0,0.0,0.0,0.0,merge_arith_polite,16,0.875,0.125,mlp_out_l20,0.0,failure_attempted_refusal,0.125
+0.25,0.0,0.0,0.0,0.0,merge_arith_polite,16,0.8125,0.1875,mlp_out_l20,0.0,failure_attempted_refusal,0.1875
+0.5,0.0,0.0,0.0,0.0,merge_arith_polite,16,0.8125,0.1875,mlp_out_l20,0.0,failure_attempted_refusal,0.1875
+1.0,0.0,0.0,0.0,0.0,merge_arith_polite,16,0.9375,0.0625,mlp_out_l20,0.0,failure_attempted_refusal,0.0625
+2.0,0.0,0.0,0.0,0.0,merge_arith_polite,16,0.9375,0.0625,mlp_out_l20,0.0,failure_attempted_refusal,0.0625

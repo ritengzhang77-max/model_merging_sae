@@ -1,0 +1,23 @@
+{
+  "formula": "merge_arith_polite + alpha * (expert_refusal_v2 - base)",
+  "base_model": "HuggingFaceTB/SmolLM2-135M",
+  "tokenizer": "HuggingFaceTB/SmolLM2-135M-Instruct",
+  "v2_artifact_dir": "stage0/artifacts/smollm2_refusal_v2_balanced",
+  "alphas": [
+    0.0,
+    0.1,
+    0.2,
+    0.33,
+    0.5,
+    0.75,
+    1.0,
+    1.25
+  ],
+  "eval_examples": 16,
+  "max_new_tokens": 28,
+  "outputs": {
+    "metrics": "stage0/results/refusal_v2_alpha_search/smollm2_refusal_v2_alpha_metrics.csv",
+    "generations": "stage0/results/refusal_v2_alpha_search/smollm2_refusal_v2_alpha_generations.jsonl",
+    "summary": "stage0/results/refusal_v2_alpha_search/SMOLLM2_REFUSAL_V2_ALPHA_SUMMARY.md"
+  }
+}

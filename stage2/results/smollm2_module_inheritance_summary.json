@@ -1,0 +1,20 @@
+{
+  "ablation_rows": 96,
+  "profile_correlation_rows": 9,
+  "top_rows": 12,
+  "layers": [
+    15,
+    29
+  ],
+  "modules": [
+    "attn",
+    "mlp",
+    "norms",
+    "block"
+  ],
+  "outputs": {
+    "ablation": "/home/gavin/model_merging/stage2/results/smollm2_module_inheritance_ablation.csv",
+    "profile_correlations": "/home/gavin/model_merging/stage2/results/smollm2_module_inheritance_profile_correlations.csv",
+    "top_interventions": "/home/gavin/model_merging/stage2/results/smollm2_module_inheritance_top_interventions.csv"
+  }
+}

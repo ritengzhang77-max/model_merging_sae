@@ -1,0 +1,63 @@
+{
+  "config": {
+    "seed": 42,
+    "batch_size": 256,
+    "base_epochs": 2,
+    "expert_epochs": 2,
+    "base_lr": 0.001,
+    "expert_lr": 0.0005,
+    "train_size": 12000,
+    "expert_size": 8000,
+    "test_size": 3000,
+    "device": "cuda",
+    "no_save_artifacts": false
+  },
+  "base_losses": [
+    0.7056719468037287,
+    0.1782542001803716
+  ],
+  "expert_losses": {
+    "clean": [
+      0.12661953145265578,
+      0.0887209026813507
+    ],
+    "rotate25": [
+      0.30817853087186814,
+      0.1472027381658554
+    ],
+    "noise": [
+      0.4805843300819397,
+      0.2667128118276596
+    ],
+    "invert": [
+      1.7705411920547485,
+      0.34473805379867556
+    ],
+    "labelperm": [
+      3.3939079065322875,
+      0.70966717171669
+    ]
+  },
+  "best_by_mean": {
+    "model": "expert_noise",
+    "acc_clean": 0.947,
+    "acc_rotate25": 0.7973333333333333,
+    "acc_noise": 0.918,
+    "acc_invert": 0.112,
+    "acc_labelperm_task": 0.005666666666666667,
+    "acc_mean": 0.6935833333333333,
+    "acc_worst": 0.112
+  },
+  "best_by_worst": {
+    "model": "with_labelperm_linear_taskavg",
+    "acc_clean": 0.962,
+    "acc_rotate25": 0.8436666666666667,
+    "acc_noise": 0.5673333333333334,
+    "acc_invert": 0.323,
+    "acc_labelperm_task": 0.004333333333333333,
+    "acc_mean": 0.674,
+    "acc_worst": 0.323
+  },
+  "metrics_csv": "/home/gavin/model_merging/stage0/results/mnist_domain_merge_metrics.csv",
+  "conflicts_csv": "/home/gavin/model_merging/stage0/results/mnist_domain_merge_conflicts.csv"
+}

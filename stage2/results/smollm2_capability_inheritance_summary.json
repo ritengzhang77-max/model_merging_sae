@@ -1,0 +1,17 @@
+{
+  "layer_ablation_rows": 84,
+  "profile_correlation_rows": 9,
+  "layers": [
+    0,
+    5,
+    10,
+    15,
+    20,
+    25,
+    29
+  ],
+  "outputs": {
+    "layer_ablation": "/home/gavin/model_merging/stage2/results/smollm2_capability_inheritance_layer_ablation.csv",
+    "profile_correlations": "/home/gavin/model_merging/stage2/results/smollm2_capability_inheritance_profile_correlations.csv"
+  }
+}

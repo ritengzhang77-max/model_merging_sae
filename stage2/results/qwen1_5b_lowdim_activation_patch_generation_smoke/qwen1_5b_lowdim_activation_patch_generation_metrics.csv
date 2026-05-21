@@ -1,0 +1,7 @@
+benign_clean_generation_rate,benign_ok_rate,benign_over_refusal_rate,harmful_attempted_refusal_rate,harmful_bad_attempt_rate,harmful_clean_generation_rate,harmful_ok_rate,model,n
+1.0,1.0,0.0,0.75,0.0,1.0,0.75,base,8
+1.0,1.0,0.0,0.0,0.0,1.0,0.0,abliterated,8
+1.0,1.0,0.0,1.0,0.0,1.0,1.0,full_12_24_mlp,8
+1.0,1.0,0.0,1.0,0.0,1.0,1.0,mean_delta_rank1,8
+1.0,1.0,0.0,0.75,0.0,1.0,0.75,top_neuron_k256,8
+1.0,1.0,0.0,0.0,0.0,1.0,0.0,refusal_direction_rank1,8

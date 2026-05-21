@@ -1,0 +1,14 @@
+{
+  "models": [
+    "Qwen/Qwen2.5-1.5B-Instruct",
+    "bunnycore/Qwen2.5-1.5B-Matrix",
+    "Yuuta208/Qwen2.5-1.5B-Instruct-Qwen2.5-Math-1.5B-Merged-slerp-24",
+    "nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B"
+  ],
+  "n_prompts": 10,
+  "outputs": {
+    "metrics": "stage0/results/candidate_screens/qwen1_5b_math_reasoning/math_reasoning_metrics.csv",
+    "generations": "stage0/results/candidate_screens/qwen1_5b_math_reasoning/math_reasoning_generations.jsonl",
+    "summary": "stage0/results/candidate_screens/qwen1_5b_math_reasoning/MATH_REASONING_SUMMARY.md"
+  }
+}

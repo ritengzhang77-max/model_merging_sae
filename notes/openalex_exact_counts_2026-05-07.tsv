@@ -1,0 +1,17 @@
+short	arxiv	authors	title	year	source	type	cited_by_count	openalex_id	error
+Model Soups	2203.05482	Mitchell Wortsman, Gabriel Ilharco, Samir Yitzhak Gadre et al.	Model soups: averaging weights of multiple fine-tuned models improves accuracy without increasing inference time	2022	arXiv (Cornell University)	preprint	205	https://openalex.org/W4221155125	
+Task Arithmetic	2212.04089	Gabriel Ilharco, Marco Túlio Ribeiro, Mitchell Wortsman et al.	Editing Models with Task Arithmetic	2022	arXiv (Cornell University)	preprint	31	https://openalex.org/W4310998073	
+TIES	2306.01708	Prateek Yadav, Derek Tam, Leshem Choshen et al.	TIES-Merging: Resolving Interference When Merging Models	2023	arXiv (Cornell University)	preprint	22	https://openalex.org/W4379528218	
+AdaMerging	2310.02575	Enneng Yang, Zhenyi Wang, Li Shen et al.	AdaMerging: Adaptive Model Merging for Multi-Task Learning	2023	arXiv (Cornell University)	preprint	5	https://openalex.org/W4387389872	
+DARE	2311.03099	Le Yu, Bowen Yu, Haiyang Yu et al.	Language Models are Super Mario: Absorbing Abilities from Homologous Models as a Free Lunch	2023	arXiv (Cornell University)	preprint	12	https://openalex.org/W4388482013	
+DELLA	2406.11617	Pala Tej Deep, Rishabh Bhardwaj, Soujanya Poria	DELLA-Merging: Reducing Interference in Model Merging through Magnitude-Based Sampling	2024	arXiv (Cornell University)	preprint	0	https://openalex.org/W4399795315	
+MergeKit	2403.13257	Charles Goddard, Shamane Siriwardhana, Malikeh Ehghaghi et al.	Arcee's MergeKit: A Toolkit for Merging Large Language Models	2024	arXiv (Cornell University)	preprint	3	https://openalex.org/W4393108834	
+Representation Surgery	2402.02705	Enneng Yang, Li Shen, Zhenyi Wang et al.	Representation Surgery for Multi-Task Model Merging	2024	arXiv (Cornell University)	preprint	1	https://openalex.org/W4391591306	
+What Matters Scale	2410.03617	Prateek Yadav, Tu Vu, Jonathan Lai et al.	What Matters for Model Merging at Scale?	2024	arXiv (Cornell University)	preprint	0	https://openalex.org/W4403884751	
+Activation-Informed Merging	2502.02421	Amin Heyrani Nobari, Kaveh Alimohammadi, Ali ArjomandBigdeli et al.	Activation-Informed Merging of Large Language Models	2025	ArXiv.org	preprint	0	https://openalex.org/W4407186773	
+ACM	2505.14009	Yao, Yuxuan, Shuqi Liu, Zehua Liu et al.	Activation-Guided Consensus Merging for Large Language Models	2025	ArXiv.org	preprint	0	https://openalex.org/W4417298669	
+Git Re-Basin	2209.04836	Samuel Ainsworth, Jonathan Hayase, Siddhartha S Srinivasa	Git Re-Basin: Merging Models modulo Permutation Symmetries	2022	arXiv (Cornell University)	preprint	32	https://openalex.org/W4295689550	
+SWA	1803.05407	Pavel Izmailov, D. A. Podoprikhin, Timur Garipov et al.	Averaging Weights Leads to Wider Optima and Better Generalization	2018	arXiv (Cornell University)	preprint	227	https://openalex.org/W2792287754	
+FedAvg	1602.05629	H. Brendan McMahan, Eider Moore, Daniel Ramage et al.	Communication-Efficient Learning of Deep Networks from Decentralized\n Data	2016	arXiv (Cornell University)	preprint	5606	https://openalex.org/W4318619660	
+Mode Connectivity	1802.10026	Timur Garipov, Pavel Izmailov, D. A. Podoprikhin et al.	Loss Surfaces, Mode Connectivity, and Fast Ensembling of DNNs	2018	arXiv (Cornell University)	preprint	212	https://openalex.org/W2788838181	
+No Barriers	1803.00885	Felix Draxler, Kambis Veschgini, Manfred Salmhofer et al.	Essentially No Barriers in Neural Network Energy Landscape	2018	arXiv (Cornell University)	preprint	131	https://openalex.org/W2793333878	

@@ -1,0 +1,72 @@
+{
+  "recipient": "merge_arith_polite",
+  "donor": "expert_refusal",
+  "variants": {
+    "late_mlp": [
+      [
+        15,
+        "mlp"
+      ],
+      [
+        20,
+        "mlp"
+      ],
+      [
+        25,
+        "mlp"
+      ],
+      [
+        29,
+        "mlp"
+      ]
+    ],
+    "late_mlp_attn": [
+      [
+        15,
+        "attn"
+      ],
+      [
+        15,
+        "mlp"
+      ],
+      [
+        20,
+        "attn"
+      ],
+      [
+        20,
+        "mlp"
+      ],
+      [
+        25,
+        "attn"
+      ],
+      [
+        25,
+        "mlp"
+      ],
+      [
+        29,
+        "attn"
+      ],
+      [
+        29,
+        "mlp"
+      ]
+    ]
+  },
+  "alphas": [
+    0.25,
+    0.5,
+    0.75,
+    1.0,
+    1.25
+  ],
+  "loss_examples": 16,
+  "generation_examples": 12,
+  "outputs": {
+    "losses": "/home/gavin/model_merging/stage2/results/smollm2_refusal_alpha_search_losses.csv",
+    "generation_metrics": "/home/gavin/model_merging/stage2/results/smollm2_refusal_alpha_search_generation_metrics.csv",
+    "generations": "/home/gavin/model_merging/stage2/results/smollm2_refusal_alpha_search_generations.jsonl"
+  }
+}

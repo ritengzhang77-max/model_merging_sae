@@ -1,0 +1,18 @@
+{
+  "recipient": "merge_all_linear",
+  "donors": [
+    "base"
+  ],
+  "patch_specs": [
+    "29:block",
+    "20+25+29:mlp",
+    "20+25+29:block"
+  ],
+  "position": "prompt",
+  "examples": 16,
+  "outputs": {
+    "records": "stage3/results/activation_patch_prompt_candidates/smollm2_refusal_activation_patches_merge_all_linear_prompt_records.jsonl",
+    "summary_csv": "stage3/results/activation_patch_prompt_candidates/smollm2_refusal_activation_patches_merge_all_linear_prompt_summary.csv",
+    "summary_md": "stage3/results/activation_patch_prompt_candidates/SMOLLM2_REFUSAL_ACTIVATION_PATCHES_MERGE_ALL_LINEAR_PROMPT.md"
+  }
+}

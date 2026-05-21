@@ -1,0 +1,5 @@
+clean_generation_rate,math_ok_rate,mean_words,model,n
+1.0,0.8,1.1,Qwen/Qwen2.5-1.5B-Instruct,10
+1.0,0.3,28.2,bunnycore/Qwen2.5-1.5B-Matrix,10
+1.0,0.6,33.8,Yuuta208/Qwen2.5-1.5B-Instruct-Qwen2.5-Math-1.5B-Merged-slerp-24,10
+1.0,0.9,3.0,nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B,10

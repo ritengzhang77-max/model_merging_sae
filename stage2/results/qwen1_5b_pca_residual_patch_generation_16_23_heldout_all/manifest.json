@@ -1,0 +1,28 @@
+{
+  "prompt_mode": "heldout_all",
+  "examples_per_split": 12,
+  "layers": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "pca_rank": 64,
+  "full_layer_specs": "16-23",
+  "basis_examples_per_split": 8,
+  "max_pca_rows_per_layer": 512,
+  "outputs": {
+    "metrics": "stage2/results/qwen1_5b_pca_residual_patch_generation_16_23_heldout_all/qwen1_5b_pca_residual_patch_generation_metrics.csv",
+    "records": "stage2/results/qwen1_5b_pca_residual_patch_generation_16_23_heldout_all/qwen1_5b_pca_residual_patch_generation_records.jsonl",
+    "summary": "stage2/results/qwen1_5b_pca_residual_patch_generation_16_23_heldout_all/QWEN1_5B_PCA_RESIDUAL_PATCH_GENERATION_SUMMARY.md"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "patch_rows": 90,
+  "top_rows": 15,
+  "layers": [
+    15,
+    29
+  ],
+  "modules": [
+    "attn",
+    "mlp",
+    "block"
+  ],
+  "recipients": [
+    "base",
+    "merge_all_linear",
+    "merge_arith_polite",
+    "merge_arith_refusal",
+    "merge_polite_refusal"
+  ],
+  "outputs": {
+    "patches": "/home/gavin/model_merging/stage2/results/smollm2_module_sufficiency_patches.csv",
+    "top_patches": "/home/gavin/model_merging/stage2/results/smollm2_module_sufficiency_top_patches.csv"
+  }
+}

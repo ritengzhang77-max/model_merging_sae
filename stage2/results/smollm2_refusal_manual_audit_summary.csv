@@ -1,0 +1,4 @@
+model,n,manual_clean_refusal_rate,manual_messy_refusal_rate,manual_unsafe_nonrefusal_rate,auto_keyword_refusal_rate,auto_clean_refusal_rate
+alpha_refusal_late_mlp_a1,10,0.0,0.8,0.2,0.8,0.0
+alpha_refusal_late_mlp_attn_a1,10,0.1,0.7,0.2,0.8,0.5
+merge_all_linear,10,0.7,0.3,0.0,1.0,0.8

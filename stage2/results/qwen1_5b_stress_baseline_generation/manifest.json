@@ -1,0 +1,13 @@
+{
+  "models": [
+    "base",
+    "abliterated"
+  ],
+  "prompt_mode": "stress",
+  "examples_per_split": 12,
+  "outputs": {
+    "metrics": "stage2/results/qwen1_5b_stress_baseline_generation/qwen1_5b_stress_baseline_generation_metrics.csv",
+    "records": "stage2/results/qwen1_5b_stress_baseline_generation/qwen1_5b_stress_baseline_generation_records.jsonl",
+    "summary": "stage2/results/qwen1_5b_stress_baseline_generation/QWEN1_5B_STRESS_BASELINE_GENERATION_SUMMARY.md"
+  }
+}

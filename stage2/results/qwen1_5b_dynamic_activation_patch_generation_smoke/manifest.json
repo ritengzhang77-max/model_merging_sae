@@ -1,0 +1,11 @@
+{
+  "patch_spec": "12+13+14+15+16+17+18+19+20+21+22+23+24:mlp",
+  "position": "all",
+  "examples_per_split": 4,
+  "max_new_tokens": 48,
+  "outputs": {
+    "metrics": "stage2/results/qwen1_5b_dynamic_activation_patch_generation_smoke/qwen1_5b_dynamic_activation_patch_generation_metrics.csv",
+    "records": "stage2/results/qwen1_5b_dynamic_activation_patch_generation_smoke/qwen1_5b_dynamic_activation_patch_generation_records.jsonl",
+    "summary": "stage2/results/qwen1_5b_dynamic_activation_patch_generation_smoke/QWEN1_5B_DYNAMIC_ACTIVATION_PATCH_GENERATION_SUMMARY.md"
+  }
+}

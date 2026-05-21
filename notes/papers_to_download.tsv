@@ -1,0 +1,35 @@
+category	filename	url	title
+00_surveys	2408.07666_model_merging_llms_mllms_survey.pdf	https://arxiv.org/pdf/2408.07666	Model Merging in LLMs, MLLMs, and Beyond
+00_surveys	2410.12927_deep_model_merging_interpretability_survey.pdf	https://arxiv.org/pdf/2410.12927	Deep Model Merging / SoK on Loss Landscapes and Interpretability
+00_surveys	2603.09938_model_merging_llm_era_fuse_survey.pdf	https://arxiv.org/pdf/2603.09938	Model Merging in the Era of Large Language Models
+01_foundations	1602.05629_fedavg.pdf	https://arxiv.org/pdf/1602.05629	Communication-Efficient Learning of Deep Networks from Decentralized Data
+01_foundations	1802.10026_mode_connectivity_fge.pdf	https://arxiv.org/pdf/1802.10026	Loss Surfaces, Mode Connectivity, and Fast Ensembling
+01_foundations	1803.00885_no_barriers_energy_landscape.pdf	https://arxiv.org/pdf/1803.00885	Essentially No Barriers in Neural Network Energy Landscape
+01_foundations	1803.05407_swa.pdf	https://arxiv.org/pdf/1803.05407	Averaging Weights Leads to Wider Optima and Better Generalization
+01_foundations	1912.05671_lmc_lottery_ticket.pdf	https://arxiv.org/pdf/1912.05671	Linear Mode Connectivity and the Lottery Ticket Hypothesis
+01_foundations	2209.04836_git_rebasin.pdf	https://arxiv.org/pdf/2209.04836	Git Re-Basin: Merging Models modulo Permutation Symmetries
+02_core_methods	2111.09832_fisher_weighted_averaging.pdf	https://arxiv.org/pdf/2111.09832	Merging Models with Fisher-Weighted Averaging
+02_core_methods	2203.05482_model_soups.pdf	https://arxiv.org/pdf/2203.05482	Model soups
+02_core_methods	2212.04089_task_arithmetic.pdf	https://arxiv.org/pdf/2212.04089	Editing Models with Task Arithmetic
+02_core_methods	2305.12827_tangent_task_arithmetic.pdf	https://arxiv.org/pdf/2305.12827	Task Arithmetic in the Tangent Space
+02_core_methods	2306.01708_ties_merging.pdf	https://arxiv.org/pdf/2306.01708	TIES-Merging
+02_core_methods	2310.02575_adamerging.pdf	https://arxiv.org/pdf/2310.02575	AdaMerging
+02_core_methods	2311.03099_dare_super_mario.pdf	https://arxiv.org/pdf/2311.03099	Language Models are Super Mario / DARE
+02_core_methods	2312.06795_model_breadcrumbs.pdf	https://arxiv.org/pdf/2312.06795	Model Breadcrumbs
+02_core_methods	2402.02705_representation_surgery.pdf	https://arxiv.org/pdf/2402.02705	Representation Surgery for Multi-Task Model Merging
+02_core_methods	2406.11617_della_merging.pdf	https://arxiv.org/pdf/2406.11617	DELLA-Merging
+02_core_methods	2412.00081_task_singular_vectors.pdf	https://arxiv.org/pdf/2412.00081	Task Singular Vectors
+02_core_methods	2502.10698_superpose_task_specific_features.pdf	https://arxiv.org/pdf/2502.10698	Superpose Task-specific Features for Model Merging
+02_core_methods	2508.16082_task_vectors_and_gradients.pdf	https://arxiv.org/pdf/2508.16082	On Task Vectors and Gradients
+03_llm_applications	2310.04799_chat_vector.pdf	https://arxiv.org/pdf/2310.04799	Chat Vector
+03_llm_applications	2403.13187_evolutionary_model_merge.pdf	https://arxiv.org/pdf/2403.13187	Evolutionary Optimization of Model Merging Recipes
+03_llm_applications	2403.13257_mergekit.pdf	https://arxiv.org/pdf/2403.13257	Arcee's MergeKit
+03_llm_applications	2406.14563_model_merging_safety_alignment.pdf	https://arxiv.org/pdf/2406.14563	Model Merging and Safety Alignment
+03_llm_applications	2410.03617_what_matters_at_scale.pdf	https://arxiv.org/pdf/2410.03617	What Matters for Model Merging at Scale?
+03_llm_applications	2502.02421_activation_informed_merging.pdf	https://arxiv.org/pdf/2502.02421	Activation-Informed Merging of Large Language Models
+03_llm_applications	2502.06876_3h_alignment_model_merging.pdf	https://arxiv.org/pdf/2502.06876	Mix Data or Merge Models? 3H Alignment via Model Merging
+03_llm_applications	2503.17239_safemerge.pdf	https://arxiv.org/pdf/2503.17239	SafeMERGE
+03_llm_applications	2503.20641_long_to_short_reasoning_merging.pdf	https://arxiv.org/pdf/2503.20641	Unlocking Efficient Long-to-Short LLM Reasoning with Model Merging
+03_llm_applications	2505.14009_activation_guided_consensus_merging.pdf	https://arxiv.org/pdf/2505.14009	Activation-Guided Consensus Merging
+04_interpretability_theory	2601.22285_demystifying_mergeability.pdf	https://arxiv.org/pdf/2601.22285	Demystifying Mergeability
+04_interpretability_theory	2604.13694_weight_patching.pdf	https://arxiv.org/pdf/2604.13694	Weight Patching

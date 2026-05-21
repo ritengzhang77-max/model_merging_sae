@@ -1,0 +1,26 @@
+{
+  "recipient": "merge_arith_refusal",
+  "direction_specs": [
+    [
+      "mlp_out_l20",
+      "failure_repetition"
+    ]
+  ],
+  "alphas": [
+    0.05,
+    0.1,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "position": "last",
+  "mode": "constant",
+  "generation_mode": "hf",
+  "hf_no_cache": false,
+  "examples": 16,
+  "outputs": {
+    "records": "stage3/results/direction_ablation_repetition_hf_constant/smollm2_refusal_direction_ablation_merge_arith_refusal_last_constant_hf_records.jsonl",
+    "summary_csv": "stage3/results/direction_ablation_repetition_hf_constant/smollm2_refusal_direction_ablation_merge_arith_refusal_last_constant_hf_summary.csv",
+    "summary_md": "stage3/results/direction_ablation_repetition_hf_constant/SMOLLM2_REFUSAL_DIRECTION_ABLATION_MERGE_ARITH_REFUSAL_LAST_CONSTANT_HF.md"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "examples": 12,
+  "layers": [
+    15,
+    20,
+    25,
+    29
+  ],
+  "models": [
+    "base",
+    "merge_arith_polite",
+    "alpha_refusal_late_mlp_a1",
+    "alpha_refusal_late_mlp_attn_a1",
+    "merge_all_linear",
+    "merge_arith_refusal",
+    "expert_refusal"
+  ],
+  "outputs": {
+    "prompts": "stage3/data/smoke_refusal_basis/smollm2_refusal_basis_prompts.jsonl",
+    "records": "stage3/results/smoke_refusal_basis/smollm2_refusal_basis_records.jsonl",
+    "generation_summary": "stage3/results/smoke_refusal_basis/smollm2_refusal_basis_generation_summary.csv",
+    "metrics": "stage3/results/smoke_refusal_basis/smollm2_refusal_basis_metrics.csv",
+    "activation_cache": "stage3/cache/smoke_refusal_basis/smollm2_refusal_basis_activations.pt",
+    "summary": "stage3/results/smoke_refusal_basis/SMOLLM2_REFUSAL_BASIS_SUMMARY.md"
+  }
+}

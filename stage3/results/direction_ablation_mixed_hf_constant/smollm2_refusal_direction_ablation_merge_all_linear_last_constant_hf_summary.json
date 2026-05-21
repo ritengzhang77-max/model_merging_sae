@@ -1,0 +1,33 @@
+{
+  "recipient": "merge_all_linear",
+  "direction_specs": [
+    [
+      "mlp_out_l20",
+      "failure_repetition"
+    ],
+    [
+      "resid_l20",
+      "failure_artifact"
+    ],
+    [
+      "mlp_out_l25",
+      "failure_unsafe_or_contradictory"
+    ]
+  ],
+  "alphas": [
+    0.1,
+    0.25,
+    0.5,
+    1.0
+  ],
+  "position": "last",
+  "mode": "constant",
+  "generation_mode": "hf",
+  "hf_no_cache": false,
+  "examples": 16,
+  "outputs": {
+    "records": "stage3/results/direction_ablation_mixed_hf_constant/smollm2_refusal_direction_ablation_merge_all_linear_last_constant_hf_records.jsonl",
+    "summary_csv": "stage3/results/direction_ablation_mixed_hf_constant/smollm2_refusal_direction_ablation_merge_all_linear_last_constant_hf_summary.csv",
+    "summary_md": "stage3/results/direction_ablation_mixed_hf_constant/SMOLLM2_REFUSAL_DIRECTION_ABLATION_MERGE_ALL_LINEAR_LAST_CONSTANT_HF.md"
+  }
+}

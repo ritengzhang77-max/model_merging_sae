@@ -1,0 +1,16 @@
+{
+  "models": [
+    "Qwen/Qwen2.5-1.5B-Instruct",
+    "bunnycore/Qwen2.5-1.5B-Matrix",
+    "Yuuta208/Qwen2.5-1.5B-Instruct-Qwen2.5-Math-1.5B-Merged-slerp-24",
+    "nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B"
+  ],
+  "examples_per_split": 8,
+  "max_new_tokens": 64,
+  "local_files_only": false,
+  "outputs": {
+    "metrics": "stage0/results/candidate_screens/qwen1_5b_selected_extended/chat_candidate_screen_metrics.csv",
+    "records": "stage0/results/candidate_screens/qwen1_5b_selected_extended/chat_candidate_screen_generations.jsonl",
+    "summary": "stage0/results/candidate_screens/qwen1_5b_selected_extended/CHAT_CANDIDATE_SCREEN_SUMMARY.md"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "models": {
+    "donor": "Qwen/Qwen2.5-1.5B-Instruct",
+    "recipient": "nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B"
+  },
+  "prompt_mode": "stress",
+  "examples_per_split": 12,
+  "basis_examples_per_split": 8,
+  "layers": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "pca_rank": 64,
+  "full_layer_specs": "none,20+21+23,20-24,12-24",
+  "outputs": {
+    "metrics": "stage2/results/qwen1_5b_pca_residual_target_loss_stress_minimal/qwen1_5b_pca_residual_target_losses.csv",
+    "summary": "stage2/results/qwen1_5b_pca_residual_target_loss_stress_minimal/QWEN1_5B_PCA_RESIDUAL_TARGET_LOSS_SUMMARY.md"
+  }
+}

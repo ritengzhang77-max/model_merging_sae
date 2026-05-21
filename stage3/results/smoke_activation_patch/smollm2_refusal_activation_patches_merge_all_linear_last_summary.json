@@ -1,0 +1,16 @@
+{
+  "recipient": "merge_all_linear",
+  "donors": [
+    "base"
+  ],
+  "patch_specs": [
+    "29:block"
+  ],
+  "position": "last",
+  "examples": 4,
+  "outputs": {
+    "records": "stage3/results/smoke_activation_patch/smollm2_refusal_activation_patches_merge_all_linear_last_records.jsonl",
+    "summary_csv": "stage3/results/smoke_activation_patch/smollm2_refusal_activation_patches_merge_all_linear_last_summary.csv",
+    "summary_md": "stage3/results/smoke_activation_patch/SMOLLM2_REFUSAL_ACTIVATION_PATCHES_MERGE_ALL_LINEAR_LAST.md"
+  }
+}

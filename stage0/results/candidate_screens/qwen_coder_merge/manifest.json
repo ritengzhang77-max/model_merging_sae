@@ -1,0 +1,14 @@
+{
+  "base_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "coder_model": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+  "alphas": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "outputs": {
+    "metrics": "stage0/results/candidate_screens/qwen_coder_merge/qwen_coder_merge_metrics.csv",
+    "records": "stage0/results/candidate_screens/qwen_coder_merge/qwen_coder_merge_generations.jsonl",
+    "summary": "stage0/results/candidate_screens/qwen_coder_merge/QWEN_CODER_MERGE_SUMMARY.md"
+  }
+}

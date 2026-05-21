@@ -1,0 +1,9 @@
+{
+  "predictor_rows": 15,
+  "patch_rows": 0,
+  "outputs": {
+    "predictors": "stage1/results/smoke_state_cache/smollm2_rq0_predictors.csv",
+    "patch_effects": "stage1/results/smoke_state_cache/smollm2_rq0_patch_effects.csv",
+    "correlations": "stage1/results/smoke_state_cache/smollm2_rq0_correlations.csv"
+  }
+}

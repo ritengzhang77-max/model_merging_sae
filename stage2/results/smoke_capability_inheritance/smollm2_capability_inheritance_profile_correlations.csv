@@ -1,0 +1,10 @@
+expert_model,expert_top_layer,merge_model,merge_top_layer,n_layers,pearson,spearman,task
+expert_arith,0,merge_all_linear,20,7,-0.6372214548903206,-0.642857142857143,arith
+expert_arith,0,merge_arith_polite,20,7,-0.5792631050696954,-0.5714285714285715,arith
+expert_arith,0,merge_arith_refusal,15,7,-0.9242109285932312,-0.8571428571428573,arith
+expert_polite,0,merge_all_linear,15,7,0.4958212426371253,0.5714285714285715,polite
+expert_polite,0,merge_arith_polite,29,7,0.9619588147270158,0.8214285714285715,polite
+expert_polite,0,merge_polite_refusal,15,7,0.4462599383095376,0.5714285714285715,polite
+expert_refusal,0,merge_all_linear,29,7,0.31271531308807443,0.10714285714285716,refusal
+expert_refusal,0,merge_arith_refusal,29,7,0.4481748485073009,0.21428571428571433,refusal
+expert_refusal,0,merge_polite_refusal,29,7,0.6495670069684609,0.4642857142857144,refusal

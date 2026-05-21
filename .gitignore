@@ -1,0 +1,32 @@
+# Python/runtime noise
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Local environments and secrets
+.env
+.venv/
+venv/
+env/
+
+# Heavy model/checkpoint artifacts
+*.pt
+*.pth
+*.bin
+*.safetensors
+stage0/artifacts/
+stage1/cache/
+stage3/cache/
+
+# External downloaded papers; keep bibliographic notes/manifests in git instead.
+papers/**/*.pdf
+
+# Experiment/service caches
+wandb/
+runs/
+cache/
+hf_cache/
+.cache/
+
+# OS/editor
+.DS_Store

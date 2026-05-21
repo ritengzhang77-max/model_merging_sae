@@ -1,0 +1,16 @@
+{
+  "rescore_from_cache": "/home/gavin/model_merging/stage3/cache/smollm2_refusal_basis_activations.pt",
+  "examples": 48,
+  "layers": [
+    15,
+    20,
+    25,
+    29
+  ],
+  "outputs": {
+    "records": "/home/gavin/model_merging/stage3/results/smollm2_refusal_basis_records.jsonl",
+    "generation_summary": "/home/gavin/model_merging/stage3/results/smollm2_refusal_basis_generation_summary.csv",
+    "metrics": "/home/gavin/model_merging/stage3/results/smollm2_refusal_basis_metrics.csv",
+    "summary": "/home/gavin/model_merging/stage3/results/SMOLLM2_REFUSAL_BASIS_SUMMARY.md"
+  }
+}

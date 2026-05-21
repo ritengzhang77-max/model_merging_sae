@@ -1,0 +1,119 @@
+{
+  "predictor_rows": 55,
+  "patch_rows": 275,
+  "top_spearman_target_acc": [
+    {
+      "predictor": "patch_gain_all",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": -0.9990162153787429,
+      "spearman": -0.9998556060934229,
+      "abs_pearson": 0.9990162153787429,
+      "abs_spearman": 0.9998556060934229
+    },
+    {
+      "predictor": "patch_gain_fc1",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": -0.9773274256613184,
+      "spearman": -0.9823143103890656,
+      "abs_pearson": 0.9773274256613184,
+      "abs_spearman": 0.9823143103890656
+    },
+    {
+      "predictor": "act_rowcos_logits",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": 0.9311008912649772,
+      "spearman": 0.9765217677028093,
+      "abs_pearson": 0.9311008912649772,
+      "abs_spearman": 0.9765217677028093
+    },
+    {
+      "predictor": "act_rowcos_conv2",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": 0.9059188110322831,
+      "spearman": 0.9362424103419157,
+      "abs_pearson": 0.9059188110322831,
+      "abs_spearman": 0.9362424103419157
+    },
+    {
+      "predictor": "act_rowcos_fc1",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": 0.7626167065593983,
+      "spearman": 0.8271132692855608,
+      "abs_pearson": 0.7626167065593983,
+      "abs_spearman": 0.8271132692855608
+    },
+    {
+      "predictor": "act_cka_logits",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": 0.8269442548768409,
+      "spearman": 0.8057169799508731,
+      "abs_pearson": 0.8269442548768409,
+      "abs_spearman": 0.8057169799508731
+    },
+    {
+      "predictor": "act_cka_fc1",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": 0.6843629644035379,
+      "spearman": 0.7955103405799366,
+      "abs_pearson": 0.6843629644035379,
+      "abs_spearman": 0.7955103405799366
+    },
+    {
+      "predictor": "weight_cos_conv1",
+      "target": "target_acc",
+      "n": 50,
+      "pearson": 0.781911876205484,
+      "spearman": 0.7321420407203064,
+      "abs_pearson": 0.781911876205484,
+      "abs_spearman": 0.7321420407203064
+    },
+    {
+      "predictor": "act_cka_conv2",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": 0.417299647746802,
+      "spearman": 0.5843799761668784,
+      "abs_pearson": 0.417299647746802,
+      "abs_spearman": 0.5843799761668784
+    },
+    {
+      "predictor": "act_rowcos_conv1",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": 0.4779437649500761,
+      "spearman": 0.5676958490287145,
+      "abs_pearson": 0.4779437649500761,
+      "abs_spearman": 0.5676958490287145
+    },
+    {
+      "predictor": "sign_agree_conv1",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": 0.43213776511631347,
+      "spearman": 0.5258806092926476,
+      "abs_pearson": 0.43213776511631347,
+      "abs_spearman": 0.5258806092926476
+    },
+    {
+      "predictor": "act_cka_conv1",
+      "target": "target_acc",
+      "n": 55,
+      "pearson": 0.30583318357711187,
+      "spearman": 0.5117118501049758,
+      "abs_pearson": 0.30583318357711187,
+      "abs_spearman": 0.5117118501049758
+    }
+  ],
+  "outputs": {
+    "predictors": "/home/gavin/model_merging/stage1/results/mnist_rq0_predictors.csv",
+    "patch_effects": "/home/gavin/model_merging/stage1/results/mnist_rq0_patch_effects.csv",
+    "correlations": "/home/gavin/model_merging/stage1/results/mnist_rq0_correlations.csv"
+  }
+}

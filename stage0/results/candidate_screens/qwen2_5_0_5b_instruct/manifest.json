@@ -1,0 +1,13 @@
+{
+  "models": [
+    "Qwen/Qwen2.5-0.5B-Instruct"
+  ],
+  "examples_per_split": 6,
+  "max_new_tokens": 64,
+  "local_files_only": false,
+  "outputs": {
+    "metrics": "stage0/results/candidate_screens/qwen2_5_0_5b_instruct/chat_candidate_screen_metrics.csv",
+    "records": "stage0/results/candidate_screens/qwen2_5_0_5b_instruct/chat_candidate_screen_generations.jsonl",
+    "summary": "stage0/results/candidate_screens/qwen2_5_0_5b_instruct/CHAT_CANDIDATE_SCREEN_SUMMARY.md"
+  }
+}

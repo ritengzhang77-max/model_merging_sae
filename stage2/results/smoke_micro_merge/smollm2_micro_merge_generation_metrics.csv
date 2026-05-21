@@ -1,0 +1,8 @@
+acc_arith,acc_mean,acc_polite,acc_refusal,acc_worst,model
+1.0,1.0,1.0,1.0,1.0,merge_all_linear
+0.0,0.3333333333333333,0.0,1.0,0.0,expert_refusal
+0.0,0.3333333333333333,1.0,0.0,0.0,merge_arith_polite
+0.0,0.3333333333333333,0.0,1.0,0.0,merge_arith_refusal
+0.0,0.3333333333333333,1.0,0.0,0.0,micro_refusal_l29_block
+0.0,0.3333333333333333,1.0,0.0,0.0,micro_refusal_l29_mlp
+0.0,0.0,0.0,0.0,0.0,base

@@ -1,0 +1,29 @@
+{
+  "recipient": "merge_all_linear",
+  "direction_specs": [
+    [
+      "mlp_out_l20",
+      "failure_repetition"
+    ]
+  ],
+  "alphas": [
+    0.01,
+    0.02,
+    0.05,
+    0.075,
+    0.1,
+    0.15,
+    0.2,
+    0.25
+  ],
+  "position": "last",
+  "mode": "constant",
+  "generation_mode": "hf",
+  "hf_no_cache": false,
+  "examples": 16,
+  "outputs": {
+    "records": "stage3/results/direction_ablation_repetition_hf_fine/smollm2_refusal_direction_ablation_merge_all_linear_last_constant_hf_records.jsonl",
+    "summary_csv": "stage3/results/direction_ablation_repetition_hf_fine/smollm2_refusal_direction_ablation_merge_all_linear_last_constant_hf_summary.csv",
+    "summary_md": "stage3/results/direction_ablation_repetition_hf_fine/SMOLLM2_REFUSAL_DIRECTION_ABLATION_MERGE_ALL_LINEAR_LAST_CONSTANT_HF.md"
+  }
+}

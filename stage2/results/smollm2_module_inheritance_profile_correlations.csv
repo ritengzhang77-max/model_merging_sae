@@ -1,0 +1,10 @@
+expert_model,expert_top_intervention,merge_model,merge_top_intervention,n_interventions,pearson,spearman,task
+expert_arith,29/block,merge_all_linear,29/block,8,0.3467989290875892,0.14285714285714288,arith
+expert_arith,29/block,merge_arith_polite,15/block,8,0.055039245561760805,-0.11904761904761905,arith
+expert_arith,29/block,merge_arith_refusal,15/block,8,0.027149904716115187,-0.11904761904761905,arith
+expert_polite,29/block,merge_all_linear,15/block,8,0.5427116796334092,0.6428571428571429,polite
+expert_polite,29/block,merge_arith_polite,29/block,8,0.8956712903766054,0.8095238095238096,polite
+expert_polite,29/block,merge_polite_refusal,15/block,8,0.5881313437021319,0.6904761904761906,polite
+expert_refusal,29/block,merge_all_linear,29/block,8,0.9627483790362927,0.9285714285714287,refusal
+expert_refusal,29/block,merge_arith_refusal,29/block,8,0.9610960465226112,0.9285714285714287,refusal
+expert_refusal,29/block,merge_polite_refusal,29/block,8,0.9515011992214193,0.261904761904762,refusal

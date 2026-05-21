@@ -1,0 +1,13 @@
+{
+  "models": [
+    "HuggingFaceTB/SmolLM2-135M-Instruct"
+  ],
+  "examples_per_split": 6,
+  "max_new_tokens": 64,
+  "local_files_only": true,
+  "outputs": {
+    "metrics": "stage0/results/candidate_screens/smollm2_135m_instruct/chat_candidate_screen_metrics.csv",
+    "records": "stage0/results/candidate_screens/smollm2_135m_instruct/chat_candidate_screen_generations.jsonl",
+    "summary": "stage0/results/candidate_screens/smollm2_135m_instruct/CHAT_CANDIDATE_SCREEN_SUMMARY.md"
+  }
+}

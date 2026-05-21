@@ -1,0 +1,17 @@
+{
+  "models": [
+    "Youlln/ECE.EIFFEIL.ia-0.5B-SLERP",
+    "Sakalti/lakeland",
+    "Sakalti/SJT-0.5B",
+    "vitus9988/Qwen2.5-0.5B-ko-merge",
+    "amadeusai/Amadeus-Verbo-MI-Qwen-2.5-0.5B-PT-BR-Instruct-Experimental"
+  ],
+  "examples_per_split": 8,
+  "max_new_tokens": 64,
+  "local_files_only": false,
+  "outputs": {
+    "metrics": "stage0/results/candidate_screens/qwen_merge_candidates_round3/chat_candidate_screen_metrics.csv",
+    "records": "stage0/results/candidate_screens/qwen_merge_candidates_round3/chat_candidate_screen_generations.jsonl",
+    "summary": "stage0/results/candidate_screens/qwen_merge_candidates_round3/CHAT_CANDIDATE_SCREEN_SUMMARY.md"
+  }
+}
