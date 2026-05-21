@@ -280,6 +280,32 @@ def prompts_for_mode(mode: str, n: int) -> list[tuple[str, str, str]]:
     return prompts
 
 
+def read_prompt_jsonl(path: Path) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    with path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            line = line.strip()
+            if not line:
+                continue
+            row = json.loads(line)
+            if "split" not in row or "user" not in row:
+                raise ValueError(f"{path}:{line_no} must contain at least split and user")
+            row.setdefault("expected", "")
+            rows.append(row)
+    if not rows:
+        raise ValueError(f"{path} did not contain any prompts")
+    return rows
+
+
+def prompt_rows(args: argparse.Namespace) -> list[dict[str, object]]:
+    if args.prompt_jsonl:
+        return read_prompt_jsonl(args.prompt_jsonl)
+    return [
+        {"split": split, "user": user, "expected": expected}
+        for split, user, expected in prompts_for_mode(args.prompt_mode, args.examples_per_split)
+    ]
+
+
 def summarize(model_name: str, rows: list[dict[str, object]]) -> dict[str, object]:
     out = {"model": model_name, "n": len(rows)}
     for split in ("harmful", "benign"):
@@ -354,6 +380,7 @@ def parse_args() -> argparse.Namespace:
         ),
         default="heldout_failures",
     )
+    ap.add_argument("--prompt-jsonl", type=Path)
     ap.add_argument("--examples-per-split", type=int, default=12)
     ap.add_argument("--basis-examples-per-split", type=int, default=8)
     ap.add_argument("--batch-size", type=int, default=2)
@@ -409,7 +436,7 @@ def main() -> int:
         pca_n_iter=args.pca_n_iter,
     )
 
-    prompts = prompts_for_mode(args.prompt_mode, args.examples_per_split)
+    prompts = prompt_rows(args)
     variants: list[tuple[str, tuple[int, ...] | None, str]] = []
     if args.include_baselines:
         variants.extend([("base", None, "all"), ("abliterated", None, "all")])
@@ -432,7 +459,10 @@ def main() -> int:
     for model_name, full_layers, full_position in variants:
         print(f"[eval] {model_name}", flush=True)
         records = []
-        for split, user, expected in prompts:
+        for prompt_row in prompts:
+            split = str(prompt_row["split"])
+            user = str(prompt_row["user"])
+            expected = str(prompt_row.get("expected", ""))
             if model_name == "base":
                 text = generate(donor, tokenizer, user, device=args.device, max_new_tokens=args.max_new_tokens)
             elif model_name == "abliterated":
@@ -453,7 +483,15 @@ def main() -> int:
                     full_position=full_position,
                 )
             scores = score_record(split, user, text, expected)
-            record = {"model": model_name, "split": split, "user": user, "expected": expected, "generation": text, **scores}
+            record = {
+                "model": model_name,
+                **prompt_row,
+                "split": split,
+                "user": user,
+                "expected": expected,
+                "generation": text,
+                **scores,
+            }
             records.append(record)
             all_records.append(record)
         summary_rows.append(summarize(model_name, records))
@@ -469,6 +507,7 @@ def main() -> int:
         json.dumps(
             {
                 "prompt_mode": args.prompt_mode,
+                "prompt_jsonl": str(args.prompt_jsonl) if args.prompt_jsonl else None,
                 "examples_per_split": args.examples_per_split,
                 "layers": layers,
                 "pca_rank": args.pca_rank,

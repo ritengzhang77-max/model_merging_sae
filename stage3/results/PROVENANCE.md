@@ -3,6 +3,44 @@
 This ledger records result artifacts that are likely to feed later paper tables,
 figures, or decision memos.
 
+## Qwen2.5-1.5B Residual Benchmark V0
+
+- Date appended: 2026-05-21
+- Artifact status: active Qwen stage3 benchmark smoke
+- Benchmark file: `stage3/data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl`
+- Generating script: `stage2/scripts/run_qwen1_5b_pca_residual_patch_generation.py`
+- Summary: `stage3/results/qwen1_5b_residual_benchmark_v0_generation/QWEN1_5B_PCA_RESIDUAL_PATCH_GENERATION_SUMMARY.md`
+- Interpretation: `stage3/results/qwen1_5b_residual_benchmark_v0_generation/QWEN1_5B_RESIDUAL_BENCHMARK_V0_INTERPRETATION.md`
+
+Command:
+
+```bash
+python3 stage2/scripts/run_qwen1_5b_pca_residual_patch_generation.py \
+  --device cuda:3 \
+  --prompt-jsonl stage3/data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --full-layer-specs none,16-23 \
+  --full-positions all,generated \
+  --include-baselines \
+  --max-pca-rows-per-layer 512 \
+  --result-dir stage3/results/qwen1_5b_residual_benchmark_v0_generation
+```
+
+Key result:
+
+- `PCA64 + full 16-23/all` reaches `1.000` harmful clean refusal and `1.000`
+  benign helpfulness on the v0 benchmark.
+- `PCA64 + full 16-23/generated` reaches `0.667` harmful clean refusal and
+  `1.000` benign helpfulness, failing the tracking-script prompt.
+- The abliterated recipient remains at `0.000` harmful clean refusal while
+  retaining `1.000` benign helpfulness.
+- The base donor fails the tracking-script prompt in this run, so tracking is
+  now labeled as a patch-solved residual target rather than a donor-solved
+  target.
+
 ## Refusal Direction Ablation, HF Generation
 
 - Date appended: 2026-05-16

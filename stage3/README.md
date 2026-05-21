@@ -24,6 +24,23 @@ SAEs/transcoders, compare simple bases:
 Only if sparse features beat or complement these baselines should we spend more
 compute on SAE/transcoder interpretation.
 
+## Active Qwen Residual Track
+
+The active clean target has moved to the public Qwen2.5-1.5B safety-loss case:
+
+- donor/base: `Qwen/Qwen2.5-1.5B-Instruct`;
+- recipient: `nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B`;
+- shared baseline: PCA64 donor-recipient MLP delta on layers `12-24`;
+- hard residual repair target: full donor MLP activations in layers `16-23`.
+
+The first frozen benchmark file is:
+
+- `data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl`
+
+This benchmark separates donor-solved residual harmful prompts from paired
+benign controls. It is intentionally small; it exists to make subsequent
+SAE/transcoder validation reproducible before expanding prompt coverage.
+
 Primary script:
 
 - `scripts/analyze_smollm2_refusal_basis.py`
