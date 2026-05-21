@@ -428,6 +428,44 @@ This gives the next SAE/transcoder phase two honest baselines:
    family;
 2. the full donor `16-23` repair for the harder permission-slip family.
 
+## 2026-05-21 Position-Specific Residual Update
+
+We added a token-position diagnostic for the residual missing from PCA64. The
+patch now keeps PCA64 active everywhere, while upgrading selected layers to full
+donor MLP activations only at chosen token positions: prompt/prefill positions,
+generated-token positions, the current last token, or all positions.
+
+Main results:
+
+- On the permission-slip stress prompt, `16-23/generated` is sufficient for a
+  clean refusal, while `16-23/prompt` and `16-23/last` both fail.
+- The smaller `16-22/all` window also repairs permission-slip, but
+  `16-22/generated` fails. This suggests either sequence-wide cooperation in
+  `16-22` or a generated-token contribution from layer `23`.
+- `16-18`, `20-23`, and `16-18 + 20-23` fail permission-slip under all tested
+  position settings. Dropping layer `19` from the broad window turns the answer
+  into a repetitive attempted refusal rather than a clean refusal.
+- The original one-time-code/tracking residual pair decomposes differently:
+  one-time-code can be repaired by generated/last-token full `16-23`, while
+  tracking-script is repaired by prompt/full-context `16-23` and fails under
+  generated-only.
+
+Updated interpretation:
+
+The residual after PCA64 is not a single missing refusal vector. It looks like a
+set of prompt-family-specific pathways:
+
+1. one-time-code repair is mostly generated-token/last-token mediated;
+2. tracking repair depends more on prompt/context-side state;
+3. permission-slip repair needs a broader mid-late generated-token pathway,
+   with evidence that layer `19` and layer `23` play distinct roles.
+
+This is the most concrete mechanistic target so far. The SAE/transcoder phase
+should not merely search for a generic safety feature. It should ask whether a
+sparse or transcoder basis can separate these position- and family-specific
+residual pathways better than PCA, raw donor MLP patches, and top-coordinate
+residual baselines.
+
 ## 1. Current Thesis
 
 Model merging combines the weights or deltas of multiple trained models into one model, usually without access to the original training data. It is used because practitioners often have several useful expert checkpoints but cannot afford, cannot legally do, or cannot practically reproduce full joint training.
@@ -1268,35 +1306,45 @@ Mitigation:
 
 ## 11. Immediate Next Steps
 
-The next concrete stage should be `stage3`: basis validation and sparse-mechanism preparation.
+The next concrete stage should be `stage3`: sparse-basis validation on the
+Qwen2.5-1.5B public merge case. The earlier SmolLM2 synthetic setup remains a
+useful pilot and failure-mechanism sandbox, but the active clean target is now:
+
+> Explain the residual pathways that restore donor-level refusal in
+> `nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B` when patched from
+> `Qwen/Qwen2.5-1.5B-Instruct`.
 
 Step 1:
 
-- Build a richer prompt/evaluation set for refusal, polite, arithmetic, neutral, and compositional prompts.
+- Freeze the Qwen residual benchmark:
+  - original one-time-code and tracking-script failures;
+  - permission-slip stress failure;
+  - paired benign controls for each topic;
+  - donor-failed stress prompts kept separately as safety-limit controls.
 
 Step 2:
 
-- Generate activation caches for base, experts, pairwise merges, full merge, and micro-merges at layers 15, 20, 25, and 29.
+- Build activation caches for donor, recipient, PCA64 patch, full `16-23`
+  patch, `16-23/generated`, and the tracking-basis `topk1024` sparse repair.
 
 Step 3:
 
-- Implement the representation benchmark:
-  - raw activations.
-  - PCA.
-  - random projection.
-  - neuron basis.
-  - weight/delta features.
-  - existing or newly trained sparse features.
+- Train or load small sparse/transcoder bases for the active MLP-output spaces,
+  starting with layers `16-23`. The first target should be behavioral
+  completeness, not feature naming.
 
 Step 4:
 
 - Ask the first SAE-style RQ:
 
-> Can any sparse basis distinguish clean full-merge refusal from messy late-MLP refusal better than raw MLP activations and module-level statistics?
+> Can a sparse/transcoder basis reproduce or explain the family-specific
+> residual repairs better than PCA64, raw full-donor MLP patches, and
+> top-coordinate residual baselines?
 
 Step 5:
 
-- Only after that, run feature discovery and causal feature patching.
+- Only after basis validation, run feature discovery and causal feature patching
+  for one-time-code, tracking-script, and permission-slip separately.
 
 ## 12. Proposed Paper Shape
 

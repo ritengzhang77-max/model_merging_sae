@@ -60,6 +60,10 @@ This ledger records module-level and causal-diagnostic artifacts.
 - Tracking-basis topk1024 `20-23` generation summary: `stage2/results/qwen1_5b_residual_topk_generation_tracking1024_window_20_23/QWEN1_5B_SECOND_STAGE_RESIDUAL_PCA_GENERATION_SUMMARY.md`
 - Tracking-basis topk1024 `16-18+20-23` generation summary: `stage2/results/qwen1_5b_residual_topk_generation_tracking1024_drop19/QWEN1_5B_SECOND_STAGE_RESIDUAL_PCA_GENERATION_SUMMARY.md`
 - Tracking-basis topk1024 `16-18+20-23` generation with benign controls: `stage2/results/qwen1_5b_residual_topk_generation_tracking1024_drop19_heldout_failures_with_benign/QWEN1_5B_SECOND_STAGE_RESIDUAL_PCA_GENERATION_SUMMARY.md`
+- Full-position permission diagnostic summary: `stage2/results/qwen1_5b_pca_full_position_permission_16_23/QWEN1_5B_PCA_RESIDUAL_PATCH_GENERATION_SUMMARY.md`
+- Full-position original-failures diagnostic summary: `stage2/results/qwen1_5b_pca_full_position_original_failures_16_23/QWEN1_5B_PCA_RESIDUAL_PATCH_GENERATION_SUMMARY.md`
+- Permission layer-position window summary: `stage2/results/qwen1_5b_pca_full_position_permission_layer_windows/QWEN1_5B_PCA_RESIDUAL_PATCH_GENERATION_SUMMARY.md`
+- Position-specific residual interpretation: `stage2/results/qwen1_5b_pca_full_position_permission_layer_windows/POSITION_RESIDUAL_INTERPRETATION.md`
 - Progress presentation package: `presentations/2026-05-20-1550-model-merging-progress/`
 - Progress presentation PDF: `presentations/2026-05-20-1550-model-merging-progress/model_merging_progress.pdf`
 - Progress presentation source: `presentations/2026-05-20-1550-model-merging-progress/model_merging_progress.tex`
@@ -395,6 +399,18 @@ What it shows:
   tracking but not one-time-code, and sparse `16-18+20-23` repairs both. The
   `16-18+20-23` sparse patch also passes the four paired benign controls with
   benign helpfulness `1.000` and benign over-refusal `0.000`.
+- Token-position diagnostics show that permission-slip repair is not prompt-only
+  or last-token-only. With full donor `16-23`, generated-token patching alone
+  reaches `1.000` clean refusal on the permission-slip prompt, while prompt-only
+  and last-token-only fail.
+- Layer-position diagnostics sharpen that result. For permission-slip, `16-22`
+  passes only when full donor activations are applied across all positions,
+  while `16-23` passes with generated-token-only patching. `16-18`, `20-23`,
+  and `16-18+20-23` all fail permission-slip in the tested position settings.
+- The original residual pair has a different position split: one-time-code is
+  repaired by generated/last-token `16-23`, while tracking-script is repaired by
+  prompt/full-context `16-23` and fails under generated-only. This supports the
+  prompt-family-specific residual-pathway hypothesis.
 
 Current interpretation:
 
@@ -421,6 +437,10 @@ Current interpretation:
 - Updated after layer ablation: the strongest sparse original-failure repair is
   `PCA64 + tracking-basis residual topk1024` in layers `16-18+20-23`, excluding
   layer `19`. It is now an RQ0 baseline for SAE/transcoder methods.
+- Updated after position diagnostics: the harder permission-slip residual is a
+  generated-token mid-late pathway, but it is not identical to the
+  coordinate-sparse original-failure repair. Layer `19`, layer `23`, and token
+  position all change the behavior.
 - SAE or transcoder work should target residual pathways conditioned on prompt
   family, not merely reproduce the PCA64 repair or claim one global safety
   vector.
@@ -437,3 +457,50 @@ Caveats:
   oversample 8, and one power iteration; exact PCA has not been run.
 - The current evidence supports localization and failure-mode analysis, not a
   solved repair mechanism.
+
+Additional commands appended 2026-05-21:
+
+```bash
+python3 stage2/scripts/run_qwen1_5b_pca_residual_patch_generation.py \
+  --device cuda:0 \
+  --prompt-mode stress_permission_harmful_only \
+  --examples-per-split 12 \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --full-layer-specs none,16-23 \
+  --full-positions all,prompt,generated,last \
+  --max-pca-rows-per-layer 512 \
+  --result-dir stage2/results/qwen1_5b_pca_full_position_permission_16_23
+```
+
+```bash
+python3 stage2/scripts/run_qwen1_5b_pca_residual_patch_generation.py \
+  --device cuda:0 \
+  --prompt-mode heldout_failures_harmful_only \
+  --examples-per-split 12 \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --full-layer-specs none,16-23 \
+  --full-positions all,prompt,generated,last \
+  --max-pca-rows-per-layer 512 \
+  --result-dir stage2/results/qwen1_5b_pca_full_position_original_failures_16_23
+```
+
+```bash
+python3 stage2/scripts/run_qwen1_5b_pca_residual_patch_generation.py \
+  --device cuda:3 \
+  --prompt-mode stress_permission_harmful_only \
+  --examples-per-split 12 \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --full-layer-specs '16-18,20-23,16-18+20-23,16-22,16-23' \
+  --full-positions all,generated,last,prompt \
+  --max-pca-rows-per-layer 512 \
+  --result-dir stage2/results/qwen1_5b_pca_full_position_permission_layer_windows
+```

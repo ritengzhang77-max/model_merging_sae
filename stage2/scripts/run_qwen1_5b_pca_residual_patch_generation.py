@@ -114,23 +114,76 @@ def make_donor_hook(cache: dict[int, torch.Tensor], layer: int):
     return hook
 
 
-def make_residual_hook(cache: dict[int, torch.Tensor], layer: int, *, full_layers: set[int], bases, pca_rank: int):
+def apply_full_position(
+    tensor: torch.Tensor,
+    donor: torch.Tensor,
+    pca_patched: torch.Tensor,
+    *,
+    prompt_len: int,
+    full_position: str,
+) -> torch.Tensor:
+    if full_position == "all":
+        return donor
+    patched = pca_patched.clone()
+    seq_len = tensor.shape[1]
+    if full_position == "prompt":
+        end = min(prompt_len, seq_len)
+        if end > 0:
+            patched[:, :end, :] = donor[:, :end, :]
+    elif full_position == "generated":
+        start = min(prompt_len, seq_len)
+        if start < seq_len:
+            patched[:, start:, :] = donor[:, start:, :]
+    elif full_position == "last":
+        patched[:, -1:, :] = donor[:, -1:, :]
+    else:
+        raise ValueError(full_position)
+    return patched
+
+
+def make_residual_hook(
+    cache: dict[int, torch.Tensor],
+    layer: int,
+    *,
+    full_layers: set[int],
+    bases,
+    pca_rank: int,
+    prompt_len: int,
+    full_position: str,
+):
     def hook(_module, _inputs, output):
         tensor, _rest = first_tensor(output)
         donor = cache[layer].to(device=tensor.device, dtype=tensor.dtype)
+        delta = donor - tensor
+        basis = bases["pca"][(layer, pca_rank)].to(device=tensor.device, dtype=tensor.dtype)
+        coeff = torch.matmul(delta, basis)
+        pca_patched = tensor + torch.matmul(coeff, basis.T)
         if layer in full_layers:
-            patched = donor
+            patched = apply_full_position(
+                tensor,
+                donor,
+                pca_patched,
+                prompt_len=prompt_len,
+                full_position=full_position,
+            )
         else:
-            delta = donor - tensor
-            basis = bases["pca"][(layer, pca_rank)].to(device=tensor.device, dtype=tensor.dtype)
-            coeff = torch.matmul(delta, basis)
-            patched = tensor + torch.matmul(coeff, basis.T)
+            patched = pca_patched
         return replace_first_tensor(output, patched)
 
     return hook
 
 
-def install_residual_hooks(donor, recipient, layers: tuple[int, ...], full_layers: tuple[int, ...], bases, pca_rank: int):
+def install_residual_hooks(
+    donor,
+    recipient,
+    layers: tuple[int, ...],
+    full_layers: tuple[int, ...],
+    bases,
+    pca_rank: int,
+    *,
+    prompt_len: int,
+    full_position: str,
+):
     cache: dict[int, torch.Tensor] = {}
     full_set = set(full_layers)
     donor_handles = []
@@ -139,7 +192,15 @@ def install_residual_hooks(donor, recipient, layers: tuple[int, ...], full_layer
         donor_handles.append(module_for(donor, layer).register_forward_hook(make_donor_hook(cache, layer)))
         recipient_handles.append(
             module_for(recipient, layer).register_forward_hook(
-                make_residual_hook(cache, layer, full_layers=full_set, bases=bases, pca_rank=pca_rank)
+                make_residual_hook(
+                    cache,
+                    layer,
+                    full_layers=full_set,
+                    bases=bases,
+                    pca_rank=pca_rank,
+                    prompt_len=prompt_len,
+                    full_position=full_position,
+                )
             )
         )
     return cache, donor_handles, recipient_handles
@@ -158,12 +219,23 @@ def residual_patch_generate(
     full_layers: tuple[int, ...],
     bases,
     pca_rank: int,
+    full_position: str,
 ) -> str:
     prompt = chat_prompt(tokenizer, user)
     enc = tokenizer(prompt, return_tensors="pt").to(device)
     input_ids = enc["input_ids"]
     attention_mask = enc["attention_mask"]
-    cache, donor_handles, recipient_handles = install_residual_hooks(donor, recipient, layers, full_layers, bases, pca_rank)
+    prompt_len = int(input_ids.shape[1])
+    cache, donor_handles, recipient_handles = install_residual_hooks(
+        donor,
+        recipient,
+        layers,
+        full_layers,
+        bases,
+        pca_rank,
+        prompt_len=prompt_len,
+        full_position=full_position,
+    )
     try:
         for _ in range(max_new_tokens):
             cache.clear()
@@ -290,6 +362,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--layers", default=",".join(str(x) for x in DEFAULT_LAYERS))
     ap.add_argument("--pca-rank", type=int, default=64)
     ap.add_argument("--full-layer-specs", default="none,12-16,17-19,20-24,12-19,17-24,12-24")
+    ap.add_argument("--full-positions", default="all")
     ap.add_argument("--max-pca-rows-per-layer", type=int, default=512)
     ap.add_argument("--pca-oversample", type=int, default=8)
     ap.add_argument("--pca-n-iter", type=int, default=1)
@@ -337,19 +410,26 @@ def main() -> int:
     )
 
     prompts = prompts_for_mode(args.prompt_mode, args.examples_per_split)
-    variants: list[tuple[str, tuple[int, ...] | None]] = []
+    variants: list[tuple[str, tuple[int, ...] | None, str]] = []
     if args.include_baselines:
-        variants.extend([("base", None), ("abliterated", None)])
+        variants.extend([("base", None, "all"), ("abliterated", None, "all")])
+    full_positions = tuple(item.strip() for item in args.full_positions.split(",") if item.strip())
     for raw in args.full_layer_specs.split(","):
         raw = raw.strip()
         if not raw:
             continue
         full_layers = () if raw == "none" else parse_layer_spec(raw)
-        variants.append((label_for(full_layers), full_layers))
+        if not full_layers:
+            variants.append((label_for(full_layers), full_layers, "all"))
+        else:
+            for full_position in full_positions:
+                base_label = label_for(full_layers)
+                label = base_label if full_position == "all" and len(full_positions) == 1 else f"{base_label}_{full_position}"
+                variants.append((label, full_layers, full_position))
 
     all_records = []
     summary_rows = []
-    for model_name, full_layers in variants:
+    for model_name, full_layers, full_position in variants:
         print(f"[eval] {model_name}", flush=True)
         records = []
         for split, user, expected in prompts:
@@ -370,6 +450,7 @@ def main() -> int:
                     full_layers=full_layers,
                     bases=bases,
                     pca_rank=args.pca_rank,
+                    full_position=full_position,
                 )
             scores = score_record(split, user, text, expected)
             record = {"model": model_name, "split": split, "user": user, "expected": expected, "generation": text, **scores}
@@ -392,6 +473,7 @@ def main() -> int:
                 "layers": layers,
                 "pca_rank": args.pca_rank,
                 "full_layer_specs": args.full_layer_specs,
+                "full_positions": full_positions,
                 "basis_examples_per_split": args.basis_examples_per_split,
                 "max_pca_rows_per_layer": args.max_pca_rows_per_layer,
                 "outputs": {
