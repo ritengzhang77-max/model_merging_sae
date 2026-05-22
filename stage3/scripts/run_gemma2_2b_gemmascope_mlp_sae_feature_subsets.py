@@ -56,6 +56,20 @@ DEFAULT_VARIANTS = (
     "mix_decode_delta_specific_k512",
     "mix_decode_random_active_k512",
 )
+PATCH_TOKEN_FILTERS = (
+    "all",
+    "prompt_all",
+    "prompt_template",
+    "contentish",
+    "assistant_boundary",
+    "generated",
+    "assistant_boundary_or_generated",
+    "contentish_or_generated",
+    "prompt_template_or_generated",
+    "last_token",
+    "prompt_or_last",
+    "none",
+)
 
 
 def prompt_slice(prompts, start: int, count: int):
@@ -125,6 +139,82 @@ def token_filter_mask(tokenizer, input_ids: torch.Tensor, attention_mask: torch.
             is_role = stripped in {"user", "model"}
             is_special = stripped.startswith("<") and stripped.endswith(">")
             row.append(bool(has_alnum and not is_role and not is_special))
+        rows.append(row)
+    return torch.tensor(rows, device=input_ids.device, dtype=torch.bool)
+
+
+def patch_position_mask(
+    tokenizer,
+    input_ids: torch.Tensor,
+    attention_mask: torch.Tensor,
+    mode: str,
+    *,
+    prompt_length: int | None,
+) -> torch.Tensor:
+    if mode == "all":
+        return attention_mask.bool()
+    if mode == "none":
+        return torch.zeros_like(attention_mask, dtype=torch.bool)
+    if mode == "prompt_all":
+        mask = attention_mask.bool()
+        if prompt_length is not None and prompt_length < mask.shape[1]:
+            mask[:, prompt_length:] = False
+        return mask
+    if mode == "contentish":
+        mask = token_filter_mask(tokenizer, input_ids, attention_mask, "contentish")
+        if prompt_length is not None and prompt_length < mask.shape[1]:
+            mask[:, prompt_length:] = False
+        return mask
+    if mode == "prompt_template":
+        content_mask = token_filter_mask(tokenizer, input_ids, attention_mask, "contentish")
+        mask = attention_mask.bool() & ~content_mask
+        if prompt_length is not None and prompt_length < mask.shape[1]:
+            mask[:, prompt_length:] = False
+        return mask
+    if mode == "generated":
+        mask = attention_mask.bool()
+        if prompt_length is not None:
+            mask[:, :prompt_length] = False
+        return mask
+    if mode == "assistant_boundary_or_generated":
+        return patch_position_mask(tokenizer, input_ids, attention_mask, "assistant_boundary", prompt_length=prompt_length) | patch_position_mask(
+            tokenizer, input_ids, attention_mask, "generated", prompt_length=prompt_length
+        )
+    if mode == "contentish_or_generated":
+        return patch_position_mask(tokenizer, input_ids, attention_mask, "contentish", prompt_length=prompt_length) | patch_position_mask(
+            tokenizer, input_ids, attention_mask, "generated", prompt_length=prompt_length
+        )
+    if mode == "prompt_template_or_generated":
+        return patch_position_mask(tokenizer, input_ids, attention_mask, "prompt_template", prompt_length=prompt_length) | patch_position_mask(
+            tokenizer, input_ids, attention_mask, "generated", prompt_length=prompt_length
+        )
+    if mode in {"last_token", "prompt_or_last"}:
+        mask = torch.zeros_like(attention_mask, dtype=torch.bool)
+        for row_idx, seq_mask in enumerate(attention_mask.detach().cpu().tolist()):
+            valid_len = sum(int(x) for x in seq_mask)
+            if valid_len > 0:
+                mask[row_idx, valid_len - 1] = True
+        if mode == "prompt_or_last":
+            prompt_mask = patch_position_mask(tokenizer, input_ids, attention_mask, "prompt_all", prompt_length=prompt_length)
+            mask = mask | prompt_mask
+        return mask
+    if mode != "assistant_boundary":
+        raise ValueError(f"unknown patch token filter: {mode}")
+
+    rows = []
+    boundary_tokens = {"", "<end_of_turn>", "<start_of_turn>", "model"}
+    for seq_ids, seq_mask in zip(input_ids.detach().cpu().tolist(), attention_mask.detach().cpu().tolist()):
+        valid_len = sum(int(x) for x in seq_mask)
+        limit = valid_len if prompt_length is None else min(prompt_length, valid_len)
+        decoded = [tokenizer.decode([int(token_id)], skip_special_tokens=False).strip() for token_id in seq_ids[:limit]]
+        starts = [idx for idx, text in enumerate(decoded) if text == "<start_of_turn>"]
+        # The last start marker in the prompt is the assistant generation boundary.
+        start = starts[-1] if starts else max(0, limit - 4)
+        left = max(0, start - 2)
+        row = []
+        for pos, keep in enumerate(seq_mask):
+            text = decoded[pos] if pos < limit else ""
+            row.append(bool(keep and left <= pos < limit and text in boundary_tokens))
         rows.append(row)
     return torch.tensor(rows, device=input_ids.device, dtype=torch.bool)
 
@@ -310,10 +400,12 @@ def feature_patch_generate(
     device: str,
     max_new_tokens: int,
     output_mode: str,
+    patch_token_filter: str,
 ) -> str:
     donor_cache = {}
     donor_handles = []
     recipient_handles = []
+    current_patch_mask = None
 
     def make_donor_hook(layer):
         def hook(_module, _inputs, output):
@@ -326,6 +418,9 @@ def feature_patch_generate(
         def hook(_module, _inputs, output):
             tensor, _rest = first_tensor(output)
             patched = apply_feature_patch(saes[layer], tensor, donor_cache[layer], variant, selected[str(variant["label"])][layer])
+            if current_patch_mask is not None:
+                mask = current_patch_mask.to(device=tensor.device).unsqueeze(-1)
+                patched = torch.where(mask, patched, tensor)
             return replace_first_tensor(output, patched.to(device=tensor.device, dtype=tensor.dtype))
 
         return hook
@@ -338,10 +433,18 @@ def feature_patch_generate(
     enc = tokenizer(prompt, return_tensors="pt").to(device)
     input_ids = enc["input_ids"]
     attention_mask = enc["attention_mask"]
+    prompt_length = int(input_ids.shape[1])
     try:
         for _ in range(max_new_tokens):
             donor_cache.clear()
             _ = donor(input_ids=input_ids, attention_mask=attention_mask, use_cache=False)
+            current_patch_mask = patch_position_mask(
+                tokenizer,
+                input_ids,
+                attention_mask,
+                patch_token_filter,
+                prompt_length=prompt_length,
+            )
             out = recipient(input_ids=input_ids, attention_mask=attention_mask, use_cache=False)
             next_id = out.logits[:, -1, :].argmax(dim=-1, keepdim=True)
             input_ids = torch.cat([input_ids, next_id], dim=1)
@@ -388,6 +491,7 @@ def run_generation(
     device,
     output_mode,
     skip_baselines,
+    patch_token_filter="all",
 ):
     prompts = [("harmful", x) for x in prompt_slice(HARMFUL_PROMPTS, prompt_start, examples_per_split)] + [
         ("benign", x) for x in prompt_slice(BENIGN_PROMPTS, prompt_start, examples_per_split)
@@ -420,14 +524,24 @@ def run_generation(
                 device=device,
                 max_new_tokens=max_new_tokens,
                 output_mode=output_mode,
+                patch_token_filter=patch_token_filter,
             )
-            record = {"model": model_name, "split": split, "prompt": str(user), "text": text}
+            record = {
+                "model": model_name,
+                "split": split,
+                "prompt": str(user),
+                "text": text,
+                "patch_token_filter": patch_token_filter,
+            }
             record.update(score_record(split, str(user), text))
             rows.append(record)
         by_model[model_name] = rows
-    return [summarize_generation(name, rows) for name, rows in by_model.items()], [
-        row for rows in by_model.values() for row in rows
-    ]
+    metrics = []
+    for name, rows in by_model.items():
+        summary = summarize_generation(name, rows)
+        summary["patch_token_filter"] = patch_token_filter
+        metrics.append(summary)
+    return metrics, [row for rows in by_model.values() for row in rows]
 
 
 def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
@@ -459,6 +573,7 @@ def write_summary(
     eval_start: int,
     examples_per_split: int,
     feature_token_filter: str,
+    patch_token_filter: str,
 ) -> None:
     lines = [
         "# Gemma-2-2B GemmaScope MLP SAE Feature-Subset Patch",
@@ -466,6 +581,7 @@ def write_summary(
         f"Layers: `{','.join(str(x) for x in layers)}`.",
         f"Feature-selection prompts: `{basis_start}:{basis_start + basis_examples_per_split}` per split.",
         f"Feature-selection token filter: `{feature_token_filter}`.",
+        f"Patch token filter: `{patch_token_filter}`.",
         f"Evaluation prompts: `{eval_start}:{eval_start + examples_per_split}` per split.",
         "",
         "## Generation",
@@ -526,6 +642,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--variants", default=",".join(DEFAULT_VARIANTS))
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--feature-token-filter", choices=("all", "contentish"), default="all")
+    ap.add_argument("--patch-token-filter", choices=PATCH_TOKEN_FILTERS, default="all")
     ap.add_argument("--random-seed", type=int, default=0)
     ap.add_argument("--skip-baselines", action="store_true")
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
@@ -589,6 +706,7 @@ def main() -> int:
         device=args.device,
         output_mode=args.output_mode,
         skip_baselines=args.skip_baselines,
+        patch_token_filter=args.patch_token_filter,
     )
 
     metrics_path = args.result_dir / "gemma2_2b_gemmascope_mlp_sae_feature_subset_metrics.csv"
@@ -609,6 +727,7 @@ def main() -> int:
         eval_start=args.eval_start,
         examples_per_split=args.examples_per_split,
         feature_token_filter=args.feature_token_filter,
+        patch_token_filter=args.patch_token_filter,
     )
     manifest_path.write_text(
         json.dumps(
@@ -619,6 +738,7 @@ def main() -> int:
                 "layers": list(layers),
                 "output_mode": args.output_mode,
                 "feature_token_filter": args.feature_token_filter,
+                "patch_token_filter": args.patch_token_filter,
                 "basis_start": args.basis_start,
                 "basis_examples_per_split": args.basis_examples_per_split,
                 "eval_start": args.eval_start,

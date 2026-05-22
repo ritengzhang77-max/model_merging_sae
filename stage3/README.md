@@ -139,6 +139,23 @@ The decisive next Gemma test is position-restricted patching: take the
 successful all-token selected features and patch them only at assistant-boundary
 positions versus only at content positions versus all positions.
 
+Position-restricted patching:
+
+- static assistant-boundary patching alone does not reproduce the repair:
+  all `12-20`, heldout `4:8`, k1024 falls from `1.000` harmful clean refusal
+  with all-position patching to `0.000`;
+- prompt content patching also fails, even when paired with generated-token
+  history: all `12-20`, `4:8`, `contentish_or_generated` remains `0.000`;
+- the best reduced mode is `assistant_boundary_or_generated`: patch the
+  assistant boundary in the prompt, then maintain the same selected features on
+  generated-token history during rollout;
+- `assistant_boundary_or_generated` reaches `0.750` on all `12-20` `4:8`,
+  matches all-position k1024 on all `12-20` `8:12` at `0.750`, and matches
+  late `15-20` `8:12` at `0.500`;
+- the current mechanism is therefore better described as autoregressive
+  refusal-state trajectory repair, not a static boundary patch and not
+  harmful-content semantics.
+
 Main artifacts:
 
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_FINDINGS.md`
@@ -149,11 +166,13 @@ Main artifacts:
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_4_8_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_8_12_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_k_sweep_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_fold2_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`
 - `scripts/export_gemma2_2b_gemmascope_mlp_sae_feature_audit.py`
+- `scripts/aggregate_gemma2_2b_gemmascope_mlp_sae_position_restricted.py`
 - `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_VALIDATION_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_INTERPRETATION.md`
 - `scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`

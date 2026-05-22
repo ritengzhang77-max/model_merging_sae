@@ -1,0 +1,46 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "12": "layer_12/width_16k/average_l0_108/params.npz",
+    "13": "layer_13/width_16k/average_l0_112/params.npz",
+    "14": "layer_14/width_16k/average_l0_97/params.npz",
+    "15": "layer_15/width_16k/average_l0_80/params.npz",
+    "16": "layer_16/width_16k/average_l0_72/params.npz",
+    "17": "layer_17/width_16k/average_l0_68/params.npz",
+    "18": "layer_18/width_16k/average_l0_106/params.npz",
+    "19": "layer_19/width_16k/average_l0_109/params.npz",
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "layers": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "output_mode": "post_ff_norm",
+  "feature_token_filter": "all",
+  "patch_token_filter": "contentish",
+  "basis_start": 0,
+  "basis_examples_per_split": 4,
+  "eval_start": 4,
+  "examples_per_split": 4,
+  "variants": [
+    "mix_decode_delta_abs_k1024"
+  ],
+  "random_seed": 0,
+  "outputs": {
+    "metrics": "stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/all_12_20_eval_4_8_patch_contentish_k1024/gemma2_2b_gemmascope_mlp_sae_feature_subset_metrics.csv",
+    "records": "stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/all_12_20_eval_4_8_patch_contentish_k1024/gemma2_2b_gemmascope_mlp_sae_feature_subset_records.jsonl",
+    "feature_counts": "stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/all_12_20_eval_4_8_patch_contentish_k1024/gemma2_2b_gemmascope_mlp_sae_feature_subset_counts.csv",
+    "summary": "stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/all_12_20_eval_4_8_patch_contentish_k1024/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md"
+  }
+}

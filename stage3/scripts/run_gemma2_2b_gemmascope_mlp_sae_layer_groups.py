@@ -20,6 +20,7 @@ sys.path.insert(0, str(ROOT / "stage2" / "scripts"))
 sys.path.insert(0, str(ROOT / "stage3" / "scripts"))
 from run_gemma2_2b_activation_patch_target_loss import MODEL_IDS  # noqa: E402
 from run_gemma2_2b_gemmascope_mlp_sae_feature_subsets import (  # noqa: E402
+    PATCH_TOKEN_FILTERS,
     collect_feature_stats,
     parse_variant,
     run_generation,
@@ -117,6 +118,7 @@ def write_summary(path: Path, metrics: list[dict[str, object]], groups, args) ->
         "",
         f"Feature-selection prompts: `{args.basis_start}:{args.basis_start + args.basis_examples_per_split}` per split.",
         f"Feature-selection token filter: `{args.feature_token_filter}`.",
+        f"Patch token filter: `{args.patch_token_filter}`.",
         f"Evaluation prompts: `{args.eval_start}:{args.eval_start + args.examples_per_split}` per split.",
         "",
         "Layer groups:",
@@ -175,6 +177,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--variants", default=",".join(DEFAULT_VARIANTS))
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--feature-token-filter", choices=("all", "contentish"), default="all")
+    ap.add_argument("--patch-token-filter", choices=PATCH_TOKEN_FILTERS, default="all")
     ap.add_argument("--random-seed", type=int, default=0)
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     return ap.parse_args()
@@ -245,6 +248,7 @@ def main() -> int:
             device=args.device,
             output_mode=args.output_mode,
             skip_baselines=group_idx > 0,
+            patch_token_filter=args.patch_token_filter,
         )
         metrics, records = prefixed_rows(group_name, layers, metrics, records, include_baselines=group_idx == 0)
         all_metrics.extend(metrics)
@@ -269,6 +273,7 @@ def main() -> int:
                 "groups": {name: list(layers) for name, layers in groups},
                 "output_mode": args.output_mode,
                 "feature_token_filter": args.feature_token_filter,
+                "patch_token_filter": args.patch_token_filter,
                 "basis_start": args.basis_start,
                 "basis_examples_per_split": args.basis_examples_per_split,
                 "eval_start": args.eval_start,

@@ -21,6 +21,7 @@ sys.path.insert(0, str(ROOT / "stage2" / "scripts"))
 sys.path.insert(0, str(ROOT / "stage3" / "scripts"))
 from run_gemma2_2b_activation_patch_target_loss import MODEL_IDS  # noqa: E402
 from run_gemma2_2b_gemmascope_mlp_sae_feature_subsets import (  # noqa: E402
+    PATCH_TOKEN_FILTERS,
     collect_feature_stats,
     parse_variant,
     run_generation,
@@ -42,6 +43,16 @@ def parse_ints(raw: str) -> tuple[int, ...]:
     vals = tuple(int(item.strip()) for item in raw.split(",") if item.strip())
     if not vals:
         raise ValueError(f"empty integer list: {raw!r}")
+    return vals
+
+
+def parse_patch_token_filters(raw: str) -> tuple[str, ...]:
+    vals = tuple(item.strip() for item in raw.split(",") if item.strip())
+    if not vals:
+        raise ValueError(f"empty patch-token filter list: {raw!r}")
+    unknown = [val for val in vals if val not in PATCH_TOKEN_FILTERS]
+    if unknown:
+        raise ValueError(f"unknown patch-token filters: {unknown}; choices are {PATCH_TOKEN_FILTERS}")
     return vals
 
 
@@ -80,24 +91,25 @@ def annotate_with_count(rows, examples_per_split: int):
 
 
 def aggregate_random(metrics: list[dict[str, object]]) -> list[dict[str, object]]:
-    buckets: dict[tuple[str, str, str], list[float]] = {}
-    unsafe: dict[tuple[str, str, str], list[float]] = {}
-    benign: dict[tuple[str, str, str], list[float]] = {}
+    buckets: dict[tuple[str, str, str, str], list[float]] = {}
+    unsafe: dict[tuple[str, str, str, str], list[float]] = {}
+    benign: dict[tuple[str, str, str, str], list[float]] = {}
     for row in metrics:
         if row.get("condition") != "random":
             continue
         variant = str(row["model"]).split("__", 2)[-1].replace("feature_subset_", "")
-        key = (str(row["eval_slice"]), str(row["layer_group"]), variant)
+        key = (str(row["eval_slice"]), str(row["layer_group"]), str(row.get("patch_token_filter", "all")), variant)
         buckets.setdefault(key, []).append(float(row["harmful_ok_rate"]))
         unsafe.setdefault(key, []).append(float(row["harmful_unsafe_continuation_rate"]))
         benign.setdefault(key, []).append(float(row["benign_ok_rate"]))
     rows = []
     for key, vals in sorted(buckets.items()):
-        eval_slice, group, variant = key
+        eval_slice, group, patch_token_filter, variant = key
         rows.append(
             {
                 "eval_slice": eval_slice,
                 "layer_group": group,
+                "patch_token_filter": patch_token_filter,
                 "variant": variant,
                 "n_seeds": len(vals),
                 "harmful_ok_mean": sum(vals) / len(vals),
@@ -117,6 +129,7 @@ def write_summary(path: Path, metrics: list[dict[str, object]], random_agg: list
         "",
         f"Feature-selection prompts: `{args.basis_start}:{args.basis_start + args.basis_examples_per_split}` per split.",
         f"Feature-selection token filter: `{args.feature_token_filter}`.",
+        f"Patch token filters: `{','.join(parse_patch_token_filters(args.patch_token_filters))}`.",
         f"Evaluation starts: `{','.join(str(x) for x in eval_starts)}` with `{args.examples_per_split}` prompts per split.",
         f"Random seeds: `{','.join(str(x) for x in parse_ints(args.random_seeds))}`.",
         "",
@@ -129,8 +142,8 @@ def write_summary(path: Path, metrics: list[dict[str, object]], random_agg: list
             "",
             "## Deterministic Variants",
             "",
-            "| eval slice | layer group | variant | harmful clean | unsafe continuation | benign helpful |",
-            "|---|---|---|---:|---:|---:|",
+            "| eval slice | layer group | patch positions | variant | harmful clean | unsafe continuation | benign helpful |",
+            "|---|---|---|---|---:|---:|---:|",
         ]
     )
     for row in deterministic:
@@ -140,7 +153,7 @@ def write_summary(path: Path, metrics: list[dict[str, object]], random_agg: list
         else:
             variant = model.split("__", 2)[-1].replace("feature_subset_", "")
         lines.append(
-            f"| `{row['eval_slice']}` | `{row['layer_group']}` | `{variant}` | "
+            f"| `{row['eval_slice']}` | `{row['layer_group']}` | `{row.get('patch_token_filter', 'all')}` | `{variant}` | "
             f"{float(row['harmful_ok_rate']):.3f} | "
             f"{float(row['harmful_unsafe_continuation_rate']):.3f} | "
             f"{float(row['benign_ok_rate']):.3f} |"
@@ -150,13 +163,13 @@ def write_summary(path: Path, metrics: list[dict[str, object]], random_agg: list
             "",
             "## Random Active-Feature Controls",
             "",
-            "| eval slice | layer group | variant | seeds | harmful mean | harmful min-max | unsafe mean | benign mean |",
-            "|---|---|---|---:|---:|---:|---:|---:|",
+            "| eval slice | layer group | patch positions | variant | seeds | harmful mean | harmful min-max | unsafe mean | benign mean |",
+            "|---|---|---|---|---:|---:|---:|---:|---:|",
         ]
     )
     for row in random_agg:
         lines.append(
-            f"| `{row['eval_slice']}` | `{row['layer_group']}` | `{row['variant']}` | "
+            f"| `{row['eval_slice']}` | `{row['layer_group']}` | `{row['patch_token_filter']}` | `{row['variant']}` | "
             f"{int(row['n_seeds'])} | {float(row['harmful_ok_mean']):.3f} | "
             f"{float(row['harmful_ok_min']):.3f}-{float(row['harmful_ok_max']):.3f} | "
             f"{float(row['unsafe_mean']):.3f} | {float(row['benign_ok_mean']):.3f} |"
@@ -192,6 +205,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--random-seeds", default="0,1,2,3,4")
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--feature-token-filter", choices=("all", "contentish"), default="all")
+    ap.add_argument("--patch-token-filters", default="all")
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     return ap.parse_args()
 
@@ -202,6 +216,7 @@ def main() -> int:
     groups = parse_groups(args.groups)
     eval_starts = parse_ints(args.eval_starts)
     random_seeds = parse_ints(args.random_seeds)
+    patch_token_filters = parse_patch_token_filters(args.patch_token_filters)
     all_layers = tuple(sorted({layer for _name, layers in groups for layer in layers}))
     deterministic_variants = [parse_variant(item.strip()) for item in args.deterministic_variants.split(",") if item.strip()]
     random_variants = [parse_variant(item.strip()) for item in args.random_variants.split(",") if item.strip()]
@@ -249,91 +264,100 @@ def main() -> int:
         for group_idx, (group_name, layers) in enumerate(groups):
             print(f"[group] {group_name}: {','.join(str(x) for x in layers)}", flush=True)
             selected, counts = select_indices(stats, layers, deterministic_variants, 0, args.device)
-            metrics, records = run_generation(
-                donor,
-                recipient,
-                tokenizer,
-                saes,
-                selected,
-                deterministic_variants,
-                layers=layers,
-                examples_per_split=args.examples_per_split,
-                prompt_start=eval_start,
-                max_new_tokens=args.max_new_tokens,
-                device=args.device,
-                output_mode=args.output_mode,
-                skip_baselines=not (eval_idx == 0 and group_idx == 0),
-            )
-            metrics = annotate_rows(
-                annotate_with_count(metrics, args.examples_per_split),
-                group_name=group_name,
-                layers=layers,
-                eval_start=eval_start,
-                random_seed=None,
-                condition="deterministic",
-            )
-            records = annotate_rows(
-                annotate_with_count(records, args.examples_per_split),
-                group_name=group_name,
-                layers=layers,
-                eval_start=eval_start,
-                random_seed=None,
-                condition="deterministic",
-            )
-            for row in counts:
-                row["eval_start"] = eval_start
-                row["eval_slice"] = f"{eval_start}:{eval_start + args.examples_per_split}"
-                row["layer_group"] = group_name
-                row["layers"] = ",".join(str(x) for x in layers)
-                row["condition"] = "deterministic"
-                row["random_seed"] = ""
-            all_metrics.extend(metrics)
-            all_records.extend(records)
-            all_counts.extend(counts)
-
-            for seed in random_seeds:
-                selected, counts = select_indices(stats, layers, random_variants, seed, args.device)
+            for patch_idx, patch_token_filter in enumerate(patch_token_filters):
+                print(f"[patch-token-filter] {patch_token_filter}", flush=True)
                 metrics, records = run_generation(
                     donor,
                     recipient,
                     tokenizer,
                     saes,
                     selected,
-                    random_variants,
+                    deterministic_variants,
                     layers=layers,
                     examples_per_split=args.examples_per_split,
                     prompt_start=eval_start,
                     max_new_tokens=args.max_new_tokens,
                     device=args.device,
                     output_mode=args.output_mode,
-                    skip_baselines=True,
+                    skip_baselines=not (eval_idx == 0 and group_idx == 0 and patch_idx == 0),
+                    patch_token_filter=patch_token_filter,
                 )
                 metrics = annotate_rows(
                     annotate_with_count(metrics, args.examples_per_split),
                     group_name=group_name,
                     layers=layers,
                     eval_start=eval_start,
-                    random_seed=seed,
-                    condition="random",
+                    random_seed=None,
+                    condition="deterministic",
                 )
                 records = annotate_rows(
                     annotate_with_count(records, args.examples_per_split),
                     group_name=group_name,
                     layers=layers,
                     eval_start=eval_start,
-                    random_seed=seed,
-                    condition="random",
+                    random_seed=None,
+                    condition="deterministic",
                 )
                 for row in counts:
-                    row["eval_start"] = eval_start
-                    row["eval_slice"] = f"{eval_start}:{eval_start + args.examples_per_split}"
-                    row["layer_group"] = group_name
-                    row["layers"] = ",".join(str(x) for x in layers)
-                    row["condition"] = "random"
-                    row["random_seed"] = seed
+                    count_row = dict(row)
+                    count_row["eval_start"] = eval_start
+                    count_row["eval_slice"] = f"{eval_start}:{eval_start + args.examples_per_split}"
+                    count_row["layer_group"] = group_name
+                    count_row["layers"] = ",".join(str(x) for x in layers)
+                    count_row["condition"] = "deterministic"
+                    count_row["random_seed"] = ""
+                    count_row["patch_token_filter"] = patch_token_filter
+                    all_counts.append(count_row)
                 all_metrics.extend(metrics)
                 all_records.extend(records)
-                all_counts.extend(counts)
+
+            for seed in random_seeds:
+                selected, counts = select_indices(stats, layers, random_variants, seed, args.device)
+                for patch_token_filter in patch_token_filters:
+                    metrics, records = run_generation(
+                        donor,
+                        recipient,
+                        tokenizer,
+                        saes,
+                        selected,
+                        random_variants,
+                        layers=layers,
+                        examples_per_split=args.examples_per_split,
+                        prompt_start=eval_start,
+                        max_new_tokens=args.max_new_tokens,
+                        device=args.device,
+                        output_mode=args.output_mode,
+                        skip_baselines=True,
+                        patch_token_filter=patch_token_filter,
+                    )
+                    metrics = annotate_rows(
+                        annotate_with_count(metrics, args.examples_per_split),
+                        group_name=group_name,
+                        layers=layers,
+                        eval_start=eval_start,
+                        random_seed=seed,
+                        condition="random",
+                    )
+                    records = annotate_rows(
+                        annotate_with_count(records, args.examples_per_split),
+                        group_name=group_name,
+                        layers=layers,
+                        eval_start=eval_start,
+                        random_seed=seed,
+                        condition="random",
+                    )
+                    for row in counts:
+                        count_row = dict(row)
+                        count_row["eval_start"] = eval_start
+                        count_row["eval_slice"] = f"{eval_start}:{eval_start + args.examples_per_split}"
+                        count_row["layer_group"] = group_name
+                        count_row["layers"] = ",".join(str(x) for x in layers)
+                        count_row["condition"] = "random"
+                        count_row["random_seed"] = seed
+                        count_row["patch_token_filter"] = patch_token_filter
+                        all_counts.append(count_row)
+                    all_metrics.extend(metrics)
+                    all_records.extend(records)
 
     for row in all_metrics + all_records:
         row.pop("_examples_per_split", None)
@@ -359,6 +383,7 @@ def main() -> int:
                 "groups": {name: list(layers) for name, layers in groups},
                 "output_mode": args.output_mode,
                 "feature_token_filter": args.feature_token_filter,
+                "patch_token_filters": list(patch_token_filters),
                 "basis_start": args.basis_start,
                 "basis_examples_per_split": args.basis_examples_per_split,
                 "eval_starts": list(eval_starts),

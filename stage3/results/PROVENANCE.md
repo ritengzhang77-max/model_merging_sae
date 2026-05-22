@@ -744,3 +744,73 @@ Caveats:
   positions. The decisive follow-up is a position-restricted patch test using
   the same all-token selected features and applying them only at assistant
   boundary positions versus only at content positions.
+
+## GemmaScope MLP SAE Position-Restricted Patching
+
+- Date appended: 2026-05-22
+- Artifact status: Stage 3 causal position-localization checkpoint
+- Atomic result root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/`
+- Aggregate summary:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
+- Aggregate metrics:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/gemma2_2b_gemmascope_mlp_sae_position_restricted_metrics.csv`
+- Main patched script:
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+- Aggregate script:
+  `stage3/scripts/aggregate_gemma2_2b_gemmascope_mlp_sae_position_restricted.py`
+
+Representative command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py \
+  --device cuda:0 \
+  --layers 12,13,14,15,16,17,18,19,20 \
+  --feature-token-filter all \
+  --patch-token-filter assistant_boundary_or_generated \
+  --basis-start 0 \
+  --basis-examples-per-split 4 \
+  --eval-start 8 \
+  --examples-per-split 4 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --variants mix_decode_delta_abs_k1024 \
+  --skip-baselines \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/all_12_20_eval_8_12_patch_assistant_boundary_or_generated_k1024
+```
+
+Key result:
+
+- On all `12-20`, heldout `4:8`, all-position k1024 repair reaches harmful
+  clean `1.000`, while:
+  - `assistant_boundary` alone reaches `0.000`;
+  - `contentish` alone reaches `0.000`;
+  - `generated` alone reaches `0.000`;
+  - `prompt_or_last` reaches `0.500`;
+  - `assistant_boundary_or_generated` reaches `0.750`;
+  - `prompt_template_or_generated` reaches `0.750`;
+  - `contentish_or_generated` remains `0.000`.
+- On all `12-20`, heldout `8:12`, `assistant_boundary_or_generated` and
+  `prompt_template_or_generated` match all-position k1024 at harmful clean
+  `0.750`, while `contentish_or_generated` remains `0.000`.
+- On late `15-20`, `assistant_boundary_or_generated` tracks the positive
+  control on the hard `8:12` fold: both reach harmful clean `0.500`; content
+  plus generated history remains `0.000`.
+
+Interpretation:
+
+- The successful sparse repair is not a static prompt-content patch and not a
+  static assistant-boundary-only patch.
+- The current best hypothesis is autoregressive refusal-state trajectory
+  repair: seed donor-like response-template/boundary state in the prompt and
+  maintain donor-like selected SAE coordinates on generated-token history.
+- This strengthens the model-merging mechanism story because it localizes a
+  behaviorally relevant state-maintenance process rather than only a broad
+  feature-subspace patch.
+
+Caveats:
+
+- These are small heldout prompt slices with local heuristic scoring.
+- Position masks are token-level approximations over the Gemma chat template.
+- The current aggregate is k1024 only; k2048 and direct feature-ID ablations
+  remain follow-up tests.
