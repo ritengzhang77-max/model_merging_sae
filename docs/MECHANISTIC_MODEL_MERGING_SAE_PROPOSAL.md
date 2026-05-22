@@ -532,6 +532,45 @@ why permission-slip requires the broad residual tail. If it cannot do either,
 the honest conclusion is that this merge-safety residual is better described as
 distributed mid-late residual geometry than as a small sparse feature set.
 
+## 2026-05-22 Residual SAE V0 Update
+
+We ran the first learned sparse-basis smoke test on the Qwen residual benchmark:
+per-layer sparse autoencoders trained on the post-PCA64 residual in layers
+`16-23`.
+
+Result:
+
+- SAE `d512_l1_0.001`: mean train EV `0.993`, mean L0 `146.4`, harmful clean
+  refusal `0.333`;
+- SAE `d1024_l1_0.001`: mean train EV `0.996`, mean L0 `296.1`, harmful clean
+  refusal `0.333`;
+- SAE `d1536_l1_0.0001`: mean train EV `0.995`, mean L0 `595.6`, harmful clean
+  refusal `0.333`;
+- SAE `d2048_l1_0.0001`: mean train EV `0.996`, mean L0 `779.0`, harmful clean
+  refusal `0.333`;
+- native residual `topk1344` and full donor `16-23` remain at `1.000` harmful
+  clean refusal and `1.000` benign helpfulness.
+
+All SAE variants repair the one-time-code prompt but fail tracking-script and
+permission-slip. This is true even when the SAE dictionary is as large as or
+larger than the MLP-output dimension and the L1 penalty is weak.
+
+Interpretation:
+
+This is the clearest basis-validation result so far: high residual
+reconstruction EV is not enough for causal repair. A vanilla residual SAE does
+not currently beat the broad native-coordinate baseline. The next sparse step
+must change the object being learned, not merely increase the SAE size:
+
+- include generated-token traces in the training distribution;
+- test family-specific bases;
+- or train a transcoder-style pathway model rather than a plain residual
+  autoencoder.
+
+If those also fail, the paper should frame the Qwen result as evidence that
+this model-merge safety residual is distributed mid-late activation geometry,
+not a small clean sparse feature set.
+
 ## 1. Current Thesis
 
 Model merging combines the weights or deltas of multiple trained models into one model, usually without access to the original training data. It is used because practitioners often have several useful expert checkpoints but cannot afford, cannot legally do, or cannot practically reproduce full joint training.

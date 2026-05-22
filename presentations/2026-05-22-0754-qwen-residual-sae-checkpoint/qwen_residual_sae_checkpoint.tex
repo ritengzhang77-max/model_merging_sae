@@ -1,0 +1,111 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+
+\title[Qwen Residual SAE Checkpoint]{Qwen Model-Merging Residual: SAE Basis Checkpoint}
+\subtitle{High reconstruction is not causal completeness}
+\author{Model Merging SAE Project}
+\date{2026-05-22}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  \vspace{-1em}
+  \small
+  Checkpoint reason: the first learned sparse-basis test found a decision-relevant negative result.
+\end{frame}
+
+\begin{frame}{Question}
+  \textbf{RQ:} Can a learned sparse basis replace the broad residual patch that repairs the abliterated Qwen merge?
+
+  \vspace{0.7em}
+  Current causal target:
+  \begin{itemize}
+    \item donor/base: Qwen2.5-1.5B-Instruct;
+    \item recipient: EVA-abliterated-TIES-Qwen2.5-1.5B;
+    \item shared patch: PCA64 donor-recipient MLP delta on layers 12-24;
+    \item hard repair: post-PCA64 residual in MLP layers 16-23.
+  \end{itemize}
+
+  \vspace{0.5em}
+  Baseline to beat: native residual topk1344 out of 1536 MLP-output coordinates.
+\end{frame}
+
+\begin{frame}{Behavioral Result}
+  \small
+  \begin{tabular}{lrrrr}
+    \toprule
+    Variant & Harmful clean & Unsafe cont. & Benign helpful & Over-refusal \\
+    \midrule
+    PCA64 & 0.000 & 0.333 & 1.000 & 0.000 \\
+    Native topk1344 & 1.000 & 0.000 & 1.000 & 0.000 \\
+    Full donor 16-23 & 1.000 & 0.000 & 1.000 & 0.000 \\
+    SAE d512 l1 0.001 & 0.333 & 0.333 & 1.000 & 0.000 \\
+    SAE d1024 l1 0.001 & 0.333 & 0.333 & 1.000 & 0.000 \\
+    SAE d1536 l1 0.0001 & 0.333 & 0.333 & 1.000 & 0.000 \\
+    SAE d2048 l1 0.0001 & 0.333 & 0.667 & 1.000 & 0.000 \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{0.8em}
+  All SAE variants repair one-time-code, but fail tracking-script and permission-slip.
+\end{frame}
+
+\begin{frame}{Reconstruction vs Causality}
+  \small
+  \begin{tabular}{lrrr}
+    \toprule
+    SAE config & Mean train EV & Mean L0 & Harmful clean \\
+    \midrule
+    d512 l1 0.001 & 0.993 & 146.4 & 0.333 \\
+    d1024 l1 0.001 & 0.996 & 296.1 & 0.333 \\
+    d1536 l1 0.0001 & 0.995 & 595.6 & 0.333 \\
+    d2048 l1 0.0001 & 0.996 & 779.0 & 0.333 \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{0.9em}
+  Finding: ordinary residual reconstruction metrics look strong, but the reconstructed residual is not behaviorally complete under causal generation patching.
+\end{frame}
+
+\begin{frame}{Interpretation}
+  \begin{itemize}
+    \item Vanilla residual SAEs do not beat the broad native-coordinate baseline.
+    \item Increasing dictionary size and weakening L1 did not recover tracking or permission-slip.
+    \item The residual appears behaviorally fragile: small reconstruction errors or the wrong learned basis can lose the causal pathway.
+    \item This supports a distributed mid-late residual-geometry framing unless a better sparse/transcoder basis changes the result.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Decision}
+  Next sparse attempt should change the object being learned:
+  \begin{itemize}
+    \item include generated-token activation traces, not only teacher-forced refusal targets;
+    \item test family-specific bases for one-time-code, tracking, and permission-slip;
+    \item try a transcoder-style model for the MLP-output delta pathway;
+    \item keep native topk1344 and full 16-23 as mandatory causal baselines.
+  \end{itemize}
+
+  \vspace{0.6em}
+  Paper framing if this persists: model-merge safety loss is better explained by distributed residual geometry than by a small set of clean SAE features.
+\end{frame}
+
+\begin{frame}{Provenance}
+  \small
+  Main artifacts:
+  \begin{itemize}
+    \item stage3/scripts/run\_qwen1\_5b\_residual\_sae\_generation.py
+    \item stage3/results/qwen1\_5b\_residual\_sae\_v0\_generation/
+    \item stage3/results/qwen1\_5b\_residual\_sae\_v0\_generation\_low\_l1/
+    \item stage3/results/qwen1\_5b\_second\_stage\_residual\_v0\_generation/
+    \item stage3/data/qwen1\_5b\_residual\_benchmark/qwen1\_5b\_residual\_benchmark\_v0.jsonl
+  \end{itemize}
+
+  \vspace{0.5em}
+  Presentation package includes copied CSV metrics under \texttt{data/}.
+\end{frame}
+
+\end{document}

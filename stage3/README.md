@@ -51,6 +51,18 @@ Current v0 baseline:
 This means the first SAE/transcoder target is not merely "beat PCA"; it must
 beat or explain a broad coordinate-residual baseline.
 
+First learned SAE smoke:
+
+- per-layer residual SAEs with high train EV (`0.993-0.996`) do not preserve
+  the full v0 behavior;
+- all tested SAE variants repair one-time-code but fail tracking-script and
+  permission-slip;
+- this holds even for weakly sparse `d1536`/`d2048` dictionaries.
+
+The immediate lesson is that reconstruction quality is not causal completeness.
+The next sparse attempt should change the training distribution or model class,
+not just increase vanilla SAE size.
+
 Primary script:
 
 - `scripts/analyze_smollm2_refusal_basis.py`

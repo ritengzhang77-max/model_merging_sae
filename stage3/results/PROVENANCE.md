@@ -131,6 +131,83 @@ Interpretation:
 - SAE/transcoder work must beat this broad coordinate baseline or explain why
   permission-slip requires the broad residual tail.
 
+## Qwen2.5-1.5B Residual SAE V0 Smoke
+
+- Date appended: 2026-05-22
+- Artifact status: active learned sparse-basis decision evidence
+- Generating script: `stage3/scripts/run_qwen1_5b_residual_sae_generation.py`
+- Main summary: `stage3/results/qwen1_5b_residual_sae_v0_generation/QWEN1_5B_RESIDUAL_SAE_GENERATION_SUMMARY.md`
+- Main interpretation: `stage3/results/qwen1_5b_residual_sae_v0_generation/RESIDUAL_SAE_V0_INTERPRETATION.md`
+- Low-L1 follow-up summary: `stage3/results/qwen1_5b_residual_sae_v0_generation_low_l1/QWEN1_5B_RESIDUAL_SAE_GENERATION_SUMMARY.md`
+
+Commands:
+
+```bash
+python3 stage3/scripts/run_qwen1_5b_residual_sae_generation.py \
+  --device cuda:3 \
+  --prompt-jsonl stage3/data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl \
+  --sae-configs d512_l1_0.001,d1024_l1_0.001 \
+  --sae-steps 1200 \
+  --sae-batch-size 256 \
+  --sae-lr 0.001 \
+  --basis-examples-per-split 8 \
+  --examples-per-split 12 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --residual-layers 16-23 \
+  --residual-basis-mode residual_targets \
+  --topk-baseline 1344 \
+  --max-pca-rows-per-layer 512 \
+  --max-residual-rows-per-layer 512 \
+  --result-dir stage3/results/qwen1_5b_residual_sae_v0_generation
+```
+
+```bash
+python3 stage3/scripts/run_qwen1_5b_residual_sae_generation.py \
+  --device cuda:3 \
+  --prompt-jsonl stage3/data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl \
+  --sae-configs d1536_l1_0.0001,d2048_l1_0.0001 \
+  --sae-steps 1200 \
+  --sae-batch-size 256 \
+  --sae-lr 0.001 \
+  --basis-examples-per-split 8 \
+  --examples-per-split 12 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --residual-layers 16-23 \
+  --residual-basis-mode residual_targets \
+  --topk-baseline 1344 \
+  --max-pca-rows-per-layer 512 \
+  --max-residual-rows-per-layer 512 \
+  --result-dir stage3/results/qwen1_5b_residual_sae_v0_generation_low_l1
+```
+
+Key result:
+
+- `d512_l1_0.001`: mean train EV `0.993`, mean L0 `146.4`, harmful clean
+  refusal `0.333`;
+- `d1024_l1_0.001`: mean train EV `0.996`, mean L0 `296.1`, harmful clean
+  refusal `0.333`;
+- `d1536_l1_0.0001`: mean train EV `0.995`, mean L0 `595.6`, harmful clean
+  refusal `0.333`;
+- `d2048_l1_0.0001`: mean train EV `0.996`, mean L0 `779.0`, harmful clean
+  refusal `0.333`;
+- all SAE variants repair one-time-code but fail tracking-script and
+  permission-slip;
+- native residual `topk1344` and full donor `16-23` pass all v0 harmful prompts
+  and all benign controls.
+
+Interpretation:
+
+- High residual reconstruction EV does not imply behavioral completeness.
+- A vanilla residual SAE currently fails the Qwen v0 causal benchmark, even
+  when the dictionary is large and weakly sparse.
+- The next sparse attempt should use generated-token activation traces,
+  family-specific bases, or a transcoder-style target. Merely increasing a
+  vanilla SAE size is low priority.
+
 ## Refusal Direction Ablation, HF Generation
 
 - Date appended: 2026-05-16
