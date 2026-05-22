@@ -2,6 +2,106 @@
 
 This ledger records module-level and causal-diagnostic artifacts.
 
+## Gemma-2-2B Abliterated Causal Activation Gate
+
+- Date appended: 2026-05-22
+- Artifact status: current public sparse-ecosystem branch for Stage 2 -> Stage 3
+  transition
+- Base donor: `google/gemma-2-2b-it`
+- Abliterated recipient: `IlyaGusev/gemma-2-2b-it-abliterated`
+- Target-loss summary:
+  `stage2/results/gemma2_2b_activation_patch_target_loss/GEMMA2_2B_ACTIVATION_PATCH_TARGET_LOSS_SUMMARY.md`
+- Dynamic all-position generation summary:
+  `stage2/results/gemma2_2b_dynamic_activation_patch_generation/GEMMA2_2B_DYNAMIC_ACTIVATION_PATCH_GENERATION_SUMMARY.md`
+- Dynamic target-position generation summary:
+  `stage2/results/gemma2_2b_dynamic_activation_patch_generation_targetpos/GEMMA2_2B_DYNAMIC_ACTIVATION_PATCH_GENERATION_SUMMARY.md`
+- Low-dimensional baseline summary:
+  `stage2/results/gemma2_2b_lowdim_activation_patch_generation/GEMMA2_2B_LOWDIM_ACTIVATION_PATCH_GENERATION_SUMMARY.md`
+- Wide low-dimensional baseline summary:
+  `stage2/results/gemma2_2b_lowdim_activation_patch_generation_wide/GEMMA2_2B_LOWDIM_ACTIVATION_PATCH_GENERATION_SUMMARY.md`
+- Interpretation memo:
+  `stage2/results/gemma2_2b_dynamic_activation_patch_generation/GEMMA2_2B_ACTIVATION_PATCH_INTERPRETATION.md`
+- Scripts:
+  - `stage2/scripts/run_gemma2_2b_activation_patch_target_loss.py`
+  - `stage2/scripts/run_gemma2_2b_dynamic_activation_patch_generation.py`
+  - `stage2/scripts/run_gemma2_2b_lowdim_activation_patch_generation.py`
+
+Commands:
+
+```bash
+python3 stage2/scripts/run_gemma2_2b_activation_patch_target_loss.py \
+  --device cuda:3 \
+  --examples-per-split 4 \
+  --batch-size 2
+```
+
+```bash
+python3 stage2/scripts/run_gemma2_2b_dynamic_activation_patch_generation.py \
+  --device cuda:3 \
+  --examples-per-split 4 \
+  --max-new-tokens 64 \
+  --patch-specs '16:mlp,20:mlp,16+17+18+19+20:mlp,12+13+14+15+16+17+18+19+20:mlp' \
+  --result-dir stage2/results/gemma2_2b_dynamic_activation_patch_generation
+```
+
+```bash
+python3 stage2/scripts/run_gemma2_2b_dynamic_activation_patch_generation.py \
+  --device cuda:3 \
+  --examples-per-split 4 \
+  --max-new-tokens 64 \
+  --patch-specs '16+17+18+19+20:mlp,12+13+14+15+16+17+18+19+20:mlp' \
+  --position target \
+  --result-dir stage2/results/gemma2_2b_dynamic_activation_patch_generation_targetpos
+```
+
+```bash
+python3 stage2/scripts/run_gemma2_2b_lowdim_activation_patch_generation.py \
+  --device cuda:3 \
+  --examples-per-split 4 \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --layers 12,13,14,15,16,17,18,19,20 \
+  --variants full,mean_delta,pca_rank16,pca_rank64,top_neuron_k256,top_neuron_k512,random_rank64 \
+  --result-dir stage2/results/gemma2_2b_lowdim_activation_patch_generation
+```
+
+```bash
+python3 stage2/scripts/run_gemma2_2b_lowdim_activation_patch_generation.py \
+  --device cuda:3 \
+  --examples-per-split 4 \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --layers 12,13,14,15,16,17,18,19,20 \
+  --variants pca_rank128,top_neuron_k1024,top_neuron_k1536 \
+  --skip-baselines \
+  --result-dir stage2/results/gemma2_2b_lowdim_activation_patch_generation_wide
+```
+
+Key results:
+
+- `12-20:mlp` target-loss activation patching closes `0.973` of the harmful
+  refusal-target loss gap.
+- All-position dynamic `12-20:mlp` patching restores harmful clean refusal from
+  `0.000` to `1.000` while preserving benign helpfulness at `1.000`.
+- `16-20:mlp` is partial, reaching `0.750` harmful clean refusal.
+- Target-position-only `12-20:mlp` reaches only `0.500` harmful clean refusal
+  and has `0.250` unsafe continuation, so the repair requires sequence-wide MLP
+  activation propagation.
+- Low-dimensional baselines: `pca_rank64`, `pca_rank128`, and
+  `top_neuron_k1024` each reach `0.750` harmful clean refusal;
+  `top_neuron_k1536` reaches `1.000`; `random_rank64` remains `0.000`.
+
+Current interpretation:
+
+- Gemma now passes the causal gate for sparse-basis work.
+- The active repair range is mid-layer and sequence-wide: `12-20:mlp`, not a
+  single final-token vector and not the late `20-25` range.
+- GemmaScope SAE/transcoder results must beat, compress, or explain the broad
+  `top_neuron_k1536` coordinate baseline before feature-level interpretation is
+  scientifically meaningful.
+
 ## Qwen2.5-1.5B Refusal RQ1/RQ2 Diagnostics
 
 - Date appended: 2026-05-20

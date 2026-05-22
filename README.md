@@ -16,9 +16,14 @@ Current core finding:
 - Vanilla Qwen residual SAEs with high reconstruction EV do not pass the full
   behavioral gate. Generated-token training shifts the family repaired
   one-time-code plus permission-slip, but still misses tracking.
-- A new Gemma-2-2B abliterated branch looks promising: it has a clean safety
-  behavior gap, harmful-specific activation drift, and public GemmaScope sparse
-  bases. It still needs module/activation patching before feature work.
+- The Gemma-2-2B abliterated branch now passes the Stage 2 causal gate:
+  sequence-wide base MLP activation patching over layers `12-20` restores
+  harmful clean refusal from `0.000` to `1.000` while preserving benign
+  helpfulness at `1.000`.
+- Gemma's honest sparse-basis bar is high. PCA/top-coordinate baselines partially
+  repair the behavior, and `top_neuron_k1536` over layers `12-20` matches the
+  full patch on the current 4-prompt screen. GemmaScope SAE/transcoder work must
+  beat, compress, or explain that broad coordinate baseline.
 
 Key docs:
 

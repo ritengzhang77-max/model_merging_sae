@@ -4,6 +4,37 @@ Stage 2 asks whether a merged model keeps an expert capability by using the
 same internal modules as the expert, or whether it preserves benchmark behavior
 through a different route.
 
+Current public-model causal gate:
+
+- Gemma-2-2B abliterated pair:
+  - base donor: `google/gemma-2-2b-it`
+  - abliterated recipient: `IlyaGusev/gemma-2-2b-it-abliterated`
+  - all-position `12-20:mlp` dynamic activation patch restores harmful clean
+    refusal from `0.000` to `1.000` while preserving benign helpfulness.
+  - target-position-only patching fails to match this, so the repair is
+    sequence-wide.
+  - `top_neuron_k1536` matches the current full patch and is the broad
+    coordinate baseline for GemmaScope SAE/transcoder work.
+
+Gemma commands:
+
+```bash
+python3 stage2/scripts/run_gemma2_2b_dynamic_activation_patch_generation.py \
+  --device cuda:3 \
+  --examples-per-split 4 \
+  --max-new-tokens 64
+```
+
+```bash
+python3 stage2/scripts/run_gemma2_2b_lowdim_activation_patch_generation.py \
+  --device cuda:3 \
+  --examples-per-split 4 \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --layers 12,13,14,15,16,17,18,19,20
+```
+
 Current first-pass script:
 
 ```bash

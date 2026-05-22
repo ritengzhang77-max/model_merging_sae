@@ -104,6 +104,41 @@ Updated near-term decision:
   safety loss and failure modes, not as a claim that the tested public merges
   improve over the base model.
 
+## 2026-05-22 Gemma-2-2B Stage 2 Update
+
+We added a stronger public sparse-ecosystem branch:
+
+- base donor: `google/gemma-2-2b-it`;
+- abliterated recipient: `IlyaGusev/gemma-2-2b-it-abliterated`.
+
+Stage 0/1 already showed a clean safety gap and harmful-specific activation
+drift. Stage 2 now adds causal activation evidence:
+
+- target-loss patching from base into abliterated over `12-20:mlp` closes
+  `0.973` of the harmful refusal-target loss gap.
+- all-position dynamic activation patching over `12-20:mlp` restores harmful
+  clean refusal from `0.000` to `1.000`, while benign helpfulness stays `1.000`.
+- `16-20:mlp` is partial at `0.750` harmful clean refusal.
+- target-position-only `12-20:mlp` falls to `0.500` harmful clean refusal and
+  shows unsafe continuation on one prompt, so the repair requires sequence-wide
+  MLP activation propagation.
+
+Low-dimensional baselines set a serious bar for sparse-feature work:
+
+- `pca_rank64`, `pca_rank128`, and `top_neuron_k1024` each reach `0.750`
+  harmful clean refusal on the current 4-prompt screen.
+- `top_neuron_k1536` reaches `1.000` harmful clean refusal and `1.000` benign
+  helpfulness.
+- `random_rank64` stays at `0.000`, so the effect is not arbitrary compression.
+
+Interpretation:
+
+Gemma is now the cleanest branch for trying public SAE/transcoder tools because
+it has a public GemmaScope ecosystem and a verified causal activation target.
+But the sparse-basis claim is not free: GemmaScope features must beat, compress,
+or explain a broad coordinate baseline that already matches the full patch on
+the small screen.
+
 ## 2026-05-20 RQ1/RQ2 Diagnostic Update
 
 We ran the first Qwen2.5-1.5B RQ1/RQ2 diagnostics on the base, Matrix,
@@ -1490,13 +1525,17 @@ Mitigation:
 
 ## 11. Immediate Next Steps
 
-The next concrete stage should be `stage3`: sparse-basis validation on the
-Qwen2.5-1.5B public merge case. The earlier SmolLM2 synthetic setup remains a
-useful pilot and failure-mechanism sandbox, but the active clean target is now:
+The project now has two active sparse-basis targets:
 
-> Explain the residual pathways that restore donor-level refusal in
-> `nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B` when patched from
-> `Qwen/Qwen2.5-1.5B-Instruct`.
+1. Qwen residual branch: explain the residual pathways that restore donor-level
+   refusal in `nbeerbower/EVA-abliterated-TIES-Qwen2.5-1.5B` when patched from
+   `Qwen/Qwen2.5-1.5B-Instruct`.
+2. Gemma sparse-ecosystem branch: test whether GemmaScope SAE/transcoder bases
+   can explain the verified `12-20:mlp` activation repair from
+   `google/gemma-2-2b-it` into `IlyaGusev/gemma-2-2b-it-abliterated`.
+
+Near-term priority: Gemma, because the public GemmaScope ecosystem gives a
+cleaner route into sparse-basis validation than training fresh Qwen bases.
 
 Step 1:
 
@@ -1513,22 +1552,25 @@ Step 2:
 
 Step 3:
 
-- Train or load small sparse/transcoder bases for the active MLP-output spaces,
-  starting with layers `16-23`. The first target should be behavioral
+- Train or load small sparse/transcoder bases for the active spaces. For Qwen,
+  start with layers `16-23`. For Gemma, start with layers `12`, `16`, and `20`
+  inside the `12-20:mlp` repair range. The first target should be behavioral
   completeness, not feature naming.
 
 Step 4:
 
 - Ask the first SAE-style RQ:
 
-> Can a sparse/transcoder basis reproduce or explain the family-specific
-> residual repairs better than PCA64, raw full-donor MLP patches, and
-> top-coordinate residual baselines?
+> Can a sparse/transcoder basis reproduce or explain the causal activation
+> repairs better than PCA, raw full-donor MLP patches, and top-coordinate
+> baselines?
 
 Step 5:
 
-- Only after basis validation, run feature discovery and causal feature patching
-  for one-time-code, tracking-script, and permission-slip separately.
+- Only after basis validation, run feature discovery and causal feature patching.
+  For Qwen, keep one-time-code, tracking-script, and permission-slip separate.
+  For Gemma, first test whether sparse features can decompose the broad
+  `12-20:mlp` repair beyond `top_neuron_k1536`.
 
 ## 12. Proposed Paper Shape
 

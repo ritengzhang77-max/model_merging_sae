@@ -1,0 +1,35 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "layers": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "variants": [
+    "pca_rank128",
+    "top_neuron_k1024",
+    "top_neuron_k1536"
+  ],
+  "skip_baselines": true,
+  "examples_per_split": 4,
+  "basis_examples_per_split": 8,
+  "max_pca_rows_per_layer": 512,
+  "pca_oversample": 8,
+  "pca_n_iter": 1,
+  "random_seed": 0,
+  "max_new_tokens": 64,
+  "outputs": {
+    "metrics": "stage2/results/gemma2_2b_lowdim_activation_patch_generation_wide/gemma2_2b_lowdim_activation_patch_generation_metrics.csv",
+    "records": "stage2/results/gemma2_2b_lowdim_activation_patch_generation_wide/gemma2_2b_lowdim_activation_patch_generation_records.jsonl",
+    "summary": "stage2/results/gemma2_2b_lowdim_activation_patch_generation_wide/GEMMA2_2B_LOWDIM_ACTIVATION_PATCH_GENERATION_SUMMARY.md"
+  }
+}
