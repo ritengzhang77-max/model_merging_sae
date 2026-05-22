@@ -111,10 +111,22 @@ Layer-group localization:
 - the next target should be late-containing groups and feature identity, not
   another broad all-layer sweep.
 
+Random-seed controls:
+
+- matched random active-feature controls were repeated across five seeds for
+  all `12-20`, `15-20`, and `12-14,18-20`;
+- random-active k1024 never restored harmful refusal in any tested group/slice;
+- random-active k2048 sometimes repaired one or two prompts, but remained below
+  top-delta k2048 for all `12-20` and `15-20`;
+- the robust sparse-feature claim now belongs mainly to all `12-20` and
+  `15-20`; `12-14,18-20` remains too noisy for a strong sparse mechanism claim.
+
 Main artifacts:
 
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_FINDINGS.md`
+- `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_FINDINGS.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_4_8_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_8_12_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_k_sweep_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`
@@ -123,6 +135,7 @@ Main artifacts:
 - `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_INTERPRETATION.md`
 - `scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
 - `scripts/run_gemma2_2b_gemmascope_mlp_sae_layer_groups.py`
+- `scripts/run_gemma2_2b_gemmascope_mlp_sae_random_seed_controls.py`
 - `scripts/validate_gemma2_2b_gemmascope_mlp_sae.py`
 - `scripts/validate_gemma2_2b_gemmascope_transcoders.py`
 

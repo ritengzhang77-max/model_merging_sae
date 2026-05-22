@@ -579,3 +579,53 @@ Caveats:
 - Random active-feature controls vary by seed; repeat seed controls are needed
   before finalizing a sparse-feature sufficiency claim.
 - The result localizes causal sufficiency, not feature semantics.
+
+## GemmaScope MLP SAE Random-Seed Controls
+
+- Date appended: 2026-05-22
+- Artifact status: Stage 3 sparse-feature robustness evidence
+- Generating script: `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_random_seed_controls.py`
+- Finding memo: `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_FINDINGS.md`
+
+Artifacts:
+
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/`
+  - groups: all `12-20`, `15-20`, and `12-14,18-20`;
+  - feature-selection prompts: `0:4` per split;
+  - evaluation slices: `4:8` and `8:12`;
+  - deterministic variants: full decoded SAE, all-feature delta,
+    top-delta k1024, top-delta k2048;
+  - random controls: random-active k1024 and k2048 over seeds `0,1,2,3,4`.
+
+Key result:
+
+- Random-active k1024 never restored harmful refusal in any tested group/slice.
+- Random-active k2048 sometimes repaired one or two prompts, but stayed below
+  top-delta k2048 for all `12-20` and `15-20`.
+- `12-14,18-20` is not a robust sparse mechanism: k2048 ties the best random
+  seed on the hard `8:12` fold and has unsafe continuations.
+
+Representative command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_random_seed_controls.py \
+  --device cuda:0 \
+  --groups 'all:12-20;mid_late:15-20;early_late:12-14,18-20' \
+  --basis-start 0 \
+  --basis-examples-per-split 4 \
+  --eval-starts 4,8 \
+  --examples-per-split 4 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --deterministic-variants full_decode,delta_add_all,mix_decode_delta_abs_k1024,mix_decode_delta_abs_k2048 \
+  --random-variants mix_decode_random_active_k1024,mix_decode_random_active_k2048 \
+  --random-seeds 0,1,2,3,4 \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0
+```
+
+Caveats:
+
+- Current scoring uses the local heuristic refusal/unsafe classifier.
+- The script records baselines only for the first evaluation slice in this run;
+  the `8:12` baseline is available in the layer-group localization artifacts.
+- This is feature-coordinate robustness evidence, not feature semantics.
