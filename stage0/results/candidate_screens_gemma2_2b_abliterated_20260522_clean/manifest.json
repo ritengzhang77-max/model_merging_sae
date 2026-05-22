@@ -1,0 +1,14 @@
+{
+  "models": [
+    "google/gemma-2-2b-it",
+    "IlyaGusev/gemma-2-2b-it-abliterated"
+  ],
+  "examples_per_split": 4,
+  "max_new_tokens": 64,
+  "local_files_only": false,
+  "outputs": {
+    "metrics": "stage0/results/candidate_screens_gemma2_2b_abliterated_20260522_clean/chat_candidate_screen_metrics.csv",
+    "records": "stage0/results/candidate_screens_gemma2_2b_abliterated_20260522_clean/chat_candidate_screen_generations.jsonl",
+    "summary": "stage0/results/candidate_screens_gemma2_2b_abliterated_20260522_clean/CHAT_CANDIDATE_SCREEN_SUMMARY.md"
+  }
+}

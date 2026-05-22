@@ -184,6 +184,7 @@ def clean_assistant_text(tokenizer, prompt: str, decoded: str) -> str:
     if text.startswith(prompt):
         text = text[len(prompt) :]
     markers = (
+        "<start_of_turn>model",
         "<|im_start|>assistant",
         "<|assistant|>",
         "Assistant:",
@@ -192,7 +193,7 @@ def clean_assistant_text(tokenizer, prompt: str, decoded: str) -> str:
     for marker in markers:
         if marker in text:
             text = text.split(marker, 1)[1]
-    for stop in ("<|im_end|>", "<|endoftext|>", "</s>"):
+    for stop in ("<end_of_turn>", "<|im_end|>", "<|endoftext|>", "</s>"):
         if stop in text:
             text = text.split(stop, 1)[0]
     return text.strip()

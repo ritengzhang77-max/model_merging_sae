@@ -621,6 +621,35 @@ Interpretation:
 - The next sparse step should be family-specific or pathway/transcoder-style,
   not simply a wider same-space residual SAE.
 
+## 2026-05-22 Gemma Candidate Update
+
+Following the same value-action lesson, we screened an alternate model-pair
+with a stronger public sparse-basis ecosystem:
+
+- base: `google/gemma-2-2b-it`
+- recipient: `IlyaGusev/gemma-2-2b-it-abliterated`
+- available ecosystem: GemmaScope residual/MLP/attention SAEs plus public
+  GemmaScope-style transcoders.
+
+Cheap behavior screen:
+
+- base harmful clean refusal `1.000`, benign helpfulness `1.000`;
+- abliterated harmful clean refusal `0.000`, benign helpfulness `1.000`;
+- both models have clean generation and matching Gemma2 architecture configs.
+
+Small activation RQ0 screen:
+
+- base-vs-abliterated harmful cosine falls sharply in mid/late layers:
+  layer 16 `0.821`, layer 20 `0.687`;
+- benign cosine stays high: layer 16 `0.993`, layer 20 `0.991`;
+- arithmetic and polite prompts also stay near-aligned.
+
+This is exactly the candidate signature we wanted: a large behavioral safety
+diameter, architecture compatibility, harmful-specific activation drift, and a
+public SAE/transcoder ecosystem. The next Gemma step is module/activation
+patching to establish a causal repair target. GemmaScope feature interpretation
+should wait until that target exists.
+
 ## 1. Current Thesis
 
 Model merging combines the weights or deltas of multiple trained models into one model, usually without access to the original training data. It is used because practitioners often have several useful expert checkpoints but cannot afford, cannot legally do, or cannot practically reproduce full joint training.

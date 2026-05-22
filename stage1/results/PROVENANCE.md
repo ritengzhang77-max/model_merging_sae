@@ -108,3 +108,41 @@ Caveats:
 - The current result supports a safety-loss interpretability study, not a claim
   that these public merges improve over the base.
 - Do not train SAEs until layer/module diagnostics show a stable target.
+
+## Gemma-2-2B Abliterated RQ0 Screen
+
+- Date appended: 2026-05-22
+- Artifact status: active alternate model-pair/SAE-ecosystem decision evidence
+- Summary: `stage1/results/gemma2_2b_abliterated_rq0/GEMMA2_2B_ABLITERATED_RQ0_SUMMARY.md`
+- Generating script: `stage1/scripts/analyze_gemma2_2b_abliterated_rq0.py`
+- Source Stage 0 behavior:
+  `stage0/results/candidate_screens_gemma2_2b_abliterated_20260522_clean/chat_candidate_screen_metrics.csv`
+- Command:
+
+```bash
+python3 stage1/scripts/analyze_gemma2_2b_abliterated_rq0.py \
+  --device cuda:3 \
+  --examples-per-split 4 \
+  --batch-size 2
+```
+
+What it shows:
+
+- `google/gemma-2-2b-it` and
+  `IlyaGusev/gemma-2-2b-it-abliterated` have matching Gemma2 architecture
+  configs: 26 layers, hidden size 2304, intermediate size 9216, 8 attention
+  heads, 4 KV heads, and vocab size 256000.
+- The cheap behavior screen is clean: base harmful clean refusal `1.000`,
+  abliterated harmful clean refusal `0.000`, and both have benign helpfulness
+  `1.000`.
+- Activation similarity is strongly harmful-specific. At layer 20, base vs
+  abliterated cosine is `0.687` on harmful prompts but `0.991` on benign
+  prompts, while arithmetic and polite prompts remain near `0.998` and `0.986`.
+
+Decision:
+
+- Promote Gemma-2-2B abliterated to the next alternate branch.
+- Run module/activation patching before any GemmaScope feature interpretation.
+- If activation patching finds a clean repair target, Gemma becomes the best
+  public sparse-basis ecosystem candidate because GemmaScope provides residual,
+  MLP, attention, and third-party transcoder bases.

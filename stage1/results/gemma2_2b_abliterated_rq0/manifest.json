@@ -1,0 +1,22 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "examples_per_split": 4,
+  "rep_layers": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    25
+  ],
+  "stage0_metrics": "/home/gavin/model_merging/stage0/results/candidate_screens_gemma2_2b_abliterated_20260522_clean/chat_candidate_screen_metrics.csv",
+  "outputs": {
+    "config": "/home/gavin/model_merging/stage1/results/gemma2_2b_abliterated_rq0/gemma2_2b_config_check.csv",
+    "activation_similarity": "/home/gavin/model_merging/stage1/results/gemma2_2b_abliterated_rq0/gemma2_2b_activation_similarity.csv",
+    "summary": "/home/gavin/model_merging/stage1/results/gemma2_2b_abliterated_rq0/GEMMA2_2B_ABLITERATED_RQ0_SUMMARY.md"
+  }
+}

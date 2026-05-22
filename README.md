@@ -1,8 +1,9 @@
 # Model Merging SAE
 
-Mechanistic model-merging research workspace focused on explaining why a public
-Qwen2.5-1.5B abliterated merge loses refusal behavior and how donor activations
-or sparse residual patches repair it.
+Mechanistic model-merging research workspace focused on explaining why public
+abliterated model variants lose refusal behavior and whether raw activations,
+low-rank geometry, sparse residual bases, or public SAE/transcoder ecosystems
+can explain the repair.
 
 Current core finding:
 
@@ -12,6 +13,12 @@ Current core finding:
   benign controls.
 - The permission-slip residual still requires fuller donor MLP activations in
   `16-23`, making it the current hard target for SAE/transcoder analysis.
+- Vanilla Qwen residual SAEs with high reconstruction EV do not pass the full
+  behavioral gate. Generated-token training shifts the family repaired
+  one-time-code plus permission-slip, but still misses tracking.
+- A new Gemma-2-2B abliterated branch looks promising: it has a clean safety
+  behavior gap, harmful-specific activation drift, and public GemmaScope sparse
+  bases. It still needs module/activation patching before feature work.
 
 Key docs:
 

@@ -1,6 +1,6 @@
 # Candidate Screen Summary
 
-Updated: 2026-05-20
+Updated: 2026-05-22
 
 This is the new fast Stage 0 candidate filter. The goal is to find a clean
 model-merging target quickly, not to rescue weak candidates.
@@ -361,16 +361,87 @@ Decision:
   not beat the base on the focused math screen.
 - Next step is RQ1/RQ2 diagnostics on the 1.5B selected set, not SAE training.
 
+### Gemma-2-2B Abliterated Candidate
+
+Models:
+
+- `google/gemma-2-2b-it`
+- `IlyaGusev/gemma-2-2b-it-abliterated`
+
+Why screened:
+
+- The `value_action` review made model-pair plus SAE-ecosystem quality a first
+  class gate.
+- Gemma-2-2B has public GemmaScope residual/MLP/attention SAEs and public
+  GemmaScope-style transcoders.
+- The abliterated checkpoint is non-gated, while this environment has access to
+  the official gated Gemma base/instruct checkpoints.
+
+Architecture check:
+
+| model | model type | layers | hidden | intermediate | heads | kv heads | vocab |
+|---|---|---:|---:|---:|---:|---:|---:|
+| `google/gemma-2-2b-it` | `gemma2` | 26 | 2304 | 9216 | 8 | 4 | 256000 |
+| `IlyaGusev/gemma-2-2b-it-abliterated` | `gemma2` | 26 | 2304 | 9216 | 8 | 4 | 256000 |
+
+Output:
+
+- `stage0/results/candidate_screens_gemma2_2b_abliterated_20260522_clean/`
+- RQ0 follow-up: `stage1/results/gemma2_2b_abliterated_rq0/`
+
+Result:
+
+| model | substrate pass | refusal pass | clean gen | harmful clean | harmful attempt | benign helpful | benign over-refusal | arith | polite |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| `google/gemma-2-2b-it` | true | true | 1.000 | 1.000 | 1.000 | 1.000 | 0.000 | 1.000 | 1.000 |
+| `IlyaGusev/gemma-2-2b-it-abliterated` | true | false | 1.000 | 0.000 | 0.000 | 1.000 | 0.000 | 1.000 | 0.750 |
+
+Decision:
+
+- Promote this to the next candidate branch after the current Qwen residual
+  checkpoint.
+- Do a fast Gemma RQ0/RQ1 diagnostic before any SAE interpretation:
+  harmful-specific activation drift, module patching, and low-rank/top-coordinate
+  baselines.
+- If Gemma has a clean activation-patch repair, it becomes the best public
+  sparse-basis ecosystem target so far because GemmaScope gives us public
+  residual/MLP/attention SAEs instead of training every basis locally.
+
+RQ0 activation follow-up:
+
+| layer | harmful cosine | benign cosine | arith cosine | polite cosine | benign-harmful gap |
+|---:|---:|---:|---:|---:|---:|
+| 0 | 1.000 | 1.000 | 1.000 | 1.000 | -0.000 |
+| 4 | 1.000 | 0.999 | 1.000 | 1.000 | -0.001 |
+| 8 | 0.991 | 0.997 | 0.999 | 0.999 | 0.006 |
+| 12 | 0.945 | 0.994 | 0.999 | 0.999 | 0.049 |
+| 16 | 0.821 | 0.993 | 0.997 | 0.993 | 0.173 |
+| 20 | 0.687 | 0.991 | 0.998 | 0.986 | 0.304 |
+| 25 | 0.852 | 0.990 | 0.997 | 0.987 | 0.138 |
+
+Reason:
+
+- The behavioral gap is cleaner than the Qwen v0 small benchmark: base refuses
+  all sampled harmful prompts, abliterated refuses none, and both preserve
+  benign helpfulness.
+- The pair is architecture-compatible.
+- It directly addresses the concern that Qwen1.5B may have a weak public sparse
+  ecosystem.
+- The activation drift is strongly harmful-specific in layers 16-20, while
+  benign/arithmetic/polite prompts remain near-aligned. This is exactly the
+  signature we wanted before spending GemmaScope effort.
+
 ## Current Recommendation
 
-Keep the project. Change the candidate search:
+Keep the project. The candidate search now has two serious branches:
 
 1. Keep the Qwen Plus/Minus pair as a task-vector sign/safety-loss case.
 2. Do not promote the 0.5B Korean/PT-BR branch; it did not show a useful
    advantage over the anchor.
-3. Use the Qwen2.5-1.5B selected public set as the next mechanistic branch:
+3. Use the Qwen2.5-1.5B selected public set as the current mechanistic branch:
    base, math SLERP, Matrix/model-stock, and abliterated TIES.
-4. Frame the near-term research target as merge-induced safety loss and
+4. Add the Gemma-2-2B abliterated pair as the next SAE-ecosystem branch.
+5. Frame the near-term research target as merge-induced safety loss and
    activation drift, not as performance improvement from merging.
-5. Do not start SAE/transcoder work until RQ1/RQ2 module and activation
+6. Do not start feature naming until RQ1/RQ2 module and activation
    diagnostics beat or complement simpler baselines.
