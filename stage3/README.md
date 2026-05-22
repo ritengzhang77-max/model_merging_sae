@@ -101,14 +101,28 @@ First feature-subset result:
   mechanistic explanation because the feature budget is still large and one
   heldout family remains unsolved.
 
+Layer-group localization:
+
+- no single 3-layer band among `12-14`, `15-17`, and `18-20` is sufficient;
+- `12-17` is weak on both heldout folds, so late layers are necessary;
+- late-containing six-layer pairs are much stronger, but prompt-dependent:
+  `15-20` fully passes heldout slice `4:8`, while `12-14,18-20` has the
+  stronger full-decoded result on slice `8:12`;
+- the next target should be late-containing groups and feature identity, not
+  another broad all-layer sweep.
+
 Main artifacts:
 
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_FINDINGS.md`
+- `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_FINDINGS.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_4_8_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_8_12_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_k_sweep_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_fold2_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_VALIDATION_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_INTERPRETATION.md`
 - `scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+- `scripts/run_gemma2_2b_gemmascope_mlp_sae_layer_groups.py`
 - `scripts/validate_gemma2_2b_gemmascope_mlp_sae.py`
 - `scripts/validate_gemma2_2b_gemmascope_transcoders.py`
 

@@ -510,3 +510,72 @@ Caveats:
 - k1024 means `1024` selected SAE coordinates per layer across nine layers,
   so the passing subset is still broad.
 - This is feature-coordinate causality evidence, not yet feature semantics.
+
+## GemmaScope MLP SAE Layer-Group Localization
+
+- Date appended: 2026-05-22
+- Artifact status: Stage 3 causal localization evidence
+- Generating script: `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_layer_groups.py`
+- Finding memo: `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_FINDINGS.md`
+
+Artifacts:
+
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_layer_groups_eval_4_8_v0/`
+  - groups: all `12-20`, early `12-14`, mid `15-17`, late `18-20`;
+  - full decoded all-layer repair: harmful clean `1.000`, benign helpful
+    `1.000`;
+  - single-band full decoded repairs: early `0.000`, mid `0.250`, late `0.500`;
+  - single-band top-delta k1024 repairs: early `0.000`, mid `0.000`, late
+    `0.000`.
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_layer_groups_eval_8_12_v0/`
+  - full decoded all-layer repair: harmful clean `1.000`, benign helpful
+    `1.000`;
+  - single-band full decoded repairs: early `0.000`, mid `0.000`, late `0.250`;
+  - single-band top-delta k1024 repairs: early `0.000`, mid `0.000`, late
+    `0.250`.
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_4_8_v0/`
+  - `12-17` full decoded repair: harmful clean `0.500`;
+  - `15-20` full decoded repair: harmful clean `1.000`;
+  - `15-20` top-delta k1024/k2048 repair: harmful clean `1.000`;
+  - `12-14,18-20` full decoded repair: harmful clean `0.750`.
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_8_12_v0/`
+  - `12-17` full decoded repair: harmful clean `0.250`;
+  - `15-20` full decoded repair: harmful clean `0.750`;
+  - `15-20` top-delta k2048 repair: harmful clean `0.750`;
+  - `12-14,18-20` full decoded repair: harmful clean `1.000`, but top-delta
+    k1024/k2048 reaches only `0.500`.
+
+Representative commands:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_layer_groups.py \
+  --device cuda:0 \
+  --basis-start 0 \
+  --basis-examples-per-split 4 \
+  --eval-start 4 \
+  --examples-per-split 4 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --variants full_decode,delta_add_all,mix_decode_delta_abs_k1024,mix_decode_random_active_k1024,mix_decode_random_active_k2048 \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_layer_groups_eval_4_8_v0
+
+python3 stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_layer_groups.py \
+  --device cuda:0 \
+  --groups 'early_mid:12-17;mid_late:15-20;early_late:12-14,18-20' \
+  --basis-start 0 \
+  --basis-examples-per-split 4 \
+  --eval-start 4 \
+  --examples-per-split 4 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --variants full_decode,delta_add_all,mix_decode_delta_abs_k1024,mix_decode_delta_abs_k2048,mix_decode_random_active_k1024,mix_decode_random_active_k2048 \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_4_8_v0
+```
+
+Caveats:
+
+- Current scoring uses the local heuristic refusal/unsafe classifier.
+- Each heldout slice has only four harmful and four benign prompts.
+- Random active-feature controls vary by seed; repeat seed controls are needed
+  before finalizing a sparse-feature sufficiency claim.
+- The result localizes causal sufficiency, not feature semantics.
