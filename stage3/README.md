@@ -89,10 +89,26 @@ a feature-level explanation because the intervention uses full decoded
 reconstruction. The next Gemma RQ is whether feature subsets can reproduce the
 repair beyond broad coordinate baselines such as `top_neuron_k1536`.
 
+First feature-subset result:
+
+- selected GemmaScope MLP-SAE coordinates chosen by harmful donor-recipient
+  activation delta beat matched random active-feature controls on heldout
+  prompts;
+- `mix_decode_delta_abs_k1024` passes heldout prompt slice `4:8` and reaches
+  `0.750` harmful clean refusal on slice `8:12`;
+- full decoded SAE and all-feature delta repairs pass both heldout slices;
+- the result is a promising causal feature signal, but not yet a complete
+  mechanistic explanation because the feature budget is still large and one
+  heldout family remains unsolved.
+
 Main artifacts:
 
+- `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_FINDINGS.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_k_sweep_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_fold2_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_VALIDATION_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_INTERPRETATION.md`
+- `scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
 - `scripts/validate_gemma2_2b_gemmascope_mlp_sae.py`
 - `scripts/validate_gemma2_2b_gemmascope_transcoders.py`
 

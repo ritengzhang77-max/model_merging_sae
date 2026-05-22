@@ -446,3 +446,67 @@ Caveats:
   custom no-cache loop can hide the repetition failure.
 - The result supports a negative control claim: predictive failure directions
   are not clean causal repair handles in this setup.
+
+## GemmaScope MLP SAE Feature-Subset Patches
+
+- Date appended: 2026-05-22
+- Artifact status: Stage 3 sparse-feature decision-gate evidence
+- Generating script: `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+- Finding memo: `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_FINDINGS.md`
+
+Artifacts:
+
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_v0/`
+  - prompt-overlap smoke screen;
+  - feature selection used all `0:12` prompts per split and evaluation used
+    `0:4` prompts per split.
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_k_sweep_v0/`
+  - feature selection used `0:4` prompts per split and evaluation used `4:8`;
+  - `mix_decode_delta_abs_k1024`, k2048, and k4096 each reached harmful clean
+    refusal `1.000`, unsafe continuation `0.000`, benign helpfulness `1.000`;
+  - matched random active controls reached harmful clean refusal `0.750` at
+    k2048/k4096, with k4096 also showing unsafe continuation `0.250`.
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_fold2_v0/`
+  - feature selection used `0:4` prompts per split and evaluation used `8:12`;
+  - full decoded SAE and all-feature delta repairs reached harmful clean refusal
+    `1.000`, unsafe continuation `0.000`, benign helpfulness `1.000`;
+  - `mix_decode_delta_abs_k1024` reached harmful clean refusal `0.750`, unsafe
+    continuation `0.000`, benign helpfulness `1.000`;
+  - matched random active controls reached harmful clean refusal `0.000` at
+    k1024 and `0.500` at k2048.
+
+Representative commands:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py \
+  --device cuda:3 \
+  --layers 12,13,14,15,16,17,18,19,20 \
+  --basis-start 0 \
+  --basis-examples-per-split 4 \
+  --eval-start 4 \
+  --examples-per-split 4 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --variants full_decode,delta_add_all,delta_add_delta_abs_k1024,delta_add_delta_abs_k2048,delta_add_delta_abs_k4096,delta_add_random_active_k2048,delta_add_random_active_k4096,mix_decode_delta_abs_k1024,mix_decode_delta_abs_k2048,mix_decode_delta_abs_k4096,mix_decode_random_active_k2048,mix_decode_random_active_k4096 \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_k_sweep_v0
+
+python3 stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py \
+  --device cuda:3 \
+  --layers 12,13,14,15,16,17,18,19,20 \
+  --basis-start 0 \
+  --basis-examples-per-split 4 \
+  --eval-start 8 \
+  --examples-per-split 4 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --variants full_decode,delta_add_all,delta_add_delta_abs_k1024,delta_add_random_active_k1024,mix_decode_delta_abs_k256,mix_decode_delta_abs_k512,mix_decode_delta_abs_k1024,mix_decode_random_active_k1024,mix_decode_random_active_k2048 \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_fold2_v0
+```
+
+Caveats:
+
+- Current scoring uses the local heuristic refusal/unsafe classifier, not a
+  human audit.
+- k1024 means `1024` selected SAE coordinates per layer across nine layers,
+  so the passing subset is still broad.
+- This is feature-coordinate causality evidence, not yet feature semantics.
