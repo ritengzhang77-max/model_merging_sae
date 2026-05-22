@@ -208,6 +208,89 @@ Interpretation:
   family-specific bases, or a transcoder-style target. Merely increasing a
   vanilla SAE size is low priority.
 
+## Qwen2.5-1.5B Generated-Trace Residual SAE V0
+
+- Date appended: 2026-05-22
+- Artifact status: active sparse-basis distribution/position diagnostic
+- Generating script: `stage3/scripts/run_qwen1_5b_residual_sae_generation.py`
+- Generated-token summary:
+  `stage3/results/qwen1_5b_residual_sae_generated_full_v0/QWEN1_5B_RESIDUAL_SAE_GENERATION_SUMMARY.md`
+- Interpretation:
+  `stage3/results/qwen1_5b_residual_sae_generated_full_v0/RESIDUAL_SAE_GENERATED_TRACE_INTERPRETATION.md`
+- All-position follow-up summary:
+  `stage3/results/qwen1_5b_residual_sae_generated_full_allpos_v0/QWEN1_5B_RESIDUAL_SAE_GENERATION_SUMMARY.md`
+
+Commands:
+
+```bash
+python3 stage3/scripts/run_qwen1_5b_residual_sae_generation.py \
+  --device cuda:3 \
+  --prompt-jsonl stage3/data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl \
+  --residual-row-source generated_full \
+  --generated-row-position generated \
+  --generated-basis-max-new-tokens 64 \
+  --residual-basis-mode residual_targets_plus_solved_extra \
+  --sae-configs d512_l1_0.0001,d1024_l1_0.0001 \
+  --sae-steps 1200 \
+  --sae-batch-size 256 \
+  --sae-lr 0.001 \
+  --basis-examples-per-split 8 \
+  --examples-per-split 12 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --residual-layers 16-23 \
+  --topk-baseline 1344 \
+  --max-pca-rows-per-layer 512 \
+  --max-residual-rows-per-layer 512 \
+  --result-dir stage3/results/qwen1_5b_residual_sae_generated_full_v0
+```
+
+```bash
+python3 stage3/scripts/run_qwen1_5b_residual_sae_generation.py \
+  --device cuda:3 \
+  --prompt-jsonl stage3/data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl \
+  --residual-row-source generated_full \
+  --generated-row-position all \
+  --generated-basis-max-new-tokens 64 \
+  --residual-basis-mode residual_targets_plus_solved_extra \
+  --sae-configs d512_l1_0.0001 \
+  --sae-steps 1200 \
+  --sae-batch-size 256 \
+  --sae-lr 0.001 \
+  --basis-examples-per-split 8 \
+  --examples-per-split 12 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --residual-layers 16-23 \
+  --topk-baseline 1344 \
+  --max-pca-rows-per-layer 512 \
+  --max-residual-rows-per-layer 512 \
+  --result-dir stage3/results/qwen1_5b_residual_sae_generated_full_allpos_v0
+```
+
+Key result:
+
+- generated-token `d512_l1_0.0001` reaches `0.667` harmful clean refusal and
+  `1.000` benign helpfulness, repairing one-time-code and permission-slip but
+  failing tracking-script;
+- generated-token `d1024_l1_0.0001` reaches only `0.333`;
+- all-position generated `d512_l1_0.0001` also reaches only `0.333`;
+- full donor `16-23` remains at `1.000`;
+- generated-row `topk1344` reaches `0.667`, showing that residual-row source
+  affects even broad coordinate baselines.
+
+Interpretation:
+
+- Distribution mismatch was partly real: generated-token SAE training recovers
+  permission-slip, which teacher-forced vanilla SAEs missed.
+- The sparse-basis gate still fails because no vanilla residual SAE recovers
+  all three v0 harmful families.
+- Tracking remains the hard family; next sparse work should be family-specific,
+  position-specific, or transcoder-style rather than another generic larger
+  vanilla residual SAE.
+
 ## Refusal Direction Ablation, HF Generation
 
 - Date appended: 2026-05-16

@@ -16,6 +16,7 @@ Current core finding:
 Key docs:
 
 - `docs/MECHANISTIC_MODEL_MERGING_SAE_PROPOSAL.md`
+- `docs/VALUE_ACTION_LESSONS_FOR_MODEL_MERGING.md`
 - `stage2/results/PROVENANCE.md`
 - `stage2/results/qwen1_5b_residual_prompt_catalog/RESIDUAL_PROMPT_CATALOG.md`
 - `stage2/results/qwen1_5b_residual_family_geometry/FAMILY_SPLIT_INTERPRETATION.md`

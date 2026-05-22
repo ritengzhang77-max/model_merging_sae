@@ -571,6 +571,56 @@ If those also fail, the paper should frame the Qwen result as evidence that
 this model-merge safety residual is distributed mid-late activation geometry,
 not a small clean sparse feature set.
 
+## 2026-05-22 Value-Action Discipline Update
+
+We re-read the `value_action` project to make the next step more disciplined.
+The main operational lesson is now recorded in
+`docs/VALUE_ACTION_LESSONS_FOR_MODEL_MERGING.md`.
+
+Important translation:
+
+- The current Qwen pair passes the behavior and causal-patching gates, but the
+  vanilla residual SAE does not pass the sparse-basis gate.
+- The next sparse attempt should fix the most likely distribution mismatch:
+  train on generated-token residual traces from the successful
+  `PCA64 + full 16-23` intervention, not only teacher-forced residual rows.
+- In parallel, we should continue screening for a stronger model-pair plus SAE
+  ecosystem, similar to how `value_action` moved from weak off-the-shelf SAEs
+  toward better public sparse bases before trusting feature stories.
+- Feature naming should remain blocked until a sparse/transcoder basis beats,
+  complements, or mechanistically explains raw/PCA/top-coordinate baselines.
+
+## 2026-05-22 Generated-Trace Residual SAE Update
+
+We then tested the main value-action-inspired concern: distribution mismatch.
+Instead of training residual SAEs on teacher-forced refusal-target rows, we
+trained them on generated-token residual traces from the successful
+`PCA64 + full 16-23` intervention.
+
+Result on the frozen v0 benchmark:
+
+- generated-token `d512_l1_0.0001`: harmful clean refusal `0.667`, benign
+  helpfulness `1.000`;
+- generated-token `d1024_l1_0.0001`: harmful clean refusal `0.333`, benign
+  helpfulness `1.000`;
+- all-position generated `d512_l1_0.0001`: harmful clean refusal `0.333`,
+  benign helpfulness `1.000`;
+- full donor `16-23`: harmful clean refusal `1.000`, benign helpfulness
+  `1.000`.
+
+The important qualitative shift is that generated-token `d512` repairs
+one-time-code and permission-slip, while the earlier teacher-forced SAEs
+repaired only one-time-code. Tracking-script still fails.
+
+Interpretation:
+
+- Distribution and token position matter, as expected from `value_action`.
+- Permission-slip is not purely unrecoverable by a learned residual basis.
+- Vanilla residual SAE still does not pass the sparse-basis gate because no
+  variant recovers all v0 prompt families.
+- The next sparse step should be family-specific or pathway/transcoder-style,
+  not simply a wider same-space residual SAE.
+
 ## 1. Current Thesis
 
 Model merging combines the weights or deltas of multiple trained models into one model, usually without access to the original training data. It is used because practitioners often have several useful expert checkpoints but cannot afford, cannot legally do, or cannot practically reproduce full joint training.

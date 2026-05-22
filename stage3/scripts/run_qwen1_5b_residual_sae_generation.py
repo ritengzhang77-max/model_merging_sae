@@ -354,6 +354,157 @@ def patched_generate(
     return clean_assistant_text(tokenizer, prompt, decoded)
 
 
+@torch.no_grad()
+def patched_generate_input_ids(
+    donor,
+    recipient,
+    tokenizer,
+    user: str,
+    *,
+    device: str,
+    max_new_tokens: int,
+    layers: tuple[int, ...],
+    primary_bases,
+    pca_rank: int,
+    full_layers: tuple[int, ...],
+) -> tuple[torch.Tensor, int]:
+    prompt = chat_prompt(tokenizer, user)
+    enc = tokenizer(prompt, return_tensors="pt").to(device)
+    input_ids = enc["input_ids"]
+    attention_mask = enc["attention_mask"]
+    prompt_len = int(input_ids.shape[1])
+    cache, donor_handles, recipient_handles = install_patch_hooks(
+        donor,
+        recipient,
+        layers,
+        primary_bases=primary_bases,
+        pca_rank=pca_rank,
+        patch_kind="pca64",
+        full_layers=full_layers,
+        topk_bases={"top_neuron": {}},
+        topk=None,
+        sae_by_layer=None,
+    )
+    try:
+        for _ in range(max_new_tokens):
+            cache.clear()
+            _ = donor(input_ids=input_ids, attention_mask=attention_mask, use_cache=False)
+            out = recipient(input_ids=input_ids, attention_mask=attention_mask, use_cache=False)
+            next_id = out.logits[:, -1, :].argmax(dim=-1, keepdim=True)
+            input_ids = torch.cat([input_ids, next_id], dim=1)
+            attention_mask = torch.cat([attention_mask, torch.ones_like(next_id)], dim=1)
+            if int(next_id.item()) == tokenizer.eos_token_id:
+                break
+    finally:
+        remove_hooks(donor_handles)
+        remove_hooks(recipient_handles)
+    return input_ids.detach().cpu(), prompt_len
+
+
+def position_mask(attention_mask: torch.Tensor, prompt_len: int, mode: str) -> torch.Tensor:
+    mask = attention_mask.bool().clone()
+    seq_len = int(mask.shape[1])
+    positions = torch.arange(seq_len, device=mask.device)[None, :]
+    if mode == "all":
+        return mask
+    if mode == "prompt":
+        return mask & (positions < prompt_len)
+    if mode == "generated":
+        return mask & (positions >= prompt_len)
+    if mode == "last":
+        out = torch.zeros_like(mask)
+        out[:, -1:] = mask[:, -1:]
+        return out
+    if mode == "generated_last":
+        out = torch.zeros_like(mask)
+        if seq_len > prompt_len:
+            out[:, -1:] = mask[:, -1:]
+        return out
+    raise ValueError(mode)
+
+
+@torch.no_grad()
+def collect_generated_residual_rows(
+    donor,
+    recipient,
+    tokenizer,
+    prompts: tuple[str, ...],
+    layers: tuple[int, ...],
+    residual_layers: tuple[int, ...],
+    primary_bases,
+    pca_rank: int,
+    *,
+    device: str,
+    max_rows_per_layer: int,
+    max_new_tokens: int,
+    source: str,
+    position_mode: str,
+):
+    if source == "generated_full":
+        full_layers = residual_layers
+    elif source == "generated_pca64":
+        full_layers = ()
+    else:
+        raise ValueError(source)
+
+    generated_sequences: list[tuple[torch.Tensor, int]] = []
+    for user in prompts:
+        input_ids, prompt_len = patched_generate_input_ids(
+            donor,
+            recipient,
+            tokenizer,
+            user,
+            device=device,
+            max_new_tokens=max_new_tokens,
+            layers=layers,
+            primary_bases=primary_bases,
+            pca_rank=pca_rank,
+            full_layers=full_layers,
+        )
+        generated_sequences.append((input_ids, prompt_len))
+
+    donor_cache: dict[int, torch.Tensor] = {}
+    recipient_cache: dict[int, torch.Tensor] = {}
+    donor_handles = [donor.model.layers[layer].mlp.register_forward_hook(make_cache_hook(donor_cache, layer)) for layer in residual_layers]
+    recipient_handles = [
+        recipient.model.layers[layer].mlp.register_forward_hook(make_cache_hook(recipient_cache, layer))
+        for layer in residual_layers
+    ]
+    rows = {layer: [] for layer in residual_layers}
+    raw_energy = {layer: 0.0 for layer in residual_layers}
+    n_rows = {layer: 0 for layer in residual_layers}
+    try:
+        for input_ids_cpu, prompt_len in generated_sequences:
+            input_ids = input_ids_cpu.to(device)
+            attention_mask = torch.ones_like(input_ids)
+            mask = position_mask(attention_mask, prompt_len, position_mode)
+            if not bool(mask.any().item()):
+                continue
+            donor_cache.clear()
+            recipient_cache.clear()
+            _ = donor(input_ids=input_ids, attention_mask=attention_mask, use_cache=False)
+            _ = recipient(input_ids=input_ids, attention_mask=attention_mask, use_cache=False)
+            for layer in residual_layers:
+                delta = donor_cache[layer].float() - recipient_cache[layer].float()
+                basis = primary_bases["pca"][(layer, pca_rank)].to(device=delta.device, dtype=delta.dtype)
+                coeff = torch.matmul(delta, basis)
+                projected = torch.matmul(coeff, basis.T)
+                residual = delta - projected
+                selected = residual[mask]
+                if not selected.numel():
+                    continue
+                raw_energy[layer] += float((selected * selected).sum().item())
+                n_rows[layer] += int(selected.shape[0])
+                used = sum(part.shape[0] for part in rows[layer])
+                remaining = max_rows_per_layer - used
+                if remaining > 0:
+                    rows[layer].append(selected[:remaining].detach().cpu())
+    finally:
+        remove_hooks(donor_handles)
+        remove_hooks(recipient_handles)
+    return rows, raw_energy, n_rows
+
+
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser()
     ap.add_argument("--device", default="cuda:0" if torch.cuda.is_available() else "cpu")
@@ -372,6 +523,17 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--residual-layers", default="16-23")
     ap.add_argument("--residual-basis-mode", default="residual_targets")
     ap.add_argument("--residual-basis-mask", choices=("all", "target"), default="all")
+    ap.add_argument(
+        "--residual-row-source",
+        choices=("teacher_forced", "generated_full", "generated_pca64"),
+        default="teacher_forced",
+    )
+    ap.add_argument(
+        "--generated-row-position",
+        choices=("all", "prompt", "generated", "last", "generated_last"),
+        default="generated",
+    )
+    ap.add_argument("--generated-basis-max-new-tokens", type=int)
     ap.add_argument("--topk-baseline", type=int, default=1344)
     ap.add_argument("--max-pca-rows-per-layer", type=int, default=512)
     ap.add_argument("--max-residual-rows-per-layer", type=int, default=512)
@@ -426,17 +588,34 @@ def main() -> int:
     )
 
     print("[basis] collect post-PCA64 residual rows", flush=True)
-    residual_rows, _energy, _n_rows = collect_residual_rows(
-        donor,
-        recipient,
-        residual_batches,
-        residual_layers,
-        primary_bases,
-        args.pca_rank,
-        device=args.device,
-        max_rows_per_layer=args.max_residual_rows_per_layer,
-        basis_mask=args.residual_basis_mask,
-    )
+    if args.residual_row_source == "teacher_forced":
+        residual_rows, _energy, _n_rows = collect_residual_rows(
+            donor,
+            recipient,
+            residual_batches,
+            residual_layers,
+            primary_bases,
+            args.pca_rank,
+            device=args.device,
+            max_rows_per_layer=args.max_residual_rows_per_layer,
+            basis_mask=args.residual_basis_mask,
+        )
+    else:
+        residual_rows, _energy, _n_rows = collect_generated_residual_rows(
+            donor,
+            recipient,
+            tokenizer,
+            residual_prompts,
+            layers,
+            residual_layers,
+            primary_bases,
+            args.pca_rank,
+            device=args.device,
+            max_rows_per_layer=args.max_residual_rows_per_layer,
+            max_new_tokens=args.generated_basis_max_new_tokens or args.max_new_tokens,
+            source=args.residual_row_source,
+            position_mode=args.generated_row_position,
+        )
     topk_bases, _explained = build_residual_bases(
         residual_rows,
         residual_layers,
@@ -536,6 +715,10 @@ def main() -> int:
                 "sae_batch_size": args.sae_batch_size,
                 "sae_lr": args.sae_lr,
                 "residual_basis_mode": args.residual_basis_mode,
+                "residual_row_source": args.residual_row_source,
+                "residual_basis_mask": args.residual_basis_mask,
+                "generated_row_position": args.generated_row_position,
+                "generated_basis_max_new_tokens": args.generated_basis_max_new_tokens or args.max_new_tokens,
                 "residual_basis_prompts": residual_prompts,
                 "layers": layers,
                 "residual_layers": residual_layers,

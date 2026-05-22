@@ -59,9 +59,18 @@ First learned SAE smoke:
   permission-slip;
 - this holds even for weakly sparse `d1536`/`d2048` dictionaries.
 
-The immediate lesson is that reconstruction quality is not causal completeness.
-The next sparse attempt should change the training distribution or model class,
-not just increase vanilla SAE size.
+Generated-trace follow-up:
+
+- training on generated tokens from the successful `PCA64 + full 16-23`
+  trajectory improves the family split but still does not pass the full gate;
+- generated-token `d512_l1_0.0001` repairs one-time-code and permission-slip
+  but still fails tracking-script;
+- all-position generated `d512_l1_0.0001` falls back to one-time-code only.
+
+The immediate lesson is that reconstruction quality is not causal completeness,
+and distribution/position matching matters. The next sparse attempt should be
+family-specific, position-specific, or transcoder-style, not merely a larger
+vanilla residual SAE.
 
 Primary script:
 
