@@ -72,6 +72,30 @@ and distribution/position matching matters. The next sparse attempt should be
 family-specific, position-specific, or transcoder-style, not merely a larger
 vanilla residual SAE.
 
+## Active GemmaScope MLP SAE Track
+
+The Gemma branch is now the strongest sparse-basis target:
+
+- donor/base: `google/gemma-2-2b-it`;
+- recipient: `IlyaGusev/gemma-2-2b-it-abliterated`;
+- causal range: post-feedforward MLP update over layers `12-20`;
+- full donor `12-20:post_ff` patch: harmful clean refusal `1.000`, benign
+  helpfulness `1.000`;
+- GemmaScope MLP-SAE decoded `12-20:post_ff` patch: harmful clean refusal
+  `1.000`, benign helpfulness `1.000`.
+
+This is a behavioral-completeness pass for a public sparse basis. It is not yet
+a feature-level explanation because the intervention uses full decoded
+reconstruction. The next Gemma RQ is whether feature subsets can reproduce the
+repair beyond broad coordinate baselines such as `top_neuron_k1536`.
+
+Main artifacts:
+
+- `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_VALIDATION_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_INTERPRETATION.md`
+- `scripts/validate_gemma2_2b_gemmascope_mlp_sae.py`
+- `scripts/validate_gemma2_2b_gemmascope_transcoders.py`
+
 Primary script:
 
 - `scripts/analyze_smollm2_refusal_basis.py`

@@ -3,6 +3,86 @@
 This ledger records result artifacts that are likely to feed later paper tables,
 figures, or decision memos.
 
+## Gemma-2-2B GemmaScope MLP SAE Behavioral Gate
+
+- Date appended: 2026-05-22
+- Artifact status: active Gemma sparse-basis breakthrough checkpoint
+- Base donor: `google/gemma-2-2b-it`
+- Abliterated recipient: `IlyaGusev/gemma-2-2b-it-abliterated`
+- Causal site: post-feedforward normalized MLP update, layers `12-20`
+- Main script: `stage3/scripts/validate_gemma2_2b_gemmascope_mlp_sae.py`
+- Transcoder diagnostic script:
+  `stage3/scripts/validate_gemma2_2b_gemmascope_transcoders.py`
+- Main summary:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_VALIDATION_SUMMARY.md`
+- Main interpretation:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_INTERPRETATION.md`
+- `16-20` summary:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_validation_16_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_VALIDATION_SUMMARY.md`
+- Corrected layer-16 transcoder diagnostic:
+  `stage3/results/gemma2_2b_gemmascope_transcoder_validation_l16_corrected_smoke/GEMMA2_2B_GEMMASCOPE_TRANSCODER_VALIDATION_SUMMARY.md`
+- Pretrained layer-16 transcoder control:
+  `stage3/results/gemma2_2b_gemmascope_transcoder_validation_l16_pretrain_smoke/GEMMA2_2B_GEMMASCOPE_TRANSCODER_VALIDATION_SUMMARY.md`
+
+Commands:
+
+```bash
+python3 stage2/scripts/run_gemma2_2b_dynamic_activation_patch_generation.py \
+  --device cuda:3 \
+  --examples-per-split 4 \
+  --max-new-tokens 64 \
+  --patch-specs '16:post_ff,16+17+18+19+20:post_ff,12+13+14+15+16+17+18+19+20:post_ff' \
+  --result-dir stage2/results/gemma2_2b_dynamic_activation_patch_generation_post_ff
+```
+
+```bash
+python3 stage3/scripts/validate_gemma2_2b_gemmascope_mlp_sae.py \
+  --device cuda:3 \
+  --layers 16,17,18,19,20 \
+  --examples-per-split 4 \
+  --batch-size 2 \
+  --sae-dtype float16 \
+  --output-mode post_ff_norm \
+  --run-generation \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_validation_16_20_generation
+```
+
+```bash
+python3 stage3/scripts/validate_gemma2_2b_gemmascope_mlp_sae.py \
+  --device cuda:3 \
+  --layers 12,13,14,15,16,17,18,19,20 \
+  --examples-per-split 4 \
+  --batch-size 2 \
+  --sae-dtype float16 \
+  --output-mode post_ff_norm \
+  --run-generation \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation
+```
+
+Key result:
+
+- Full donor `12-20:post_ff` activation patch restores harmful clean refusal
+  from `0.000` to `1.000` while preserving benign helpfulness at `1.000`.
+- GemmaScope MLP-SAE decoded `12-20:post_ff` patch also reaches harmful clean
+  refusal `1.000`, unsafe continuation `0.000`, benign helpfulness `1.000`,
+  and benign over-refusal `0.000`.
+- GemmaScope MLP-SAE decoded `16-20:post_ff` reaches harmful clean refusal
+  `0.750`, matching the full `16-20:post_ff` clean-refusal rate but leaving one
+  signature prompt with unsafe continuation.
+- Corrected layer-16 GemmaScope transcoder reconstruction is much weaker for
+  this target than the MLP SAE, so MLP SAE feature work is the higher-priority
+  branch.
+
+Interpretation:
+
+- This is the first public sparse basis in the project to pass a behavioral
+  completeness gate for the model-merging safety repair.
+- It is not yet a feature-level mechanism: the passing intervention uses full
+  decoded SAE reconstruction.
+- The next RQ is whether a smaller or interpretable subset of SAE features can
+  reproduce the repair and beat or explain broad coordinate baselines such as
+  `top_neuron_k1536`.
+
 ## Qwen2.5-1.5B Residual Benchmark V0
 
 - Date appended: 2026-05-21

@@ -101,6 +101,10 @@ Current interpretation:
 - GemmaScope SAE/transcoder results must beat, compress, or explain the broad
   `top_neuron_k1536` coordinate baseline before feature-level interpretation is
   scientifically meaningful.
+- Follow-up alignment check: the same behavior is restored by patching the
+  post-feedforward normalized MLP update. Full `12-20:post_ff` dynamic patching
+  reaches harmful clean refusal `1.000`, benign helpfulness `1.000`, and unsafe
+  continuation `0.000`. This aligns the causal target with GemmaScope MLP SAEs.
 
 ## Qwen2.5-1.5B Refusal RQ1/RQ2 Diagnostics
 

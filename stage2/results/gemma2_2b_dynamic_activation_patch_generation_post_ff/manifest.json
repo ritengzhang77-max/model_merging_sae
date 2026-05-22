@@ -1,0 +1,19 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "patch_specs": [
+    "16:post_ff",
+    "16+17+18+19+20:post_ff",
+    "12+13+14+15+16+17+18+19+20:post_ff"
+  ],
+  "position": "all",
+  "examples_per_split": 4,
+  "max_new_tokens": 64,
+  "outputs": {
+    "metrics": "stage2/results/gemma2_2b_dynamic_activation_patch_generation_post_ff/gemma2_2b_dynamic_activation_patch_generation_metrics.csv",
+    "records": "stage2/results/gemma2_2b_dynamic_activation_patch_generation_post_ff/gemma2_2b_dynamic_activation_patch_generation_records.jsonl",
+    "summary": "stage2/results/gemma2_2b_dynamic_activation_patch_generation_post_ff/GEMMA2_2B_DYNAMIC_ACTIVATION_PATCH_GENERATION_SUMMARY.md"
+  }
+}

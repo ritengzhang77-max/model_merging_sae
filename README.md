@@ -20,10 +20,14 @@ Current core finding:
   sequence-wide base MLP activation patching over layers `12-20` restores
   harmful clean refusal from `0.000` to `1.000` while preserving benign
   helpfulness at `1.000`.
-- Gemma's honest sparse-basis bar is high. PCA/top-coordinate baselines partially
-  repair the behavior, and `top_neuron_k1536` over layers `12-20` matches the
-  full patch on the current 4-prompt screen. GemmaScope SAE/transcoder work must
-  beat, compress, or explain that broad coordinate baseline.
+- GemmaScope MLP SAEs now pass the first behavioral-completeness gate:
+  decoded SAE reconstruction over the post-feedforward `12-20` repair range
+  also restores harmful clean refusal to `1.000` with benign helpfulness
+  `1.000`.
+- Gemma's honest sparse-basis bar is still high. `top_neuron_k1536` over layers
+  `12-20` also matches the full patch on the current 4-prompt screen, so the
+  next GemmaScope step must show feature selection, compression, or mechanistic
+  decomposition beyond broad coordinate replacement.
 
 Key docs:
 

@@ -1,0 +1,22 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "transcoder_repo": "google/gemma-scope-2b-pt-transcoders",
+  "transcoder_files": {
+    "16": "layer_16/width_16k/average_l0_87/params.npz"
+  },
+  "layers": [
+    16
+  ],
+  "input_mode": "folded_pre_norm",
+  "examples_per_split": 2,
+  "run_generation": false,
+  "outputs": {
+    "reconstruction": "stage3/results/gemma2_2b_gemmascope_transcoder_validation_l16_corrected_smoke/gemma2_2b_gemmascope_transcoder_reconstruction.csv",
+    "generation_metrics": null,
+    "generation_records": null,
+    "summary": "stage3/results/gemma2_2b_gemmascope_transcoder_validation_l16_corrected_smoke/GEMMA2_2B_GEMMASCOPE_TRANSCODER_VALIDATION_SUMMARY.md"
+  }
+}

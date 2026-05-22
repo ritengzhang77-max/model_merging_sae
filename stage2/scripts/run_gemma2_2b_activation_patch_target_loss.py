@@ -51,7 +51,7 @@ def parse_specs(raw: str) -> list[tuple[tuple[int, ...], str, str]]:
     for item in [x.strip() for x in raw.split(",") if x.strip()]:
         layer_text, module = item.split(":", 1)
         layers = tuple(int(part) for part in layer_text.split("+") if part)
-        if module not in {"mlp", "attn", "block"}:
+        if module not in {"mlp", "post_ff", "attn", "block"}:
             raise ValueError(f"unknown module for activation patch: {module}")
         out.append((layers, module, item))
     return out
@@ -63,6 +63,8 @@ def module_for(model, layer: int, kind: str):
         return block
     if kind == "mlp":
         return block.mlp
+    if kind == "post_ff":
+        return block.post_feedforward_layernorm
     if kind == "attn":
         return block.self_attn
     raise ValueError(kind)

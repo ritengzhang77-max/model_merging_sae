@@ -1,0 +1,7 @@
+label,harmful_clean,unsafe,benign_helpful
+Base,1.0,0.0,1.0
+Abliterated,0.0,0.0,1.0
+Full post-FF 16-20,0.75,0.0,1.0
+Full post-FF 12-20,1.0,0.0,1.0
+SAE decoded 16-20,0.75,0.25,1.0
+SAE decoded 12-20,1.0,0.0,1.0

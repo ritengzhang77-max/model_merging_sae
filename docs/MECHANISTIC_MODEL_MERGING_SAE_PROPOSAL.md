@@ -139,6 +139,40 @@ But the sparse-basis claim is not free: GemmaScope features must beat, compress,
 or explain a broad coordinate baseline that already matches the full patch on
 the small screen.
 
+## 2026-05-22 GemmaScope MLP SAE Stage 3 Update
+
+We found the first sparse-basis result in the project that passes the same
+behavioral gate as a full causal activation patch.
+
+Hook alignment mattered:
+
+- Hugging Face Gemma2 has a raw `block.mlp` output followed by
+  `post_feedforward_layernorm`.
+- GemmaScope MLP SAEs align with the post-feedforward normalized MLP update,
+  not the raw `block.mlp` tensor.
+- Full donor patching at `12-20:post_ff` restores harmful clean refusal from
+  `0.000` to `1.000`, matching the earlier raw-MLP `12-20` result.
+
+GemmaScope MLP-SAE decoded patching over `12-20:post_ff` also reaches:
+
+- harmful clean refusal `1.000`;
+- unsafe continuation `0.000`;
+- benign helpfulness `1.000`;
+- benign over-refusal `0.000`.
+
+This is stronger than the Qwen residual-SAE branch, where high reconstruction EV
+did not imply behavioral completeness. Here, the public sparse basis is at least
+complete enough to preserve the current causal repair.
+
+Caveat:
+
+This is not yet feature-level interpretability. The current intervention uses
+full decoded SAE reconstruction, and the broad coordinate baseline
+`top_neuron_k1536` also reaches `1.000` on the small screen. The next novelty
+test is feature selection: can a smaller, interpretable SAE feature subset
+recover the repair, and can it generalize to held-out harmful and benign
+controls?
+
 ## 2026-05-20 RQ1/RQ2 Diagnostic Update
 
 We ran the first Qwen2.5-1.5B RQ1/RQ2 diagnostics on the base, Matrix,
@@ -1534,8 +1568,8 @@ The project now has two active sparse-basis targets:
    can explain the verified `12-20:mlp` activation repair from
    `google/gemma-2-2b-it` into `IlyaGusev/gemma-2-2b-it-abliterated`.
 
-Near-term priority: Gemma, because the public GemmaScope ecosystem gives a
-cleaner route into sparse-basis validation than training fresh Qwen bases.
+Near-term priority: Gemma, because the public GemmaScope MLP SAE basis now
+passes the first behavioral-completeness gate.
 
 Step 1:
 
@@ -1569,8 +1603,9 @@ Step 5:
 
 - Only after basis validation, run feature discovery and causal feature patching.
   For Qwen, keep one-time-code, tracking-script, and permission-slip separate.
-  For Gemma, first test whether sparse features can decompose the broad
-  `12-20:mlp` repair beyond `top_neuron_k1536`.
+  For Gemma, the basis validation gate has passed for full decoded MLP-SAE
+  reconstruction over `12-20:post_ff`; next test whether sparse feature subsets
+  can decompose the repair beyond `top_neuron_k1536`.
 
 ## 12. Proposed Paper Shape
 
