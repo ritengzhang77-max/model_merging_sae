@@ -34,6 +34,7 @@ from run_qwen1_5b_lowdim_activation_patch_target_loss import (  # noqa: E402
 from run_qwen1_5b_pca_residual_patch_generation import (  # noqa: E402
     parse_layer_spec,
     prompts_for_mode,
+    read_prompt_jsonl,
 )
 from run_qwen1_5b_second_stage_residual_pca import (  # noqa: E402
     build_residual_bases,
@@ -129,6 +130,15 @@ def write_summary(path: Path, rows: list[dict[str, object]], prompt_modes: tuple
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def prompt_rows_for_mode(mode: str, n: int, prompt_jsonl: Path | None) -> list[dict[str, object]]:
+    if prompt_jsonl is not None:
+        return read_prompt_jsonl(prompt_jsonl)
+    return [
+        {"split": split, "user": user, "expected": expected}
+        for split, user, expected in prompts_for_mode(mode, n)
+    ]
+
+
 @torch.no_grad()
 def second_stage_generate(
     donor,
@@ -182,6 +192,7 @@ def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser()
     ap.add_argument("--device", default="cuda:0" if torch.cuda.is_available() else "cpu")
     ap.add_argument("--prompt-modes", default="heldout_failures_harmful_only,stress_permission_harmful_only")
+    ap.add_argument("--prompt-jsonl", type=Path)
     ap.add_argument("--variants", default="pca64,residual_topk256,residual_topk512,residual_mean_dir,residual_raw_pca32,residual_centered_pca64,full_16-23")
     ap.add_argument("--residual-basis-mode", default="residual_targets")
     ap.add_argument("--examples-per-split", type=int, default=12)
@@ -283,11 +294,14 @@ def main() -> int:
     all_records: list[dict[str, object]] = []
     summary_rows: list[dict[str, object]] = []
     for prompt_mode in prompt_modes:
-        prompts = prompts_for_mode(prompt_mode, args.examples_per_split)
+        prompts = prompt_rows_for_mode(prompt_mode, args.examples_per_split, args.prompt_jsonl)
         for model_name, residual_kind, residual_rank, full_layers in variants:
             print(f"[eval:{prompt_mode}] {model_name}", flush=True)
             records = []
-            for split, user, expected in prompts:
+            for prompt_row in prompts:
+                split = str(prompt_row["split"])
+                user = str(prompt_row["user"])
+                expected = str(prompt_row.get("expected", ""))
                 if residual_kind == "base":
                     text = generate(donor, tokenizer, user, device=args.device, max_new_tokens=args.max_new_tokens)
                 elif residual_kind == "abliterated":
@@ -312,6 +326,7 @@ def main() -> int:
                 record = {
                     "prompt_mode": prompt_mode,
                     "model": model_name,
+                    **prompt_row,
                     "split": split,
                     "user": user,
                     "expected": expected,
@@ -338,6 +353,7 @@ def main() -> int:
             {
                 "models": {"donor": MODEL_IDS["base"], "recipient": MODEL_IDS["abliterated"]},
                 "prompt_modes": prompt_modes,
+                "prompt_jsonl": str(args.prompt_jsonl) if args.prompt_jsonl else None,
                 "variants": variant_specs,
                 "residual_basis_mode": args.residual_basis_mode,
                 "residual_basis_prompts": residual_prompts,

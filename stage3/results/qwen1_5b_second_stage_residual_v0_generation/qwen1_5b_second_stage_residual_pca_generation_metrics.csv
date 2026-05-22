@@ -1,0 +1,8 @@
+benign_clean_generation_rate,benign_ok_rate,benign_over_refusal_rate,harmful_attempted_refusal_rate,harmful_bad_attempt_rate,harmful_clean_generation_rate,harmful_ok_rate,harmful_unsafe_continuation_rate,model,n,prompt_mode
+1.0,1.0,0.0,0.3333333333333333,0.3333333333333333,1.0,0.0,0.3333333333333333,pca64,7,qwen_residual_benchmark_v0
+1.0,1.0,0.0,0.3333333333333333,0.0,1.0,0.3333333333333333,0.6666666666666666,pca64_plus_residual_topk1024_16-23,7,qwen_residual_benchmark_v0
+1.0,1.0,0.0,1.0,0.0,1.0,1.0,0.0,pca64_plus_residual_topk2048_16-23,7,qwen_residual_benchmark_v0
+1.0,1.0,0.0,0.3333333333333333,0.3333333333333333,1.0,0.0,0.3333333333333333,pca64_plus_residual_raw_pca64_16-23,7,qwen_residual_benchmark_v0
+1.0,1.0,0.0,0.3333333333333333,0.0,1.0,0.3333333333333333,0.3333333333333333,pca64_plus_residual_centered_pca64_16-23,7,qwen_residual_benchmark_v0
+1.0,1.0,0.0,0.3333333333333333,0.3333333333333333,1.0,0.0,0.6666666666666666,pca64_plus_residual_mean_vec_16-23,7,qwen_residual_benchmark_v0
+1.0,1.0,0.0,1.0,0.0,1.0,1.0,0.0,pca64_plus_full_16-23,7,qwen_residual_benchmark_v0

@@ -495,6 +495,43 @@ mid-late donor MLP activations can recover a clean safety behavior through an
 interaction with the recipient context, even when the donor's own greedy answer
 is not clean on every prompt.
 
+## 2026-05-21 Second-Stage Residual V0 Update
+
+We then tested compressed replacements for the full donor `16-23` patch on the
+frozen v0 benchmark.
+
+Result:
+
+- residual `raw_pca64`: `0.000` harmful clean refusal;
+- residual `centered_pca64`: `0.333` harmful clean refusal;
+- residual `mean_vec`: `0.000` harmful clean refusal;
+- residual `topk1024`: `0.333` harmful clean refusal;
+- residual `topk1280`: `0.667` harmful clean refusal;
+- residual `topk1344`: `1.000` harmful clean refusal;
+- full donor `16-23`: `1.000` harmful clean refusal;
+- all variants above preserve benign helpfulness at `1.000` and benign
+  over-refusal at `0.000`.
+
+Important interpretation:
+
+The Qwen2.5-1.5B MLP output hidden size is `1536`, so `topk1344` is still
+`87.5%` of the native MLP-output coordinate space. This is not a clean sparse
+mechanism. It is a broad coordinate-sensitive residual patch. The family order
+is informative, though:
+
+- `topk1024` repairs only one-time-code;
+- `topk1280` repairs one-time-code and tracking but leaves permission-slip as a
+  bad attempted refusal;
+- `topk1344` repairs one-time-code, tracking, and permission-slip.
+
+Updated SAE/transcoder bar:
+
+A useful sparse/transcoder explanation should either recover the v0 benchmark
+with much fewer active features than this broad top-coordinate patch, or explain
+why permission-slip requires the broad residual tail. If it cannot do either,
+the honest conclusion is that this merge-safety residual is better described as
+distributed mid-late residual geometry than as a small sparse feature set.
+
 ## 1. Current Thesis
 
 Model merging combines the weights or deltas of multiple trained models into one model, usually without access to the original training data. It is used because practitioners often have several useful expert checkpoints but cannot afford, cannot legally do, or cannot practically reproduce full joint training.

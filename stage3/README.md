@@ -41,6 +41,16 @@ This benchmark separates donor-solved residual harmful prompts from paired
 benign controls. It is intentionally small; it exists to make subsequent
 SAE/transcoder validation reproducible before expanding prompt coverage.
 
+Current v0 baseline:
+
+- full donor MLP `16-23` passes all harmful and benign v0 prompts;
+- residual PCA/mean baselines do not;
+- native MLP-output coordinate top-k only passes the full v0 benchmark at
+  `topk1344`, which is `87.5%` of the `1536`-dimensional MLP output space.
+
+This means the first SAE/transcoder target is not merely "beat PCA"; it must
+beat or explain a broad coordinate-residual baseline.
+
 Primary script:
 
 - `scripts/analyze_smollm2_refusal_basis.py`

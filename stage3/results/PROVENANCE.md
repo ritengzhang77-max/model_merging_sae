@@ -41,6 +41,96 @@ Key result:
   now labeled as a patch-solved residual target rather than a donor-solved
   target.
 
+## Qwen2.5-1.5B Second-Stage Residual V0 Baselines
+
+- Date appended: 2026-05-21
+- Artifact status: active pre-SAE basis-validation evidence
+- Generating script: `stage2/scripts/run_qwen1_5b_second_stage_residual_pca_generation.py`
+- Main summary: `stage3/results/qwen1_5b_second_stage_residual_v0_generation/QWEN1_5B_SECOND_STAGE_RESIDUAL_PCA_GENERATION_SUMMARY.md`
+- Main interpretation: `stage3/results/qwen1_5b_second_stage_residual_v0_generation/SECOND_STAGE_RESIDUAL_V0_INTERPRETATION.md`
+- Threshold summary: `stage3/results/qwen1_5b_second_stage_residual_v0_topk_threshold/QWEN1_5B_SECOND_STAGE_RESIDUAL_PCA_GENERATION_SUMMARY.md`
+- Fine threshold summary: `stage3/results/qwen1_5b_second_stage_residual_v0_topk_threshold_fine/QWEN1_5B_SECOND_STAGE_RESIDUAL_PCA_GENERATION_SUMMARY.md`
+
+Commands:
+
+```bash
+python3 stage2/scripts/run_qwen1_5b_second_stage_residual_pca_generation.py \
+  --device cuda:3 \
+  --prompt-modes qwen_residual_benchmark_v0 \
+  --prompt-jsonl stage3/data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl \
+  --variants pca64,residual_topk1024,residual_topk2048,residual_raw_pca64,residual_centered_pca64,residual_mean_vec,full_16-23 \
+  --residual-basis-mode residual_targets \
+  --examples-per-split 12 \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --residual-layers 16-23 \
+  --residual-ranks 64 \
+  --residual-top-ks 1024,2048 \
+  --max-pca-rows-per-layer 512 \
+  --max-residual-rows-per-layer 512 \
+  --result-dir stage3/results/qwen1_5b_second_stage_residual_v0_generation
+```
+
+```bash
+python3 stage2/scripts/run_qwen1_5b_second_stage_residual_pca_generation.py \
+  --device cuda:3 \
+  --prompt-modes qwen_residual_benchmark_v0 \
+  --prompt-jsonl stage3/data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl \
+  --variants residual_topk1280,residual_topk1536,residual_topk1792 \
+  --residual-basis-mode residual_targets \
+  --examples-per-split 12 \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --residual-layers 16-23 \
+  --residual-ranks 64 \
+  --residual-top-ks 1280,1536,1792 \
+  --max-pca-rows-per-layer 512 \
+  --max-residual-rows-per-layer 512 \
+  --result-dir stage3/results/qwen1_5b_second_stage_residual_v0_topk_threshold
+```
+
+```bash
+python3 stage2/scripts/run_qwen1_5b_second_stage_residual_pca_generation.py \
+  --device cuda:3 \
+  --prompt-modes qwen_residual_benchmark_v0 \
+  --prompt-jsonl stage3/data/qwen1_5b_residual_benchmark/qwen1_5b_residual_benchmark_v0.jsonl \
+  --variants residual_topk1344,residual_topk1408,residual_topk1472 \
+  --residual-basis-mode residual_targets \
+  --examples-per-split 12 \
+  --basis-examples-per-split 8 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --pca-rank 64 \
+  --residual-layers 16-23 \
+  --residual-ranks 64 \
+  --residual-top-ks 1344,1408,1472 \
+  --max-pca-rows-per-layer 512 \
+  --max-residual-rows-per-layer 512 \
+  --result-dir stage3/results/qwen1_5b_second_stage_residual_v0_topk_threshold_fine
+```
+
+Key result:
+
+- residual `raw_pca64` and `mean_vec` fail all three harmful v0 prompts;
+- residual `centered_pca64` repairs only one-time-code;
+- residual `topk1024` repairs only one-time-code;
+- residual `topk1280` repairs one-time-code and tracking but fails
+  permission-slip as a bad attempted refusal;
+- residual `topk1344` and larger pass all three harmful prompts and all four
+  benign controls.
+
+Interpretation:
+
+- Qwen2.5-1.5B MLP output hidden size is `1536`, so `topk1344` patches `87.5%`
+  of the native MLP-output coordinate space. This is a broad coordinate patch,
+  not a clean sparse explanation.
+- SAE/transcoder work must beat this broad coordinate baseline or explain why
+  permission-slip requires the broad residual tail.
+
 ## Refusal Direction Ablation, HF Generation
 
 - Date appended: 2026-05-16
