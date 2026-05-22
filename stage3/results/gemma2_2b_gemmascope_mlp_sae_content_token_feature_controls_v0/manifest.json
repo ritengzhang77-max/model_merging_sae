@@ -1,0 +1,70 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "12": "layer_12/width_16k/average_l0_108/params.npz",
+    "13": "layer_13/width_16k/average_l0_112/params.npz",
+    "14": "layer_14/width_16k/average_l0_97/params.npz",
+    "15": "layer_15/width_16k/average_l0_80/params.npz",
+    "16": "layer_16/width_16k/average_l0_72/params.npz",
+    "17": "layer_17/width_16k/average_l0_68/params.npz",
+    "18": "layer_18/width_16k/average_l0_106/params.npz",
+    "19": "layer_19/width_16k/average_l0_109/params.npz",
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "groups": {
+    "all": [
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ],
+    "mid_late": [
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ]
+  },
+  "output_mode": "post_ff_norm",
+  "feature_token_filter": "contentish",
+  "basis_start": 0,
+  "basis_examples_per_split": 4,
+  "eval_starts": [
+    4,
+    8
+  ],
+  "examples_per_split": 4,
+  "deterministic_variants": [
+    "full_decode",
+    "delta_add_all",
+    "mix_decode_delta_abs_k1024",
+    "mix_decode_delta_abs_k2048"
+  ],
+  "random_variants": [
+    "mix_decode_random_active_k1024",
+    "mix_decode_random_active_k2048"
+  ],
+  "random_seeds": [
+    0,
+    1,
+    2
+  ],
+  "outputs": {
+    "metrics": "stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/gemma2_2b_gemmascope_mlp_sae_random_seed_metrics.csv",
+    "random_aggregate": "stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/gemma2_2b_gemmascope_mlp_sae_random_seed_aggregate.csv",
+    "records": "stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/gemma2_2b_gemmascope_mlp_sae_random_seed_records.jsonl",
+    "counts": "stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/gemma2_2b_gemmascope_mlp_sae_random_seed_counts.csv",
+    "summary": "stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md"
+  }
+}

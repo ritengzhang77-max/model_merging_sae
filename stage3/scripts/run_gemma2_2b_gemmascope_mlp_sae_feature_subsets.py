@@ -107,6 +107,28 @@ def flatten_valid(tensor: torch.Tensor, mask: torch.Tensor) -> torch.Tensor:
     return tensor[mask.bool()]
 
 
+def token_filter_mask(tokenizer, input_ids: torch.Tensor, attention_mask: torch.Tensor, mode: str) -> torch.Tensor:
+    if mode == "all":
+        return attention_mask.bool()
+    if mode != "contentish":
+        raise ValueError(f"unknown feature token filter: {mode}")
+    rows = []
+    for seq_ids, seq_mask in zip(input_ids.detach().cpu().tolist(), attention_mask.detach().cpu().tolist()):
+        row = []
+        for token_id, keep in zip(seq_ids, seq_mask):
+            if not keep:
+                row.append(False)
+                continue
+            text = tokenizer.decode([int(token_id)], skip_special_tokens=False)
+            stripped = text.strip()
+            has_alnum = any(ch.isalnum() for ch in stripped)
+            is_role = stripped in {"user", "model"}
+            is_special = stripped.startswith("<") and stripped.endswith(">")
+            row.append(bool(has_alnum and not is_role and not is_special))
+        rows.append(row)
+    return torch.tensor(rows, device=input_ids.device, dtype=torch.bool)
+
+
 @torch.no_grad()
 def collect_feature_stats(
     donor,
@@ -121,6 +143,7 @@ def collect_feature_stats(
     prompt_start: int,
     device: str,
     output_mode: str,
+    feature_token_filter: str = "all",
 ):
     rows = make_prompt_rows(tokenizer, examples_per_split, max_length, prompt_start)
     donor_cache, donor_handles = make_mlp_cache_hooks(donor, layers, output_mode)
@@ -146,11 +169,12 @@ def collect_feature_stats(
                 recipient_cache[layer].clear()
             _ = donor(**batch, use_cache=False)
             _ = recipient(**batch, use_cache=False)
+            token_mask = token_filter_mask(tokenizer, batch["input_ids"], batch["attention_mask"], feature_token_filter)
             for split in ("harmful", "benign"):
                 idx = torch.tensor([row["split"] == split for row in chunk], device=device)
                 if not bool(idx.any().item()):
                     continue
-                mask = batch["attention_mask"][idx].bool()
+                mask = token_mask[idx].bool()
                 for layer in layers:
                     donor_out = flatten_valid(donor_cache[layer][0][idx], mask)
                     recipient_out = flatten_valid(recipient_cache[layer][0][idx], mask)
@@ -434,12 +458,14 @@ def write_summary(
     basis_examples_per_split: int,
     eval_start: int,
     examples_per_split: int,
+    feature_token_filter: str,
 ) -> None:
     lines = [
         "# Gemma-2-2B GemmaScope MLP SAE Feature-Subset Patch",
         "",
         f"Layers: `{','.join(str(x) for x in layers)}`.",
         f"Feature-selection prompts: `{basis_start}:{basis_start + basis_examples_per_split}` per split.",
+        f"Feature-selection token filter: `{feature_token_filter}`.",
         f"Evaluation prompts: `{eval_start}:{eval_start + examples_per_split}` per split.",
         "",
         "## Generation",
@@ -499,6 +525,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--variants", default=",".join(DEFAULT_VARIANTS))
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
+    ap.add_argument("--feature-token-filter", choices=("all", "contentish"), default="all")
     ap.add_argument("--random-seed", type=int, default=0)
     ap.add_argument("--skip-baselines", action="store_true")
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
@@ -541,6 +568,7 @@ def main() -> int:
         batch_size=args.batch_size,
         max_length=args.max_length,
         prompt_start=args.basis_start,
+        feature_token_filter=args.feature_token_filter,
         device=args.device,
         output_mode=args.output_mode,
     )
@@ -580,6 +608,7 @@ def main() -> int:
         basis_examples_per_split=args.basis_examples_per_split,
         eval_start=args.eval_start,
         examples_per_split=args.examples_per_split,
+        feature_token_filter=args.feature_token_filter,
     )
     manifest_path.write_text(
         json.dumps(
@@ -589,6 +618,7 @@ def main() -> int:
                 "sae_files": {str(k): v for k, v in files.items()},
                 "layers": list(layers),
                 "output_mode": args.output_mode,
+                "feature_token_filter": args.feature_token_filter,
                 "basis_start": args.basis_start,
                 "basis_examples_per_split": args.basis_examples_per_split,
                 "eval_start": args.eval_start,

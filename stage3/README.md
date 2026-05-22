@@ -121,16 +121,39 @@ Random-seed controls:
 - the robust sparse-feature claim now belongs mainly to all `12-20` and
   `15-20`; `12-14,18-20` remains too noisy for a strong sparse mechanism claim.
 
+Boundary-vs-content audit:
+
+- top-delta feature event rows were dominated by assistant-boundary/template
+  tokens: `2817 / 2880` top absolute-delta rows (`97.8%`) were on tokens such
+  as newline, `model`, `<end_of_turn>`, and `<start_of_turn>`;
+- selecting features only from content-ish prompt tokens sharply reduced sparse
+  repair: all `12-20` k1024 fell from `1.000` to `0.000` on heldout `4:8` and
+  from `0.750` to `0.000` on heldout `8:12`;
+- content-selected features do activate on meaningful harmful tokens such as
+  `keylogger`, `phishing`, `bank`, and `malware`, but they currently do not
+  reproduce the all-token sparse repair;
+- the live mechanistic hypothesis is now response-boundary refusal-state
+  transfer, not a clean prompt-content semantic feature story.
+
+The decisive next Gemma test is position-restricted patching: take the
+successful all-token selected features and patch them only at assistant-boundary
+positions versus only at content positions versus all positions.
+
 Main artifacts:
 
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_FINDINGS.md`
+- `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_BOUNDARY_VS_CONTENT_FINDINGS.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_4_8_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_8_12_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_k_sweep_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_fold2_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`
+- `scripts/export_gemma2_2b_gemmascope_mlp_sae_feature_audit.py`
 - `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_VALIDATION_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_validation_12_20_generation/GEMMA2_2B_GEMMASCOPE_MLP_SAE_INTERPRETATION.md`
 - `scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`

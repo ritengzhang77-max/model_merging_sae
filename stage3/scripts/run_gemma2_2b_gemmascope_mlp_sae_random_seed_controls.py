@@ -116,6 +116,7 @@ def write_summary(path: Path, metrics: list[dict[str, object]], random_agg: list
         "# Gemma-2-2B GemmaScope MLP SAE Random-Seed Controls",
         "",
         f"Feature-selection prompts: `{args.basis_start}:{args.basis_start + args.basis_examples_per_split}` per split.",
+        f"Feature-selection token filter: `{args.feature_token_filter}`.",
         f"Evaluation starts: `{','.join(str(x) for x in eval_starts)}` with `{args.examples_per_split}` prompts per split.",
         f"Random seeds: `{','.join(str(x) for x in parse_ints(args.random_seeds))}`.",
         "",
@@ -190,6 +191,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--random-variants", default=DEFAULT_RANDOM_VARIANTS)
     ap.add_argument("--random-seeds", default="0,1,2,3,4")
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
+    ap.add_argument("--feature-token-filter", choices=("all", "contentish"), default="all")
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     return ap.parse_args()
 
@@ -236,6 +238,7 @@ def main() -> int:
         prompt_start=args.basis_start,
         device=args.device,
         output_mode=args.output_mode,
+        feature_token_filter=args.feature_token_filter,
     )
 
     all_metrics: list[dict[str, object]] = []
@@ -355,6 +358,7 @@ def main() -> int:
                 "sae_files": {str(k): v for k, v in files.items()},
                 "groups": {name: list(layers) for name, layers in groups},
                 "output_mode": args.output_mode,
+                "feature_token_filter": args.feature_token_filter,
                 "basis_start": args.basis_start,
                 "basis_examples_per_split": args.basis_examples_per_split,
                 "eval_starts": list(eval_starts),

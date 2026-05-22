@@ -116,6 +116,7 @@ def write_summary(path: Path, metrics: list[dict[str, object]], groups, args) ->
         "# Gemma-2-2B GemmaScope MLP SAE Layer-Group Localization",
         "",
         f"Feature-selection prompts: `{args.basis_start}:{args.basis_start + args.basis_examples_per_split}` per split.",
+        f"Feature-selection token filter: `{args.feature_token_filter}`.",
         f"Evaluation prompts: `{args.eval_start}:{args.eval_start + args.examples_per_split}` per split.",
         "",
         "Layer groups:",
@@ -173,6 +174,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--variants", default=",".join(DEFAULT_VARIANTS))
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
+    ap.add_argument("--feature-token-filter", choices=("all", "contentish"), default="all")
     ap.add_argument("--random-seed", type=int, default=0)
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     return ap.parse_args()
@@ -217,6 +219,7 @@ def main() -> int:
         prompt_start=args.basis_start,
         device=args.device,
         output_mode=args.output_mode,
+        feature_token_filter=args.feature_token_filter,
     )
 
     all_metrics: list[dict[str, object]] = []
@@ -265,6 +268,7 @@ def main() -> int:
                 "sae_files": {str(k): v for k, v in files.items()},
                 "groups": {name: list(layers) for name, layers in groups},
                 "output_mode": args.output_mode,
+                "feature_token_filter": args.feature_token_filter,
                 "basis_start": args.basis_start,
                 "basis_examples_per_split": args.basis_examples_per_split,
                 "eval_start": args.eval_start,

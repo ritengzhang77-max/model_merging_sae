@@ -629,3 +629,118 @@ Caveats:
 - The script records baselines only for the first evaluation slice in this run;
   the `8:12` baseline is available in the layer-group localization artifacts.
 - This is feature-coordinate robustness evidence, not feature semantics.
+
+## GemmaScope MLP SAE Boundary-vs-Content Audit
+
+- Date appended: 2026-05-22
+- Artifact status: Stage 3 mechanistic reframe checkpoint
+- Main finding memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_BOUNDARY_VS_CONTENT_FINDINGS.md`
+- Feature audit script:
+  `stage3/scripts/export_gemma2_2b_gemmascope_mlp_sae_feature_audit.py`
+- Patched scripts:
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`,
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_layer_groups.py`, and
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_random_seed_controls.py`
+
+Artifacts:
+
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/`
+  - all-token feature selection;
+  - exported `960` feature score rows and `5749` top event rows;
+  - top absolute-delta events were overwhelmingly assistant-boundary/template
+    tokens.
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/`
+  - content-ish token feature selection;
+  - deterministic controls and random active-feature controls for all `12-20`
+    and `15-20`;
+  - feature-selection prompts: `0:4` per split;
+  - evaluation slices: `4:8` and `8:12`.
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_audit_v0/`
+  - content-ish feature selection and content-ish event export;
+  - exported `480` feature score rows and `2845` event rows.
+
+Commands:
+
+```bash
+python3 stage3/scripts/export_gemma2_2b_gemmascope_mlp_sae_feature_audit.py \
+  --device cuda:0 \
+  --groups 'all:12-20;mid_late:15-20' \
+  --variants mix_decode_delta_abs_k1024,mix_decode_delta_abs_k2048 \
+  --top-n-per-layer 64 \
+  --basis-start 0 \
+  --basis-examples-per-split 4 \
+  --audit-start 0 \
+  --audit-examples-per-split 12 \
+  --batch-size 2 \
+  --event-k 5 \
+  --top-per-prompt 2 \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0
+```
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_random_seed_controls.py \
+  --device cuda:0 \
+  --groups 'all:12-20;mid_late:15-20' \
+  --feature-token-filter contentish \
+  --basis-start 0 \
+  --basis-examples-per-split 4 \
+  --eval-starts 4,8 \
+  --examples-per-split 4 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --deterministic-variants full_decode,delta_add_all,mix_decode_delta_abs_k1024,mix_decode_delta_abs_k2048 \
+  --random-variants mix_decode_random_active_k1024,mix_decode_random_active_k2048 \
+  --random-seeds 0,1,2 \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0
+```
+
+```bash
+python3 stage3/scripts/export_gemma2_2b_gemmascope_mlp_sae_feature_audit.py \
+  --device cuda:0 \
+  --groups 'all:12-20;mid_late:15-20' \
+  --feature-token-filter contentish \
+  --event-token-filter contentish \
+  --variants mix_decode_delta_abs_k1024,mix_decode_delta_abs_k2048 \
+  --top-n-per-layer 32 \
+  --basis-start 0 \
+  --basis-examples-per-split 4 \
+  --audit-start 0 \
+  --audit-examples-per-split 12 \
+  --batch-size 2 \
+  --event-k 5 \
+  --top-per-prompt 2 \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_audit_v0
+```
+
+Key result:
+
+- In the all-token audit, `2817 / 2880` top absolute-delta event rows
+  (`97.8%`) were on assistant-boundary/template tokens such as newline,
+  `model`, `<end_of_turn>`, and `<start_of_turn>`.
+- Content-ish token selection sharply reduced sparse repair:
+  - all `12-20` k1024 changed from harmful clean `1.000` to `0.000` on
+    heldout `4:8` and from `0.750` to `0.000` on heldout `8:12`;
+  - `15-20` k1024 changed from `1.000` to `0.000` on `4:8` and from `0.500`
+    to `0.000` on `8:12`;
+  - k2048 content-token selection was also weaker, reaching at most `0.500`.
+- Content-selected features activate on meaningful harmful tokens such as
+  `keylogger`, `phishing`, `bank`, and `malware`, but currently do not
+  reproduce the all-token sparse repair.
+
+Interpretation:
+
+- The current best mechanistic hypothesis is response-boundary refusal-state
+  transfer. The abliterated model may weaken a donor-like state setup around
+  the assistant start, and the successful sparse feature patches restore that
+  setup.
+- This is still promising for model merging, but it changes the claim away from
+  "harmful prompt semantics are directly restored by a small SAE feature set."
+
+Caveats:
+
+- `contentish` is a heuristic token filter, not a full chat-template parser.
+- The content-vs-all comparison changes feature selection, not the runtime patch
+  positions. The decisive follow-up is a position-restricted patch test using
+  the same all-token selected features and applying them only at assistant
+  boundary positions versus only at content positions.
