@@ -231,14 +231,17 @@ fire around refusal-rationale/legal-consequence tokens such as `Forgery`,
 mechanistic target: the safe linear merge appears to restore a legal-consequence
 refusal-rationale bundle, not just a fake-ID singleton feature.
 
-Causal bundle patching gives the first asymmetric necessity/sufficiency result.
+Causal bundle patching gives the first asymmetric sufficiency/control result.
 Patching the top10 transition features from alpha `0.75` into alpha `0.25`
 reduces unsafe continuation on the fake-ID family from `0.375` to `0.125`, but
 does not improve clean refusal above `0.125`. Conversely, replacing those ten
 coordinates in alpha `0.75` with low-alpha values drops clean refusal from
-`0.875` to `0.500` while preserving benign helpfulness. The bundle is therefore
-partly necessary but not sufficient, which is a much stronger model-merging
-mechanism story than a singleton-feature repair.
+`0.875` to `0.500` while preserving benign helpfulness. However, matched random
+same-layer ten-feature bundles also drop clean refusal to `0.500` under the
+same `mix_decode` operator. The honest conclusion is that the top10 bundle is a
+strong natural transition correlate and an interpretable feature set, but its
+specific necessity is not yet proven. The next control is to rerun top10 and
+random bundles with a less disruptive decoded delta-add operator.
 
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 

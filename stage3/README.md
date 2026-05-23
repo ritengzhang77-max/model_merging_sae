@@ -36,11 +36,13 @@ The Gemma branch now has an actual linear weight-merge bridge:
   `4342`, L17 `16011`, L16 `16332`, L18 `10415`, and L18 `11127`; qualitative
   audit shows legal-consequence/refusal-rationale tokens such as `Forgery`,
   `Criminal`, `felony`, `jail`, and `theft`.
-- Causal bundle patching is asymmetric: patching the top10 transition features
-  from alpha `0.75` into alpha `0.25` reduces unsafe continuation but does not
-  restore clean refusal, while patching low-alpha values into alpha `0.75` drops
-  family clean refusal from 7/8 to 4/8. The bundle is partly necessary but not
-  sufficient.
+- Causal bundle patching is asymmetric but not yet specific: patching the top10
+  transition features from alpha `0.75` into alpha `0.25` reduces unsafe
+  continuation but does not restore clean refusal, while patching low-alpha
+  values into alpha `0.75` drops family clean refusal from 7/8 to 4/8. Matched
+  random same-layer ten-feature bundles also drop the alpha `0.75` model to 4/8
+  under the same `mix_decode` operator, so the selected top10 bundle is not yet
+  validated as specifically necessary.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

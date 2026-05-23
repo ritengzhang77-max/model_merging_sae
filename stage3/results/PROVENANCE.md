@@ -1472,6 +1472,8 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_to_a025_abog_top_transition/`
 - Necessity result root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a025_to_a075_abog_top_transition/`
+- Necessity random-control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a025_to_a075_abog_random_controls/`
 - Main script:
   `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`
 
@@ -1502,6 +1504,21 @@ python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
   --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a025_to_a075_abog_top_transition
 ```
 
+Representative necessity random-control command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 0.25 \
+  --recipient-alpha 0.75 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl \
+  --max-new-tokens 64 \
+  --patch-token-filter assistant_boundary_or_generated \
+  --skip-baselines \
+  --bundles 'random1=14:9137,15:12962,16:747,17:6842,17:14472,18:2195,18:15797,18:10796,18:6989,20:2796;random2=14:11187,15:834,16:2407,17:16027,17:11572,18:12498,18:4149,18:9901,18:13794,20:418;random3=14:8550,15:15840,16:9989,17:720,17:8444,18:2087,18:6577,18:16087,18:699,20:10915' \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a025_to_a075_abog_random_controls
+```
+
 Key result:
 
 - High-alpha top10 into low-alpha reduces unsafe continuation from `0.375` to
@@ -1510,10 +1527,15 @@ Key result:
   unsafe continuation `0.625`.
 - Low-alpha top10 into high-alpha drops harmful clean refusal from the alpha
   `0.75` baseline `0.875` to `0.500`, with benign helpfulness still `1.000`.
+- Matched random same-layer ten-feature bundles also drop harmful clean refusal
+  to `0.500` under the same `mix_decode` operator, with unsafe continuation
+  `0.125` and benign helpfulness `1.000`.
 
 Interpretation:
 
-- The top transition feature bundle is partly necessary but not sufficient.
-- This supports the claim that model merging coordinates a larger state than a
-  small local feature patch, while the patch still identifies causal components
-  of that state.
+- The top transition feature bundle is not sufficient.
+- The current `mix_decode` necessity result is not feature-specific: random
+  same-layer replacement can cause the same degradation.
+- This keeps the natural transition-search result alive as an interpretable
+  correlate, but the causal necessity claim now needs a less disruptive patch
+  operator or stronger matched controls.
