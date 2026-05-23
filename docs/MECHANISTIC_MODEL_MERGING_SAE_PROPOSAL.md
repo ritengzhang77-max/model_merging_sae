@@ -173,6 +173,64 @@ test is feature selection: can a smaller, interpretable SAE feature subset
 recover the repair, and can it generalize to held-out harmful and benign
 controls?
 
+## 2026-05-22 GemmaScope Feature-Trajectory Update
+
+The GemmaScope branch has moved from "SAE reconstruction is behaviorally
+complete" to a concrete feature-interaction case study.
+
+Main feature-localized result:
+
+- In the basis `0:4`, k896 setting, adding layer-19 GemmaScope MLP-SAE feature
+  `16048` recovers the original fake-ID prompt; removing it from k1024 removes
+  that recovery.
+- Feature-specific timing shows this is a generated-token effect. Patching
+  feature `16048` only at assistant-boundary/template positions does not help;
+  patching it on generated tokens matches boundary-or-generated patching on the
+  full 12 harmful / 12 benign benchmark.
+- Signed trajectory logging confirms feature `16048` has donor-greater-than
+  recipient activation mainly on generated-token positions, not on prompt
+  template positions.
+
+Main interference result:
+
+- Under a basis `0:8`, k256 trajectory, L12 rank `274` / feature `40` and L12
+  rank `295` / feature `12075` can break the fake-ID repair.
+- They split by timing: feature `40` disrupts when patched during generation;
+  feature `12075` disrupts when patched at the assistant boundary.
+- Both are donor-high features, so a positive donor-recipient SAE delta is not
+  sufficient evidence that a feature is helpful.
+- Broad `prompt_template_or_generated` patching bypasses these singleton L12
+  antagonist effects, showing they are narrow trajectory interactions rather
+  than globally bad features.
+
+Important narrowing result:
+
+- A fake-ID paraphrase family does not support a broad semantic interpretation.
+  The k896 prefix already passes 6/8 fake-ID variants, and generated-token
+  feature `16048` does not improve the family pass rate.
+- Therefore the current paper claim should not call feature `16048` a
+  "fake-ID feature." The safer claim is a timed generated-token trajectory
+  feature for one benchmark prompt, embedded in a nonmonotone feature bundle.
+
+Interpretation:
+
+This is the strongest mechanistic evidence so far for why model merging or
+feature-level transfer can be fragile. High-delta donor features are a mixture
+of helpful, redundant, and antagonistic components. The result directly
+connects model-merging heuristics such as top-k delta selection, TIES/DARE-style
+pruning, and sign/delta conflict reasoning to causal interpretability: the
+question is not only which coordinates move, but when and in what trajectory
+context they are inserted.
+
+Next priority:
+
+- replicate the timed trajectory/antagonist pattern on another prompt family or
+  another feature, rather than overfitting the fake-ID prompt;
+- build stricter prompt-family/manual-audit evaluation so feature claims are not
+  driven by one benchmark wording;
+- look for a mechanism-aware selection rule that avoids donor-high timed
+  antagonists while preserving helpful generated-token trajectory features.
+
 ## 2026-05-20 RQ1/RQ2 Diagnostic Update
 
 We ran the first Qwen2.5-1.5B RQ1/RQ2 diagnostics on the base, Matrix,
