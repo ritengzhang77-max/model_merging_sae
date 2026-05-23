@@ -148,10 +148,13 @@ A recipient-reconstruction control also failed:
 | condition | strict unsafe | strict safe |
 |---|---:|---:|
 | layer-20 recipient SAE reconstruction | 1.000 | 0.000 |
+| alpha-0.50 donor layer-20 SAE full decode | 1.000 | 0.000 |
 | layer-20 donor SAE full decode | 0.000 | 1.000 |
 
-So the repair is donor-state specific. It is not just denoising or regularizing
-the alpha-`0.75` recipient through the layer-20 SAE.
+So the repair is donor-state specific along the merge curve. It is not just
+denoising or regularizing the alpha-`0.75` recipient through the layer-20 SAE,
+and it is not produced by replacing the recipient with a weaker alpha-`0.50`
+donor reconstruction.
 
 Current mechanistic target:
 
@@ -191,6 +194,8 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_transition_features_mix_decode_topk_max160/`
 - Layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
+- Alpha-`0.50` to `0.75` layer-20 donor full-decode control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a05_to_a075_l20_postff_sae_full_decode_max160/`
 - Layer-20 targeted full-decode-continuation feature search:
   `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_v1_l20_full_decode_target_alpha075_to_1_layer20/`
 - Layer-20 targeted top-k `mix_decode`:

@@ -325,7 +325,9 @@ hologram unsafe case but not the fake-ID "mistakes" failure. Pruning shows
 layer 20 alone is sufficient in the GemmaScope post-FF SAE basis and also
 generalizes to the expanded family, making layer-20 full decode the current
 smallest sparse-basis completeness gate. Recipient reconstruction fails, so the
-effect is donor-state specific. However, layer-20 transition-feature top-k
+effect is donor-state specific; an alpha `0.50` donor full-decode control into
+alpha `0.75` also fails, so the repair is tied to the safer endpoint rather
+than the full-decode operator alone. However, layer-20 transition-feature top-k
 `mix_decode` bundles through top30 also fail, and a targeted search on the
 successful layer-20 full-decode continuations plus donor-high-activation
 feature ranking both still fail through top200. This is still a dense
