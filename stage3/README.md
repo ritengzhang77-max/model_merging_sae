@@ -174,12 +174,29 @@ k2048 and budget follow-up:
 - k256 failed twice during generation, so the current practical threshold is
   bracketed between k512 and k1024 rather than established exactly.
 
+Feature-ID causality follow-up:
+
+- a lower-budget sweep inside `assistant_boundary_or_generated` shows the easy
+  `4:8` fold reaches `0.750` harmful clean refusal by k256, but the harder
+  `8:12` fold stays at `0.500` through k896 and reaches `0.750` only at k1024;
+- tail-only rank bands are not sufficient: ranks `897-1024`, `769-1024`, and
+  `513-1024` alone all score `0.000` harmful clean refusal on `8:12`;
+- the k1024-over-k896 gain localizes to layer 19 on the fake-ID prompt:
+  k896 plus only the layer-19 `897-1024` tail recovers the prompt, while the
+  same tail from layers `12-18` or `20` does not;
+- removing the layer-19 `897-1024` tail from k1024 drops `8:12` from `0.750` to
+  `0.500`, while removing any other single-layer tail tested leaves `0.750`;
+- the layer-19 tail audit is still mostly assistant-template/boundary events,
+  so the lead is a layer-local response-state refinement rather than a clean
+  harmful-content semantic feature.
+
 Main artifacts:
 
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_BOUNDARY_VS_CONTENT_FINDINGS.md`
+- `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_ID_CAUSALITY_FINDINGS.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
@@ -187,6 +204,8 @@ Main artifacts:
 - `results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_boundary_generated_budget_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_feature_id_threshold_v0/`
+- `results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_4_8_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_8_12_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_k_sweep_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`

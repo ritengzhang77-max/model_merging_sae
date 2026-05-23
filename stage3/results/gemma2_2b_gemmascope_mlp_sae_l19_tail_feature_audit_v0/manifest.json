@@ -1,0 +1,32 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "19": "layer_19/width_16k/average_l0_109/params.npz"
+  },
+  "groups": {
+    "l19_tail": [
+      19
+    ]
+  },
+  "variants": [
+    "mix_decode_delta_abs_rank897_1024"
+  ],
+  "top_n_per_layer": 128,
+  "output_mode": "post_ff_norm",
+  "feature_token_filter": "all",
+  "event_token_filter": "all",
+  "basis_start": 0,
+  "basis_examples_per_split": 4,
+  "audit_start": 0,
+  "audit_examples_per_split": 12,
+  "event_k": 6,
+  "outputs": {
+    "feature_scores": "stage3/results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/gemma2_2b_gemmascope_mlp_sae_feature_scores.csv",
+    "feature_events": "stage3/results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/gemma2_2b_gemmascope_mlp_sae_feature_events.jsonl",
+    "summary": "stage3/results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md"
+  }
+}
