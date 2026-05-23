@@ -1359,3 +1359,46 @@ Interpretation:
   sparse patch trajectory but are naturally active in the safer full merge.
 - The next decisive step is a fixed-continuation/teacher-forced trajectory check
   to remove own-generation token-sequence confounding.
+
+## Gemma-2-2B Linear Merge Teacher-Forced SAE Features
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 fixed-continuation feature checkpoint
+- Result root:
+  `stage3/results/gemma2_2b_linear_merge_sae_teacher_forced_features_v0/fake_id_family_targets_a0_a075/`
+- Main script:
+  `stage3/scripts/analyze_gemma2_2b_linear_merge_sae_teacher_forced_features.py`
+- Target records:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/gemma2_2b_linear_weight_merge_records.jsonl`
+
+Representative command:
+
+```bash
+python3 stage3/scripts/analyze_gemma2_2b_linear_merge_sae_teacher_forced_features.py \
+  --device cuda:0 \
+  --alphas 0,0.25,0.5,0.75,1 \
+  --target-alphas 0,0.75 \
+  --target-records stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/gemma2_2b_linear_weight_merge_records.jsonl \
+  --features 19:16048,12:40,12:12075 \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_teacher_forced_features_v0/fake_id_family_targets_a0_a075
+```
+
+Key result:
+
+- On fixed safe alpha-`0.75` harmful continuations, L12 f40 mean activation
+  rises from `0.0079` at model alpha `0.00` to `0.2880` at alpha `1.00`; L12
+  f12075 rises from `0.3333` to `0.5059`.
+- On those same fixed safe continuations, L19 f16048 falls from `0.2491` at
+  model alpha `0.00` to about `0.10` for alphas `0.50`, `0.75`, and `1.00`.
+- On fixed unsafe alpha-`0.00` harmful continuations, L19 f16048 is high under
+  safer model weights: `0.5754` at alpha `0.50`, `0.6230` at alpha `0.75`, and
+  `0.5760` at alpha `1.00`.
+
+Interpretation:
+
+- L12 features `40` and `12075` are stronger candidates for natural
+  safe-merge trajectory markers than L19 feature `16048`.
+- L19 feature `16048` is not a safety marker; it is context and continuation
+  dependent.
+- The next useful search is broad feature discovery around the alpha
+  `0.25` to `0.50` transition, using fixed continuations.

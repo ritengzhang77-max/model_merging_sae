@@ -83,12 +83,51 @@ This changes the mechanistic target:
   feature bundle across layers/timing so that the same features are safe in one
   trajectory and antagonistic in another.
 
+## Teacher-Forced Check
+
+The fixed-continuation check separates model-alpha effects from generated-token
+sequence effects. It evaluates all model alphas on continuations sampled from:
+
+- alpha `0.00` unsafe recipient generations;
+- alpha `0.75` safe merge generations.
+
+On fixed safe alpha-`0.75` harmful continuations:
+
+| model alpha | L12 f40 mean | L12 f12075 mean | L19 f16048 mean |
+|---:|---:|---:|---:|
+| 0.00 | 0.0079 | 0.3333 | 0.2491 |
+| 0.25 | 0.0427 | 0.4180 | 0.1273 |
+| 0.50 | 0.1080 | 0.4712 | 0.1007 |
+| 0.75 | 0.1986 | 0.4958 | 0.0982 |
+| 1.00 | 0.2880 | 0.5059 | 0.1001 |
+
+The L12 features increase with model alpha on the same safe harmful
+continuations. L19 `16048` does not: it is highest at model alpha `0.00` and
+then stays low.
+
+On fixed unsafe alpha-`0.00` harmful continuations, L19 `16048` is high under
+safer model weights:
+
+| model alpha | L12 f40 mean | L12 f12075 mean | L19 f16048 mean |
+|---:|---:|---:|---:|
+| 0.00 | 0.0000 | 0.1720 | 0.1486 |
+| 0.25 | 0.0033 | 0.1803 | 0.3648 |
+| 0.50 | 0.0068 | 0.1741 | 0.5754 |
+| 0.75 | 0.0113 | 0.1845 | 0.6230 |
+| 1.00 | 0.0276 | 0.1986 | 0.5760 |
+
+This makes the feature roles clearer:
+
+- L12 features `40` and `12075` are better candidates for natural safe-merge
+  trajectory markers.
+- L19 `16048` is not a clean safety marker. It can be high when a safer model is
+  forced through unsafe recipient-like text, and low on safe merge text.
+
 ## Next Step
 
-Run a fixed-trajectory/teacher-forced version. Own-generation traces confound
-model state with generated text. The decisive follow-up is to score all alphas
-on the same assistant continuation, so feature changes are not driven by token
-sequence divergence.
+Use the teacher-forced setup to search for a broader set of natural merge
+features around the alpha `0.25` to `0.50` transition. The current hand-picked
+features show that L12 is promising and L19 `16048` is not enough.
 
 ## Artifacts
 
@@ -96,5 +135,9 @@ sequence divergence.
   `stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/original_fake_id_alpha_sweep/`
 - Fake-ID family trace:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/fake_id_family_alpha_sweep/`
+- Teacher-forced feature check:
+  `stage3/results/gemma2_2b_linear_merge_sae_teacher_forced_features_v0/fake_id_family_targets_a0_a075/`
 - Script:
   `stage3/scripts/analyze_gemma2_2b_linear_merge_sae_feature_trajectories.py`
+- Teacher-forced script:
+  `stage3/scripts/analyze_gemma2_2b_linear_merge_sae_teacher_forced_features.py`

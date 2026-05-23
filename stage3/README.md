@@ -27,6 +27,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   generated activation peaks near alpha `0.50` and drops at safer alpha `0.75`
   / `1.00`. The L12 features `40` and `12075` increase in the safe alpha regime,
   even though they were antagonists in narrow sparse patches.
+- A teacher-forced check confirms the split: on fixed safe alpha-`0.75`
+  continuations, L12 features increase with model alpha, while L19 `16048` does
+  not; on fixed unsafe alpha-`0.00` continuations, L19 `16048` can be high under
+  safer model weights.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

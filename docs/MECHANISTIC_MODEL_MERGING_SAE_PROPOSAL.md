@@ -210,6 +210,10 @@ contradiction to the earlier local-patch story:
   caveat-transition tokens such as comma, period, `but`, `Here`, or `breakdown`.
 - L12 features `40` and `12075`, which were antagonists when inserted into the
   narrow sparse patch trajectory, increase in the safer natural merge regime.
+- A teacher-forced check confirms this is not only generated-token divergence:
+  on fixed safe alpha-`0.75` continuations, L12 features increase with model
+  alpha; on fixed unsafe alpha-`0.00` continuations, L19 `16048` can be high
+  under safer model weights.
 
 This reframes the mechanism claim. The important object is not "find the good
 feature and add it." It is feature-bundle context: the same SAE coordinate can
