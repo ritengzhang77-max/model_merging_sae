@@ -65,6 +65,46 @@ This gives a cleaner next paper direction than the original f16048 singleton
 story: study how model merging restores a coordinated refusal-rationale feature
 bundle, and why sparse local patches can mis-handle that bundle.
 
+## Long-Generation Alpha 0.75 To 1.00 Search
+
+After the long-generation audit, we repeated the fixed-continuation transition
+search on expanded fake-ID family alpha-`1.00` continuations, comparing model
+alpha `0.75` to model alpha `1.00`.
+
+This search strongly recovers the same transition bundle. The original top10
+features from the alpha `0.25` to `0.75` search all appear in the top 19 global
+specificity features:
+
+| feature | new rank |
+|---|---:|
+| L17 f16011 | 1 |
+| L17 f4342 | 2 |
+| L15 f11128 | 4 |
+| L16 f16332 | 5 |
+| L14 f3001 | 6 |
+| L18 f10415 | 9 |
+| L18 f11127 | 10 |
+| L18 f7189 | 11 |
+| L20 f14425 | 17 |
+| L18 f11214 | 19 |
+
+This is a stronger correlational result than the first search: the same
+refusal-rationale bundle continues to separate the safer base endpoint from the
+more benign-but-fragile alpha `0.75` merge under longer decoding.
+
+Causal follow-up is more conservative:
+
+- subtracting top10 from alpha `1.00` on the long hologram probe does not create
+  unsafe continuation;
+- adding alpha-`1.00` top10 deltas into alpha `0.75` does not repair the unsafe
+  continuation;
+- `mix_decode` transfer from alpha `1.00` into alpha `0.75` is unsafe for top10
+  and matched random controls, so it is not feature-specific.
+
+The top10 bundle is therefore a robust natural merge correlate and a weak local
+perturbation handle, but not a sufficient or uniquely necessary cause of the
+long-generation safety difference.
+
 ## Next Step
 
 Run causal tests for the discovered transition features:
@@ -79,6 +119,8 @@ Run causal tests for the discovered transition features:
 
 - Transition search:
   `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_safe_a075_low025_high075/`
+- Long alpha-0.75-to-1.00 transition search:
+  `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_v1_alpha075_to_1_max160_target_alpha1/`
 - Top-feature audit:
   `stage3/results/gemma2_2b_linear_merge_sae_teacher_forced_features_v0/top_transition_features_safe_a075_low025_high075/`
 - Search script:

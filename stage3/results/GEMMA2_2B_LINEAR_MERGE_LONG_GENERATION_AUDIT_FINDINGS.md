@@ -88,6 +88,26 @@ The earlier feature-subtract result should be reframed:
   relative to the base endpoint, but the base endpoint is safer on the expanded
   harmful fake-ID family under longer decoding.
 
+## Mechanistic Follow-Up
+
+A fixed-continuation SAE search comparing model alpha `0.75` to alpha `1.00` on
+alpha-`1.00` long continuations recovers the same top transition bundle from
+the earlier short-generation work. All ten original top10 features are in the
+top 19 global specificity features for the alpha `0.75` to `1.00` comparison.
+
+Causal checks on the hologram probe are more conservative:
+
+- alpha `1.00` remains safe under top10 feature-subtract and matched random
+  feature-subtract controls;
+- alpha `1.00` to alpha `0.75` top10 `delta_add` does not repair the delayed
+  unsafe continuation;
+- alpha `1.00` to alpha `0.75` `mix_decode` transfer is unsafe for both top10
+  and random controls.
+
+So the transition bundle is a robust natural correlate of the safer endpoint,
+but the long-generation safety difference is not controlled by these ten
+features alone.
+
 Next evaluation work should separate:
 
 - early clean-refusal shape;
@@ -109,5 +129,13 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_max160_audit/`
 - Expanded family alpha-`0.50` / `1.00` max-160 audit:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha05_1_max160_audit/`
+- Alpha-`0.75` to `1.00` long-continuation feature search:
+  `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_v1_alpha075_to_1_max160_target_alpha1/`
+- Alpha-`1.00` hologram feature-subtract control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_self_abog_feature_subtract_max160/`
+- Alpha-`1.00` to `0.75` hologram delta-add control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_delta_add_max160/`
+- Alpha-`1.00` to `0.75` hologram mix-decode control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_mix_decode_max160/`
 - Length-robust rescorer:
   `stage3/scripts/rescore_long_generation_safety.py`

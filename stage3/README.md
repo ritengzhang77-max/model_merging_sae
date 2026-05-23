@@ -75,6 +75,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   over-refusal (`0.083`); alpha `0.75` has better benign behavior (`0.042`
   over-refusal) but one delayed unsafe continuation. Alpha `0.50` is weaker on
   both refusal coverage and unsafe continuation.
+- A long-continuation alpha `0.75` to `1.00` SAE search recovers the same
+  transition bundle: all original top10 features are in the top 19 specificity
+  features. Causally, the bundle remains insufficient: subtracting top10 from
+  alpha `1.00` does not create the unsafe hologram continuation, and adding
+  alpha-`1.00` top10 into alpha `0.75` does not repair it.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

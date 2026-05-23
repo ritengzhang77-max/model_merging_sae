@@ -1525,6 +1525,14 @@ Interpretation:
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_LONG_GENERATION_AUDIT_FINDINGS.md`
 - Length-robust long-generation rescorer:
   `stage3/scripts/rescore_long_generation_safety.py`
+- Long alpha-0.75-to-1.00 transition feature search root:
+  `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_v1_alpha075_to_1_max160_target_alpha1/`
+- Alpha-1.00 hologram feature-subtract control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_self_abog_feature_subtract_max160/`
+- Alpha-1.00-to-0.75 hologram delta-add control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_delta_add_max160/`
+- Alpha-1.00-to-0.75 hologram mix-decode control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_mix_decode_max160/`
 - Hologram max-160 feature-subtract probe root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_self_abog_feature_subtract_max160/`
 - Main script:
@@ -1636,6 +1644,13 @@ Key result:
   for alpha `0.75`, top10 feature-subtract, and all random controls. Top10
   changes the early refusal-rationale shape, but the prompt is already fragile
   under longer decoding.
+- The alpha `0.75` to `1.00` long-continuation transition search recovers the
+  same bundle: all original top10 features land in the top 19 global
+  specificity features.
+- Causal checks remain negative/limited: alpha `1.00` top10 feature-subtract
+  does not induce unsafe continuation, and alpha `1.00` to `0.75` top10
+  `delta_add` does not repair the unsafe continuation. `mix_decode` transfer is
+  unsafe for top10 and random controls.
 
 Interpretation:
 
@@ -1657,5 +1672,8 @@ Interpretation:
 - The merge tradeoff is now clearer: alpha `0.75` improves benign behavior over
   the base endpoint, but alpha `1.00` is safer on the expanded harmful fake-ID
   family under longer decoding.
+- The transition bundle is now best framed as a robust natural correlate and
+  weak local perturbation handle, not a sufficient or uniquely necessary cause
+  of the long-generation safety difference.
 - The current best causal phrasing is distributed refusal-rationale state
   component, not an independently necessary singleton feature.

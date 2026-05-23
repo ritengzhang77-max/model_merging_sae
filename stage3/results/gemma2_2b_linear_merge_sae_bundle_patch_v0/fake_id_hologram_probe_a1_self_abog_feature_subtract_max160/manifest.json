@@ -1,0 +1,125 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "14": "layer_14/width_16k/average_l0_97/params.npz",
+    "15": "layer_15/width_16k/average_l0_80/params.npz",
+    "16": "layer_16/width_16k/average_l0_72/params.npz",
+    "17": "layer_17/width_16k/average_l0_68/params.npz",
+    "18": "layer_18/width_16k/average_l0_106/params.npz",
+    "19": "layer_19/width_16k/average_l0_109/params.npz",
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "donor_alpha": 1.0,
+  "recipient_alpha": 1.0,
+  "patch_mode": "feature_subtract",
+  "patch_token_filter": "assistant_boundary_or_generated",
+  "bundles": {
+    "top10": {
+      "17": [
+        4342,
+        16011
+      ],
+      "16": [
+        16332
+      ],
+      "18": [
+        7189,
+        10415,
+        11127,
+        11214
+      ],
+      "15": [
+        11128
+      ],
+      "14": [
+        3001
+      ],
+      "20": [
+        14425
+      ]
+    },
+    "random1": {
+      "14": [
+        9137
+      ],
+      "15": [
+        12962
+      ],
+      "16": [
+        747
+      ],
+      "17": [
+        6842,
+        14472
+      ],
+      "18": [
+        2195,
+        6989,
+        10796,
+        15797
+      ],
+      "20": [
+        2796
+      ]
+    },
+    "random2": {
+      "14": [
+        11187
+      ],
+      "15": [
+        834
+      ],
+      "16": [
+        2407
+      ],
+      "17": [
+        11572,
+        16027
+      ],
+      "18": [
+        4149,
+        9901,
+        12498,
+        13794
+      ],
+      "20": [
+        418
+      ]
+    },
+    "random3": {
+      "14": [
+        8550
+      ],
+      "15": [
+        15840
+      ],
+      "16": [
+        9989
+      ],
+      "17": [
+        720,
+        8444
+      ],
+      "18": [
+        699,
+        2087,
+        6577,
+        16087
+      ],
+      "20": [
+        10915
+      ]
+    }
+  },
+  "prompt_source": "stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl",
+  "outputs": {
+    "metrics": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_self_abog_feature_subtract_max160/gemma2_2b_linear_merge_sae_bundle_patch_metrics.csv",
+    "records": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_self_abog_feature_subtract_max160/gemma2_2b_linear_merge_sae_bundle_patch_records.jsonl",
+    "counts": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_self_abog_feature_subtract_max160/gemma2_2b_linear_merge_sae_bundle_patch_counts.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_self_abog_feature_subtract_max160/GEMMA2_2B_LINEAR_MERGE_SAE_BUNDLE_PATCH_SUMMARY.md"
+  }
+}

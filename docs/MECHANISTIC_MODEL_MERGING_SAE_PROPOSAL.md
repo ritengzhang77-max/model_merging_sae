@@ -291,6 +291,14 @@ helpfulness but has one delayed unsafe harmful continuation; alpha `0.50` is
 not competitive. This is a better model-merging research target than the earlier
 "alpha `0.75` is simply better" story.
 
+Mechanistically, the transition bundle remains central but not sufficient. A
+fixed-continuation search from alpha `0.75` to alpha `1.00` recovers all ten
+original top features within the top 19 specificity-ranked features, so the
+bundle is a robust natural correlate of the safer endpoint. But subtracting
+top10 from alpha `1.00` does not recreate the unsafe hologram continuation, and
+adding alpha-`1.00` top10 into alpha `0.75` does not repair it. The mechanism is
+therefore distributed beyond the ten-feature bundle.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally
