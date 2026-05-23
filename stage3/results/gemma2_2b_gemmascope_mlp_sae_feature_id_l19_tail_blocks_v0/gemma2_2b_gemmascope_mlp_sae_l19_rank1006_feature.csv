@@ -1,0 +1,2 @@
+layer,global_rank,tail_rank,feature_id,harm_delta_abs_mean,benign_delta_abs_mean,harm_minus_benign_delta_mean,harm_donor_mean,active_count
+19,1006,110,16048,0.11550632911392406,0.00013950892857142856,0.11536682018535263,0.03357397151898734,3.0

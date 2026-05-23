@@ -186,9 +186,13 @@ Feature-ID causality follow-up:
   same tail from layers `12-18` or `20` does not;
 - removing the layer-19 `897-1024` tail from k1024 drops `8:12` from `0.750` to
   `0.500`, while removing any other single-layer tail tested leaves `0.750`;
-- the layer-19 tail audit is still mostly assistant-template/boundary events,
-  so the lead is a layer-local response-state refinement rather than a clean
-  harmful-content semantic feature.
+- splitting that tail further localizes the fake-ID recovery to a single
+  feature: layer 19 feature ID `16048`, global rank `1006`;
+- adding only feature `16048` to the k896 prefix recovers the fake-ID prompt;
+  removing only feature `16048` from k1024 removes that recovery;
+- the feature audit is still mostly assistant-template/boundary and prompt-end
+  events, so the lead is a layer-local response-state refinement rather than a
+  clean harmful-content semantic feature.
 
 Main artifacts:
 
@@ -205,6 +209,7 @@ Main artifacts:
 - `results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_boundary_generated_budget_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_id_threshold_v0/`
+- `results/gemma2_2b_gemmascope_mlp_sae_feature_id_l19_tail_blocks_v0/`
 - `results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_4_8_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_8_12_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`

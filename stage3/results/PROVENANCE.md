@@ -159,6 +159,10 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - Consolidated metrics:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_id_threshold_v0/gemma2_2b_gemmascope_mlp_sae_feature_id_threshold_metrics.csv`
+- L19 block/singleton metrics:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_id_l19_tail_blocks_v0/gemma2_2b_gemmascope_mlp_sae_l19_tail_block_metrics.csv`
+- Feature `16048` event subset:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_id_l19_tail_blocks_v0/gemma2_2b_gemmascope_mlp_sae_l19_feature_16048_events.jsonl`
 
 Representative commands:
 
@@ -204,15 +208,20 @@ Key result:
   `20` stays at `0.500`.
 - k1024 minus the layer-19 `897-1024` tail drops to `0.500`; removing any other
   single-layer tail from `12-18` or `20` stays at `0.750`.
+- Splitting the layer-19 tail localizes the fake-ID recovery to global
+  rank `1006`, feature ID `16048`: k896 plus only this feature reaches `0.750`
+  and recovers the fake-ID prompt; k1024 minus only this feature drops to
+  `0.500` and loses the fake-ID recovery.
 
 Interpretation:
 
-- The feature-level story is still not a tiny standalone refusal module.
-- The first causal lead is a layer-19 assistant-boundary/template tail band
-  that is necessary and add-on sufficient for one hard-fold prompt recovery
-  conditional on the k896 prefix.
-- Next tests should split the layer-19 tail into smaller rank blocks and inspect
-  exact feature/event rows.
+- The feature-level story is now a single-feature lead, but not a standalone
+  refusal module: feature `16048` works only as an add-on to the broader k896
+  prefix.
+- The feature's top audit events are mostly prompt-ending/template/boundary
+  state rather than a direct fake-ID semantic detector.
+- Next tests should replicate feature `16048` on additional heldout prompt
+  slices and inspect generated-token timing.
 
 ## Qwen2.5-1.5B Residual Benchmark V0
 
