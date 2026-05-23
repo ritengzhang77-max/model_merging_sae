@@ -1820,6 +1820,8 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
 - Layers-17-20 SAE delta-add-all root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l17_20_postff_sae_delta_add_all_max160/`
+- Expanded fake-ID family layers-17-20 SAE full-decode root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
 
 Representative SAE full-decode command:
 
@@ -1851,6 +1853,11 @@ Key result:
   `0.000`, strict safe `1.000`.
 - Layers-17-20 GemmaScope post-FF SAE delta-add-all fails: strict unsafe
   `1.000`.
+- On the expanded fake-ID family, layers-17-20 SAE full decode matches alpha
+  `1.00` and full layer-17 activation patching: strict safe `0.958`, strict
+  unsafe `0.042`, benign over-refusal `0.083`.
+- The expanded-family patch removes the alpha-`0.75` hologram unsafe case but
+  leaves the fake-ID "mistakes" procedural-compliance failure.
 
 Interpretation:
 
@@ -1860,6 +1867,6 @@ Interpretation:
   carry the repair as a multi-layer reconstructive patch.
 - The delta-add-all failures show that the effect is not currently expressible
   as a simple donor-recipient SAE-feature delta added to the recipient stream.
-- The next decisive test is whether `17-20` full SAE decode generalizes to the
-  expanded fake-ID family and whether it can be pruned into smaller feature
-  sets without inheriting the full alpha-`1.00` over-refusal tradeoff.
+- The next decisive test is whether `17-20` full SAE decode can be localized or
+  pruned into smaller layer/feature sets without inheriting the full alpha
+  `1.00` over-refusal tradeoff.

@@ -135,6 +135,12 @@ does repair, while 17-20 SAE delta-add-all still fails. This makes `17-20`
 full SAE decode the current sparse-basis completeness gate; single-layer sparse
 delta transfer is still insufficient.
 
+On the expanded fake-ID family, `17-20` SAE full decode matches alpha `1.00`
+and full layer-17 activation patching: strict safe `0.958`, strict unsafe
+`0.042`, benign over-refusal `0.083`. It removes the alpha-`0.75`
+hologram/lamination unsafe case but leaves the fake-ID "mistakes" procedural
+failure.
+
 Next evaluation work should separate:
 
 - early clean-refusal shape;
@@ -180,5 +186,7 @@ strong enough for final safety claims.
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_COMPLETENESS_FINDINGS.md`
 - Alpha-`1.00` to `0.75` layers-17-20 SAE full decode:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
+- Expanded family alpha-`1.00` to `0.75` layers-17-20 SAE full decode:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
 - Length-robust rescorer:
   `stage3/scripts/rescore_long_generation_safety.py`

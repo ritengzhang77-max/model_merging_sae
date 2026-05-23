@@ -317,7 +317,10 @@ patching repairs the long hologram prompt, but GemmaScope layer-17 full decode
 and layer-17 delta-add-all do not. Full GemmaScope decode over layers 17-20
 does repair, while 17-20 delta-add-all still fails. This suggests the public
 SAE basis can carry the repair as a multi-layer reconstructive state, but not
-yet as a simple single-layer sparse delta.
+yet as a simple single-layer sparse delta. On the expanded fake-ID family,
+17-20 SAE full decode matches the alpha `1.00` / full layer-17 activation
+tradeoff (`0.958` strict safe, `0.083` benign over-refusal), removing the
+hologram unsafe case but not the fake-ID "mistakes" failure.
 
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 

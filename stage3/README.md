@@ -95,6 +95,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   decode and delta-add-all both fail. Full SAE decode over layers 17-20 repairs,
   while 17-20 SAE delta-add-all still fails. The sparse basis is therefore
   behaviorally useful only as a multi-layer reconstructive patch so far.
+- The `17-20` SAE full-decode patch generalizes to the expanded fake-ID family:
+  it matches alpha `1.00` and full layer-17 activation patching on strict safe
+  rate (`0.958`) and benign over-refusal (`0.083`), removing the alpha-`0.75`
+  hologram unsafe case but not the fake-ID "mistakes" failure.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 
