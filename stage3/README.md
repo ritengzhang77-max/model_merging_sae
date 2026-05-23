@@ -90,6 +90,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   `1.00` strict harmful safety (`0.958`) and removes the alpha-`0.75`
   hologram unsafe case; layer 16 does not. The tradeoff also transfers: benign
   over-refusal rises to the alpha-`1.00` rate (`0.083`).
+- GemmaScope post-FF SAE completeness is mixed on the long hologram repair:
+  full layer-17 post-FF activation patching repairs, but layer-17 SAE full
+  decode and delta-add-all both fail. Full SAE decode over layers 17-20 repairs,
+  while 17-20 SAE delta-add-all still fails. The sparse basis is therefore
+  behaviorally useful only as a multi-layer reconstructive patch so far.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

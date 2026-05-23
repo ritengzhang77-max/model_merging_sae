@@ -312,6 +312,13 @@ However, layer-17 patching also inherits alpha `1.00`'s higher benign
 over-refusal (`0.083`), so the mechanistic target is a safety/helpfulness
 tradeoff direction, not a free safety patch.
 
+The first SAE-completeness check is mixed. Full post-FF layer-17 activation
+patching repairs the long hologram prompt, but GemmaScope layer-17 full decode
+and layer-17 delta-add-all do not. Full GemmaScope decode over layers 17-20
+does repair, while 17-20 delta-add-all still fails. This suggests the public
+SAE basis can carry the repair as a multi-layer reconstructive state, but not
+yet as a simple single-layer sparse delta.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

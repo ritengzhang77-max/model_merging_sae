@@ -128,6 +128,13 @@ rate (`0.083`), so the intervention transfers a safety/helpfulness tradeoff,
 not only a safety gain. This places the causal mechanism in a distributed late
 MLP state beyond the tested top10/top50 sparse feature bundles.
 
+The first sparse-basis completeness check is mixed. Full post-FF layer-17
+activation patching repairs the hologram prompt, but layer-17 GemmaScope SAE
+full decode and delta-add-all do not. Full GemmaScope decode over layers 17-20
+does repair, while 17-20 SAE delta-add-all still fails. This makes `17-20`
+full SAE decode the current sparse-basis completeness gate; single-layer sparse
+delta transfer is still insufficient.
+
 Next evaluation work should separate:
 
 - early clean-refusal shape;
@@ -169,5 +176,9 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_family_v1_a1_to_a075_layer16_mlp_max160/`
 - Expanded family alpha-`1.00` to `0.75` layer-17 activation patch:
   `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_family_v1_a1_to_a075_layer17_mlp_max160/`
+- Linear-merge SAE completeness memo:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_COMPLETENESS_FINDINGS.md`
+- Alpha-`1.00` to `0.75` layers-17-20 SAE full decode:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
 - Length-robust rescorer:
   `stage3/scripts/rescore_long_generation_safety.py`

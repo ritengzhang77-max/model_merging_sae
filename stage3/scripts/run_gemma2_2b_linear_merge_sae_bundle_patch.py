@@ -136,7 +136,8 @@ def evaluate_models(high_model, low_model, tokenizer, saes, variants, selected, 
         for model_name, model in ((f"linear_alpha_{args.recipient_alpha:g}", low_model), (f"linear_alpha_{args.donor_alpha:g}", high_model)):
             rows = []
             print(f"[eval] {model_name}", flush=True)
-            for split, user in prompts:
+            for row_idx, (split, user) in enumerate(prompts, start=1):
+                print(f"[eval] {model_name} prompt {row_idx}/{len(prompts)} ({split})", flush=True)
                 text = generate(model, tokenizer, str(user), device=args.device, max_new_tokens=args.max_new_tokens)
                 record = {"model": model_name, "split": split, "prompt": str(user), "text": text}
                 record.update(score_record(split, str(user), text))
@@ -147,7 +148,8 @@ def evaluate_models(high_model, low_model, tokenizer, saes, variants, selected, 
         model_name = f"bundle_patch_{label}"
         rows = []
         print(f"[eval] {model_name}", flush=True)
-        for split, user in prompts:
+        for row_idx, (split, user) in enumerate(prompts, start=1):
+            print(f"[eval] {model_name} prompt {row_idx}/{len(prompts)} ({split})", flush=True)
             text = feature_patch_generate(
                 high_model,
                 low_model,
@@ -231,7 +233,11 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--prompt-jsonl", type=Path, default=None)
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--patch-token-filter", default="assistant_boundary_or_generated")
-    ap.add_argument("--patch-mode", choices=("mix_decode", "delta_add", "feature_subtract"), default="mix_decode")
+    ap.add_argument(
+        "--patch-mode",
+        choices=("full_decode", "recipient_recon", "delta_add_all", "mix_decode", "delta_add", "feature_subtract"),
+        default="mix_decode",
+    )
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--bundles", default=DEFAULT_BUNDLES)
     ap.add_argument("--skip-baselines", action="store_true")
