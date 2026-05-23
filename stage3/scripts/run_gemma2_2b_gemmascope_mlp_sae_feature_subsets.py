@@ -337,6 +337,56 @@ def parse_variant(raw: str) -> dict[str, object]:
             "plus_layer": plus_layer,
             "feature_id": feature_id,
         }
+    plus_feature_range_match = re.fullmatch(
+        r"(delta_add|mix_decode)_delta_abs_k(\d+)_plus_l(\d+)_f(\d+)_plus_l(\d+)_rank(\d+)_(\d+)",
+        raw,
+    )
+    if plus_feature_range_match:
+        prefix_k = int(plus_feature_range_match.group(2))
+        feature_layer = int(plus_feature_range_match.group(3))
+        feature_id = int(plus_feature_range_match.group(4))
+        range_layer = int(plus_feature_range_match.group(5))
+        rank_start = int(plus_feature_range_match.group(6))
+        rank_end = int(plus_feature_range_match.group(7))
+        if prefix_k < 1 or feature_id < 0 or rank_start < 1 or rank_end < rank_start:
+            raise ValueError(f"invalid prefix/feature/rank range in variant: {raw}")
+        return {
+            "label": raw,
+            "mode": plus_feature_range_match.group(1),
+            "selector": "delta_abs_prefix_plus_feature_plus_layer_range",
+            "k": f"{prefix_k}+L{feature_layer}:f{feature_id}+L{range_layer}:{rank_start}-{rank_end}",
+            "prefix_k": prefix_k,
+            "feature_layer": feature_layer,
+            "feature_id": feature_id,
+            "range_layer": range_layer,
+            "rank_start": rank_start,
+            "rank_end": rank_end,
+        }
+    minus_feature_range_match = re.fullmatch(
+        r"(delta_add|mix_decode)_delta_abs_k(\d+)_plus_l(\d+)_f(\d+)_minus_l(\d+)_rank(\d+)_(\d+)",
+        raw,
+    )
+    if minus_feature_range_match:
+        prefix_k = int(minus_feature_range_match.group(2))
+        feature_layer = int(minus_feature_range_match.group(3))
+        feature_id = int(minus_feature_range_match.group(4))
+        range_layer = int(minus_feature_range_match.group(5))
+        rank_start = int(minus_feature_range_match.group(6))
+        rank_end = int(minus_feature_range_match.group(7))
+        if prefix_k < 1 or feature_id < 0 or rank_start < 1 or rank_end < rank_start or rank_end > prefix_k:
+            raise ValueError(f"invalid prefix/feature/rank range in variant: {raw}")
+        return {
+            "label": raw,
+            "mode": minus_feature_range_match.group(1),
+            "selector": "delta_abs_prefix_plus_feature_minus_layer_range",
+            "k": f"{prefix_k}+L{feature_layer}:f{feature_id}-L{range_layer}:{rank_start}-{rank_end}",
+            "prefix_k": prefix_k,
+            "feature_layer": feature_layer,
+            "feature_id": feature_id,
+            "range_layer": range_layer,
+            "rank_start": rank_start,
+            "rank_end": rank_end,
+        }
     minus_match = re.fullmatch(r"(delta_add|mix_decode)_delta_abs_k(\d+)_minus_l(\d+)_rank(\d+)_(\d+)", raw)
     if minus_match:
         prefix_k = int(minus_match.group(2))
@@ -451,6 +501,67 @@ def select_indices(stats, layers: tuple[int, ...], variants: list[dict[str, obje
                     ranked = torch.topk(score, prefix_k).indices
                     parts = [ranked]
                     if layer == int(variant["plus_layer"]):
+                        parts.append(torch.tensor([feature_id], dtype=torch.long))
+                    idx = torch.unique(torch.cat(parts), sorted=False)
+                selected[label][layer] = idx.to(device=device, dtype=torch.long)
+                counts.append(
+                    {
+                        "variant": label,
+                        "layer": layer,
+                        "selector": selector,
+                        "k": str(variant["k"]),
+                        "selected_features": int(idx.numel()),
+                        "score_sum": float(score[idx].sum().item()) if idx.numel() else 0.0,
+                    }
+                )
+                continue
+            if selector == "delta_abs_prefix_plus_feature_plus_layer_range":
+                score = row["harm_delta_abs"]
+                prefix_k = min(int(variant["prefix_k"]), int(score.numel()))
+                feature_id = int(variant["feature_id"])
+                rank_start = int(variant["rank_start"])
+                rank_end = min(int(variant["rank_end"]), int(score.numel()))
+                if feature_id >= int(score.numel()):
+                    raise ValueError(f"feature ID {feature_id} is outside layer {layer} feature dimension {score.numel()}")
+                if float(score.abs().sum().item()) == 0.0:
+                    idx = torch.empty(0, dtype=torch.long)
+                else:
+                    ranked = torch.topk(score, max(prefix_k, rank_end)).indices
+                    parts = [ranked[:prefix_k]]
+                    if layer == int(variant["feature_layer"]):
+                        parts.append(torch.tensor([feature_id], dtype=torch.long))
+                    if layer == int(variant["range_layer"]) and rank_start <= rank_end:
+                        parts.append(ranked[rank_start - 1 : rank_end])
+                    idx = torch.unique(torch.cat(parts), sorted=False)
+                selected[label][layer] = idx.to(device=device, dtype=torch.long)
+                counts.append(
+                    {
+                        "variant": label,
+                        "layer": layer,
+                        "selector": selector,
+                        "k": str(variant["k"]),
+                        "selected_features": int(idx.numel()),
+                        "score_sum": float(score[idx].sum().item()) if idx.numel() else 0.0,
+                    }
+                )
+                continue
+            if selector == "delta_abs_prefix_plus_feature_minus_layer_range":
+                score = row["harm_delta_abs"]
+                prefix_k = min(int(variant["prefix_k"]), int(score.numel()))
+                feature_id = int(variant["feature_id"])
+                rank_start = int(variant["rank_start"])
+                rank_end = min(int(variant["rank_end"]), prefix_k)
+                if feature_id >= int(score.numel()):
+                    raise ValueError(f"feature ID {feature_id} is outside layer {layer} feature dimension {score.numel()}")
+                if float(score.abs().sum().item()) == 0.0:
+                    idx = torch.empty(0, dtype=torch.long)
+                else:
+                    ranked = torch.topk(score, prefix_k).indices
+                    if layer == int(variant["range_layer"]) and rank_start <= rank_end:
+                        parts = [ranked[: rank_start - 1], ranked[rank_end:]]
+                    else:
+                        parts = [ranked]
+                    if layer == int(variant["feature_layer"]):
                         parts.append(torch.tensor([feature_id], dtype=torch.long))
                     idx = torch.unique(torch.cat(parts), sorted=False)
                 selected[label][layer] = idx.to(device=device, dtype=torch.long)

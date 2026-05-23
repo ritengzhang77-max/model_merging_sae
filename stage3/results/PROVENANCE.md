@@ -155,6 +155,8 @@ Interpretation:
   `stage3/scripts/analyze_gemma2_2b_gemmascope_mlp_sae_feature_rank_stability.py`
 - Main finding memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_ID_CAUSALITY_FINDINGS.md`
+- Prefix-localization memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_PREFIX_LOCALIZATION_FINDINGS.md`
 - Result root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_id_threshold_v0/`
 - L19 tail audit:
@@ -169,6 +171,12 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_id_l19_feature16048_validation_v0/`
 - Feature `16048` rank-stability root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_rank_stability_v0/`
+- Feature `16048` prefix-budget root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_budget_v0/`
+- Feature `16048` prefix-band localization root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_band_localization_v0/`
+- L12 interference feature audit:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
 
 Representative commands:
 
@@ -228,6 +236,16 @@ Key result:
 - Cross-basis generation narrows the mechanism: basis `0:8` k896/k1024 recover
   fake-ID and k896 minus feature `16048` fails, but basis `4:8` fails fake-ID
   even though feature `16048` is inside k896.
+- Prefix localization exposes nonmonotone feature interactions: with basis
+  `0:8`, `k256 + L19 f16048` passes fake-ID, `k384 + L19 f16048` fails,
+  `k640 + L19 f16048` passes, and `k768 + L19 f16048` fails.
+- The first localized antagonist is L12 ranks `257-384`: adding this L12 band
+  to `k256 + L19 f16048` breaks fake-ID, while removing it from failing
+  `k384 + L19 f16048` restores fake-ID.
+- Singleton additions identify L12 rank `274` feature ID `40` and L12 rank
+  `295` feature ID `12075` as individually sufficient disruptors, but removing
+  them from the larger failing prefix does not restore fake-ID. Broader L12
+  removals show a redundant/nonadditive bundle effect.
 
 Interpretation:
 
@@ -236,10 +254,12 @@ Interpretation:
   prefix.
 - The broader prefix is basis-dependent; the live claim is a feature-plus-prefix
   response-state mechanism rather than a single semantic refusal feature.
+- The prefix contains antagonistic features: more high-delta features can
+  destroy a repaired behavior, so a monotone top-k explanation is inadequate.
 - The feature's top audit events are mostly prompt-ending/template/boundary
   state rather than a direct fake-ID semantic detector.
-- Next tests should localize the cooperating prefix and inspect generated-token
-  timing.
+- Next tests should inspect generated-token timing and compare signed/directional
+  feature effects against unsigned top-delta ranking.
 
 ## Qwen2.5-1.5B Residual Benchmark V0
 

@@ -183,6 +183,46 @@ stronger current claim is that feature `16048` is a necessary switch for one
 fake-ID refusal trajectory when paired with a cooperating prefix selected from
 the `0:4` or `0:8` basis.
 
+## Prefix Localization
+
+The cooperating prefix is nonmonotone. With basis `0:8` and eval `8:12`:
+
+| condition | harmful clean | unsafe | fake-ID prompt |
+|---|---:|---:|---|
+| k128 + L19 feature 16048 | 0.250 | 0.500 | pass |
+| k256 + L19 feature 16048 | 0.750 | 0.000 | pass |
+| k384 + L19 feature 16048 | 0.500 | 0.000 | fail |
+| k512 + L19 feature 16048 | 0.500 | 0.000 | fail |
+| k640 + L19 feature 16048 | 0.750 | 0.000 | pass |
+| k768 + L19 feature 16048 | 0.500 | 0.000 | fail |
+| k896 | 0.750 | 0.000 | pass |
+
+The first localized antagonist is in layer 12:
+
+- adding L12 ranks `257-384` to the passing `k256 + L19 f16048` condition
+  breaks fake-ID;
+- removing L12 ranks `257-384` from the failing `k384 + L19 f16048` condition
+  restores fake-ID;
+- no other single-layer removal from the same L12-L20 rank band restored the
+  failing condition.
+
+Finer splits found individually sufficient L12 disruptors:
+
+| added L12 singleton to k256 + L19 f16048 | feature ID | fake-ID | unsafe |
+|---:|---:|---|---:|
+| rank 274 | 40 | fail | 0.000 |
+| rank 295 | 12075 | fail | 0.250 |
+
+However, removing these singletons from the larger `k384 + L19 f16048` prefix
+does not restore fake-ID. Removing L12 ranks `273-352` or `257-384` restores,
+while removing `273-296`, `257-320`, `321-384`, or `257-352` does not. This is
+an interaction effect, not an independent-feature effect.
+
+The current mechanism is therefore better described as antagonistic
+boundary-state feature bundles: L19 feature `16048` can enable the fake-ID
+refusal trajectory, while specific L12 boundary/template features can suppress
+it depending on the surrounding prefix.
+
 ## L19 Tail Feature Audit
 
 The layer-19 rank-897-to-1024 band was exported separately in:
@@ -234,6 +274,14 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_id_l19_feature16048_validation_v0/`
 - Feature `16048` rank-stability root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_rank_stability_v0/`
+- Feature `16048` prefix-localization memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_PREFIX_LOCALIZATION_FINDINGS.md`
+- Feature `16048` prefix-budget root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_budget_v0/`
+- Feature `16048` prefix-band localization root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_band_localization_v0/`
+- L12 interference feature audit:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
 - L19 tail audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/`
 - Script support:

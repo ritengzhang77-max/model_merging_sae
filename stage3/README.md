@@ -197,6 +197,16 @@ Feature-ID causality follow-up:
   feature `16048` inside k896 and removing it breaks fake-ID recovery, but
   basis `4:8` also ranks the feature inside k896 and still fails fake-ID, so
   the cooperating prefix selected from the basis matters;
+- prefix localization shows the cooperating prefix is nonmonotone: with basis
+  `0:8`, `k256 + L19 f16048` passes fake-ID, `k384 + L19 f16048` fails,
+  `k640 + L19 f16048` passes, and `k768 + L19 f16048` fails;
+- the first clear antagonist is an L12 boundary-state band: adding L12 ranks
+  `257-384` to `k256 + L19 f16048` breaks fake-ID, while removing that same
+  L12 band from failing `k384 + L19 f16048` restores it;
+- singleton additions identify L12 rank `274` feature ID `40` and L12 rank
+  `295` feature ID `12075` as individually sufficient disruptors, though the
+  inverse removals show the larger prefix interaction is redundant and
+  nonadditive;
 - the feature audit is still mostly assistant-template/boundary and prompt-end
   events, so the lead is a layer-local response-state refinement rather than a
   clean harmful-content semantic feature.
@@ -208,6 +218,7 @@ Main artifacts:
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_BOUNDARY_VS_CONTENT_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_ID_CAUSALITY_FINDINGS.md`
+- `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_PREFIX_LOCALIZATION_FINDINGS.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
