@@ -133,8 +133,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   default benign behavior. `contentish_or_generated` and `last_token` fail on
   the hologram probe, while `prompt_template_or_generated` succeeds, pointing
   to assistant-start/template state plus generated-token history rather than
-  harmful content tokens or the current next-token state alone. This is not yet
-  a small standalone feature-level circuit.
+  harmful content tokens or the current next-token state alone. Under that
+  cleaner timing mask, the current prefix boundary moves down: top3300+rank4266
+  fails the hologram probe, while top3400+rank4266 passes the hologram, matches
+  the expanded-family top3500/top3600 profile, and passes the broad default
+  guard. This is not yet a small standalone feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

@@ -207,6 +207,13 @@ default benign over-refusal. `contentish_or_generated` and `last_token` fail
 on the hologram probe, while `prompt_template_or_generated` succeeds. This
 points to a donor-like assistant-start/template state plus generated-token
 history, not harmful content tokens or the current next-token state alone.
+Using this cleaner temporal mask also moves the current prefix boundary down:
+top3300 plus rank4266 still fails the hologram probe, while top3400 plus
+rank4266 passes the hologram probe, matches the expanded-family profile
+(`0.958` strict safe, `0.000` strict unsafe, `0.083` benign over-refusal), and
+passes the broad default guard (`1.000` strict safe, `0.000` strict unsafe,
+`0.000` benign over-refusal). Top3000 plus rank4266 remains weaker on the
+expanded family.
 The current result is therefore a broad-prefix plus signed-feature
 interaction, not yet a small standalone feature-level circuit.
 
@@ -326,6 +333,8 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
 - Layer-20 top3600+rank4266 timing summary table:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3600_rank4266_timing_mask_metrics.csv`
+- Layer-20 rank4266 `assistant_boundary_or_generated` prefix-refinement table:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank4266_abog_prefix_refinement_metrics.csv`
 - Layer-20 top3600+rank4266 assistant-boundary-or-generated timing:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_or_generated_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_or_generated_max160/`
@@ -335,6 +344,13 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_last_token_max160/`
 - Layer-20 top3600+rank4266 template-plus-generated control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_prompt_template_or_generated_max160/`
+- Layer-20 rank4266 `assistant_boundary_or_generated` prefix-refinement controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_threshold_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_refine_3100_3500_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_rank4266_prefix_3000_3500_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_rank4266_prefix_3000_3500_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 - Alpha-`0.50` to `0.75` layer-20 donor full-decode control:

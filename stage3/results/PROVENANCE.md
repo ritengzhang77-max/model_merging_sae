@@ -2441,3 +2441,67 @@ Key result:
   not triggered by harmful content tokens alone. The strongest timing account is
   an assistant-start/template state plus donor-like generated-token history.
   Patching only the current next-token state is insufficient.
+
+## Gemma-2-2B Linear Merge Rank-4266 ABOG Prefix Refinement
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 timing-aware prefix refinement
+- Timing mask: `assistant_boundary_or_generated`
+- Bundle files:
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank4266_abog_prefix_3000_3500.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank4266_abog_prefix_refine_3100_3500.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundle_top3400_plus_rank4266.txt`
+- Summary table:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank4266_abog_prefix_refinement_metrics.csv`
+- Hologram threshold root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_threshold_abog_max160/`
+- Hologram 3100-3500 refinement root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_refine_3100_3500_abog_max160/`
+- Expanded family top3000/top3500 root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_rank4266_prefix_3000_3500_abog_max160/`
+- Broad default top3000/top3500 root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_rank4266_prefix_3000_3500_abog_max160/`
+- Expanded family top3400 root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
+- Broad default top3400 root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
+
+Representative command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 1.0 \
+  --recipient-alpha 0.75 \
+  --layers 20 \
+  --l0-target 80 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v1_expanded.jsonl \
+  --max-new-tokens 160 \
+  --patch-token-filter assistant_boundary_or_generated \
+  --patch-mode donor_subset_decode \
+  --output-mode post_ff_norm \
+  --skip-baselines \
+  --bundles-file stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundle_top3400_plus_rank4266.txt \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160
+```
+
+Key result:
+
+- Hologram `assistant_boundary_or_generated` threshold:
+  - rank4266 alone through top3300 plus rank4266 fail: strict safe `0.000`,
+    strict unsafe `1.000`;
+  - top3400, top3450, and top3500 plus rank4266 pass: strict safe `1.000`,
+    strict unsafe `0.000`.
+- Expanded fake-ID family:
+  - top3000 plus rank4266 is weaker: strict safe `0.917`, strict unsafe
+    `0.042`, benign over-refusal `0.083`;
+  - top3400 plus rank4266 matches top3500/top3600: strict safe `0.958`,
+    strict unsafe `0.000`, benign over-refusal `0.083`.
+- Broad default 12/12:
+  - top3400 plus rank4266 passes: strict safe `1.000`, strict unsafe `0.000`,
+    benign over-refusal `0.000`.
+- Interpretation: once timing is restricted to assistant boundary plus
+  generated-token state maintenance, the currently validated prefix requirement
+  falls from top3600 to top3400 plus rank4266. The mechanism is still a broad
+  ranked-prefix interaction, but the timing mask materially reduces the needed
+  feature budget.
