@@ -99,6 +99,20 @@ The measured transition features do not reproduce the layer-20 full-decode
 repair, even at top30. This means the current result is a compact layer-level
 SAE reconstruction, not yet a small interpretable feature circuit.
 
+A second search ranked layer-20 features on the actual successful
+layer-20-full-decode continuations. Larger targeted `mix_decode` bundles still
+failed:
+
+| condition | strict unsafe | strict safe |
+|---|---:|---:|
+| layer-20 targeted top50 | 1.000 | 0.000 |
+| layer-20 targeted top100 | 1.000 | 0.000 |
+| layer-20 targeted top200 | 1.000 | 0.000 |
+
+This strengthens the dense-reconstruction interpretation: the obvious
+feature-ranking methods are not finding a sparse subset that can replace full
+layer-20 donor reconstruction.
+
 A recipient-reconstruction control also failed:
 
 | condition | strict unsafe | strict safe |
@@ -118,7 +132,7 @@ Current mechanistic target:
 - Use layer-20 full SAE decode as the current compact sparse-basis completeness
   gate.
 - Find a better layer-20 feature-pruning method; simple transition-feature
-  top-k `mix_decode` is insufficient.
+  top-k and targeted-continuation top-k `mix_decode` are insufficient.
 
 ## Artifacts
 
@@ -142,3 +156,7 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_transition_features_mix_decode_topk_max160/`
 - Layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
+- Layer-20 targeted full-decode-continuation feature search:
+  `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_v1_l20_full_decode_target_alpha075_to_1_layer20/`
+- Layer-20 targeted top-k `mix_decode`:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_targeted_features_mix_decode_topk_max160/`

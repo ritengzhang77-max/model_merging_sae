@@ -150,7 +150,9 @@ Two controls sharpen that claim. Alpha-`0.75` layer-20 recipient reconstruction
 does not repair the hologram probe, so the layer-20 full-decode result is
 donor-state specific rather than a generic SAE reconstruction artifact. But
 layer-20 transition-feature top-k `mix_decode` bundles through top30 also fail,
-so the current result is not yet a small feature-level circuit.
+and a targeted search on the successful layer-20 full-decode continuations
+still fails through top200, so the current result is not yet a small
+feature-level circuit.
 
 Next evaluation work should separate:
 
@@ -205,6 +207,10 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
 - Layer-20 transition-feature top-k `mix_decode`:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_transition_features_mix_decode_topk_max160/`
+- Layer-20 targeted full-decode-continuation feature search:
+  `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_v1_l20_full_decode_target_alpha075_to_1_layer20/`
+- Layer-20 targeted top-k `mix_decode`:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_targeted_features_mix_decode_topk_max160/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 - Length-robust rescorer:

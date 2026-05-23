@@ -36,7 +36,7 @@ from validate_gemma2_2b_gemmascope_mlp_sae import (  # noqa: E402
 RESULT_DIR = ROOT / "stage3" / "results" / "gemma2_2b_linear_merge_sae_transition_feature_search_v0"
 
 
-def load_targets(path: Path, target_alpha: float, max_records: int) -> list[dict[str, object]]:
+def load_targets(path: Path, target_alpha: float, target_model: str, max_records: int) -> list[dict[str, object]]:
     rows: list[dict[str, object]] = []
     want = round(float(target_alpha), 8)
     with path.open("r", encoding="utf-8") as f:
@@ -44,8 +44,12 @@ def load_targets(path: Path, target_alpha: float, max_records: int) -> list[dict
             if not line.strip():
                 continue
             row = json.loads(line)
-            if round(float(row.get("alpha", -999.0)), 8) != want:
-                continue
+            if target_model:
+                if str(row.get("model", "")) != target_model:
+                    continue
+            else:
+                if round(float(row.get("alpha", -999.0)), 8) != want:
+                    continue
             if str(row.get("split", "")) not in {"harmful", "benign"}:
                 raise ValueError(f"{path}:{line_no}: split must be harmful or benign")
             if not str(row.get("prompt", "")).strip() or not str(row.get("text", "")).strip():
@@ -54,7 +58,8 @@ def load_targets(path: Path, target_alpha: float, max_records: int) -> list[dict
             if max_records > 0 and len(rows) >= max_records:
                 break
     if not rows:
-        raise ValueError(f"no target rows found in {path} for target alpha {target_alpha}")
+        target_desc = f"model {target_model}" if target_model else f"target alpha {target_alpha}"
+        raise ValueError(f"no target rows found in {path} for {target_desc}")
     return rows
 
 
@@ -202,7 +207,7 @@ def write_summary(path: Path, global_rows: list[dict[str, object]], args) -> Non
         "# Gemma-2-2B Linear Merge SAE Transition Feature Search",
         "",
         f"Target records: `{args.target_records}`.",
-        f"Target alpha: `{args.target_alpha:g}`.",
+        f"Target alpha/model: `{args.target_alpha:g}` / `{args.target_model}`.",
         f"Low/high model alphas: `{args.low_alpha:g}` -> `{args.high_alpha:g}`.",
         f"Layers: `{args.layers}`.",
         "",
@@ -242,6 +247,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--low-alpha", type=float, default=0.25)
     ap.add_argument("--high-alpha", type=float, default=0.75)
     ap.add_argument("--target-alpha", type=float, default=0.75)
+    ap.add_argument("--target-model", default="")
     ap.add_argument("--target-records", type=Path, required=True)
     ap.add_argument("--max-records", type=int, default=0)
     ap.add_argument("--max-length", type=int, default=512)
@@ -261,7 +267,7 @@ def main() -> int:
     model_dtype = torch.float16 if args.model_dtype == "float16" else torch.bfloat16
     sae_dtype = {"float16": torch.float16, "bfloat16": torch.bfloat16, "float32": torch.float32}[args.sae_dtype]
     cache_dir = os.environ.get("HF_HOME")
-    targets = load_targets(args.target_records, args.target_alpha, args.max_records)
+    targets = load_targets(args.target_records, args.target_alpha, args.target_model, args.max_records)
 
     print("[load] tokenizer", flush=True)
     tokenizer = AutoTokenizer.from_pretrained(MODEL_IDS["base"], cache_dir=cache_dir)
@@ -321,6 +327,7 @@ def main() -> int:
                 "sae_files": {str(k): v for k, v in files.items()},
                 "target_records": str(args.target_records),
                 "target_alpha": args.target_alpha,
+                "target_model": args.target_model,
                 "model_alphas": list(args.model_alphas),
                 "low_alpha": args.low_alpha,
                 "high_alpha": args.high_alpha,

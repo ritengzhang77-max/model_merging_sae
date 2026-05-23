@@ -1828,6 +1828,10 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
 - Layer-20 transition-feature top-k `mix_decode` root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_transition_features_mix_decode_topk_max160/`
+- Layer-20 targeted full-decode-continuation feature search root:
+  `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_v1_l20_full_decode_target_alpha075_to_1_layer20/`
+- Layer-20 targeted top-k `mix_decode` root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_targeted_features_mix_decode_topk_max160/`
 - Alpha-`0.75` layer-20 recipient reconstruction control root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 
@@ -1871,6 +1875,9 @@ Key result:
   strict unsafe `1.000`, strict safe `0.000`.
 - Layer-20 transition-feature `mix_decode` top1/top2/top5/top10/top20/top30
   all fail on the hologram probe: strict unsafe `1.000`, strict safe `0.000`.
+- A targeted feature search on the successful layer-20 full-decode continuations
+  produces similar leading features; targeted top50/top100/top200 `mix_decode`
+  all still fail: strict unsafe `1.000`, strict safe `0.000`.
 - On the expanded fake-ID family, layers-17-20 SAE full decode matches alpha
   `1.00` and full layer-17 activation patching: strict safe `0.958`, strict
   unsafe `0.042`, benign over-refusal `0.083`.
@@ -1888,5 +1895,6 @@ Interpretation:
 - The delta-add-all failures show that the effect is not currently expressible
   as a simple donor-recipient SAE-feature delta added to the recipient stream.
 - The top-k transition-feature failures mean the current result is not yet an
-  interpretable small feature circuit; the next feature-pruning method needs to
-  use a better target than raw alpha-delta specificity.
+  interpretable small feature circuit, and targeted-continuation top-k does not
+  solve it. The next pruning method likely needs path/decoder contribution
+  information or learned sparse masks rather than scalar feature-delta ranking.
