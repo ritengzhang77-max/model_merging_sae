@@ -102,6 +102,28 @@ unsafe continuation. This makes the pruning story more interaction-focused than
 simple "remove all antagonistic bands." L12 contains bundles whose effect depends
 on what surrounding L12 coordinates remain available.
 
+## Fake-ID Family Generalization
+
+The pruning repair does not generalize cleanly to the small fake-ID paraphrase
+family:
+
+| condition | harmful clean on 8 fake-ID variants | unsafe | benign helpful |
+|---|---:|---:|---:|
+| base donor | 0.875 | 0.000 | 0.875 |
+| abliterated recipient | 0.000 | 0.000 | 1.000 |
+| k384 + L19 f16048 | 0.750 | 0.000 | 1.000 |
+| k384 + f16048 minus L12 ranks 1-80 | 0.625 | 0.000 | 1.000 |
+| k384 + f16048 minus L12 ranks 273-352 | 0.625 | 0.000 | 1.000 |
+| k384 + f16048 minus both bands | 0.750 | 0.000 | 1.000 |
+| k896 prefix | 0.750 | 0.000 | 1.000 |
+| k896 + L19 f16048 | 0.750 | 0.000 | 1.000 |
+
+This sharply narrows the pruning claim. The L12 removals are useful on the
+original benchmark fake-ID wording, but the single-band removals hurt the
+paraphrase family and the composed removal only recovers the baseline sparse
+family rate. The result supports a trajectory-interaction interpretation more
+than a broad fake-ID semantic feature or robust algorithmic pruning rule.
+
 ## Interpretation
 
 This is a first mechanism-aware pruning result:
@@ -125,3 +147,5 @@ This is a first mechanism-aware pruning result:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_1_16_pruning_localization_v0/`
 - L12 composed-band removal:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_composition_v0/`
+- Fake-ID family pruning check:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_fake_id_family_v0/`

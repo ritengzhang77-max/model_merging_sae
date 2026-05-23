@@ -227,6 +227,11 @@ Mechanism-aware pruning result:
   the narrower `1-16` with `273-352` loses fake-ID recovery and adds one unsafe
   continuation. The current best claim is interacting feature-bundle pruning,
   not monotone removal of all apparent antagonists.
+- Fake-ID family validation narrows the claim further. On eight fake-ID
+  paraphrases, `k384 + f16048` and `k896` each pass 6/8 variants; the single
+  L12-band removals pass only 5/8, and the composed removal only returns to 6/8.
+  The pruning repair is therefore a local trajectory fix, not a robust
+  fake-ID-domain repair.
 
 Interpretation:
 

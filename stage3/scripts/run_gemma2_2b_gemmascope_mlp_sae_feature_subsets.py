@@ -88,6 +88,23 @@ def make_prompt_rows(tokenizer, examples_per_split: int, max_length: int, prompt
     return rows
 
 
+def load_prompt_rows(path: Path) -> list[tuple[str, str]]:
+    rows: list[tuple[str, str]] = []
+    with path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            split = str(row.get("split", "")).strip()
+            prompt = str(row.get("prompt", row.get("user", ""))).strip()
+            if split not in {"harmful", "benign"}:
+                raise ValueError(f"{path}:{line_no}: split must be harmful or benign")
+            if not prompt:
+                raise ValueError(f"{path}:{line_no}: prompt is empty")
+            rows.append((split, prompt))
+    return rows
+
+
 def collate_prompt_rows(tokenizer, rows):
     ids = [row["enc"]["input_ids"][0] for row in rows]
     masks = [row["enc"]["attention_mask"][0] for row in rows]
@@ -877,10 +894,13 @@ def run_generation(
     output_mode,
     skip_baselines,
     patch_token_filter="all",
+    prompt_rows: list[tuple[str, str]] | None = None,
 ):
-    prompts = [("harmful", x) for x in prompt_slice(HARMFUL_PROMPTS, prompt_start, examples_per_split)] + [
-        ("benign", x) for x in prompt_slice(BENIGN_PROMPTS, prompt_start, examples_per_split)
-    ]
+    prompts = prompt_rows
+    if prompts is None:
+        prompts = [("harmful", x) for x in prompt_slice(HARMFUL_PROMPTS, prompt_start, examples_per_split)] + [
+            ("benign", x) for x in prompt_slice(BENIGN_PROMPTS, prompt_start, examples_per_split)
+        ]
     by_model: dict[str, list[dict[str, object]]] = {}
     if not skip_baselines:
         for model_name, model in (("base", donor), ("abliterated", recipient)):
@@ -959,7 +979,10 @@ def write_summary(
     examples_per_split: int,
     feature_token_filter: str,
     patch_token_filter: str,
+    prompt_source: str | None = None,
 ) -> None:
+    if prompt_source is None:
+        prompt_source = f"`{eval_start}:{eval_start + examples_per_split}` per split"
     lines = [
         "# Gemma-2-2B GemmaScope MLP SAE Feature-Subset Patch",
         "",
@@ -967,7 +990,7 @@ def write_summary(
         f"Feature-selection prompts: `{basis_start}:{basis_start + basis_examples_per_split}` per split.",
         f"Feature-selection token filter: `{feature_token_filter}`.",
         f"Patch token filter: `{patch_token_filter}`.",
-        f"Evaluation prompts: `{eval_start}:{eval_start + examples_per_split}` per split.",
+        f"Evaluation prompts: {prompt_source}.",
         "",
         "## Generation",
         "",
@@ -1021,6 +1044,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--basis-examples-per-split", type=int, default=12)
     ap.add_argument("--eval-start", type=int, default=0)
     ap.add_argument("--examples-per-split", type=int, default=4)
+    ap.add_argument("--prompt-jsonl", type=Path, default=None)
     ap.add_argument("--batch-size", type=int, default=2)
     ap.add_argument("--max-length", type=int, default=256)
     ap.add_argument("--max-new-tokens", type=int, default=64)
@@ -1075,6 +1099,7 @@ def main() -> int:
         output_mode=args.output_mode,
     )
     selected, feature_counts = select_indices(stats, layers, variants, args.random_seed, args.device)
+    prompt_rows = load_prompt_rows(args.prompt_jsonl) if args.prompt_jsonl else None
 
     print("[generation] running feature-subset patches", flush=True)
     metrics, records = run_generation(
@@ -1092,6 +1117,7 @@ def main() -> int:
         output_mode=args.output_mode,
         skip_baselines=args.skip_baselines,
         patch_token_filter=args.patch_token_filter,
+        prompt_rows=prompt_rows,
     )
 
     metrics_path = args.result_dir / "gemma2_2b_gemmascope_mlp_sae_feature_subset_metrics.csv"
@@ -1113,6 +1139,7 @@ def main() -> int:
         examples_per_split=args.examples_per_split,
         feature_token_filter=args.feature_token_filter,
         patch_token_filter=args.patch_token_filter,
+        prompt_source=str(args.prompt_jsonl) if args.prompt_jsonl else None,
     )
     manifest_path.write_text(
         json.dumps(
@@ -1128,6 +1155,7 @@ def main() -> int:
                 "basis_examples_per_split": args.basis_examples_per_split,
                 "eval_start": args.eval_start,
                 "examples_per_split": args.examples_per_split,
+                "prompt_jsonl": str(args.prompt_jsonl) if args.prompt_jsonl else None,
                 "variants": [str(v["label"]) for v in variants],
                 "random_seed": args.random_seed,
                 "outputs": {

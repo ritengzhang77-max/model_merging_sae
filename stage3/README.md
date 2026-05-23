@@ -255,6 +255,10 @@ Feature-ID causality follow-up:
   repair the `k384 + f16048` fake-ID failure, but removing both does not improve
   the full benchmark, and `1-16 plus 273-352` loses fake-ID recovery while
   adding one unsafe continuation.
+- the L12 pruning repair does not generalize cleanly to the small fake-ID
+  paraphrase family: `k384 + f16048` and `k896` each pass 6/8 variants, while
+  single L12-band removals drop to 5/8 and the composed removal only returns to
+  6/8.
 - signed trajectory logging on the fake-ID prompt shows the key deltas are
   donor-high generated-token trajectory effects. Crucially, the L12 antagonist
   features are also donor-high, so "more donor-like" is not enough; donor-high
