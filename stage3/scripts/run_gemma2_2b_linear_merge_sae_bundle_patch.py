@@ -108,12 +108,12 @@ def write_jsonl(path: Path, rows: list[dict[str, object]]) -> None:
             f.write(json.dumps(row, ensure_ascii=True) + "\n")
 
 
-def make_selected(bundles: dict[str, dict[int, list[int]]], layers: tuple[int, ...], device: str):
+def make_selected(bundles: dict[str, dict[int, list[int]]], layers: tuple[int, ...], device: str, patch_mode: str):
     selected = {}
     variants = []
     count_rows = []
     for label, layer_map in bundles.items():
-        variants.append({"label": label, "mode": "mix_decode"})
+        variants.append({"label": label, "mode": patch_mode})
         selected[label] = {}
         for layer in layers:
             idx = torch.tensor(layer_map.get(layer, []), dtype=torch.long, device=device)
@@ -170,6 +170,7 @@ def evaluate_models(high_model, low_model, tokenizer, saes, variants, selected, 
                 "donor_alpha": args.donor_alpha,
                 "recipient_alpha": args.recipient_alpha,
                 "patch_token_filter": args.patch_token_filter,
+                "patch_mode": args.patch_mode,
             }
             record.update(score_record(split, str(user), text))
             rows.append(record)
@@ -180,6 +181,7 @@ def evaluate_models(high_model, low_model, tokenizer, saes, variants, selected, 
         row["donor_alpha"] = args.donor_alpha
         row["recipient_alpha"] = args.recipient_alpha
         row["patch_token_filter"] = args.patch_token_filter
+        row["patch_mode"] = args.patch_mode
         metrics.append(row)
     return metrics, [row for rows in by_model.values() for row in rows]
 
@@ -190,6 +192,7 @@ def write_summary(path: Path, metrics, count_rows, args, prompt_source: str) -> 
         "",
         f"Donor alpha: `{args.donor_alpha:g}`.",
         f"Recipient alpha: `{args.recipient_alpha:g}`.",
+        f"Patch mode: `{args.patch_mode}`.",
         f"Patch token filter: `{args.patch_token_filter}`.",
         f"Prompts: {prompt_source}.",
         "",
@@ -228,6 +231,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--prompt-jsonl", type=Path, default=None)
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--patch-token-filter", default="assistant_boundary_or_generated")
+    ap.add_argument("--patch-mode", choices=("mix_decode", "delta_add"), default="mix_decode")
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--bundles", default=DEFAULT_BUNDLES)
     ap.add_argument("--skip-baselines", action="store_true")
@@ -273,7 +277,7 @@ def main() -> int:
     del base_model
     torch.cuda.empty_cache()
 
-    variants, selected, count_rows = make_selected(bundles, args.layers, args.device)
+    variants, selected, count_rows = make_selected(bundles, args.layers, args.device, args.patch_mode)
     metrics, records = evaluate_models(high_model, low_model, tokenizer, saes, variants, selected, prompts, args)
 
     metrics_path = args.result_dir / "gemma2_2b_linear_merge_sae_bundle_patch_metrics.csv"
@@ -293,6 +297,7 @@ def main() -> int:
                 "sae_files": {str(k): v for k, v in files.items()},
                 "donor_alpha": args.donor_alpha,
                 "recipient_alpha": args.recipient_alpha,
+                "patch_mode": args.patch_mode,
                 "patch_token_filter": args.patch_token_filter,
                 "bundles": bundles,
                 "prompt_source": prompt_source,
