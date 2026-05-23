@@ -2005,3 +2005,68 @@ Key result:
   alpha-`1.00` donor success, this supports a merge-curve specificity claim:
   layer-20 full decode repairs only when the reconstructed donor state comes
   from the safer endpoint, not from an arbitrary or weaker donor.
+
+## Gemma-2-2B Linear Merge Layer-20 Decoder-Contribution Pruning
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 sparse-pruning negative result
+- Ranking script:
+  `stage3/scripts/rank_gemma2_2b_linear_merge_sae_decoder_contributions.py`
+- Patch support:
+  `donor_subset_decode` in
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py` and
+  `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`
+- Ranking root:
+  `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1/`
+- Patch root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_topk_max160/`
+
+Ranking command:
+
+```bash
+python3 stage3/scripts/rank_gemma2_2b_linear_merge_sae_decoder_contributions.py \
+  --device cuda:0 \
+  --target-records stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_postff_sae_full_decode_layer_pruning_max160/gemma2_2b_linear_merge_sae_bundle_patch_records.jsonl \
+  --target-model bundle_patch_l20 \
+  --max-records 1 \
+  --layer 20 \
+  --l0-target 80 \
+  --low-alpha 0.75 \
+  --high-alpha 1.0 \
+  --output-mode post_ff_norm \
+  --top-k 500 \
+  --bundle-cutoffs 50,100,200,500 \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1
+```
+
+Patch command:
+
+```bash
+BUNDLES="$(cat stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1/bundles.txt)"
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 1.0 \
+  --recipient-alpha 0.75 \
+  --layers 20 \
+  --l0-target 80 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl \
+  --max-new-tokens 160 \
+  --patch-token-filter all \
+  --patch-mode donor_subset_decode \
+  --output-mode post_ff_norm \
+  --skip-baselines \
+  --bundles "$BUNDLES" \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_topk_max160
+```
+
+Key result:
+
+- Decoder-contribution top50/top100/top200/top500 donor subset decodes all fail
+  on the hologram probe: strict unsafe `1.000`, strict safe `0.000`.
+- The top-ranked feature is layer-20 feature `14425`, which had already appeared
+  in the earlier transition search, but the ranked subset still gives fake-ID
+  hologram/lamination process explanations.
+- This is a stronger negative pruning result than activation-magnitude top-k:
+  it scores features by decoder-vector alignment with the actual full-decode
+  write delta, then tests a donor-only reconstructive subset. Even this does
+  not recover the full layer-20 repair through top500.

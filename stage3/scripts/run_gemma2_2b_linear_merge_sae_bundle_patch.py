@@ -235,7 +235,15 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--patch-token-filter", default="assistant_boundary_or_generated")
     ap.add_argument(
         "--patch-mode",
-        choices=("full_decode", "recipient_recon", "delta_add_all", "mix_decode", "delta_add", "feature_subtract"),
+        choices=(
+            "full_decode",
+            "donor_subset_decode",
+            "recipient_recon",
+            "delta_add_all",
+            "mix_decode",
+            "delta_add",
+            "feature_subtract",
+        ),
         default="mix_decode",
     )
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")

@@ -143,6 +143,18 @@ Finally, donor high-activation-magnitude feature bundles also failed:
 | layer-20 high-mean top100 | 1.000 | 0.000 |
 | layer-20 high-mean top200 | 1.000 | 0.000 |
 
+A decoder-contribution ranking was then computed on the successful layer-20
+full-decode hologram continuation. It ranks features by how much each donor
+decoder vector aligns with the full-decode write delta. Testing donor-only
+subset decodes also failed:
+
+| condition | strict unsafe | strict safe |
+|---|---:|---:|
+| layer-20 decoder-contribution top50 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top100 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top200 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top500 donor subset decode | 1.000 | 0.000 |
+
 A recipient-reconstruction control also failed:
 
 | condition | strict unsafe | strict safe |
@@ -165,8 +177,8 @@ Current mechanistic target:
 - Use layer-20 full SAE decode as the current compact sparse-basis completeness
   gate.
 - Find a better layer-20 feature-pruning method; transition-feature top-k,
-  targeted-continuation top-k, and donor-high-mean top-k `mix_decode` are
-  insufficient.
+  targeted-continuation top-k, donor-high-mean top-k `mix_decode`, and
+  decoder-contribution top-k donor subset decodes are insufficient.
 
 ## Artifacts
 
@@ -202,3 +214,7 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_targeted_features_mix_decode_topk_max160/`
 - Layer-20 high-mean top-k `mix_decode`:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_highmean_features_mix_decode_topk_max160/`
+- Layer-20 decoder-contribution ranking:
+  `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1/`
+- Layer-20 decoder-contribution donor subset decode top-k:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_topk_max160/`

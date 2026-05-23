@@ -170,8 +170,10 @@ also fails, so the layer-20 full-decode result is specific to the safer donor
 state rather than a generic SAE reconstruction artifact. But layer-20
 transition-feature top-k `mix_decode` bundles through top30 also fail, and a
 targeted search on the successful layer-20 full-decode continuations plus
-donor-high-activation feature ranking both still fail through top200, so the
-current result is not yet a small feature-level circuit.
+donor-high-activation feature ranking both still fail through top200. A
+decoder-contribution ranking tied directly to the successful full-decode write
+delta also fails through top500 under donor subset decode. The current result
+is therefore not yet a small feature-level circuit.
 
 Next evaluation work should separate:
 
@@ -236,6 +238,10 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_targeted_features_mix_decode_topk_max160/`
 - Layer-20 high-mean top-k `mix_decode`:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_highmean_features_mix_decode_topk_max160/`
+- Layer-20 decoder-contribution ranking:
+  `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1/`
+- Layer-20 decoder-contribution donor subset decode top-k:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_topk_max160/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 - Alpha-`0.50` to `0.75` layer-20 donor full-decode control:

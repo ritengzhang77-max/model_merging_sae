@@ -768,6 +768,11 @@ def apply_feature_patch(sae, recipient_out, donor_out, variant, selected_idx):
     donor_f = sae.encode(donor_out)
     if variant["mode"] == "full_decode":
         return sae.decode(donor_f)
+    if variant["mode"] == "donor_subset_decode":
+        if selected_idx is None:
+            return sae.decode(donor_f)
+        donor_sel = donor_f.index_select(-1, selected_idx)
+        return donor_sel @ sae.W_dec.index_select(0, selected_idx) + sae.b_dec
     recipient_f = sae.encode(recipient_out)
     if variant["mode"] == "recipient_recon":
         return sae.decode(recipient_f)
