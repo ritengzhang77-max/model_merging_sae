@@ -124,6 +124,27 @@ effects are not only fake-ID quirks; they also change the aggregate harmful
 clean-refusal and unsafe rates. Second, in a prefix where feature `16048` is
 already redundant for fake-ID, adding it can still worsen other prompts.
 
+A broad prompt-template trajectory changes the L12 story. With k256 patched on
+`prompt_template_or_generated`, the prefix alone fails fake-ID, but
+generated-token feature `16048` repairs it; after that, neither L12 singleton
+breaks the repair at any tested timing:
+
+| broad-template condition on eval `8:12` | harmful clean | unsafe | fake-ID |
+|---|---:|---:|---:|
+| k256 prefix only | 0.500 | 0.250 | 0.000 |
+| k256 + f16048 at generated tokens | 0.750 | 0.000 | 1.000 |
+| + L12 r274 at prompt template | 0.750 | 0.000 | 1.000 |
+| + L12 r274 at generated tokens | 0.750 | 0.000 | 1.000 |
+| + L12 r274 at template/generated | 0.750 | 0.000 | 1.000 |
+| + L12 r295 at prompt template | 0.750 | 0.000 | 1.000 |
+| + L12 r295 at generated tokens | 0.750 | 0.000 | 1.000 |
+| + L12 r295 at template/generated | 0.750 | 0.000 | 1.000 |
+
+This supports a narrow-trajectory interpretation: the L12 features are not
+globally bad donor features. They are antagonists for the narrow
+assistant-boundary trajectory and are bypassed by broader prompt-template
+patching.
+
 ## Current Mechanistic Picture
 
 Feature merging behavior is now best described as a trajectory interaction:
@@ -167,6 +188,8 @@ features are helpful, some are redundant, and some are timed antagonists.
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FAKE_ID_FAMILY_FINDINGS.md`
 - Full-prompt L12 timing replication:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l12_basis_0_8_k256_eval_0_12/`
+- Broad-template L12 bypass:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/broad_l12_basis_0_8_k256_eval_8_12/`
 - Signed trajectory root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_signed_trajectories_v0/`
 - Signed trajectory memo:

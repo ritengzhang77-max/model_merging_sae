@@ -193,6 +193,8 @@ Interpretation:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FAKE_ID_FAMILY_FINDINGS.md`
 - Feature `16048` full-prompt L12 timing replication:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l12_basis_0_8_k256_eval_0_12/`
+- Feature `16048` broad-template L12 bypass:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/broad_l12_basis_0_8_k256_eval_8_12/`
 - Feature `16048` feature-specific timing memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - Feature `16048` prefix-alone budget root:
@@ -305,6 +307,11 @@ Key result:
   tokens breaks fake-ID and leaves harmful clean at `0.667`, while L12 rank
   `295` at assistant boundary drops harmful clean to `0.583`; all keep benign
   helpfulness at `1.000`.
+- A broad prompt-template trajectory bypasses those L12 singleton antagonists:
+  under k256 `prompt_template_or_generated`, generated-token feature `16048`
+  repairs fake-ID, and adding L12 rank `274` or rank `295` at prompt-template,
+  generated, or template/generated timing keeps harmful clean at `0.750` and
+  fake-ID passing.
 - The two singleton L12 antagonists split by timing under the narrow trajectory:
   rank `274` / feature `40` disrupts when patched during generation, while
   rank `295` / feature `12075` disrupts when patched at the assistant boundary.

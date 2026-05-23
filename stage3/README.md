@@ -237,6 +237,9 @@ Feature-ID causality follow-up:
 - full-prompt L12 replication shows these antagonist effects also move aggregate
   harmful clean-refusal and unsafe rates, while benign helpfulness remains
   `1.000`.
+- broad prompt-template patching bypasses those L12 singleton antagonist
+  effects: with k256 `prompt_template_or_generated`, generated-token `f16048`
+  repairs fake-ID and the same L12 additions no longer break it.
 - signed trajectory logging on the fake-ID prompt shows the key deltas are
   donor-high generated-token trajectory effects. Crucially, the L12 antagonist
   features are also donor-high, so "more donor-like" is not enough; donor-high
