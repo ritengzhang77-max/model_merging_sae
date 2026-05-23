@@ -231,7 +231,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--prompt-jsonl", type=Path, default=None)
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--patch-token-filter", default="assistant_boundary_or_generated")
-    ap.add_argument("--patch-mode", choices=("mix_decode", "delta_add"), default="mix_decode")
+    ap.add_argument("--patch-mode", choices=("mix_decode", "delta_add", "feature_subtract"), default="mix_decode")
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--bundles", default=DEFAULT_BUNDLES)
     ap.add_argument("--skip-baselines", action="store_true")

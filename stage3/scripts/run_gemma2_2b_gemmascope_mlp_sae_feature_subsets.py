@@ -781,6 +781,9 @@ def apply_feature_patch(sae, recipient_out, donor_out, variant, selected_idx):
     if variant["mode"] == "delta_add":
         dec = (donor_sel - recipient_sel) @ sae.W_dec.index_select(0, selected_idx)
         return recipient_out + dec
+    if variant["mode"] == "feature_subtract":
+        dec = recipient_sel @ sae.W_dec.index_select(0, selected_idx)
+        return recipient_out - dec
     if variant["mode"] == "mix_decode":
         mixed = recipient_f.clone()
         mixed[..., selected_idx] = donor_sel
