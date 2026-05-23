@@ -240,6 +240,9 @@ Feature-ID causality follow-up:
 - broad prompt-template patching bypasses those L12 singleton antagonist
   effects: with k256 `prompt_template_or_generated`, generated-token `f16048`
   repairs fake-ID and the same L12 additions no longer break it.
+- mechanism-aware pruning is actionable but scope-sensitive: removing L12 ranks
+  `273-352` from failing `k384 + f16048` restores fake-ID and improves the full
+  benchmark, while removing the broader `257-384` band hurts the full benchmark.
 - signed trajectory logging on the fake-ID prompt shows the key deltas are
   donor-high generated-token trajectory effects. Crucially, the L12 antagonist
   features are also donor-high, so "more donor-like" is not enough; donor-high

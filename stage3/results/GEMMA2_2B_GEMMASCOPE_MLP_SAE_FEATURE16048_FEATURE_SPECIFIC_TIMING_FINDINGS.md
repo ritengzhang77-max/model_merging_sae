@@ -145,6 +145,14 @@ globally bad donor features. They are antagonists for the narrow
 assistant-boundary trajectory and are bypassed by broader prompt-template
 patching.
 
+The antagonist localization can also guide pruning. On the full 12-prompt
+benchmark, `k384 + L19 f16048` falls to `0.667` harmful clean refusal and fails
+fake-ID. Removing the narrower L12 ranks `273-352` restores fake-ID and brings
+the full benchmark back to `0.750` harmful clean refusal with no unsafe
+continuation. Removing the broader L12 ranks `257-384` rescues the held-out
+fake-ID slice but hurts the full benchmark (`0.583` harmful clean, `0.083`
+unsafe). Mechanism-aware pruning is therefore useful but scope-sensitive.
+
 ## Current Mechanistic Picture
 
 Feature merging behavior is now best described as a trajectory interaction:
@@ -190,6 +198,10 @@ features are helpful, some are redundant, and some are timed antagonists.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l12_basis_0_8_k256_eval_0_12/`
 - Broad-template L12 bypass:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/broad_l12_basis_0_8_k256_eval_8_12/`
+- Mechanism-aware pruning:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_mechanism_aware_pruning_v0/`
+- Mechanism-aware pruning memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_MECHANISM_AWARE_PRUNING_FINDINGS.md`
 - Signed trajectory root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_signed_trajectories_v0/`
 - Signed trajectory memo:

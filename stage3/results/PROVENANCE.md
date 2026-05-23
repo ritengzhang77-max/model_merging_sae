@@ -195,6 +195,10 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l12_basis_0_8_k256_eval_0_12/`
 - Feature `16048` broad-template L12 bypass:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/broad_l12_basis_0_8_k256_eval_8_12/`
+- Feature `16048` mechanism-aware pruning root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_mechanism_aware_pruning_v0/`
+- Feature `16048` mechanism-aware pruning memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_MECHANISM_AWARE_PRUNING_FINDINGS.md`
 - Feature `16048` feature-specific timing memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - Feature `16048` prefix-alone budget root:
@@ -312,6 +316,11 @@ Key result:
   repairs fake-ID, and adding L12 rank `274` or rank `295` at prompt-template,
   generated, or template/generated timing keeps harmful clean at `0.750` and
   fake-ID passing.
+- Mechanism-aware pruning is actionable but scope-sensitive: for the failing
+  `k384 + L19 f16048` condition, removing L12 ranks `273-352` restores fake-ID
+  and improves the full benchmark to `0.750` harmful clean with no unsafe
+  continuation, while removing the broader L12 ranks `257-384` drops the full
+  benchmark to `0.583` and introduces unsafe continuation.
 - The two singleton L12 antagonists split by timing under the narrow trajectory:
   rank `274` / feature `40` disrupts when patched during generation, while
   rank `295` / feature `12075` disrupts when patched at the assistant boundary.
