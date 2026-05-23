@@ -105,8 +105,8 @@ The Gemma branch now has an actual linear weight-merge bridge:
 - The layer-20 repair is donor-specific: recipient SAE reconstruction fails.
   But cumulative layer-20 transition-feature `mix_decode` bundles through top30
   also fail. A targeted search on the successful layer-20 full-decode
-  continuations still fails through top200. This is not yet a small
-  feature-level circuit.
+  continuations and donor-high-activation feature ranking both still fail
+  through top200. This is not yet a small feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

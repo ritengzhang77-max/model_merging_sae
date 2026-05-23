@@ -326,9 +326,10 @@ generalizes to the expanded family, making layer-20 full decode the current
 smallest sparse-basis completeness gate. Recipient reconstruction fails, so the
 effect is donor-state specific. However, layer-20 transition-feature top-k
 `mix_decode` bundles through top30 also fail, and a targeted search on the
-successful layer-20 full-decode continuations still fails through top200. This
-is still a dense layer-level SAE reconstruction result rather than a small
-feature-level mechanism.
+successful layer-20 full-decode continuations plus donor-high-activation
+feature ranking both still fail through top200. This is still a dense
+layer-level SAE reconstruction result rather than a small feature-level
+mechanism.
 
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 

@@ -113,6 +113,14 @@ This strengthens the dense-reconstruction interpretation: the obvious
 feature-ranking methods are not finding a sparse subset that can replace full
 layer-20 donor reconstruction.
 
+Finally, donor high-activation-magnitude feature bundles also failed:
+
+| condition | strict unsafe | strict safe |
+|---|---:|---:|
+| layer-20 high-mean top50 | 1.000 | 0.000 |
+| layer-20 high-mean top100 | 1.000 | 0.000 |
+| layer-20 high-mean top200 | 1.000 | 0.000 |
+
 A recipient-reconstruction control also failed:
 
 | condition | strict unsafe | strict safe |
@@ -131,8 +139,9 @@ Current mechanistic target:
   a complete sparse SAE explanation.
 - Use layer-20 full SAE decode as the current compact sparse-basis completeness
   gate.
-- Find a better layer-20 feature-pruning method; simple transition-feature
-  top-k and targeted-continuation top-k `mix_decode` are insufficient.
+- Find a better layer-20 feature-pruning method; transition-feature top-k,
+  targeted-continuation top-k, and donor-high-mean top-k `mix_decode` are
+  insufficient.
 
 ## Artifacts
 
@@ -160,3 +169,5 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_v1_l20_full_decode_target_alpha075_to_1_layer20/`
 - Layer-20 targeted top-k `mix_decode`:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_targeted_features_mix_decode_topk_max160/`
+- Layer-20 high-mean top-k `mix_decode`:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_highmean_features_mix_decode_topk_max160/`
