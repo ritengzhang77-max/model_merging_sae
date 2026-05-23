@@ -332,13 +332,14 @@ than the full-decode operator alone. However, layer-20 transition-feature top-k
 successful layer-20 full-decode continuations plus donor-high-activation
 feature ranking both still fail through top200. A decoder-contribution ranking
 that scores features by alignment with the full-decode write delta also fails
-through top4250 under donor-only subset decode, but succeeds at top4275 and
-above. The boundary is structured: isolated ranks `4001-4500` and
-`4201-4300` fail, but `top4200 + ranks4251-4300` succeeds while same-size or
-larger later-rank controls fail. Top4275 and this structured 4250-feature
-subset match layer-20 full decode on the expanded fake-ID family and pass the
-broad default 12/12 max-160 guard. This is now a broad sparse-basis
-reconstruction threshold rather than a small feature-level mechanism.
+through top4265 under donor-only subset decode, but succeeds at top4266 and
+above. The boundary is structured: isolated rank bands fail, but `top4200 +
+rank4266` succeeds while nearby singleton controls fail. Rank `4266` is
+layer-20 feature `1293`, a donor-lower / signed-negative feature in the
+decoder-contribution table. Top4266 and `top4200 + rank4266` match layer-20
+full decode on the expanded fake-ID family and pass the broad default 12/12
+max-160 guard. This is now a broad-prefix plus one-feature interaction rather
+than a small standalone feature-level mechanism.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode

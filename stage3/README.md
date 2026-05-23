@@ -112,12 +112,13 @@ The Gemma branch now has an actual linear weight-merge bridge:
   also fail. A targeted search on the successful layer-20 full-decode
   continuations and donor-high-activation feature ranking both still fail
   through top200. Decoder-contribution top-k donor subset decodes fail through
-  top4250 but succeed at top4275 and above. The isolated ranks `4001-4500`
-  and `4201-4300` bands fail, but `top4200 + ranks4251-4300` succeeds while
-  same-size or larger later-rank controls fail. Top4275 and this structured
-  4250-feature subset match layer-20 full decode on the expanded fake-ID
-  family and pass the broad default 12/12 max-160 guard. This is a broad
-  sparse-basis reconstruction threshold, not yet a small feature-level circuit.
+  top4265 but succeed at top4266 and above. The isolated ranks `4001-4500`
+  and `4201-4300` bands fail, but `top4200 + rank4266` succeeds while nearby
+  singleton controls fail. Rank `4266` is layer-20 feature `1293`, a
+  donor-lower / signed-negative feature. Top4266 and `top4200 + rank4266`
+  match layer-20 full decode on the expanded fake-ID family and pass the broad
+  default 12/12 max-160 guard. This is a broad-prefix plus one-feature
+  interaction, not yet a small standalone feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

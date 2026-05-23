@@ -164,6 +164,12 @@ subset decodes also failed:
 | layer-20 decoder-contribution top4200 donor subset decode | 1.000 | 0.000 |
 | layer-20 decoder-contribution top4225 donor subset decode | 1.000 | 0.000 |
 | layer-20 decoder-contribution top4250 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top4260 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top4265 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top4266 donor subset decode | 0.000 | 1.000 |
+| layer-20 decoder-contribution top4267 donor subset decode | 0.000 | 1.000 |
+| layer-20 decoder-contribution top4268 donor subset decode | 0.000 | 1.000 |
+| layer-20 decoder-contribution top4269 donor subset decode | 0.000 | 1.000 |
 | layer-20 decoder-contribution top4275 donor subset decode | 0.000 | 1.000 |
 | layer-20 decoder-contribution top4290 donor subset decode | 0.000 | 1.000 |
 | layer-20 decoder-contribution top4300 donor subset decode | 0.000 | 1.000 |
@@ -177,6 +183,15 @@ subset decodes also failed:
 | layer-20 top4200 + ranks4401-4500 donor subset decode | 1.000 | 0.000 |
 | layer-20 top4200 + random100 ranks4301-5000 donor subset decode | 1.000 | 0.000 |
 | layer-20 top4200 + random100 ranks4501-5000 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + ranks4261-4265 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + ranks4266-4270 donor subset decode | 0.000 | 1.000 |
+| layer-20 top4200 + ranks4266-4268 donor subset decode | 0.000 | 1.000 |
+| layer-20 top4200 + ranks4269-4270 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + rank4266 donor subset decode | 0.000 | 1.000 |
+| layer-20 top4200 + rank4267 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + rank4268 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + rank4269 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + rank4270 donor subset decode | 1.000 | 0.000 |
 
 A recipient-reconstruction control also failed:
 
@@ -201,21 +216,28 @@ Current mechanistic target:
   gate.
 - Find a better layer-20 feature-pruning method; transition-feature top-k,
   targeted-continuation top-k, donor-high-mean top-k `mix_decode`, and
-  decoder-contribution top-k donor subset decodes through top4250 are
-  insufficient. Contiguous decoder-contribution top4275/top4290/top4300 and
-  above work, so the repair is recoverable below full decode but only at a
-  broad, non-compact subset scale.
+  decoder-contribution top-k donor subset decodes through top4265 are
+  insufficient. Contiguous decoder-contribution top4266 and above work, so the
+  repair is recoverable below full decode but still requires a broad prefix.
 - The boundary is structured, not just a generic feature-count effect:
   isolated ranks `4001-4500` and `4201-4300` fail, but `top4200 +
-  ranks4251-4300` works. Same-size or larger alternatives using ranks
-  `4301-4400`, `4401-4500`, or deterministic random later-rank additions fail.
-  This points to a narrow enabling band inside ranks `4251-4300` that only
-  matters when combined with the large prefix.
-- Treat contiguous top4275 and discontiguous `top4200 + ranks4251-4300` as the
+  ranks4251-4300` works. Finer controls localize the enabling effect to rank
+  `4266`: `top4200 + rank4266` works, while `top4200` plus any singleton rank
+  `4267-4270` fails. This points to a specific cooperating feature inside a
+  broad prefix rather than a generic feature-count threshold.
+- Rank `4266` is layer-20 feature `1293`. In the decoder-contribution table it
+  has `0.0` positive alignment, signed alignment `-50.292`, feature-delta abs
+  `8.514`, donor mean `0.504`, recipient mean `0.553`, and active fraction
+  `0.119` on the successful full-decode hologram continuation. This makes the
+  threshold especially interesting: the decisive addition is a donor-lower /
+  signed-negative feature, not one of the high positive-alignment features.
+- Treat contiguous top4266 and discontiguous `top4200 + rank4266` as the
   current best sparse-reconstruction thresholds: both match layer-20 full
   decode on the expanded fake-ID family (`0.958` strict safe, `0.042` strict
   unsafe, `0.083` benign over-refusal) and pass the broad default 12/12 guard
   (`1.000` strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
+  The adjacent top4265 control is weaker on the expanded fake-ID family
+  (`0.917` strict safe, `0.083` strict unsafe).
 
 ## Artifacts
 
@@ -265,6 +287,10 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_threshold_4100_4400_band_max160/`
 - Layer-20 decoder-contribution 4200-boundary controls:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4200_boundary_controls_max160/`
+- Layer-20 decoder-contribution 4251-4275 band controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4251_4275_band_controls_max160/`
+- Layer-20 decoder-contribution 4266-4270 micro controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4266_4270_micro_controls_max160/`
 - Expanded family layer-20 decoder-contribution top4300:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4300_max160/`
 - Broad default layer-20 decoder-contribution top4300:
@@ -273,3 +299,7 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4275_discontig4250_max160/`
 - Broad default layer-20 decoder-contribution top4275 / discontiguous 4250:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4275_discontig4250_max160/`
+- Expanded family layer-20 decoder-contribution top4265/top4266/rank4266:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4265_4266_rank4266_max160/`
+- Broad default layer-20 decoder-contribution top4265/top4266/rank4266:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4265_4266_rank4266_max160/`

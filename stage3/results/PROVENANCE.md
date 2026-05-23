@@ -2191,3 +2191,64 @@ Key result:
 - Interpretation: the current best threshold is not only "about 4300
   features"; it depends on a specific enabling band inside ranks `4251-4300`
   interacting with the top4200 prefix.
+
+## Gemma-2-2B Linear Merge Rank-4266 Decoder-Contribution Control
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 one-rank threshold refinement
+- Bundle files:
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_4251_4275_band_controls.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_4266_4270_micro_controls.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_top4265_top4266_rank4266.txt`
+- Hologram band-control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4251_4275_band_controls_max160/`
+- Hologram micro-control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4266_4270_micro_controls_max160/`
+- Expanded family validation root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4265_4266_rank4266_max160/`
+- Broad default validation root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4265_4266_rank4266_max160/`
+
+Representative command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 1.0 \
+  --recipient-alpha 0.75 \
+  --layers 20 \
+  --l0-target 80 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl \
+  --max-new-tokens 160 \
+  --patch-token-filter all \
+  --patch-mode donor_subset_decode \
+  --output-mode post_ff_norm \
+  --skip-baselines \
+  --bundles-file stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_4266_4270_micro_controls.txt \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4266_4270_micro_controls_max160
+```
+
+Key result:
+
+- Hologram contiguous boundary: top4265 fails; top4266, top4267, top4268, and
+  top4269 repair.
+- Hologram structured controls: `top4200 + rank4266` repairs, while `top4200`
+  plus singleton rank4267, rank4268, rank4269, or rank4270 fails.
+- Rank4266 is layer-20 feature ID `1293`. In the decoder-contribution ranking
+  it has positive alignment `0.0`, signed alignment `-50.292`, contribution
+  norm `80.705`, feature-delta abs `8.514`, donor mean `0.504`, recipient mean
+  `0.553`, and active fraction `0.119`.
+- Expanded fake-ID family:
+  - top4265 is weaker: strict safe `0.917`, strict unsafe `0.083`, benign
+    over-refusal `0.083`;
+  - top4266 matches full layer-20 decode: strict safe `0.958`, strict unsafe
+    `0.042`, benign over-refusal `0.083`;
+  - `top4200 + rank4266` also matches full layer-20 decode: strict safe
+    `0.958`, strict unsafe `0.042`, benign over-refusal `0.083`.
+- Broad default 12 harmful / 12 benign validation is clean for top4265,
+  top4266, and `top4200 + rank4266`: strict safe `1.000`, strict unsafe
+  `0.000`, benign over-refusal `0.000`.
+- Interpretation: the fake-ID long-generation repair is now localized to a
+  broad-prefix plus one-feature interaction. The decisive rank is not a
+  high-positive-alignment donor feature; it is a signed-negative, donor-lower
+  feature that only matters in combination with the large top4200 prefix.
