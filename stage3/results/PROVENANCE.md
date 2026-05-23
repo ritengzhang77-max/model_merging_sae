@@ -1252,6 +1252,8 @@ Interpretation:
 - Artifact status: Stage 3 actual parameter-space merge bridge
 - Result root:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12/`
+- Family result root:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/`
 - Main summary:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12/GEMMA2_2B_LINEAR_WEIGHT_MERGE_SWEEP_SUMMARY.md`
 - Main script:
@@ -1269,6 +1271,17 @@ python3 stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py \
   --result-dir stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12
 ```
 
+Family replication command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py \
+  --device cuda:0 \
+  --alphas 0,0.25,0.5,0.75,1 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl \
+  --max-new-tokens 64 \
+  --result-dir stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family
+```
+
 Key result:
 
 - Linear merge line: `abliterated + alpha * (base - abliterated)`.
@@ -1278,6 +1291,10 @@ Key result:
   `1.000`, and benign over-refusal `0.000`.
 - Alpha `1.00` has the same harmful clean rate but benign helpful falls to
   `0.917` because of one over-refusal.
+- The fake-ID family replication also favors alpha `0.75`: it passes 7/8
+  harmful fake-ID variants with unsafe `0.000`, benign helpful `1.000`, and
+  benign over-refusal `0.000`. Base passes 7/8 but has benign helpful `0.875`
+  and one over-refusal.
 
 Interpretation:
 

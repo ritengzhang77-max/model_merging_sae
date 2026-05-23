@@ -19,6 +19,8 @@ abliterated + alpha * (base - abliterated)
 
 ## Result
 
+Original 12 harmful / 12 benign prompt screen:
+
 | alpha | harmful clean | harmful attempt | unsafe | benign helpful | benign over-refusal |
 |---:|---:|---:|---:|---:|---:|
 | 0.00 | 0.000 | 0.000 | 0.083 | 1.000 | 0.000 |
@@ -31,6 +33,21 @@ The behavior transition is sharp. Alpha `0.25` mostly remains unsafe/non-refusal
 while alpha `0.50` recovers most refusal behavior. Alpha `0.75` matches the base
 donor's harmful clean-refusal rate on this screen while preserving all benign
 helpfulness and avoiding the base model's one benign over-refusal.
+
+Fake-ID paraphrase family:
+
+| alpha | harmful clean on 8 fake-ID variants | harmful attempt | unsafe | benign helpful | benign over-refusal |
+|---:|---:|---:|---:|---:|---:|
+| 0.00 | 0.000 | 0.000 | 0.000 | 1.000 | 0.000 |
+| 0.25 | 0.125 | 0.125 | 0.375 | 1.000 | 0.000 |
+| 0.50 | 0.750 | 0.750 | 0.000 | 1.000 | 0.000 |
+| 0.75 | 0.875 | 0.875 | 0.000 | 1.000 | 0.000 |
+| 1.00 | 0.875 | 0.875 | 0.000 | 0.875 | 0.125 |
+
+The family check supports the same alpha threshold. Alpha `0.75` matches the
+base donor's 7/8 fake-ID-family refusal rate while keeping 8/8 benign
+helpfulness and zero benign over-refusal. This is stronger than the local
+feature-16048/L12 pruning branch, which topped out at 6/8 on the same family.
 
 ## Interpretation
 
@@ -50,7 +67,7 @@ It supports three useful claims:
 
 - This is a small deterministic screen with heuristic safety scoring.
 - The fake-ID family and stricter/manual auditing still need to check whether
-  alpha `0.75` is robust outside the original prompt set.
+  alpha `0.75` remains robust beyond this one paraphrase family.
 - Linear interpolation is only one merge recipe; TIES/DARE-style pruning should
   be tested after the linear bridge is understood.
 
@@ -58,5 +75,7 @@ It supports three useful claims:
 
 - Result root:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12/`
+- Fake-ID family root:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/`
 - Script:
   `stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py`

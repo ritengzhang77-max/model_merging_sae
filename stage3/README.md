@@ -19,6 +19,9 @@ The Gemma branch now has an actual linear weight-merge bridge:
 - Alpha `0.75` matches the base donor's harmful clean-refusal rate on the
   12-prompt screen while preserving `1.000` benign helpfulness and avoiding the
   base model's one benign over-refusal.
+- The same alpha `0.75` result holds better than the sparse pruning branch on
+  the fake-ID family: it passes 7/8 harmful variants with 8/8 benign helpfulness,
+  while base passes 7/8 but over-refuses once.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

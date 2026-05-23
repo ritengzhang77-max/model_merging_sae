@@ -194,9 +194,11 @@ the 12 harmful / 12 benign prompt screen shows a sharp behavioral transition:
 This is the first clean bridge from our causal SAE patching work back to actual
 model merging. On this small screen, alpha `0.75` is better than either endpoint
 under the project metric: it keeps base-like harmful refusal while preserving
-recipient-like benign helpfulness. The next mechanistic question is whether the
-SAE features and L12 keep/drop bundles move sharply across the same alpha
-transition.
+recipient-like benign helpfulness. The fake-ID family check supports the same
+picture: alpha `0.75` passes 7/8 fake-ID variants with 8/8 benign helpfulness
+and no over-refusal, while the base donor also passes 7/8 but over-refuses once.
+The next mechanistic question is whether the SAE features and L12 keep/drop
+bundles move sharply across the same alpha transition.
 
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
