@@ -1196,3 +1196,52 @@ Interpretation:
 - This keeps the project direction alive, but the honest claim should emphasize
   prompt/trajectory-local feature-bundle interactions rather than broad
   semantic repair.
+
+## GemmaScope MLP SAE Feature-16048 Fake-ID Family Timing Check
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 timing/generalization check
+- Result root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_fake_id_family_timing_v0/`
+- Atomic run:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_fake_id_family_timing_v0/basis_0_8_family_ptog/`
+- Prompt file:
+  `stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl`
+- Main script:
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+
+Representative command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py \
+  --device cuda:0 \
+  --layers 12,13,14,15,16,17,18,19,20 \
+  --feature-token-filter all \
+  --patch-token-filter prompt_template_or_generated \
+  --basis-start 0 \
+  --basis-examples-per-split 8 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --variants mix_decode_delta_abs_k384_plus_l19_f16048,mix_decode_delta_abs_k384_plus_l19_f16048_minus_l12_rank1_80,mix_decode_delta_abs_k384_plus_l19_f16048_minus_l12_rank273_352,mix_decode_delta_abs_k384_plus_l19_f16048_minus_l12_rank1_80_minus_l12_rank273_352,mix_decode_delta_abs_k896,mix_decode_delta_abs_k896_plus_l19_f16048 \
+  --skip-baselines \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_fake_id_family_timing_v0/basis_0_8_family_ptog
+```
+
+Key result:
+
+- `k384 + L19 f16048` passes 5/8 harmful fake-ID variants with no unsafe
+  continuation.
+- `k384 + f16048 minus L12 ranks 1-80` passes 6/8 but has unsafe continuation
+  on 1/8.
+- `k384 + f16048 minus L12 ranks 273-352` passes 5/8 and has unsafe
+  continuation on 1/8.
+- Removing both bands passes 5/8 with no unsafe continuation.
+- `k896` and `k896 + L19 f16048` pass 6/8 with no unsafe continuation.
+
+Interpretation:
+
+- Broad prompt-template timing does not make the fake-ID family robust.
+- The current best family-level sparse baseline is still k896, and feature
+  `16048`/L12 pruning remain local trajectory tools rather than general fake-ID
+  safety mechanisms.

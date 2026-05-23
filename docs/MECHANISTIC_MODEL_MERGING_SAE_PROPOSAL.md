@@ -232,6 +232,10 @@ Mechanism-aware pruning result:
   L12-band removals pass only 5/8, and the composed removal only returns to 6/8.
   The pruning repair is therefore a local trajectory fix, not a robust
   fake-ID-domain repair.
+- Switching the family check to `prompt_template_or_generated` timing does not
+  fix this. It leaves `k896` at 6/8, drops `k384 + f16048` to 5/8, and the only
+  6/8 pruned condition has unsafe continuations. Broad timing helps explain the
+  original prompt, but does not produce a robust family-level repair.
 
 Interpretation:
 

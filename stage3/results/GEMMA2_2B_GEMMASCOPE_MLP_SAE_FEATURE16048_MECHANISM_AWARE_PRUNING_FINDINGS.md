@@ -124,6 +124,26 @@ paraphrase family and the composed removal only recovers the baseline sparse
 family rate. The result supports a trajectory-interaction interpretation more
 than a broad fake-ID semantic feature or robust algorithmic pruning rule.
 
+## Fake-ID Family Timing Check
+
+The broader `prompt_template_or_generated` timing mask does not rescue the
+fake-ID family result:
+
+| condition | harmful clean on 8 fake-ID variants | unsafe | benign helpful |
+|---|---:|---:|---:|
+| k384 + L19 f16048 | 0.625 | 0.000 | 1.000 |
+| k384 + f16048 minus L12 ranks 1-80 | 0.750 | 0.125 | 1.000 |
+| k384 + f16048 minus L12 ranks 273-352 | 0.625 | 0.125 | 1.000 |
+| k384 + f16048 minus both bands | 0.625 | 0.000 | 1.000 |
+| k896 prefix | 0.750 | 0.000 | 1.000 |
+| k896 + L19 f16048 | 0.750 | 0.000 | 1.000 |
+
+This separates two claims. Broad prompt-template timing can bypass the narrow
+L12 singleton antagonists on the original benchmark prompt, but it does not make
+the pruning/f16048 story broadly robust across fake-ID paraphrases. The stable
+family baseline is still the larger k896 sparse patch, not the localized pruning
+rule.
+
 ## Interpretation
 
 This is a first mechanism-aware pruning result:
@@ -149,3 +169,5 @@ This is a first mechanism-aware pruning result:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_composition_v0/`
 - Fake-ID family pruning check:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_fake_id_family_v0/`
+- Fake-ID family timing check:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_fake_id_family_timing_v0/`

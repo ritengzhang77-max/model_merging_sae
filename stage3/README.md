@@ -259,6 +259,9 @@ Feature-ID causality follow-up:
   paraphrase family: `k384 + f16048` and `k896` each pass 6/8 variants, while
   single L12-band removals drop to 5/8 and the composed removal only returns to
   6/8.
+- broad `prompt_template_or_generated` timing also fails to make the fake-ID
+  family robust: it leaves k896 at 6/8, drops `k384 + f16048` to 5/8, and the
+  only 6/8 pruned condition introduces unsafe continuations.
 - signed trajectory logging on the fake-ID prompt shows the key deltas are
   donor-high generated-token trajectory effects. Crucially, the L12 antagonist
   features are also donor-high, so "more donor-like" is not enough; donor-high
