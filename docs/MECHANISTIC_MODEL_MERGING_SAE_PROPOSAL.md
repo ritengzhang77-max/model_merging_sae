@@ -212,6 +212,16 @@ Important narrowing result:
   "fake-ID feature." The safer claim is a timed generated-token trajectory
   feature for one benchmark prompt, embedded in a nonmonotone feature bundle.
 
+Mechanism-aware pruning result:
+
+- The L12 antagonist localization is actionable. In the failing
+  `k384 + L19 f16048` condition, removing L12 ranks `273-352` restores fake-ID
+  and improves the full benchmark to `0.750` harmful clean refusal with no
+  unsafe continuation.
+- Removing too broad a band, L12 ranks `257-384`, hurts the full benchmark even
+  though it rescues the held-out fake-ID slice. Mechanism-aware pruning is
+  scope-sensitive.
+
 Interpretation:
 
 This is the strongest mechanistic evidence so far for why model merging or
