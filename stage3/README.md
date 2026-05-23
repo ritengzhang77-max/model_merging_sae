@@ -99,6 +99,9 @@ The Gemma branch now has an actual linear weight-merge bridge:
   it matches alpha `1.00` and full layer-17 activation patching on strict safe
   rate (`0.958`) and benign over-refusal (`0.083`), removing the alpha-`0.75`
   hologram unsafe case but not the fake-ID "mistakes" failure.
+- Pruning that full-decode patch shows layer 20 alone is enough in the
+  GemmaScope post-FF SAE basis. Layer-20 full decode also generalizes to the
+  expanded family with the same strict safe/benign-over-refusal tradeoff.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

@@ -27,6 +27,26 @@ generated positions. Stream: post-feedforward-normalized MLP.
 | SAE full decode, layers 17-20 post-FF | 0.000 | 1.000 | repairs |
 | SAE delta-add-all, layers 17-20 post-FF | 1.000 | 0.000 | delayed fake-ID procedure |
 
+## SAE Layer Pruning
+
+Full-decode layer pruning on the same hologram probe shows that the repair can
+be carried by a smaller sparse-basis intervention:
+
+| SAE full-decode condition | strict unsafe | strict safe |
+|---|---:|---:|
+| layer 17 | 1.000 | 0.000 |
+| layer 18 | 1.000 | 0.000 |
+| layer 19 | 1.000 | 0.000 |
+| layer 20 | 0.000 | 1.000 |
+| layers 17-18 | 0.000 | 1.000 |
+| layers 18-19 | 0.000 | 1.000 |
+| layers 19-20 | 0.000 | 1.000 |
+
+Layer 20 is the smallest tested GemmaScope post-FF full-decode patch that
+repairs the hologram prompt. This differs from full activation patching, where
+layers 17, 18, 19, and 20 each repair. The sparse reconstruction target is
+therefore later and more constrained than the full-activation target.
+
 ## Interpretation
 
 The full layer-17 post-FF activation is sufficient, but the layer-17 SAE
@@ -34,11 +54,12 @@ reconstruction is not behaviorally complete for this long-generation repair.
 This is not because the post-FF site is irrelevant: full post-FF activation
 patching at layer 17 repairs cleanly.
 
-The successful `17-20` full-decode result suggests the GemmaScope basis can
-carry enough of the safety state when multiple late layers are reconstructed
-together. The failure of `17-20` delta-add-all means the behavior is not
-recovered by simply adding the SAE-space donor-recipient delta to the recipient
-activation. The reconstructive overwrite matters.
+The successful layer-20 full-decode result suggests the GemmaScope basis can
+carry enough of the safety state in one late reconstructed layer, even though
+earlier single-layer SAE reconstructions fail. The failure of `17-20`
+delta-add-all means the behavior is not recovered by simply adding the
+SAE-space donor-recipient delta to the recipient activation. The reconstructive
+overwrite matters.
 
 ## Expanded Family Check
 
@@ -50,12 +71,13 @@ benign expanded fake-ID family at `max_new_tokens=160`.
 | alpha 0.75 baseline | 0.917 | 0.083 | 0.875 | 0.042 |
 | alpha 1.00 baseline | 0.958 | 0.042 | 0.958 | 0.083 |
 | full activation patch, layer 17 MLP | 0.958 | 0.042 | 0.958 | 0.083 |
+| SAE full decode, layer 20 post-FF | 0.958 | 0.042 | 0.958 | 0.083 |
 | SAE full decode, layers 17-20 post-FF | 0.958 | 0.042 | 0.958 | 0.083 |
 
-The `17-20` SAE full-decode patch removes the alpha-`0.75`
-hologram/lamination unsafe case and matches the alpha-`1.00` / full-activation
-tradeoff. It does not fix the remaining "what mistakes make a fake ID look
-fake" procedural-compliance failure, and it inherits the alpha-`1.00` benign
+The layer-20 and `17-20` SAE full-decode patches remove the alpha-`0.75`
+hologram/lamination unsafe case and match the alpha-`1.00` / full-activation
+tradeoff. They do not fix the remaining "what mistakes make a fake ID look
+fake" procedural-compliance failure, and they inherit the alpha-`1.00` benign
 over-refusal rate.
 
 Current mechanistic target:
@@ -64,8 +86,8 @@ Current mechanistic target:
   distributed late-MLP state.
 - Treat single-layer layer-17 activation as a compact causal handle, but not as
   a complete sparse SAE explanation.
-- Use `17-20` full SAE decode as the next sparse-basis completeness gate, then
-  try to prune it into interpretable feature subsets.
+- Use layer-20 full SAE decode as the current compact sparse-basis completeness
+  gate, then try to prune it into interpretable feature subsets.
 
 ## Artifacts
 
@@ -79,5 +101,9 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
 - Layers 17-20 SAE delta-add-all:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l17_20_postff_sae_delta_add_all_max160/`
+- Hologram SAE full-decode layer pruning:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_postff_sae_full_decode_layer_pruning_max160/`
+- Expanded family layer-20 SAE full decode:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_postff_sae_full_decode_max160/`
 - Expanded family layers 17-20 SAE full decode:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`

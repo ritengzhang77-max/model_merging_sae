@@ -320,7 +320,10 @@ SAE basis can carry the repair as a multi-layer reconstructive state, but not
 yet as a simple single-layer sparse delta. On the expanded fake-ID family,
 17-20 SAE full decode matches the alpha `1.00` / full layer-17 activation
 tradeoff (`0.958` strict safe, `0.083` benign over-refusal), removing the
-hologram unsafe case but not the fake-ID "mistakes" failure.
+hologram unsafe case but not the fake-ID "mistakes" failure. Pruning shows
+layer 20 alone is sufficient in the GemmaScope post-FF SAE basis and also
+generalizes to the expanded family, making layer-20 full decode the current
+smallest sparse-basis completeness gate.
 
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 

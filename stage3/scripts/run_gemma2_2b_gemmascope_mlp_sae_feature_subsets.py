@@ -763,6 +763,8 @@ def select_indices(stats, layers: tuple[int, ...], variants: list[dict[str, obje
 
 
 def apply_feature_patch(sae, recipient_out, donor_out, variant, selected_idx):
+    if selected_idx is not None and selected_idx.numel() == 0:
+        return recipient_out
     donor_f = sae.encode(donor_out)
     if variant["mode"] == "full_decode":
         return sae.decode(donor_f)
@@ -774,8 +776,6 @@ def apply_feature_patch(sae, recipient_out, donor_out, variant, selected_idx):
         return recipient_out + delta @ sae.W_dec
     if selected_idx is None:
         selected_idx = torch.arange(donor_f.shape[-1], device=donor_f.device)
-    if selected_idx.numel() == 0:
-        return recipient_out
     donor_sel = donor_f.index_select(-1, selected_idx)
     recipient_sel = recipient_f.index_select(-1, selected_idx)
     if variant["mode"] == "delta_add":

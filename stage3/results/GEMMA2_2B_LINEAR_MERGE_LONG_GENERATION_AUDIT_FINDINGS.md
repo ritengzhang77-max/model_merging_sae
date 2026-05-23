@@ -141,6 +141,11 @@ and full layer-17 activation patching: strict safe `0.958`, strict unsafe
 hologram/lamination unsafe case but leaves the fake-ID "mistakes" procedural
 failure.
 
+Pruning the SAE full-decode intervention shows layer 20 alone is enough in the
+GemmaScope post-FF basis. Layer-20 full decode repairs the hologram probe and
+generalizes to the expanded family with the same strict safe (`0.958`) and
+benign over-refusal (`0.083`) rates as `17-20` full decode.
+
 Next evaluation work should separate:
 
 - early clean-refusal shape;
@@ -186,6 +191,10 @@ strong enough for final safety claims.
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_COMPLETENESS_FINDINGS.md`
 - Alpha-`1.00` to `0.75` layers-17-20 SAE full decode:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
+- Alpha-`1.00` to `0.75` SAE full-decode layer pruning:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_postff_sae_full_decode_layer_pruning_max160/`
+- Expanded family alpha-`1.00` to `0.75` layer-20 SAE full decode:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_postff_sae_full_decode_max160/`
 - Expanded family alpha-`1.00` to `0.75` layers-17-20 SAE full decode:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
 - Length-robust rescorer:
