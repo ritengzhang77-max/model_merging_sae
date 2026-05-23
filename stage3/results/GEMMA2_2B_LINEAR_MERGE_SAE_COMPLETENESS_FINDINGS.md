@@ -202,6 +202,11 @@ subset decodes also failed:
 | layer-20 top3800 + rank4266 donor subset decode | 1.000 | 0.000 |
 | layer-20 top3900 + rank4266 donor subset decode | 0.000 | 1.000 |
 | layer-20 top4000 + rank4266 donor subset decode | 0.000 | 1.000 |
+| layer-20 top3600 donor subset decode | 1.000 | 0.000 |
+| layer-20 top3600 + rank4267 donor subset decode | 1.000 | 0.000 |
+| layer-20 random3600 + rank4266 donor subset decode, seed 230523 | 1.000 | 0.000 |
+| layer-20 random3600 + rank4266 donor subset decode, seed 230524 | 1.000 | 0.000 |
+| layer-20 random3600 + rank4266 donor subset decode, seed 230525 | 1.000 | 0.000 |
 
 A recipient-reconstruction control also failed:
 
@@ -260,6 +265,11 @@ Current mechanistic target:
 - The current smallest family-validated sparse reconstruction is therefore
   `top3600 + rank4266`, not a single feature circuit. This is a broad-prefix
   plus signed feature interaction.
+- Prefix-specificity controls strengthen that interpretation: top3600 alone
+  fails, top3600 plus the neighboring singleton rank4267 fails, and three
+  random 3600-feature subsets plus rank4266 fail. The repairing prefix is
+  therefore the ranked decoder-contribution prefix, not an arbitrary large
+  subset of the same size.
 - A feature-event audit on the harmful fake-ID family shows feature `1293`
   remains recipient-higher than donor on generation tokens. In the failing
   top4265 hologram text, one of its largest recipient-minus-donor events occurs
@@ -341,3 +351,5 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_3500_3600_3900_max160/`
 - Layer-20 feature-event audit for feature 1293:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank4266_family_harmful_feature1293_neighbors/`
+- Layer-20 rank4266 prefix-specificity controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_specificity_random3600_max160/`

@@ -191,6 +191,9 @@ nonmonotone, since top3800 plus rank4266 fails on the hologram probe while
 top3600/top3700/top3900 pass. A feature-event audit shows feature `1293` is
 recipient-higher than donor on generated tokens and peaks at the unsafe
 "Here's how people attempt..." bridge in the failing top4265 hologram text.
+Prefix-specificity controls show top3600 alone fails, top3600 plus neighboring
+rank4267 fails, and three random3600 plus rank4266 controls fail; the repair
+needs the ranked decoder-contribution prefix plus rank4266.
 The current result is therefore a broad-prefix plus signed-feature
 interaction, not yet a small standalone feature-level circuit.
 
@@ -297,6 +300,8 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_3500_3600_3900_max160/`
 - Layer-20 feature-event audit for feature 1293:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank4266_family_harmful_feature1293_neighbors/`
+- Layer-20 rank4266 prefix-specificity controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_specificity_random3600_max160/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 - Alpha-`0.50` to `0.75` layer-20 donor full-decode control:

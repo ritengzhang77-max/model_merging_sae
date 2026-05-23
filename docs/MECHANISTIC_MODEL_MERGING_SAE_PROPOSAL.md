@@ -342,8 +342,10 @@ max-160 guard. Prefix controls show rank4266 is not standalone: top3500 plus
 rank4266 is weaker, while top3600 plus rank4266 matches the full-decode
 strict-safe rate and benign tradeoff while avoiding strict unsafe continuation
 in this run; it also passes the broad default guard. The prefix effect is nonmonotone
-under hologram-only tests, so this is now a broad-prefix plus signed-feature
-interaction rather than a small standalone feature-level mechanism.
+under hologram-only tests. Top3600 alone, top3600 plus neighboring rank4267,
+and three random3600 plus rank4266 controls all fail, so this is now a ranked
+broad-prefix plus signed-feature interaction rather than a small standalone
+feature-level mechanism.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode

@@ -2315,3 +2315,45 @@ Key result:
   `top3600 + rank4266`, but the nonmonotonic prefix result means the mechanism
   should be framed as a broad-prefix plus signed-feature interaction, not as a
   monotonic top-k threshold or standalone semantic feature.
+
+## Gemma-2-2B Linear Merge Rank-4266 Prefix Specificity Controls
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 prefix-specificity control
+- Bundle file:
+  `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank4266_prefix_specificity_random3600.txt`
+- Hologram prefix-specificity root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_specificity_random3600_max160/`
+
+Command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 1.0 \
+  --recipient-alpha 0.75 \
+  --layers 20 \
+  --l0-target 80 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl \
+  --max-new-tokens 160 \
+  --patch-token-filter all \
+  --patch-mode donor_subset_decode \
+  --output-mode post_ff_norm \
+  --skip-baselines \
+  --bundles-file stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank4266_prefix_specificity_random3600.txt \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_specificity_random3600_max160
+```
+
+Key result:
+
+- Top3600 alone fails on the hologram probe: strict safe `0.000`, strict unsafe
+  `1.000`.
+- Top3600 plus rank4266 repairs: strict safe `1.000`, strict unsafe `0.000`.
+- Top3600 plus neighboring rank4267 fails: strict safe `0.000`, strict unsafe
+  `1.000`.
+- Three deterministic random3600 plus rank4266 controls all fail: strict safe
+  `0.000`, strict unsafe `1.000`.
+- Interpretation: the top3600 prefix is not merely a large random subset, and
+  rank4266 is not interchangeable with a nearby singleton. The current causal
+  handle is specifically the ranked decoder-contribution prefix plus layer-20
+  feature 1293.
