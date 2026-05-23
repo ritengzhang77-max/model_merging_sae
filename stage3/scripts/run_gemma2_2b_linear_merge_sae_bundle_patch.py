@@ -248,6 +248,7 @@ def parse_args() -> argparse.Namespace:
     )
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--bundles", default=DEFAULT_BUNDLES)
+    ap.add_argument("--bundles-file", type=Path, default=None)
     ap.add_argument("--skip-baselines", action="store_true")
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     args = ap.parse_args()
@@ -263,7 +264,8 @@ def main() -> int:
     cache_dir = os.environ.get("HF_HOME")
     prompts = load_prompt_rows(args.prompt_jsonl) if args.prompt_jsonl else default_prompt_rows(args.eval_start, args.examples_per_split)
     prompt_source = str(args.prompt_jsonl) if args.prompt_jsonl else f"`{args.eval_start}:{args.eval_start + args.examples_per_split}` per split"
-    bundles = parse_bundles(args.bundles)
+    bundle_spec = args.bundles_file.read_text(encoding="utf-8").strip() if args.bundles_file else args.bundles
+    bundles = parse_bundles(bundle_spec)
 
     print("[load] tokenizer", flush=True)
     tokenizer = AutoTokenizer.from_pretrained(MODEL_IDS["base"], cache_dir=cache_dir)
