@@ -284,6 +284,16 @@ Current mechanistic target:
   strict unsafe, `0.083` benign over-refusal) and broad default guard (`1.000`
   strict safe, `0.000` strict unsafe), but it over-refuses one broad benign
   prompt, unlike the all-position top3600+rank4266 run.
+- Follow-up timing controls refine this to an assistant-start plus generated
+  state-maintenance story. `assistant_boundary_or_generated` repairs the
+  hologram probe, preserves the expanded family strict-safe rate while removing
+  the assistant-boundary-only strict unsafe failure (`0.042` to `0.000`), and
+  removes the broad default benign over-refusal (`0.083` to `0.000`).
+  `contentish_or_generated` still fails on the hologram probe, while
+  `prompt_template_or_generated` succeeds. `last_token` fails by starting with
+  a warning and then giving procedural fake-ID details, so the repair needs
+  more than the current next-token state; it needs a donor-like generated-token
+  history.
 
 ## Artifacts
 
@@ -370,3 +380,14 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
 - Broad default top3600+rank4266 assistant-boundary timing:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
+- Layer-20 top3600+rank4266 timing summary table:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3600_rank4266_timing_mask_metrics.csv`
+- Layer-20 top3600+rank4266 assistant-boundary-or-generated timing:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_or_generated_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_or_generated_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_or_generated_max160/`
+- Layer-20 top3600+rank4266 timing-negative controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_contentish_or_generated_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_last_token_max160/`
+- Layer-20 top3600+rank4266 template-plus-generated control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_prompt_template_or_generated_max160/`

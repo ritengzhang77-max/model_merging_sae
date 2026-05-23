@@ -347,8 +347,14 @@ and three random3600 plus rank4266 controls all fail, so this is now a ranked
 broad-prefix plus signed-feature interaction. Timing controls put the causal
 effect at the assistant boundary: generated-only and content-token-only
 patching fail, while assistant-boundary-only patching repairs the expanded
-family but adds one broad benign over-refusal. This is still not a small
-standalone feature-level mechanism.
+family but adds one broad benign over-refusal. Follow-up timing controls show
+`assistant_boundary_or_generated` is cleaner: it keeps expanded-family strict
+safety, removes the assistant-boundary-only strict unsafe failure, and restores
+broad default benign behavior. `contentish_or_generated` and `last_token` fail
+on the hologram probe, while `prompt_template_or_generated` succeeds. The best
+current interpretation is assistant-start/template state plus generated-token
+history, not harmful content tokens or the current next-token state alone. This
+is still not a small standalone feature-level mechanism.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode

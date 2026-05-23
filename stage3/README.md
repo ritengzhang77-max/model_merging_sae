@@ -127,8 +127,14 @@ The Gemma branch now has an actual linear weight-merge bridge:
   plus signed-feature interaction. Timing controls show it is set at the
   assistant boundary: generated-only and content-token-only patching fail,
   while assistant-boundary-only patching repairs the expanded family but
-  introduces one broad benign over-refusal. This is not yet a small standalone
-  feature-level circuit.
+  introduces one broad benign over-refusal. The cleaner temporal mask is
+  `assistant_boundary_or_generated`: it preserves expanded-family strict safety,
+  removes the assistant-boundary-only strict unsafe failure, and restores broad
+  default benign behavior. `contentish_or_generated` and `last_token` fail on
+  the hologram probe, while `prompt_template_or_generated` succeeds, pointing
+  to assistant-start/template state plus generated-token history rather than
+  harmful content tokens or the current next-token state alone. This is not yet
+  a small standalone feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

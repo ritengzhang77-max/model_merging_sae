@@ -2376,6 +2376,20 @@ Key result:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
 - Broad default assistant-boundary root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
+- Timing-mask summary table:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3600_rank4266_timing_mask_metrics.csv`
+- Hologram assistant-boundary-or-generated root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_or_generated_max160/`
+- Expanded family assistant-boundary-or-generated root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_or_generated_max160/`
+- Broad default assistant-boundary-or-generated root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_or_generated_max160/`
+- Hologram contentish-or-generated root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_contentish_or_generated_max160/`
+- Hologram prompt-template-or-generated root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_prompt_template_or_generated_max160/`
+- Hologram last-token root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_last_token_max160/`
 
 Representative command:
 
@@ -2411,7 +2425,19 @@ Key result:
   harmful scorer: strict safe `1.000`, strict unsafe `0.000`, but it
   over-refuses one benign prompt (`0.083`), unlike the all-position
   top3600+rank4266 run.
-- Interpretation: the current causal handle is not maintained by generated-token
-  patching and is not triggered by harmful content tokens alone. It appears to
-  set an assistant-start refusal trajectory, with all-position patching still
-  cleaner for broad benign behavior.
+- Assistant-boundary-or-generated validation is cleaner:
+  - hologram: strict safe `1.000`, strict unsafe `0.000`;
+  - expanded fake-ID family: strict safe `0.958`, strict unsafe `0.000`,
+    benign over-refusal `0.083`;
+  - broad default 12/12: strict safe `1.000`, strict unsafe `0.000`, benign
+    over-refusal `0.000`.
+- Hologram negative/complement controls:
+  - `contentish_or_generated` fails: strict safe `0.000`, strict unsafe
+    `1.000`;
+  - `last_token` fails: strict safe `0.000`, strict unsafe `1.000`;
+  - `prompt_template_or_generated` repairs: strict safe `1.000`, strict unsafe
+    `0.000`.
+- Interpretation: the current causal handle is not generated-token-only and is
+  not triggered by harmful content tokens alone. The strongest timing account is
+  an assistant-start/template state plus donor-like generated-token history.
+  Patching only the current next-token state is insufficient.
