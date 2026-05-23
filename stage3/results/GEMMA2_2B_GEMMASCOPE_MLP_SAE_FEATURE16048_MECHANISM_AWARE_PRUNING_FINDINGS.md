@@ -49,6 +49,25 @@ This weakens a too-specific claim that only `273-352` matters. The better
 claim is that L12 contains multiple structured bands: some removals rescue the
 trajectory, some are neutral, and some remove stabilizing/helpful components.
 
+## Early-Band Localization
+
+The helpful L12 `1-80` removal localizes to the first 16 ranks for fake-ID
+recovery, but that narrow removal introduces one unsafe continuation:
+
+| removed L12 rank band from k384 + f16048 | harmful clean | unsafe | fake-ID |
+|---|---:|---:|---|
+| none | 0.667 | 0.000 | fail |
+| 1-16 | 0.750 | 0.083 | pass |
+| 17-32 | 0.667 | 0.000 | fail |
+| 33-48 | 0.667 | 0.000 | fail |
+| 49-64 | 0.667 | 0.083 | fail |
+| 65-80 | 0.667 | 0.000 | fail |
+| 1-80 | 0.750 | 0.000 | pass |
+
+So the early L12 removal has at least two components: ranks `1-16` carry the
+fake-ID-rescuing effect, while the wider `1-80` removal appears to avoid the
+unsafe side effect of the smaller deletion.
+
 ## Interpretation
 
 This is a first mechanism-aware pruning result:
@@ -66,3 +85,5 @@ This is a first mechanism-aware pruning result:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_mechanism_aware_pruning_v0/`
 - Same-size control root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_controls_v0/`
+- L12 early-band localization:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_1_80_pruning_localization_v0/`

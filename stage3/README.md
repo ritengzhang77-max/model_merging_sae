@@ -246,6 +246,9 @@ Feature-ID causality follow-up:
 - same-size removal controls show the pruning effect is structured but not
   unique: removing L12 ranks `1-80` also helps, `81-160` hurts, and several
   other same-size bands are neutral.
+- the L12 `1-80` pruning benefit localizes to ranks `1-16` for fake-ID recovery,
+  but the narrower removal introduces an unsafe side effect that the wider
+  `1-80` removal avoids.
 - signed trajectory logging on the fake-ID prompt shows the key deltas are
   donor-high generated-token trajectory effects. Crucially, the L12 antagonist
   features are also donor-high, so "more donor-like" is not enough; donor-high
