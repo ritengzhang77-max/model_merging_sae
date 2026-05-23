@@ -1402,3 +1402,64 @@ Interpretation:
   dependent.
 - The next useful search is broad feature discovery around the alpha
   `0.25` to `0.50` transition, using fixed continuations.
+
+## Gemma-2-2B Linear Merge SAE Transition Feature Search
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 broad fixed-continuation transition-feature search
+- Transition search root:
+  `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_safe_a075_low025_high075/`
+- Top-feature audit root:
+  `stage3/results/gemma2_2b_linear_merge_sae_teacher_forced_features_v0/top_transition_features_safe_a075_low025_high075/`
+- Search script:
+  `stage3/scripts/search_gemma2_2b_linear_merge_sae_transition_features.py`
+- Audit script:
+  `stage3/scripts/analyze_gemma2_2b_linear_merge_sae_teacher_forced_features.py`
+
+Representative search command:
+
+```bash
+python3 stage3/scripts/search_gemma2_2b_linear_merge_sae_transition_features.py \
+  --device cuda:0 \
+  --layers 12,13,14,15,16,17,18,19,20 \
+  --model-alphas 0.25,0.5,0.75 \
+  --low-alpha 0.25 \
+  --high-alpha 0.75 \
+  --target-alpha 0.75 \
+  --target-records stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/gemma2_2b_linear_weight_merge_records.jsonl \
+  --top-k-per-layer 50 \
+  --top-k-global 200 \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_safe_a075_low025_high075
+```
+
+Representative top-feature audit command:
+
+```bash
+python3 stage3/scripts/analyze_gemma2_2b_linear_merge_sae_teacher_forced_features.py \
+  --device cuda:0 \
+  --alphas 0.25,0.75 \
+  --target-alphas 0.75 \
+  --target-records stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/gemma2_2b_linear_weight_merge_records.jsonl \
+  --features 17:4342,17:16011,16:16332,18:10415,18:11127,15:11128,14:3001,20:14425,18:7189,18:11214 \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_teacher_forced_features_v0/top_transition_features_safe_a075_low025_high075
+```
+
+Key result:
+
+- Top specificity features from alpha `0.25` to `0.75` on fixed safe harmful
+  continuations: L17 `4342`, L17 `16011`, L16 `16332`, L18 `10415`, L18
+  `11127`, L15 `11128`, L14 `3001`, L20 `14425`, L18 `7189`, L18 `11214`.
+- L17 `4342` has harmful mean `12.2689 -> 15.6565`, benign delta `0.2231`,
+  specificity `3.1645`.
+- L17 `16011` has harmful mean `7.2497 -> 10.0005`, benign delta `0.0204`,
+  specificity `2.7304`.
+- Qualitative audit shows many top activations on legal-consequence/refusal
+  rationale tokens such as `Forgery`, `Criminal`, `felony`, `jail`, `theft`,
+  and `serious`.
+
+Interpretation:
+
+- The strongest natural merge features are a legal-consequence/refusal-rationale
+  bundle, not L19 `16048`.
+- This creates a cleaner causal target: add/remove the top transition bundle and
+  compare against random same-layer controls.

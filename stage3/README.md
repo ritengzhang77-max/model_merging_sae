@@ -31,6 +31,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   continuations, L12 features increase with model alpha, while L19 `16048` does
   not; on fixed unsafe alpha-`0.00` continuations, L19 `16048` can be high under
   safer model weights.
+- A broad fixed-continuation transition search finds stronger natural
+  safe-merge candidates than the hand-picked features. The top features are L17
+  `4342`, L17 `16011`, L16 `16332`, L18 `10415`, and L18 `11127`; qualitative
+  audit shows legal-consequence/refusal-rationale tokens such as `Forgery`,
+  `Criminal`, `felony`, `jail`, and `theft`.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 
@@ -305,6 +310,7 @@ Main artifacts:
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_MECHANISM_AWARE_PRUNING_FINDINGS.md`
 - `results/GEMMA2_2B_LINEAR_WEIGHT_MERGE_SWEEP_FINDINGS.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_FEATURE_TRAJECTORY_FINDINGS.md`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_TRANSITION_FEATURE_SEARCH_FINDINGS.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`

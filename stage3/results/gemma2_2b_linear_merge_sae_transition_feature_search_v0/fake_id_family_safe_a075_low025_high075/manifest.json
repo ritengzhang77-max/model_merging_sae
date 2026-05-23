@@ -1,0 +1,43 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "12": "layer_12/width_16k/average_l0_108/params.npz",
+    "13": "layer_13/width_16k/average_l0_112/params.npz",
+    "14": "layer_14/width_16k/average_l0_97/params.npz",
+    "15": "layer_15/width_16k/average_l0_80/params.npz",
+    "16": "layer_16/width_16k/average_l0_72/params.npz",
+    "17": "layer_17/width_16k/average_l0_68/params.npz",
+    "18": "layer_18/width_16k/average_l0_106/params.npz",
+    "19": "layer_19/width_16k/average_l0_109/params.npz",
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "target_records": "stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/gemma2_2b_linear_weight_merge_records.jsonl",
+  "target_alpha": 0.75,
+  "model_alphas": [
+    0.25,
+    0.5,
+    0.75
+  ],
+  "low_alpha": 0.25,
+  "high_alpha": 0.75,
+  "layers": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "outputs": {
+    "per_layer": "stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_safe_a075_low025_high075/gemma2_2b_linear_merge_sae_transition_feature_per_layer.csv",
+    "global": "stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_safe_a075_low025_high075/gemma2_2b_linear_merge_sae_transition_feature_global.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_safe_a075_low025_high075/GEMMA2_2B_LINEAR_MERGE_SAE_TRANSITION_FEATURE_SEARCH_SUMMARY.md"
+  }
+}

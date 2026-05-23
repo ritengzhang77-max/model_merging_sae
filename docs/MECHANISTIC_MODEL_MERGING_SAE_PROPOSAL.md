@@ -221,6 +221,16 @@ be a useful local patch handle, an antagonist under the wrong sparse trajectory,
 or a natural component of a safer full merge depending on timing and surrounding
 features.
 
+A first broad transition search supports this reframing. On fixed safe
+alpha-`0.75` fake-ID family continuations, ranking features by harmful
+activation increase from model alpha `0.25` to `0.75` while penalizing benign
+increase surfaces L17 `4342`, L17 `16011`, L16 `16332`, L18 `10415`, and L18
+`11127` as the strongest candidates. Qualitative audit shows these features
+fire around refusal-rationale/legal-consequence tokens such as `Forgery`,
+`Criminal`, `felony`, `jail`, and `theft`. This gives us a much cleaner
+mechanistic target: the safe linear merge appears to restore a legal-consequence
+refusal-rationale bundle, not just a fake-ID singleton feature.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

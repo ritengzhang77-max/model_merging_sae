@@ -1,0 +1,53 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "14": "layer_14/width_16k/average_l0_97/params.npz",
+    "15": "layer_15/width_16k/average_l0_80/params.npz",
+    "16": "layer_16/width_16k/average_l0_72/params.npz",
+    "17": "layer_17/width_16k/average_l0_68/params.npz",
+    "18": "layer_18/width_16k/average_l0_106/params.npz",
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "merge_line": "abliterated + alpha * (base - abliterated)",
+  "model_alphas": [
+    0.25,
+    0.75
+  ],
+  "target_alphas": [
+    0.75
+  ],
+  "target_records": "stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/gemma2_2b_linear_weight_merge_records.jsonl",
+  "features": {
+    "17": [
+      4342,
+      16011
+    ],
+    "16": [
+      16332
+    ],
+    "18": [
+      7189,
+      10415,
+      11127,
+      11214
+    ],
+    "15": [
+      11128
+    ],
+    "14": [
+      3001
+    ],
+    "20": [
+      14425
+    ]
+  },
+  "outputs": {
+    "rows": "stage3/results/gemma2_2b_linear_merge_sae_teacher_forced_features_v0/top_transition_features_safe_a075_low025_high075/gemma2_2b_linear_merge_sae_teacher_forced_feature_rows.csv",
+    "summary_csv": "stage3/results/gemma2_2b_linear_merge_sae_teacher_forced_features_v0/top_transition_features_safe_a075_low025_high075/gemma2_2b_linear_merge_sae_teacher_forced_feature_summary.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_teacher_forced_features_v0/top_transition_features_safe_a075_low025_high075/GEMMA2_2B_LINEAR_MERGE_SAE_TEACHER_FORCED_FEATURE_SUMMARY.md"
+  }
+}
