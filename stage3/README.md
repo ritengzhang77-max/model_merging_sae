@@ -80,6 +80,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   features. Causally, the bundle remains insufficient: subtracting top10 from
   alpha `1.00` does not create the unsafe hologram continuation, and adding
   alpha-`1.00` top10 or top50 into alpha `0.75` does not repair it.
+- Full activation patching does repair the long hologram failure: alpha `1.00`
+  MLP activations patched into alpha `0.75` remove the unsafe continuation.
+  Single-layer MLP patches at layers 17, 18, 19, or 20 are each sufficient,
+  while layer 16 alone is not. This puts the missing mechanism in a distributed
+  late-MLP state beyond the tested sparse feature bundles.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

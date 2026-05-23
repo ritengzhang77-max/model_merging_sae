@@ -110,6 +110,13 @@ So the transition bundle is a robust natural correlate of the safer endpoint,
 but the long-generation safety difference is not controlled by these ten
 features alone.
 
+Full activation patching does transfer the safety difference. Patching alpha
+`1.00` MLP activations into alpha `0.75` repairs the long hologram prompt, and
+single-layer MLP patches at layer 17, 18, 19, or 20 are each sufficient. Layer
+16 alone is not sufficient. This places the causal mechanism in a distributed
+MLP state across layers 17-20, beyond the tested top10/top50 sparse feature
+bundles.
+
 Next evaluation work should separate:
 
 - early clean-refusal shape;
@@ -141,5 +148,11 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_delta_add_top50_max160/`
 - Alpha-`1.00` to `0.75` hologram mix-decode control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_mix_decode_max160/`
+- Linear-merge activation patch memo:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_ACTIVATION_PATCH_FINDINGS.md`
+- Alpha-`1.00` to `0.75` full activation patch:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_max160/`
+- Alpha-`1.00` to `0.75` activation layer localization:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_max160_layer_localization/`
 - Length-robust rescorer:
   `stage3/scripts/rescore_long_generation_safety.py`

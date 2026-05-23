@@ -1,0 +1,21 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "donor_alpha": 1.0,
+  "recipient_alpha": 0.75,
+  "patch_specs": [
+    "16+17+18+19+20:mlp",
+    "12+13+14+15+16+17+18+19+20:mlp",
+    "12+13+14+15+16+17+18+19+20:post_ff"
+  ],
+  "position": "all",
+  "prompt_source": "stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl",
+  "max_new_tokens": 160,
+  "outputs": {
+    "metrics": "stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_max160/gemma2_2b_linear_merge_activation_patch_generation_metrics.csv",
+    "records": "stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_max160/gemma2_2b_linear_merge_activation_patch_generation_records.jsonl",
+    "summary": "stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_max160/GEMMA2_2B_LINEAR_MERGE_ACTIVATION_PATCH_GENERATION_SUMMARY.md"
+  }
+}

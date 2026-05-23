@@ -299,6 +299,12 @@ top10 from alpha `1.00` does not recreate the unsafe hologram continuation, and
 adding alpha-`1.00` top10, or even top50, into alpha `0.75` does not repair it.
 The mechanism is therefore distributed beyond the tested sparse feature bundles.
 
+Full activation patching gives the stronger causal boundary: alpha `1.00` MLP
+activations patched into alpha `0.75` do repair the long hologram failure, and
+any single layer from 17 through 20 is sufficient. Layer 16 alone is not. This
+is now the clean mechanistic target: explain a distributed late-MLP state that
+the SAE top-feature bundle tracks but does not fully control.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally
