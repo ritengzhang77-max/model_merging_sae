@@ -1,0 +1,293 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "14": "layer_14/width_16k/average_l0_97/params.npz",
+    "15": "layer_15/width_16k/average_l0_80/params.npz",
+    "16": "layer_16/width_16k/average_l0_72/params.npz",
+    "17": "layer_17/width_16k/average_l0_68/params.npz",
+    "18": "layer_18/width_16k/average_l0_106/params.npz",
+    "19": "layer_19/width_16k/average_l0_109/params.npz",
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "donor_alpha": 1.0,
+  "recipient_alpha": 0.75,
+  "patch_mode": "delta_add",
+  "patch_token_filter": "assistant_boundary_or_generated",
+  "bundles": {
+    "top50": {
+      "14": [
+        3001,
+        5481,
+        8681,
+        10663,
+        10853,
+        14251,
+        14463,
+        16029
+      ],
+      "15": [
+        11128,
+        11444,
+        12753,
+        13009,
+        13336
+      ],
+      "16": [
+        3501,
+        5054,
+        6883,
+        9090,
+        11167,
+        13960,
+        14897,
+        16332
+      ],
+      "17": [
+        2506,
+        4342,
+        10585,
+        10792,
+        16011
+      ],
+      "18": [
+        3602,
+        5054,
+        6077,
+        6727,
+        7189,
+        10121,
+        10415,
+        11127,
+        11214
+      ],
+      "19": [
+        144,
+        1508,
+        2173,
+        3654,
+        5455,
+        6340,
+        7603,
+        12962,
+        16355
+      ],
+      "20": [
+        473,
+        1170,
+        1278,
+        14053,
+        14077,
+        14425
+      ]
+    },
+    "random50_1": {
+      "14": [
+        747,
+        2195,
+        6842,
+        9137,
+        10796,
+        12962,
+        14472,
+        15797
+      ],
+      "15": [
+        834,
+        2407,
+        2796,
+        6989,
+        11187
+      ],
+      "16": [
+        418,
+        4149,
+        8550,
+        9901,
+        11572,
+        12498,
+        13794,
+        16027
+      ],
+      "17": [
+        720,
+        2087,
+        8444,
+        9989,
+        15840
+      ],
+      "18": [
+        699,
+        4597,
+        5466,
+        6577,
+        10915,
+        12132,
+        12279,
+        13219,
+        16087
+      ],
+      "19": [
+        3471,
+        5021,
+        5186,
+        7613,
+        8699,
+        12567,
+        14055,
+        14927,
+        16111
+      ],
+      "20": [
+        3719,
+        6412,
+        8218,
+        8274,
+        9121,
+        13655
+      ]
+    },
+    "random50_2": {
+      "14": [
+        7564,
+        8621,
+        8794,
+        9157,
+        9716,
+        11692,
+        11762,
+        14793
+      ],
+      "15": [
+        737,
+        2496,
+        3713,
+        6160,
+        7128
+      ],
+      "16": [
+        3958,
+        5015,
+        5965,
+        7951,
+        8650,
+        11370,
+        12361,
+        12721
+      ],
+      "17": [
+        59,
+        3190,
+        8301,
+        8509,
+        14057
+      ],
+      "18": [
+        196,
+        1934,
+        4578,
+        6543,
+        7027,
+        8839,
+        9358,
+        11381,
+        12673
+      ],
+      "19": [
+        1972,
+        2306,
+        2373,
+        2894,
+        3439,
+        5085,
+        6449,
+        7858,
+        10835
+      ],
+      "20": [
+        2677,
+        7058,
+        9435,
+        11395,
+        11896,
+        15150
+      ]
+    },
+    "random50_3": {
+      "14": [
+        7938,
+        8722,
+        9290,
+        10785,
+        11603,
+        11803,
+        13218,
+        13767
+      ],
+      "15": [
+        2683,
+        4556,
+        5669,
+        12329,
+        14318
+      ],
+      "16": [
+        3145,
+        3285,
+        6335,
+        7152,
+        9343,
+        9585,
+        11457,
+        12210
+      ],
+      "17": [
+        536,
+        3625,
+        3947,
+        10639,
+        15526
+      ],
+      "18": [
+        1708,
+        4963,
+        6326,
+        10067,
+        11307,
+        12725,
+        14289,
+        15252,
+        15374
+      ],
+      "19": [
+        404,
+        1246,
+        3181,
+        4605,
+        5780,
+        7366,
+        10037,
+        12264,
+        14029
+      ],
+      "20": [
+        2722,
+        3759,
+        4412,
+        6137,
+        14911,
+        15197
+      ]
+    }
+  },
+  "prompt_source": "stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl",
+  "outputs": {
+    "metrics": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_delta_add_top50_max160/gemma2_2b_linear_merge_sae_bundle_patch_metrics.csv",
+    "records": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_delta_add_top50_max160/gemma2_2b_linear_merge_sae_bundle_patch_records.jsonl",
+    "counts": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_delta_add_top50_max160/gemma2_2b_linear_merge_sae_bundle_patch_counts.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_delta_add_top50_max160/GEMMA2_2B_LINEAR_MERGE_SAE_BUNDLE_PATCH_SUMMARY.md"
+  }
+}

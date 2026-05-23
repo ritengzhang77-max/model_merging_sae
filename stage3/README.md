@@ -79,7 +79,7 @@ The Gemma branch now has an actual linear weight-merge bridge:
   transition bundle: all original top10 features are in the top 19 specificity
   features. Causally, the bundle remains insufficient: subtracting top10 from
   alpha `1.00` does not create the unsafe hologram continuation, and adding
-  alpha-`1.00` top10 into alpha `0.75` does not repair it.
+  alpha-`1.00` top10 or top50 into alpha `0.75` does not repair it.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

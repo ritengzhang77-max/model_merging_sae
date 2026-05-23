@@ -1531,6 +1531,8 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_self_abog_feature_subtract_max160/`
 - Alpha-1.00-to-0.75 hologram delta-add control root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_delta_add_max160/`
+- Alpha-1.00-to-0.75 hologram top50 delta-add control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_delta_add_top50_max160/`
 - Alpha-1.00-to-0.75 hologram mix-decode control root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_abog_mix_decode_max160/`
 - Hologram max-160 feature-subtract probe root:
@@ -1649,8 +1651,9 @@ Key result:
   specificity features.
 - Causal checks remain negative/limited: alpha `1.00` top10 feature-subtract
   does not induce unsafe continuation, and alpha `1.00` to `0.75` top10
-  `delta_add` does not repair the unsafe continuation. `mix_decode` transfer is
-  unsafe for top10 and random controls.
+  `delta_add` does not repair the unsafe continuation. Alpha `1.00` to `0.75`
+  top50 `delta_add` also does not repair it. `mix_decode` transfer is unsafe
+  for top10 and random controls.
 
 Interpretation:
 

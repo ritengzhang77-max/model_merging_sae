@@ -296,8 +296,8 @@ fixed-continuation search from alpha `0.75` to alpha `1.00` recovers all ten
 original top features within the top 19 specificity-ranked features, so the
 bundle is a robust natural correlate of the safer endpoint. But subtracting
 top10 from alpha `1.00` does not recreate the unsafe hologram continuation, and
-adding alpha-`1.00` top10 into alpha `0.75` does not repair it. The mechanism is
-therefore distributed beyond the ten-feature bundle.
+adding alpha-`1.00` top10, or even top50, into alpha `0.75` does not repair it.
+The mechanism is therefore distributed beyond the tested sparse feature bundles.
 
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 

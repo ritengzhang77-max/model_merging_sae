@@ -98,6 +98,8 @@ Causal follow-up is more conservative:
   unsafe continuation;
 - adding alpha-`1.00` top10 deltas into alpha `0.75` does not repair the unsafe
   continuation;
+- adding alpha-`1.00` top50 deltas into alpha `0.75` also does not repair the
+  unsafe continuation;
 - `mix_decode` transfer from alpha `1.00` into alpha `0.75` is unsafe for top10
   and matched random controls, so it is not feature-specific.
 
