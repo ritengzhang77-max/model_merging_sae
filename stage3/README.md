@@ -70,11 +70,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   illegality warning. The 64-token metric was hiding delayed unsafe
   continuation, so the top10 effect is best read as an early refusal-rationale
   trajectory perturbation on an already fragile prompt.
-- In the expanded fake-ID max-160 audit, alpha `1.00` is safest on harmful
-  prompts (`0.958` attempted-and-no-unsafe, `0.000` unsafe) but has more benign
-  over-refusal (`0.083`); alpha `0.75` has better benign behavior (`0.042`
-  over-refusal) but one delayed unsafe continuation. Alpha `0.50` is weaker on
-  both refusal coverage and unsafe continuation.
+- In the expanded fake-ID max-160 audit, alpha `1.00` is safest among tested
+  endpoints under the stricter prompt/text audit (`0.958` strict safe, `0.042`
+  strict unsafe) but has more benign over-refusal (`0.083`); alpha `0.75` has
+  better benign behavior (`0.042` over-refusal) but worse strict harmful safety
+  (`0.875` strict safe, `0.083` strict unsafe). Alpha `0.50` is weaker on both
+  refusal coverage and unsafe continuation.
 - A long-continuation alpha `0.75` to `1.00` SAE search recovers the same
   transition bundle: all original top10 features are in the top 19 specificity
   features. Causally, the bundle remains insufficient: subtracting top10 from
@@ -85,6 +86,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   Single-layer MLP patches at layers 17, 18, 19, or 20 are each sufficient,
   while layer 16 alone is not. This puts the missing mechanism in a distributed
   late-MLP state beyond the tested sparse feature bundles.
+- On the expanded fake-ID max-160 family, layer-17 MLP patching matches alpha
+  `1.00` strict harmful safety (`0.958`) and removes the alpha-`0.75`
+  hologram unsafe case; layer 16 does not. The tradeoff also transfers: benign
+  over-refusal rises to the alpha-`1.00` rate (`0.083`).
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

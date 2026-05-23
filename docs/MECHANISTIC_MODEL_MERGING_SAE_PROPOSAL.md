@@ -305,6 +305,13 @@ any single layer from 17 through 20 is sufficient. Layer 16 alone is not. This
 is now the clean mechanistic target: explain a distributed late-MLP state that
 the SAE top-feature bundle tracks but does not fully control.
 
+The expanded fake-ID family keeps that boundary but makes the tradeoff sharper:
+layer-17 MLP patching matches alpha `1.00` strict harmful safety (`0.958`) and
+removes the alpha-`0.75` hologram unsafe case, whereas layer 16 does not.
+However, layer-17 patching also inherits alpha `1.00`'s higher benign
+over-refusal (`0.083`), so the mechanistic target is a safety/helpfulness
+tradeoff direction, not a free safety patch.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

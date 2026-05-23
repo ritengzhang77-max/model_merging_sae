@@ -204,7 +204,8 @@ def main() -> int:
     for variant, patch_points, direct_model in variants:
         print(f"[eval] {variant}", flush=True)
         rows = []
-        for split, user in prompts:
+        for row_idx, (split, user) in enumerate(prompts, start=1):
+            print(f"[eval] {variant} prompt {row_idx}/{len(prompts)} ({split})", flush=True)
             if direct_model is not None:
                 text = generate(direct_model, tokenizer, user, device=args.device, max_new_tokens=args.max_new_tokens)
             else:
