@@ -30,14 +30,33 @@ The broader L12 removal `257-384` is not better on the full benchmark. It
 rescues fake-ID in the held-out slice, but on the full prompt set it drops
 harmful clean refusal to `0.583` and introduces unsafe continuation.
 
+## Same-Size Removal Controls
+
+Same-size L12 band removals show that `273-352` is not unique, but the effect
+is still structured:
+
+| removed L12 rank band from k384 + f16048 | harmful clean | unsafe | fake-ID |
+|---|---:|---:|---|
+| none | 0.667 | 0.000 | fail |
+| 1-80 | 0.750 | 0.000 | pass |
+| 81-160 | 0.583 | 0.083 | fail |
+| 161-240 | 0.667 | 0.000 | fail |
+| 241-320 | 0.667 | 0.000 | fail |
+| 273-352 | 0.750 | 0.000 | pass |
+| 305-384 | 0.667 | 0.000 | fail |
+
+This weakens a too-specific claim that only `273-352` matters. The better
+claim is that L12 contains multiple structured bands: some removals rescue the
+trajectory, some are neutral, and some remove stabilizing/helpful components.
+
 ## Interpretation
 
 This is a first mechanism-aware pruning result:
 
 - The L12 antagonist localization is actionable: removing the right sub-band can
   recover a behavior that adding more top-delta features broke.
-- The action is scope-sensitive: removing too broad a band also removes helpful
-  or stabilizing components.
+- The action is scope-sensitive: removing too broad a band or the wrong
+  same-size band can remove helpful or stabilizing components.
 - This supports the paper-level direction that model-merging feature selection
   should not be monotone top-k. It needs causal/timing-aware keep/drop rules.
 
@@ -45,3 +64,5 @@ This is a first mechanism-aware pruning result:
 
 - Result root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_mechanism_aware_pruning_v0/`
+- Same-size control root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_controls_v0/`

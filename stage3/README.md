@@ -243,6 +243,9 @@ Feature-ID causality follow-up:
 - mechanism-aware pruning is actionable but scope-sensitive: removing L12 ranks
   `273-352` from failing `k384 + f16048` restores fake-ID and improves the full
   benchmark, while removing the broader `257-384` band hurts the full benchmark.
+- same-size removal controls show the pruning effect is structured but not
+  unique: removing L12 ranks `1-80` also helps, `81-160` hurts, and several
+  other same-size bands are neutral.
 - signed trajectory logging on the fake-ID prompt shows the key deltas are
   donor-high generated-token trajectory effects. Crucially, the L12 antagonist
   features are also donor-high, so "more donor-like" is not enough; donor-high
