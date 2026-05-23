@@ -1,0 +1,13 @@
+case,model,fake_id_ok
+basis0_4_full0_12,k896,0
+basis0_4_full0_12,k896 + f16048,1
+basis0_4_full0_12,k1024,1
+basis0_4_full0_12,k1024 - f16048,0
+basis4_8_eval8_12,k768,0
+basis4_8_eval8_12,k896,0
+basis4_8_eval8_12,k896 - f16048,0
+basis4_8_eval8_12,k1024,0
+basis0_8_eval8_12,k768,0
+basis0_8_eval8_12,k896,1
+basis0_8_eval8_12,k896 - f16048,0
+basis0_8_eval8_12,k1024,1

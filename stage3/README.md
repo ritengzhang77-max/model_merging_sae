@@ -190,6 +190,13 @@ Feature-ID causality follow-up:
   feature: layer 19 feature ID `16048`, global rank `1006`;
 - adding only feature `16048` to the k896 prefix recovers the fake-ID prompt;
   removing only feature `16048` from k1024 removes that recovery;
+- explicit feature-ID validation over all 12 harmful/benign prompts confirms
+  that feature `16048` controls exactly the fake-ID recovery, not the broader
+  refusal repair;
+- cross-basis validation narrows the claim: basis `0:8` naturally includes
+  feature `16048` inside k896 and removing it breaks fake-ID recovery, but
+  basis `4:8` also ranks the feature inside k896 and still fails fake-ID, so
+  the cooperating prefix selected from the basis matters;
 - the feature audit is still mostly assistant-template/boundary and prompt-end
   events, so the lead is a layer-local response-state refinement rather than a
   clean harmful-content semantic feature.

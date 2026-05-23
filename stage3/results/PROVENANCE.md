@@ -151,6 +151,8 @@ Interpretation:
 - Causal site: post-feedforward normalized MLP update, layers `12-20`
 - Runtime patch path: `assistant_boundary_or_generated`
 - Main script: `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+- Rank-stability script:
+  `stage3/scripts/analyze_gemma2_2b_gemmascope_mlp_sae_feature_rank_stability.py`
 - Main finding memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_ID_CAUSALITY_FINDINGS.md`
 - Result root:
@@ -163,6 +165,10 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_id_l19_tail_blocks_v0/gemma2_2b_gemmascope_mlp_sae_l19_tail_block_metrics.csv`
 - Feature `16048` event subset:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_id_l19_tail_blocks_v0/gemma2_2b_gemmascope_mlp_sae_l19_feature_16048_events.jsonl`
+- Feature `16048` validation root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_id_l19_feature16048_validation_v0/`
+- Feature `16048` rank-stability root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_rank_stability_v0/`
 
 Representative commands:
 
@@ -212,16 +218,28 @@ Key result:
   rank `1006`, feature ID `16048`: k896 plus only this feature reaches `0.750`
   and recovers the fake-ID prompt; k1024 minus only this feature drops to
   `0.500` and loses the fake-ID recovery.
+- Explicit feature-ID validation on the full 12-prompt benchmark confirms that
+  feature `16048` accounts for one additional prompt: k896 improves from
+  `0.667` to `0.750` when adding feature `16048`, while k1024 drops from
+  `0.750` to `0.667` when removing it.
+- Rank stability is mixed but informative: feature `16048` ranks `1006` under
+  basis `0:4`, `843` under basis `4:8`, `1533` under basis `8:12`, and `850`
+  under basis `0:8`.
+- Cross-basis generation narrows the mechanism: basis `0:8` k896/k1024 recover
+  fake-ID and k896 minus feature `16048` fails, but basis `4:8` fails fake-ID
+  even though feature `16048` is inside k896.
 
 Interpretation:
 
 - The feature-level story is now a single-feature lead, but not a standalone
   refusal module: feature `16048` works only as an add-on to the broader k896
   prefix.
+- The broader prefix is basis-dependent; the live claim is a feature-plus-prefix
+  response-state mechanism rather than a single semantic refusal feature.
 - The feature's top audit events are mostly prompt-ending/template/boundary
   state rather than a direct fake-ID semantic detector.
-- Next tests should replicate feature `16048` on additional heldout prompt
-  slices and inspect generated-token timing.
+- Next tests should localize the cooperating prefix and inspect generated-token
+  timing.
 
 ## Qwen2.5-1.5B Residual Benchmark V0
 

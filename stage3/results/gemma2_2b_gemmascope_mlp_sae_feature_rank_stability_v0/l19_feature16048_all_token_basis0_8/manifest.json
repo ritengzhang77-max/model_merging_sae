@@ -1,0 +1,30 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "19": "layer_19/width_16k/average_l0_109/params.npz"
+  },
+  "layers": [
+    19
+  ],
+  "feature_ids": [
+    16048
+  ],
+  "basis_starts": [
+    0
+  ],
+  "basis_examples_per_split": 8,
+  "feature_token_filter": "all",
+  "output_mode": "post_ff_norm",
+  "prompt_counts": {
+    "harmful": 12,
+    "benign": 12
+  },
+  "outputs": {
+    "csv": "stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_rank_stability_v0/l19_feature16048_all_token_basis0_8/gemma2_2b_gemmascope_mlp_sae_feature_rank_stability.csv",
+    "summary": "stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_rank_stability_v0/l19_feature16048_all_token_basis0_8/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_RANK_STABILITY.md"
+  }
+}

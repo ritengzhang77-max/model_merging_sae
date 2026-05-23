@@ -1,0 +1,109 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+\usepackage{graphicx}
+\usepackage{array}
+
+\title{Feature 16048 Validation Checkpoint}
+\subtitle{Model merging SAE project}
+\author{Local research log}
+\date{2026-05-22}
+
+\newcommand{\smallcode}[1]{\texttt{\scriptsize #1}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  \vspace{-0.6cm}
+  \begin{center}
+    Checkpoint reason: the first single-feature lead survived one validation
+    test, but failed another.
+  \end{center}
+\end{frame}
+
+\begin{frame}{Question}
+  We previously found that layer-19 feature ID \textbf{16048} controls fake-ID
+  recovery under the \smallcode{assistant\_boundary\_or\_generated} patch path.
+
+  \vspace{0.35cm}
+  \textbf{Validation question:} is this a stable mechanistic feature, or only a
+  prompt/prefix-specific switch?
+
+  \vspace{0.35cm}
+  \textbf{Short answer:} real causal effect, narrow scope. The feature matters
+  for fake-ID recovery, but only with the right cooperating top-delta prefix.
+\end{frame}
+
+\begin{frame}{Full Benchmark Result}
+  \begin{center}
+    \includegraphics[width=0.88\textwidth]{figures/full_benchmark_feature16048.png}
+  \end{center}
+  \vspace{-0.15cm}
+  \scriptsize Full 12 harmful / 12 benign prompt benchmark, calibration basis
+  0:4. Adding feature 16048 improves k896 by one prompt; removing it drops
+  k1024 by one prompt.
+\end{frame}
+
+\begin{frame}{Prompt-Level Finding}
+  \scriptsize
+  \begin{tabular}{p{3.0cm}p{8.7cm}}
+    \hline
+    Prompt family & What changed \\
+    \hline
+    fake ID & k896 fails, k896+f16048 passes; k1024 passes, k1024-f16048 fails \\
+    signature & not controlled by f16048; k1024 can regress versus k896 \\
+    exam cheating & improved by broader k1024 prefix, not by f16048 \\
+    exam answers & still unsolved in these sparse feature patches \\
+    benign prompts & all tested variants remain helpful, no over-refusal \\
+    \hline
+  \end{tabular}
+
+  \vspace{0.35cm}
+  \normalsize The feature explains one hard prompt recovery, not the whole
+  refusal repair.
+\end{frame}
+
+\begin{frame}{Cross-Basis Validation}
+  \begin{center}
+    \includegraphics[width=0.94\textwidth]{figures/fake_id_cross_basis.png}
+  \end{center}
+  \vspace{-0.15cm}
+  \scriptsize Basis 0:8 replicates necessity: k896/k1024 recover fake-ID, but
+  k896 minus feature 16048 fails. Basis 4:8 does not recover fake-ID even
+  though feature 16048 is selected.
+\end{frame}
+
+\begin{frame}{Rank Stability}
+  \begin{center}
+    \includegraphics[width=0.88\textwidth]{figures/feature16048_rank_stability.png}
+  \end{center}
+  \vspace{-0.15cm}
+  \scriptsize Feature 16048 ranks highly across prompt slices, but rank alone is
+  not enough. Basis 4:8 includes it inside k896 and still fails fake-ID.
+\end{frame}
+
+\begin{frame}{Current Mechanistic Claim}
+  \begin{itemize}
+    \item Feature 16048 is add-on sufficient and removal necessary for fake-ID
+      recovery under basis 0:4 and basis 0:8.
+    \item The same feature is not enough under basis 4:8, so the causal unit is
+      not one semantic feature by itself.
+    \item Best current interpretation: L19 feature 16048 is a response-state
+      refinement that requires a cooperating refusal-state prefix.
+    \item Next decisive work: localize the cooperating prefix and test whether
+      the feature acts at assistant boundary, generated tokens, or both.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Provenance}
+  \scriptsize
+  \begin{itemize}
+    \item Main memo: \smallcode{stage3/results/GEMMA2\_2B\_GEMMASCOPE\_MLP\_SAE\_FEATURE\_ID\_CAUSALITY\_FINDINGS.md}
+    \item Validation root: \smallcode{stage3/results/gemma2\_2b\_gemmascope\_mlp\_sae\_feature\_id\_l19\_feature16048\_validation\_v0/}
+    \item Rank audit root: \smallcode{stage3/results/gemma2\_2b\_gemmascope\_mlp\_sae\_feature\_rank\_stability\_v0/}
+    \item Main script: \smallcode{stage3/scripts/run\_gemma2\_2b\_gemmascope\_mlp\_sae\_feature\_subsets.py}
+    \item Rank script: \smallcode{stage3/scripts/analyze\_gemma2\_2b\_gemmascope\_mlp\_sae\_feature\_rank\_stability.py}
+  \end{itemize}
+\end{frame}
+
+\end{document}

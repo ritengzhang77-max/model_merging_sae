@@ -4,6 +4,9 @@ Research checkpoint decks for the model-merging SAE project.
 
 Recent decks:
 
+- `2026-05-22-2001-gemmascope-feature16048-validation/`: validation and
+  reframing of layer-19 feature `16048` as a narrow causal switch requiring a
+  cooperating prefix.
 - `2026-05-22-1924-gemmascope-single-feature-causality/`: single-feature
   layer-19 feature `16048` causal checkpoint.
 - `2026-05-22-1804-gemmascope-feature-id-causality/`: first layer-local
