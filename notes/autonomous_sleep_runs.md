@@ -19,3 +19,9 @@
 - Current phase: test whether the `top3325 + rank4266` ABOG handle can be
   reduced to `top3320 + rank3323 + rank4266` without losing family/default
   safety behavior.
+- Result update: reduced again to
+  `top3300 + rank3308 + rank3323 + rank4266` under
+  `assistant_boundary_or_generated`, with the same expanded-family and broad
+  default strict profile as the prior top3325/top3320 handles. Prompt-scope
+  audits identify rank3308 as boundary feature `93` at `<start_of_turn>model`
+  and rank3323 as boundary feature `114` on the following newline.

@@ -360,10 +360,17 @@ hologram probe, matches the expanded-family top3400/top3500/top3600 profile,
 and passes the broad default guard. A singleton sweep over ranks 3321-3325
 localizes the top3320 edge to rank3323: `top3320 + rank3323 + rank4266`
 passes the hologram probe, matches top3325 on the expanded fake-ID family, and
-passes the broad default strict guard. The local prefix effect remains
-nonmonotone: top3375 fails while top3390/top3400 pass. Rank3323 is layer-20
-feature `114`, but its prompt-basis contribution metrics are zero, so this is
-a smaller causal target rather than a feature-semantics result.
+passes the broad default strict guard. Adding rank3323 lowers the boundary
+again: top3300 still fails, top3310 passes, and a rank3301-rank3310 singleton
+sweep localizes the edge to rank3308. The current smallest validated handle is
+`top3300 + rank3308 + rank3323 + rank4266`, which matches the same
+expanded-family profile and broad default strict guard. The local prefix
+effect remains nonmonotone: top3375 fails while top3390/top3400 pass.
+Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
+the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
+donor-active and recipient-zero on the following newline. These are
+assistant-boundary features, not generated-token features, so this is a
+smaller causal target rather than a feature-semantics result.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode

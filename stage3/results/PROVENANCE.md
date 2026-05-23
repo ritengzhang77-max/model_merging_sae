@@ -2456,6 +2456,9 @@ Key result:
   - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundle_top3400_plus_rank4266.txt`
   - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank4266_abog_top3320_rank3321_3325_singletons.txt`
   - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundle_top3320_plus_rank3323_plus_rank4266.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank3323_rank4266_abog_prefix_threshold.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank3323_rank4266_abog_top3300_rank3301_3310_singletons.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundle_top3300_plus_rank3308_plus_rank3323_plus_rank4266.txt`
 - Summary table:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank4266_abog_prefix_refinement_metrics.csv`
 - Hologram threshold root:
@@ -2484,6 +2487,18 @@ Key result:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3320_rank3323_rank4266_abog_max160/`
 - Broad default top3320+rank3323 root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3320_rank3323_rank4266_abog_max160/`
+- Hologram rank3323/rank4266 prefix threshold root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3323_rank4266_prefix_threshold_abog_max160/`
+- Hologram top3300 rank3301-rank3310 singleton root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3300_rank3301_3310_singletons_rank3323_rank4266_abog_max160/`
+- Expanded family top3300+rank3308+rank3323 root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3300_rank3308_rank3323_rank4266_abog_max160/`
+- Broad default top3300+rank3308+rank3323 root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3300_rank3308_rank3323_rank4266_abog_max160/`
+- Prompt-scope feature event audits:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3323_rank4266_hologram_singleton_edge_feature114_1293/`
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3323_rank4266_hologram_singleton_edge_prompt_feature114_1293/`
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3308_rank3323_rank4266_hologram_singleton_edge_prompt_feature93_114_1293/`
 
 Representative command:
 
@@ -2531,10 +2546,24 @@ Key result:
     `0.083`;
   - `top3320 + rank3323 + rank4266` passes the broad default strict guard:
     strict safe `1.000`, strict unsafe `0.000`, benign over-refusal `0.000`.
+- Top3300 edge singleton localization:
+  - with rank3323 included, top3300 plus rank3323 plus rank4266 still fails
+    the hologram probe, while top3310 plus rank3323 plus rank4266 passes;
+  - only rank3308 closes the top3300 gap in a rank3301-rank3310 singleton
+    sweep;
+  - `top3300 + rank3308 + rank3323 + rank4266` matches the expanded fake-ID
+    family profile: strict safe `0.958`, strict unsafe `0.000`, benign
+    over-refusal `0.083`;
+  - `top3300 + rank3308 + rank3323 + rank4266` passes the broad default strict
+    guard: strict safe `1.000`, strict unsafe `0.000`, benign over-refusal
+    `0.000`.
 - Interpretation: once timing is restricted to assistant boundary plus
   generated-token state maintenance, the currently validated prefix requirement
-  falls from top3600 to a discontiguous top3320 plus rank3323 plus rank4266
-  bundle. The mechanism is still a broad ranked-prefix interaction, but the
-  timing mask and singleton edge test materially reduce the needed feature
-  budget. Rank3323 is layer-20 feature `114`; its current prompt-basis
-  contribution metrics are zero, so the semantic role remains unresolved.
+  falls from top3600 to a discontiguous top3300 plus rank3308 plus rank3323 plus
+  rank4266 bundle. The mechanism is still a broad ranked-prefix interaction,
+  but the timing mask and singleton edge tests materially reduce the needed
+  feature budget. Prompt-scope audits show rank3308 is layer-20 feature `93`,
+  donor-higher on the `<start_of_turn>model` token, while rank3323 is layer-20
+  feature `114`, donor-active and recipient-zero on the following newline.
+  Both are assistant-boundary features in this audit; rank4266 remains feature
+  `1293` with a different trajectory profile.

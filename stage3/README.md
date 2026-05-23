@@ -140,10 +140,17 @@ The Gemma branch now has an actual linear weight-merge bridge:
   default guard. A singleton sweep of ranks 3321-3325 localizes the top3320
   edge to rank3323: `top3320 + rank3323 + rank4266` passes the hologram,
   matches the expanded-family top3325 profile, and passes the broad default
-  strict guard. The local prefix effect is still nonmonotone: top3375 fails
-  while top3390/top3400 pass. Rank3323 is layer-20 feature `114`, but its
-  current prompt-basis contribution metrics are zero, so this is a smaller
-  causal handle, not yet a semantic feature-level circuit.
+  strict guard. Adding rank3323 lowers the boundary again: top3300 still
+  fails, top3310 passes, and a singleton sweep localizes the edge to rank3308.
+  The current smallest validated handle is
+  `top3300 + rank3308 + rank3323 + rank4266`, which matches the same expanded
+  fake-ID family profile and broad default strict guard. The local prefix
+  effect is still nonmonotone: top3375 fails while top3390/top3400 pass.
+  Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
+  `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
+  active on the following newline; both are assistant-boundary features, not
+  generated-token features. This is a smaller causal handle, not yet a semantic
+  feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

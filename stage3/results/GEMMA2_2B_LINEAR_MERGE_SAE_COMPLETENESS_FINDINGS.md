@@ -306,13 +306,28 @@ Current mechanistic target:
   expanded fake-ID family with the same profile as top3325/top3400/top3500/
   top3600 (`0.958` strict safe, `0.000` strict unsafe, `0.083` benign
   over-refusal) and passes the broad default strict guard (`1.000` strict
-  safe, `0.000` strict unsafe, `0.000` benign over-refusal). Top3000 plus
-  rank4266 remains weaker on the expanded family (`0.917` strict safe,
-  `0.042` strict unsafe). The current smallest validated handle is therefore
-  `top3320 + rank3323 + rank4266` under `assistant_boundary_or_generated`.
-  Rank3323 is layer-20 feature `114`; its prompt-basis contribution metrics are
-  zero in the current ranking table, so this is a causal localization target,
-  not a semantic interpretation yet.
+  safe, `0.000` strict unsafe, `0.000` benign over-refusal).
+- Adding rank3323 lowers the coarse hologram prefix boundary again: top3300
+  plus rank3323 plus rank4266 still fails, while top3310 plus rank3323 plus
+  rank4266 passes. A singleton sweep over ranks 3301-3310 localizes this edge
+  to rank3308: top3300 plus rank3308 plus rank3323 plus rank4266 passes, while
+  rank3301-rank3307 and rank3309-rank3310 do not close the top3300 failure.
+  The discontiguous `top3300 + rank3308 + rank3323 + rank4266` bundle matches
+  the expanded-family profile (`0.958` strict safe, `0.000` strict unsafe,
+  `0.083` benign over-refusal) and passes the broad default strict guard
+  (`1.000` strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
+  Top3000 plus rank4266 remains weaker on the expanded family (`0.917` strict
+  safe, `0.042` strict unsafe). The current smallest validated handle is
+  therefore `top3300 + rank3308 + rank3323 + rank4266` under
+  `assistant_boundary_or_generated`.
+- Prompt-scope feature-event audits show rank3308 and rank3323 are both
+  assistant-boundary features. Rank3308 is layer-20 feature `93` and is
+  donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20
+  feature `114` and is donor-active / recipient-zero on the following newline.
+  Both are zero on generated tokens in the hologram audit. Rank4266 remains
+  layer-20 feature `1293`, with a different generated-trajectory profile. This
+  is now a small set of boundary features plus a broad ranked prefix and
+  rank4266, not yet a full semantic circuit.
 
 ## Artifacts
 
@@ -427,3 +442,12 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3320_rank3321_3325_singletons_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3320_rank3323_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3320_rank3323_rank4266_abog_max160/`
+- Layer-20 rank3323/rank3308 `assistant_boundary_or_generated` prefix-edge controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3323_rank4266_prefix_threshold_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3300_rank3301_3310_singletons_rank3323_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3300_rank3308_rank3323_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3300_rank3308_rank3323_rank4266_abog_max160/`
+- Layer-20 rank3308/rank3323/rank4266 prompt-scope audits:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3323_rank4266_hologram_singleton_edge_feature114_1293/`
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3323_rank4266_hologram_singleton_edge_prompt_feature114_1293/`
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3308_rank3323_rank4266_hologram_singleton_edge_prompt_feature93_114_1293/`

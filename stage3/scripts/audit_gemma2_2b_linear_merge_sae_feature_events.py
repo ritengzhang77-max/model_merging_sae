@@ -147,6 +147,7 @@ def write_summary(path: Path, aggregate_rows, event_rows, args) -> None:
         f"Feature IDs: `{','.join(str(x) for x in args.feature_ids)}`.",
         f"Donor alpha: `{args.donor_alpha}`.",
         f"Recipient alpha: `{args.recipient_alpha}`.",
+        f"Event token scope: `{args.event_token_scope}`.",
         "",
         "## Aggregate Generation-Token Means",
         "",
@@ -192,6 +193,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--max-records", type=int, default=0)
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--event-k", type=int, default=8)
+    ap.add_argument("--event-token-scope", choices=("generated", "prompt", "all"), default="generated")
     ap.add_argument("--context-radius", type=int, default=8)
     return ap.parse_args()
 
@@ -268,6 +270,12 @@ def main() -> int:
         gen_mask = torch.zeros(len(ids), dtype=torch.bool)
         gen_mask[prompt_len:] = True
         prompt_mask = ~gen_mask
+        if args.event_token_scope == "generated":
+            event_mask = gen_mask
+        elif args.event_token_scope == "prompt":
+            event_mask = prompt_mask
+        else:
+            event_mask = torch.ones(len(ids), dtype=torch.bool)
         for col, feature_id in enumerate(args.feature_ids):
             donor_vals = donor_feats[:, col]
             recipient_vals = recipient_feats[:, col]
@@ -304,7 +312,7 @@ def main() -> int:
             }
             for metric_name, values in event_metrics.items():
                 values = values.clone()
-                values[~gen_mask] = 0.0
+                values[~event_mask] = 0.0
                 k = min(args.event_k, int(values.numel()))
                 if k <= 0:
                     continue
@@ -359,6 +367,7 @@ def main() -> int:
                 "source_models": args.source_models,
                 "split": args.split,
                 "max_records": args.max_records,
+                "event_token_scope": args.event_token_scope,
                 "outputs": {
                     "detail": str(detail_path),
                     "aggregate": str(aggregate_path),
