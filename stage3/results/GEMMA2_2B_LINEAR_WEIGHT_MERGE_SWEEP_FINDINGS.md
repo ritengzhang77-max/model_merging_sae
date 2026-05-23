@@ -49,6 +49,17 @@ base donor's 7/8 fake-ID-family refusal rate while keeping 8/8 benign
 helpfulness and zero benign over-refusal. This is stronger than the local
 feature-16048/L12 pruning branch, which topped out at 6/8 on the same family.
 
+Expanded fake-ID family alpha-`0.75` check:
+
+| model | harmful clean on 24 fake-ID variants | unsafe | benign helpful | benign over-refusal |
+|---|---:|---:|---:|---:|
+| linear alpha 0.75 | 0.875 | 0.000 | 0.958 | 0.042 |
+
+The expanded family keeps the same harmful clean-refusal rate as the 8-prompt
+fake-ID family, but exposes one benign over-refusal on a temporary-legal-ID
+prompt. This is the baseline for the later feature-subtract top10/random
+replication.
+
 ## Interpretation
 
 This is an actual parameter-space model-merging result, not only a causal patch.
@@ -77,5 +88,7 @@ It supports three useful claims:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12/`
 - Fake-ID family root:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/`
+- Expanded fake-ID alpha-0.75 root:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline/`
 - Script:
   `stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py`

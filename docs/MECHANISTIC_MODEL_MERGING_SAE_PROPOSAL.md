@@ -267,6 +267,14 @@ also reach 10/12 and one reaches 11/12; all variants keep 12/12 benign
 helpfulness. So the current selected-bundle necessity signal is fake-ID-family
 specific, not yet a general refusal mechanism.
 
+The fake-ID-specific signal does replicate on a larger 24 harmful / 24 benign
+fake-ID-focused family. The plain alpha `0.75` baseline and all three matched
+random feature-subtract controls reach 21/24 harmful clean and 23/24 benign
+helpful. Top10 feature-subtract drops to 20/24 harmful clean with the same
+benign score. The extra failure is again the hologram/lamination prompt, which
+supports a narrow mechanistic claim about a distributed refusal-rationale bundle
+for that family rather than a broad universal safety feature.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

@@ -1254,6 +1254,8 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12/`
 - Family result root:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/`
+- Expanded fake-ID alpha-0.75 root:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline/`
 - Main summary:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12/GEMMA2_2B_LINEAR_WEIGHT_MERGE_SWEEP_SUMMARY.md`
 - Main script:
@@ -1282,6 +1284,17 @@ python3 stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py \
   --result-dir stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family
 ```
 
+Expanded fake-ID alpha-0.75 command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py \
+  --device cuda:0 \
+  --alphas 0.75 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v1_expanded.jsonl \
+  --max-new-tokens 64 \
+  --result-dir stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline
+```
+
 Key result:
 
 - Linear merge line: `abliterated + alpha * (base - abliterated)`.
@@ -1295,6 +1308,9 @@ Key result:
   harmful fake-ID variants with unsafe `0.000`, benign helpful `1.000`, and
   benign over-refusal `0.000`. Base passes 7/8 but has benign helpful `0.875`
   and one over-refusal.
+- On the expanded 24 harmful / 24 benign fake-ID family, alpha `0.75` reaches
+  harmful clean `0.875`, unsafe `0.000`, benign helpful `0.958`, and benign
+  over-refusal `0.042`.
 
 Interpretation:
 
@@ -1486,6 +1502,10 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_cumulative_prefixes/`
 - High-alpha feature-subtract full-screen root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a075_self_abog_feature_subtract_top10_random/`
+- Expanded fake-ID family feature-subtract root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a075_self_abog_feature_subtract_top10_random/`
+- Expanded fake-ID family alpha-0.75 baseline root:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline/`
 - Main script:
   `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`
 
@@ -1587,6 +1607,10 @@ Key result:
 - On the broader default `0:12` harmful/benign screen, top10 does not separate:
   top10, random1, and random3 reach harmful clean refusal `0.833`, while
   random2 reaches `0.917`; all keep benign helpfulness `1.000`.
+- On the expanded 24 harmful / 24 benign fake-ID family, the plain alpha `0.75`
+  baseline and all three matched random feature-subtract controls reach harmful
+  clean refusal `0.875` and benign helpfulness `0.958`; top10 feature-subtract
+  drops harmful clean refusal to `0.833` with the same benign score.
 
 Interpretation:
 
@@ -1600,5 +1624,7 @@ Interpretation:
   fake-ID family.
 - That necessity signal is currently fake-ID-family-specific and does not
   generalize to the broader 12-prompt screen.
+- The expanded fake-ID family replication supports the narrow family-specific
+  signal: the extra top10 failure is again the hologram/lamination prompt.
 - The current best causal phrasing is distributed refusal-rationale state
   component, not an independently necessary singleton feature.

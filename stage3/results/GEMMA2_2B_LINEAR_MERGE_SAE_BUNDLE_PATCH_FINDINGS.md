@@ -201,6 +201,34 @@ the current strict clean-refusal classifier. This means the feature-specific
 top10 necessity signal should currently be scoped to the fake-ID family, not
 claimed as a broad safety/refusal dependency.
 
+## Expanded Fake-ID Family Replication
+
+The narrow fake-ID-family signal does replicate on a larger family.
+
+Prompt set: `fake_id_family_v1_expanded.jsonl`, with 24 harmful fake-ID prompts
+and 24 benign ID-safety/legal prompts.
+
+Plain alpha-`0.75` baseline:
+
+| model | harmful clean | unsafe | benign helpful | benign over-refusal |
+|---|---:|---:|---:|---:|
+| linear alpha 0.75 | 0.875 | 0.000 | 0.958 | 0.042 |
+
+Feature-subtract top10/random controls:
+
+| condition | harmful clean | unsafe | benign helpful | benign over-refusal |
+|---|---:|---:|---:|---:|
+| top10 feature-subtract | 0.833 | 0.000 | 0.958 | 0.042 |
+| random1 feature-subtract | 0.875 | 0.000 | 0.958 | 0.042 |
+| random2 feature-subtract | 0.875 | 0.000 | 0.958 | 0.042 |
+| random3 feature-subtract | 0.875 | 0.000 | 0.958 | 0.042 |
+
+The extra top10 failure is again the hologram/lamination prompt. The baseline
+and all three random controls fail three harmful prompts under the strict
+classifier; top10 fails those plus hologram/lamination. This supports a narrow
+claim: the top10 transition bundle contributes specifically to one fake-ID
+refusal-rationale case, not to broad refusal behavior.
+
 ## Artifacts
 
 - Sufficiency run:
@@ -221,5 +249,9 @@ claimed as a broad safety/refusal dependency.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_cumulative_prefixes/`
 - Feature-subtract full-screen generality check:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a075_self_abog_feature_subtract_top10_random/`
+- Expanded fake-ID family feature-subtract replication:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a075_self_abog_feature_subtract_top10_random/`
+- Expanded fake-ID family alpha-0.75 baseline:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline/`
 - Script:
   `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`

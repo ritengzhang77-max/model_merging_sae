@@ -60,6 +60,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   harmful clean, while random2 reaches 11/12; all keep 12/12 benign helpfulness.
   The top10 causal claim is therefore currently narrow to fake-ID-family
   behavior.
+- On a larger 24 harmful / 24 benign fake-ID-focused family, the narrow effect
+  replicates against the plain alpha `0.75` baseline: baseline and all three
+  random feature-subtract controls reach 21/24 harmful clean, while top10 drops
+  to 20/24; all share the same 23/24 benign helpfulness.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 
