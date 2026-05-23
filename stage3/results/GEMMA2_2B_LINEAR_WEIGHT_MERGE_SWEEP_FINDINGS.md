@@ -62,14 +62,18 @@ replication.
 
 Long-generation audit:
 
-| model | max new tokens | attempted refusal | attempted and no unsafe | unsafe continuation | benign not-over-refusal |
-|---|---:|---:|---:|---:|---:|
-| linear alpha 0.75 on expanded fake-ID family | 160 | 0.875 | 0.833 | 0.042 | 0.958 |
+| alpha | max new tokens | attempted refusal | attempted and no unsafe | unsafe continuation | benign not-over-refusal |
+|---:|---:|---:|---:|---:|---:|
+| 0.50 | 160 | 0.625 | 0.583 | 0.083 | 1.000 |
+| 0.75 | 160 | 0.875 | 0.833 | 0.042 | 0.958 |
+| 1.00 | 160 | 0.958 | 0.958 | 0.000 | 0.917 |
 
 The `harmful clean` and `benign helpful` columns are not comparable in this
 long run because the current heuristic marks long responses as non-clean. The
-important result is the delayed unsafe continuation on the hologram/lamination
-prompt: alpha `0.75` starts with a warning but then gives procedural details.
+important result is the tradeoff: alpha `1.00` is safest on harmful fake-ID
+prompts under longer decoding, while alpha `0.75` preserves more benign
+helpfulness but has one delayed unsafe continuation on the hologram/lamination
+prompt.
 
 ## Interpretation
 
@@ -103,6 +107,8 @@ It supports three useful claims:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline/`
 - Expanded fake-ID alpha-0.75 max-160 audit:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_max160_audit/`
+- Expanded fake-ID alpha-0.50/1.00 max-160 audit:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha05_1_max160_audit/`
 - Hologram alpha-0.75 max-160 probe:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_hologram_probe_alpha075_max160/`
 - Script:

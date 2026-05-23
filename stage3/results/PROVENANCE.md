@@ -1258,6 +1258,8 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline/`
 - Expanded fake-ID alpha-0.75 max-160 audit root:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_max160_audit/`
+- Expanded fake-ID alpha-0.50/1.00 max-160 audit root:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha05_1_max160_audit/`
 - Hologram alpha-0.75 max-160 probe root:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_hologram_probe_alpha075_max160/`
 - Main summary:
@@ -1319,6 +1321,11 @@ Key result:
   harmful attempted refusal `0.875`, unsafe continuation `0.042`, and benign
   over-refusal `0.042`. The unsafe continuation is the hologram/lamination
   prompt after an initial warning preamble.
+- Length-robust max-160 comparison: alpha `0.50` has attempted-and-no-unsafe
+  `0.583`, unsafe `0.083`, benign over-refusal `0.000`; alpha `0.75` has
+  attempted-and-no-unsafe `0.833`, unsafe `0.042`, benign over-refusal `0.042`;
+  alpha `1.00` has attempted-and-no-unsafe `0.958`, unsafe `0.000`, benign
+  over-refusal `0.083`.
 
 Interpretation:
 
@@ -1647,5 +1654,8 @@ Interpretation:
 - The long-generation audit means the 64-token fake-ID metric is only a fast
   screening metric. Final safety claims need separate delayed-unsafe and
   length-robust benign scoring.
+- The merge tradeoff is now clearer: alpha `0.75` improves benign behavior over
+  the base endpoint, but alpha `1.00` is safer on the expanded harmful fake-ID
+  family under longer decoding.
 - The current best causal phrasing is distributed refusal-rationale state
   component, not an independently necessary singleton feature.

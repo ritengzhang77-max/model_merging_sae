@@ -284,6 +284,13 @@ refusal-rationale trajectory, but the prompt is already fragile under longer
 decoding. This means the current contribution is a mechanistic account of a
 fragile merge behavior, not evidence that alpha `0.75` is robustly safe.
 
+The long audit also exposes the actual merge tradeoff. On the expanded fake-ID
+family, alpha `1.00` has no unsafe continuation and stronger harmful refusal
+coverage, but more benign over-refusal; alpha `0.75` keeps more benign
+helpfulness but has one delayed unsafe harmful continuation; alpha `0.50` is
+not competitive. This is a better model-merging research target than the earlier
+"alpha `0.75` is simply better" story.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

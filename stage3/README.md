@@ -70,6 +70,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   illegality warning. The 64-token metric was hiding delayed unsafe
   continuation, so the top10 effect is best read as an early refusal-rationale
   trajectory perturbation on an already fragile prompt.
+- In the expanded fake-ID max-160 audit, alpha `1.00` is safest on harmful
+  prompts (`0.958` attempted-and-no-unsafe, `0.000` unsafe) but has more benign
+  over-refusal (`0.083`); alpha `0.75` has better benign behavior (`0.042`
+  over-refusal) but one delayed unsafe continuation. Alpha `0.50` is weaker on
+  both refusal coverage and unsafe continuation.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 
