@@ -55,6 +55,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   benign helpfulness remains 8/8. The effect is nonadditive: L19 f16048, top1,
   top2, top5, tail5, top5 plus any one tail feature, and cumulative top6/top9
   all stay at 7/8; only the full top10 bundle causes the extra failure.
+- The same top10 `feature_subtract` ablation does not show a broad 12-prompt
+  safety-screen specificity effect: top10, random1, and random3 all reach 10/12
+  harmful clean, while random2 reaches 11/12; all keep 12/12 benign helpfulness.
+  The top10 causal claim is therefore currently narrow to fake-ID-family
+  behavior.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

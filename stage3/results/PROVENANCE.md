@@ -1484,6 +1484,8 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_tail_localization/`
 - High-alpha feature-subtract cumulative-prefix root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_cumulative_prefixes/`
+- High-alpha feature-subtract full-screen root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a075_self_abog_feature_subtract_top10_random/`
 - Main script:
   `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`
 
@@ -1582,6 +1584,9 @@ Key result:
 - The effect is nonadditive: L19 f16048, top1, top2, top5, tail5,
   top5-plus-any-one-tail, and cumulative top6/top9 all stay at `0.875`; only
   top10 drops to `0.750`.
+- On the broader default `0:12` harmful/benign screen, top10 does not separate:
+  top10, random1, and random3 reach harmful clean refusal `0.833`, while
+  random2 reaches `0.917`; all keep benign helpfulness `1.000`.
 
 Interpretation:
 
@@ -1593,5 +1598,7 @@ Interpretation:
 - `feature_subtract` gives a modest selected-bundle necessity signal that
   survives random controls, but it is one additional prompt on an 8-harmful
   fake-ID family.
+- That necessity signal is currently fake-ID-family-specific and does not
+  generalize to the broader 12-prompt screen.
 - The current best causal phrasing is distributed refusal-rationale state
   component, not an independently necessary singleton feature.

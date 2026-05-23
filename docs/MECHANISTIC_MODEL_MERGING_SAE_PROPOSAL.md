@@ -261,6 +261,12 @@ therefore modest but interesting: a distributed ten-feature refusal-rationale
 state contributes to the safe merged behavior, but no individual feature in the
 bundle is independently necessary on this benchmark.
 
+The broader 12 harmful / 12 benign screen narrows that claim again. Top10
+feature-subtract reaches 10/12 harmful clean, but two matched random bundles
+also reach 10/12 and one reaches 11/12; all variants keep 12/12 benign
+helpfulness. So the current selected-bundle necessity signal is fake-ID-family
+specific, not yet a general refusal mechanism.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

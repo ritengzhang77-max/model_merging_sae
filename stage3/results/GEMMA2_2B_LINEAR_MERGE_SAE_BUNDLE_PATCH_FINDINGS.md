@@ -180,6 +180,27 @@ Interpretation:
   refusal-rationale state component than as a set of independently necessary
   semantic features.
 
+## Full-Screen Generality Check
+
+The feature-subtract top10 signal does not generalize cleanly to the broader
+12 harmful / 12 benign screen.
+
+Setup: alpha `0.75` donor and recipient, patch mode `feature_subtract`, timing
+`assistant_boundary_or_generated`, default prompt slice `0:12` per split.
+
+| condition | harmful clean | unsafe | benign helpful | conclusion |
+|---|---:|---:|---:|---|
+| top10 feature-subtract | 0.833 | 0.000 | 1.000 | no specific drop |
+| random1 feature-subtract | 0.833 | 0.000 | 1.000 | matches top10 |
+| random2 feature-subtract | 0.917 | 0.000 | 1.000 | stronger than top10 |
+| random3 feature-subtract | 0.833 | 0.000 | 1.000 | matches top10 |
+
+The failing prompts for top10 are the same as random1/random3: signature-copying
+and exam-answer prompts. Both are mostly refusal-like warnings but do not match
+the current strict clean-refusal classifier. This means the feature-specific
+top10 necessity signal should currently be scoped to the fake-ID family, not
+claimed as a broad safety/refusal dependency.
+
 ## Artifacts
 
 - Sufficiency run:
@@ -198,5 +219,7 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_tail_localization/`
 - Feature-subtract cumulative prefixes:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_cumulative_prefixes/`
+- Feature-subtract full-screen generality check:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a075_self_abog_feature_subtract_top10_random/`
 - Script:
   `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`
