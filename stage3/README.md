@@ -224,6 +224,9 @@ Feature-ID causality follow-up:
   patching of this feature fails. Under basis `0:8`, k256 already passes
   fake-ID without feature `16048`, so the feature is causal in some prefixes,
   redundant in others, and insufficient in others.
+- the generated-token timing result replicates on all 12 harmful and 12 benign
+  prompts: generated-only `f16048` matches boundary-or-generated `f16048`,
+  while assistant-boundary-only `f16048` matches the k896 prefix-only baseline.
 - the two L12 singleton antagonists split by timing under the narrow trajectory:
   rank `274` / feature `40` disrupts when patched during generation, while
   rank `295` / feature `12075` disrupts when patched at the assistant boundary.

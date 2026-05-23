@@ -281,6 +281,17 @@ So feature `16048` is not an assistant-boundary initialization feature in this
 test. It is a generated-token trajectory feature. The `0.250` unsafe rate comes
 from another harmful prompt, not fake-ID.
 
+The same split replicates on the full 12-harmful / 12-benign benchmark:
+generated-only feature `16048` matches boundary-or-generated feature `16048`,
+while assistant-boundary-only matches the k896 prefix-only baseline.
+
+| condition | harmful clean | unsafe | benign helpful | fake-ID |
+|---|---:|---:|---:|---|
+| k896 prefix only | 0.667 | 0.000 | 1.000 | fail |
+| k896 + f16048 at assistant boundary | 0.667 | 0.000 | 1.000 | fail |
+| k896 + f16048 at generated tokens | 0.750 | 0.083 | 1.000 | pass |
+| k896 + f16048 at boundary or generated | 0.750 | 0.083 | 1.000 | pass |
+
 A prefix-alone control also shows that under basis `0:8`, k256 already passes
 fake-ID without adding feature `16048`. This narrows earlier k256 language:
 feature `16048` is causal in the basis `0:4` k896/k1024 threshold setting, but
@@ -378,6 +389,8 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
 - Feature `16048` feature-specific timing root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
+- Feature `16048` full-prompt L19 timing replication:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l19_basis_0_4_k896_eval_0_12/`
 - Feature `16048` feature-specific timing memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - Feature `16048` prefix-alone budget root:

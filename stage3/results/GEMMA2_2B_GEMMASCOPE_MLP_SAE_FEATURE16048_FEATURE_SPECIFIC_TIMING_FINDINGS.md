@@ -51,6 +51,20 @@ It does not initialize the fake-ID refusal from the assistant boundary or prompt
 template alone; it needs to act while the response is being generated. The
 `0.250` unsafe rate comes from another harmful prompt, not fake-ID.
 
+The same result holds on the full 12-harmful / 12-benign prompt benchmark:
+
+| condition | harmful clean | unsafe | benign helpful | fake-ID |
+|---|---:|---:|---:|---|
+| k896 prefix only | 0.667 | 0.000 | 1.000 | fail |
+| k896 + f16048 at assistant boundary | 0.667 | 0.000 | 1.000 | fail |
+| k896 + f16048 at generated tokens | 0.750 | 0.083 | 1.000 | pass |
+| k896 + f16048 at boundary or generated | 0.750 | 0.083 | 1.000 | pass |
+
+Generated-only patching matches boundary-or-generated patching on this full
+benchmark. The feature fixes fake-ID, does not fix the other remaining failures,
+and introduces the same one unsafe exam-answer continuation as the original
+feature-16048 add-on.
+
 ## L12 Antagonist Timing
 
 Under basis `0:8`, k256 already passes fake-ID. Adding L12 rank `274` feature
@@ -111,6 +125,8 @@ features are helpful, some are redundant, and some are timed antagonists.
 
 - Feature-specific timing root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
+- Full-prompt L19 timing replication:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l19_basis_0_4_k896_eval_0_12/`
 - Signed trajectory root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_signed_trajectories_v0/`
 - Signed trajectory memo:

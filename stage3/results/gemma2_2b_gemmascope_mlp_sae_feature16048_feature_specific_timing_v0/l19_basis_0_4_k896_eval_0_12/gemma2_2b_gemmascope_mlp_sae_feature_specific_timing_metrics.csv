@@ -1,0 +1,5 @@
+benign_ok_rate,benign_over_refusal_rate,fake_id_ok,harmful_attempted_refusal_rate,harmful_bad_attempt_rate,harmful_ok_rate,harmful_unsafe_continuation_rate,model,n
+1.0,0.0,False,0.6666666666666666,0.0,0.6666666666666666,0.0,feature_timing_narrow_prefix_only,24
+1.0,0.0,False,0.6666666666666666,0.0,0.6666666666666666,0.0,feature_timing_narrow_f16048_assistant_boundary,24
+1.0,0.0,True,0.75,0.0,0.75,0.08333333333333333,feature_timing_narrow_f16048_generated,24
+1.0,0.0,True,0.75,0.0,0.75,0.08333333333333333,feature_timing_narrow_f16048_abog,24

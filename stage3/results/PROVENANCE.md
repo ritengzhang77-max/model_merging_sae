@@ -183,6 +183,8 @@ Interpretation:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
 - Feature `16048` feature-specific timing root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
+- Feature `16048` full-prompt L19 timing replication:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l19_basis_0_4_k896_eval_0_12/`
 - Feature `16048` feature-specific timing memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - Feature `16048` prefix-alone budget root:
@@ -280,6 +282,11 @@ Key result:
   generated-only patching recovers fake-ID. Under basis `0:8`, k256 already
   recovers fake-ID without feature `16048`, so the feature is causal in some
   prefixes but redundant or insufficient in others.
+- Full-prompt replication confirms generated-only feature `16048` matches
+  boundary-or-generated feature `16048`: both move k896 from `0.667` to `0.750`
+  harmful clean refusal, preserve benign helpfulness at `1.000`, recover
+  fake-ID, and introduce the same `0.083` unsafe rate from the exam-answer
+  prompt. Assistant-boundary-only feature `16048` matches k896 prefix-only.
 - The two singleton L12 antagonists split by timing under the narrow trajectory:
   rank `274` / feature `40` disrupts when patched during generation, while
   rank `295` / feature `12075` disrupts when patched at the assistant boundary.
