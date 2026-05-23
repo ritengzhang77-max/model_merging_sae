@@ -1,0 +1,15 @@
+{
+  "target_records": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_postff_sae_full_decode_layer_pruning_max160/gemma2_2b_linear_merge_sae_bundle_patch_records.jsonl",
+  "target_model": "bundle_patch_l20",
+  "max_records": 1,
+  "layer": 20,
+  "l0_target": 80,
+  "low_alpha": 0.75,
+  "high_alpha": 1.0,
+  "output_mode": "post_ff_norm",
+  "max_length": 512,
+  "top_k": 5000,
+  "bundle_cutoffs": [
+    5000
+  ]
+}

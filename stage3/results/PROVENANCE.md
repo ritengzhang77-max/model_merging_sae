@@ -2020,10 +2020,14 @@ Key result:
   `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1/`
 - Top2000 ranking root:
   `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_top2000/`
+- Top5000 ranking root:
+  `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_top5000/`
 - Patch root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_topk_max160/`
 - Top1000/top2000 patch root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top1000_2000_max160/`
+- Top5000 patch root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top5000_max160/`
 
 Ranking command:
 
@@ -2068,10 +2072,13 @@ Key result:
 - Decoder-contribution top50/top100/top200/top500/top1000/top2000 donor subset
   decodes all fail on the hologram probe: strict unsafe `1.000`, strict safe
   `0.000`.
+- Decoder-contribution top5000 donor subset decode repairs the hologram probe:
+  strict unsafe `0.000`, strict safe `1.000`.
 - The top-ranked feature is layer-20 feature `14425`, which had already appeared
   in the earlier transition search, but the ranked subset still gives fake-ID
   hologram/lamination process explanations.
 - This is a stronger negative pruning result than activation-magnitude top-k:
   it scores features by decoder-vector alignment with the actual full-decode
-  write delta, then tests a donor-only reconstructive subset. Even this does
-  not recover the full layer-20 repair through top2000.
+  write delta, then tests a donor-only reconstructive subset. It does not
+  recover the full layer-20 repair through top2000, but does recover it by
+  top5000. The current pruning boundary is therefore broad rather than compact.
