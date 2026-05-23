@@ -10,3 +10,12 @@
   feature-localization controls.
 - Immediate checkpoint: finalize and commit the rank4266 timing-localization
   results, then continue with the next small decisive mechanistic comparison.
+
+## 2026-05-23 14:07 PDT Resume
+
+- User request: continue the same autonomous sleep/top-hours run.
+- Planned stop window: continue until the original sleep-run stop window or a
+  project-level decision point.
+- Current phase: test whether the `top3325 + rank4266` ABOG handle can be
+  reduced to `top3320 + rank3323 + rank4266` without losing family/default
+  safety behavior.

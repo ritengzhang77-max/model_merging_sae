@@ -215,8 +215,15 @@ passes the broad default guard (`1.000` strict safe, `0.000` strict unsafe,
 `0.000` benign over-refusal). Top3000 plus rank4266 remains weaker on the
 expanded family, and the local prefix effect is nonmonotone because top3375
 fails while top3390/top3400 pass.
-The current result is therefore a broad-prefix plus signed-feature
-interaction, not yet a small standalone feature-level circuit.
+A singleton sweep of the top3321-top3325 edge shows that rank3323 is the one
+tested singleton that closes the top3320 hologram failure when rank4266 is
+also present. The discontiguous `top3320 + rank3323 + rank4266` setting then
+matches top3325 on the expanded fake-ID family (`0.958` strict safe, `0.000`
+strict unsafe, `0.083` benign over-refusal) and broad default strict guard
+(`1.000` strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
+Rank3323 is layer-20 feature `114`; because its current prompt-basis
+contribution metrics are zero, this is a smaller causal handle but not yet a
+feature semantics result.
 
 Next evaluation work should separate:
 
@@ -356,6 +363,10 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3325_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
+- Layer-20 rank4266 `assistant_boundary_or_generated` top3320 edge singleton controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3320_rank3321_3325_singletons_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3320_rank3323_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3320_rank3323_rank4266_abog_max160/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 - Alpha-`0.50` to `0.75` layer-20 donor full-decode control:

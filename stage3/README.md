@@ -137,9 +137,13 @@ The Gemma branch now has an actual linear weight-merge bridge:
   cleaner timing mask, the current prefix boundary moves down: top3320+rank4266
   fails the hologram probe, while top3325+rank4266 passes the hologram, matches
   the expanded-family top3400/top3500/top3600 profile, and passes the broad
-  default guard. The local prefix effect is still nonmonotone: top3375 fails
-  while top3390/top3400 pass. This is not yet a small standalone feature-level
-  circuit.
+  default guard. A singleton sweep of ranks 3321-3325 localizes the top3320
+  edge to rank3323: `top3320 + rank3323 + rank4266` passes the hologram,
+  matches the expanded-family top3325 profile, and passes the broad default
+  strict guard. The local prefix effect is still nonmonotone: top3375 fails
+  while top3390/top3400 pass. Rank3323 is layer-20 feature `114`, but its
+  current prompt-basis contribution metrics are zero, so this is a smaller
+  causal handle, not yet a semantic feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

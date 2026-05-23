@@ -357,9 +357,13 @@ history, not harmful content tokens or the current next-token state alone.
 With this cleaner timing mask, the prefix boundary moves down: top3320 plus
 rank4266 still fails the hologram probe, while top3325 plus rank4266 passes the
 hologram probe, matches the expanded-family top3400/top3500/top3600 profile,
-and passes the broad default guard. The local prefix effect remains nonmonotone:
-top3375 fails while top3390/top3400 pass. This is still not a small standalone
-feature-level mechanism.
+and passes the broad default guard. A singleton sweep over ranks 3321-3325
+localizes the top3320 edge to rank3323: `top3320 + rank3323 + rank4266`
+passes the hologram probe, matches top3325 on the expanded fake-ID family, and
+passes the broad default strict guard. The local prefix effect remains
+nonmonotone: top3375 fails while top3390/top3400 pass. Rank3323 is layer-20
+feature `114`, but its prompt-basis contribution metrics are zero, so this is
+a smaller causal target rather than a feature-semantics result.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode

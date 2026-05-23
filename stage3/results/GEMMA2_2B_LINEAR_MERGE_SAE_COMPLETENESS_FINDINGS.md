@@ -262,9 +262,10 @@ Current mechanistic target:
   the expanded family (`0.917` strict safe, `0.042` strict unsafe). The prefix
   effect is nonmonotone: top3800 plus rank4266 fails on the hologram probe
   while top3600/top3700/top3900 plus rank4266 pass.
-- The current smallest family-validated sparse reconstruction is therefore
-  `top3600 + rank4266`, not a single feature circuit. This is a broad-prefix
-  plus signed feature interaction.
+- At this all-position stage, the smallest family-validated sparse
+  reconstruction was `top3600 + rank4266`, not a single feature circuit. This
+  pointed to a broad-prefix plus signed feature interaction before the later
+  timing-mask refinement.
 - Prefix-specificity controls strengthen that interpretation: top3600 alone
   fails, top3600 plus the neighboring singleton rank4267 fails, and three
   random 3600-feature subsets plus rank4266 fail. The repairing prefix is
@@ -298,13 +299,20 @@ Current mechanistic target:
   threshold moves down. Hologram controls fail through top3320 plus rank4266
   and pass at top3325/top3350 plus rank4266, but the local prefix effect is
   still nonmonotone: top3375 plus rank4266 fails while top3390/top3400 pass.
-  Top3325 plus rank4266 validates on the expanded fake-ID family with the same
-  profile as top3400/top3500/top3600 (`0.958` strict safe, `0.000` strict
-  unsafe, `0.083` benign over-refusal) and passes the broad default guard
-  (`1.000` strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
-  Top3000 plus rank4266 remains weaker on the expanded family (`0.917` strict
-  safe, `0.042` strict unsafe). The current smallest validated handle is
-  therefore `top3325 + rank4266` under `assistant_boundary_or_generated`.
+  A singleton sweep over the top3321-top3325 edge localizes the hologram gap to
+  rank3323: top3320 plus rank3323 plus rank4266 passes, while rank3321,
+  rank3322, rank3324, and rank3325 do not close the top3320 failure. The
+  discontiguous `top3320 + rank3323 + rank4266` bundle validates on the
+  expanded fake-ID family with the same profile as top3325/top3400/top3500/
+  top3600 (`0.958` strict safe, `0.000` strict unsafe, `0.083` benign
+  over-refusal) and passes the broad default strict guard (`1.000` strict
+  safe, `0.000` strict unsafe, `0.000` benign over-refusal). Top3000 plus
+  rank4266 remains weaker on the expanded family (`0.917` strict safe,
+  `0.042` strict unsafe). The current smallest validated handle is therefore
+  `top3320 + rank3323 + rank4266` under `assistant_boundary_or_generated`.
+  Rank3323 is layer-20 feature `114`; its prompt-basis contribution metrics are
+  zero in the current ranking table, so this is a causal localization target,
+  not a semantic interpretation yet.
 
 ## Artifacts
 
@@ -415,3 +423,7 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3325_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
+- Layer-20 rank4266 `assistant_boundary_or_generated` top3320 edge singleton controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3320_rank3321_3325_singletons_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3320_rank3323_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3320_rank3323_rank4266_abog_max160/`
