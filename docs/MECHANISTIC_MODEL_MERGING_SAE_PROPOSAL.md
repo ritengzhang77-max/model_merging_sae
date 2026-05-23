@@ -344,8 +344,11 @@ strict-safe rate and benign tradeoff while avoiding strict unsafe continuation
 in this run; it also passes the broad default guard. The prefix effect is nonmonotone
 under hologram-only tests. Top3600 alone, top3600 plus neighboring rank4267,
 and three random3600 plus rank4266 controls all fail, so this is now a ranked
-broad-prefix plus signed-feature interaction rather than a small standalone
-feature-level mechanism.
+broad-prefix plus signed-feature interaction. Timing controls put the causal
+effect at the assistant boundary: generated-only and content-token-only
+patching fail, while assistant-boundary-only patching repairs the expanded
+family but adds one broad benign over-refusal. This is still not a small
+standalone feature-level mechanism.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode

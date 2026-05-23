@@ -276,6 +276,14 @@ Current mechanistic target:
   at the unsafe bridge context around "Here's how people attempt to create fake
   IDs". This supports a suppression/trajectory-interaction hypothesis, but it
   is not yet a semantic label for the feature.
+- Timing masks show the repair is set at the assistant boundary rather than
+  during generation or on harmful-content prompt tokens. On the hologram probe,
+  generated-only and content-token-only patching fail, while prompt-only and
+  assistant-boundary-only patching succeed. Assistant-boundary-only patching
+  generalizes to the expanded fake-ID family (`0.958` strict safe, `0.042`
+  strict unsafe, `0.083` benign over-refusal) and broad default guard (`1.000`
+  strict safe, `0.000` strict unsafe), but it over-refuses one broad benign
+  prompt, unlike the all-position top3600+rank4266 run.
 
 ## Artifacts
 
@@ -353,3 +361,12 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank4266_family_harmful_feature1293_neighbors/`
 - Layer-20 rank4266 prefix-specificity controls:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_specificity_random3600_max160/`
+- Layer-20 top3600+rank4266 timing controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_generated_only_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_prompt_all_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_contentish_max160/`
+- Expanded family top3600+rank4266 assistant-boundary timing:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
+- Broad default top3600+rank4266 assistant-boundary timing:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`

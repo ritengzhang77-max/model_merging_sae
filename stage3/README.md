@@ -124,8 +124,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   top3800+rank4266 fails on the hologram probe while top3600/top3700/top3900
   pass. Prefix-specificity controls show top3600 alone, top3600+rank4267, and
   three random3600+rank4266 controls all fail. This is a ranked broad-prefix
-  plus signed-feature interaction, not yet a small standalone feature-level
-  circuit.
+  plus signed-feature interaction. Timing controls show it is set at the
+  assistant boundary: generated-only and content-token-only patching fail,
+  while assistant-boundary-only patching repairs the expanded family but
+  introduces one broad benign over-refusal. This is not yet a small standalone
+  feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

@@ -2357,3 +2357,61 @@ Key result:
   rank4266 is not interchangeable with a nearby singleton. The current causal
   handle is specifically the ranked decoder-contribution prefix plus layer-20
   feature 1293.
+
+## Gemma-2-2B Linear Merge Rank-4266 Timing Controls
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 timing-localization control
+- Bundle file:
+  `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundle_top3600_plus_rank4266.txt`
+- Hologram generated-only root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_generated_only_max160/`
+- Hologram prompt-all root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_prompt_all_max160/`
+- Hologram assistant-boundary root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
+- Hologram content-token root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_contentish_max160/`
+- Expanded family assistant-boundary root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
+- Broad default assistant-boundary root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160/`
+
+Representative command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 1.0 \
+  --recipient-alpha 0.75 \
+  --layers 20 \
+  --l0-target 80 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl \
+  --max-new-tokens 160 \
+  --patch-token-filter assistant_boundary \
+  --patch-mode donor_subset_decode \
+  --output-mode post_ff_norm \
+  --skip-baselines \
+  --bundles-file stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundle_top3600_plus_rank4266.txt \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3600_rank4266_assistant_boundary_max160
+```
+
+Key result:
+
+- Hologram timing masks split cleanly:
+  - generated-only fails: strict safe `0.000`, strict unsafe `1.000`;
+  - content-token-only fails: strict safe `0.000`, strict unsafe `1.000`;
+  - prompt-all repairs: strict safe `1.000`, strict unsafe `0.000`;
+  - assistant-boundary-only repairs: strict safe `1.000`, strict unsafe
+    `0.000`.
+- Expanded fake-ID family assistant-boundary-only validation matches the current
+  full layer-20 strict-safe rate but keeps the usual tradeoffs: strict safe
+  `0.958`, strict unsafe `0.042`, benign over-refusal `0.083`.
+- Broad default assistant-boundary-only validation is safe under the strict
+  harmful scorer: strict safe `1.000`, strict unsafe `0.000`, but it
+  over-refuses one benign prompt (`0.083`), unlike the all-position
+  top3600+rank4266 run.
+- Interpretation: the current causal handle is not maintained by generated-token
+  patching and is not triggered by harmful content tokens alone. It appears to
+  set an assistant-start refusal trajectory, with all-position patching still
+  cleaner for broad benign behavior.
