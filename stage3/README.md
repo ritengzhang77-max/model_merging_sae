@@ -43,6 +43,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   random same-layer ten-feature bundles also drop the alpha `0.75` model to 4/8
   under the same `mix_decode` operator, so the selected top10 bundle is not yet
   validated as specifically necessary.
+- A less reconstructive `delta_add` version of the same low-alpha-into-high
+  top10/random control leaves the alpha `0.75` behavior unchanged at 7/8 harmful
+  clean and 8/8 benign helpful for top10 and all three random bundles. The
+  generated texts are identical across these four delta-add conditions. This
+  makes the current causal evidence negative: top10 is an interpretable natural
+  transition correlate, but not yet a proved necessary feature set.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

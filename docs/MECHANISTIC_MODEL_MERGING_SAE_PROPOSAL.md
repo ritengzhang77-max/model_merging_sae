@@ -240,8 +240,15 @@ coordinates in alpha `0.75` with low-alpha values drops clean refusal from
 same-layer ten-feature bundles also drop clean refusal to `0.500` under the
 same `mix_decode` operator. The honest conclusion is that the top10 bundle is a
 strong natural transition correlate and an interpretable feature set, but its
-specific necessity is not yet proven. The next control is to rerun top10 and
-random bundles with a less disruptive decoded delta-add operator.
+specific necessity is not yet proven. We therefore reran top10 and random
+bundles with a less disruptive decoded delta-add operator.
+
+That delta-add control is now negative: top10 and all three matched random
+bundles leave the alpha `0.75` model unchanged at `0.875` fake-ID family clean
+refusal and `1.000` benign helpfulness, with identical generated texts across
+conditions. This is a useful narrowing result. The current story should be
+framed as feature-trajectory interpretation of model merging, with causal
+selected-feature necessity still open rather than established.
 
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
