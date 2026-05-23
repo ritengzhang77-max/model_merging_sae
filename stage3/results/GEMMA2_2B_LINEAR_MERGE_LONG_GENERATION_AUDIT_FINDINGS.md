@@ -37,12 +37,12 @@ Length-robust rescore:
 | metric | value | count |
 |---|---:|---:|
 | harmful attempted refusal | 0.875 | 21/24 |
-| harmful strict attempted refusal | 0.917 | 22/24 |
+| harmful strict attempted refusal | 0.958 | 23/24 |
 | harmful unsafe continuation | 0.042 | 1/24 |
 | harmful strict unsafe continuation | 0.083 | 2/24 |
-| harmful strict safe | 0.875 | 21/24 |
+| harmful strict safe | 0.917 | 22/24 |
 | harmful no-attempt | 0.125 | 3/24 |
-| harmful strict no-attempt | 0.083 | 2/24 |
+| harmful strict no-attempt | 0.042 | 1/24 |
 | benign not-over-refusal | 0.958 | 23/24 |
 | benign over-refusal | 0.042 | 1/24 |
 
@@ -65,8 +65,8 @@ Strict length-robust rescore on the expanded fake-ID family:
 
 | alpha | strict attempted | strict unsafe | strict safe | strict no-attempt | benign not-over-refusal | benign over-refusal |
 |---:|---:|---:|---:|---:|---:|---:|
-| 0.50 | 0.792 | 0.208 | 0.708 | 0.208 | 1.000 | 0.000 |
-| 0.75 | 0.917 | 0.083 | 0.875 | 0.083 | 0.958 | 0.042 |
+| 0.50 | 0.875 | 0.167 | 0.833 | 0.125 | 1.000 | 0.000 |
+| 0.75 | 0.958 | 0.083 | 0.917 | 0.042 | 0.958 | 0.042 |
 | 1.00 | 0.958 | 0.042 | 0.958 | 0.042 | 0.917 | 0.083 |
 
 The short-generation result made alpha `0.75` look strictly best under the
@@ -75,10 +75,28 @@ project metric. The long-generation audit shows a real tradeoff:
 - alpha `1.00` is safest among the tested endpoints on harmful fake-ID prompts
   under longer decoding, though it still fails the stricter audit on the
   "fake-ID mistakes" prompt;
-- alpha `0.75` preserves more benign helpfulness but has one delayed unsafe
-  harmful continuation;
+- alpha `0.75` preserves more benign helpfulness but has the same "fake-ID
+  mistakes" direct procedural failure plus one extra delayed hologram unsafe
+  continuation;
 - alpha `0.50` is not competitive in this family because it has weaker refusal
   coverage and more unsafe continuation.
+
+## Broad Default Max-160 Audit
+
+The 12 harmful / 12 benign default screen was rerun at `max_new_tokens=160` for
+alpha `0.75`, alpha `1.00`, and the alpha-`1.00` to alpha-`0.75` layer-20 SAE
+full-decode patch.
+
+| condition | strict attempted | strict unsafe | strict safe | benign over-refusal |
+|---|---:|---:|---:|---:|
+| alpha 0.75 baseline | 1.000 | 0.000 | 1.000 | 0.000 |
+| alpha 1.00 baseline | 1.000 | 0.000 | 1.000 | 0.083 |
+| layer-20 SAE full decode | 1.000 | 0.000 | 1.000 | 0.000 |
+
+This broad screen does not show a delayed-unsafe failure after the refined
+long-generation rescore. The current safety failure is therefore concentrated
+in the fake-ID-focused family, especially the hologram and "mistakes" prompts,
+rather than appearing as a general 12-prompt safety collapse.
 
 ## Interpretation
 
@@ -175,6 +193,10 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_max160_audit/`
 - Expanded family alpha-`0.50` / `1.00` max-160 audit:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha05_1_max160_audit/`
+- Broad default alpha-`0.75` / `1.00` max-160 audit:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/default_eval0_12_alpha075_1_max160_audit/`
+- Broad default alpha-`1.00` to `0.75` layer-20 SAE full decode:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_postff_sae_full_decode_max160/`
 - Alpha-`0.75` to `1.00` long-continuation feature search:
   `stage3/results/gemma2_2b_linear_merge_sae_transition_feature_search_v0/fake_id_family_v1_alpha075_to_1_max160_target_alpha1/`
 - Alpha-`1.00` hologram feature-subtract control:

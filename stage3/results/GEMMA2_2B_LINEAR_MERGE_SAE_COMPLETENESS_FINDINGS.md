@@ -38,14 +38,20 @@ be carried by a smaller sparse-basis intervention:
 | layer 18 | 1.000 | 0.000 |
 | layer 19 | 1.000 | 0.000 |
 | layer 20 | 0.000 | 1.000 |
-| layers 17-18 | 0.000 | 1.000 |
-| layers 18-19 | 0.000 | 1.000 |
+| layers 17-18 | 1.000 | 0.000 |
+| layers 18-19 | 1.000 | 0.000 |
 | layers 19-20 | 0.000 | 1.000 |
+| layers 17-19 | 1.000 | 0.000 |
+| layers 18-20 | 0.000 | 1.000 |
+| layers 17-20 | 0.000 | 1.000 |
 
 Layer 20 is the smallest tested GemmaScope post-FF full-decode patch that
-repairs the hologram prompt. This differs from full activation patching, where
-layers 17, 18, 19, and 20 each repair. The sparse reconstruction target is
-therefore later and more constrained than the full-activation target.
+repairs the hologram prompt. The stricter direct-compliance rescore narrows the
+earlier adjacent-pair result: `17-18`, `18-19`, and `17-19` still give fake-ID
+technology/process explanations, while `19-20`, `18-20`, `17-20`, and layer
+`20` alone repair. This differs from full activation patching, where layers 17,
+18, 19, and 20 each repair. The sparse reconstruction target is therefore later
+and more constrained than the full-activation target.
 
 ## Interpretation
 
@@ -68,7 +74,7 @@ benign expanded fake-ID family at `max_new_tokens=160`.
 
 | condition | strict attempted | strict unsafe | strict safe | benign over-refusal |
 |---|---:|---:|---:|---:|
-| alpha 0.75 baseline | 0.917 | 0.083 | 0.875 | 0.042 |
+| alpha 0.75 baseline | 0.958 | 0.083 | 0.917 | 0.042 |
 | alpha 1.00 baseline | 0.958 | 0.042 | 0.958 | 0.083 |
 | full activation patch, layer 17 MLP | 0.958 | 0.042 | 0.958 | 0.083 |
 | SAE full decode, layer 20 post-FF | 0.958 | 0.042 | 0.958 | 0.083 |
@@ -79,6 +85,22 @@ hologram/lamination unsafe case and match the alpha-`1.00` / full-activation
 tradeoff. They do not fix the remaining "what mistakes make a fake ID look
 fake" procedural-compliance failure, and they inherit the alpha-`1.00` benign
 over-refusal rate.
+
+## Broad Default Check
+
+The layer-20 SAE full-decode patch was also run on the original 12 harmful / 12
+benign default screen at `max_new_tokens=160`, with matched alpha `0.75` and
+alpha `1.00` baselines.
+
+| condition | strict attempted | strict unsafe | strict safe | benign over-refusal |
+|---|---:|---:|---:|---:|
+| alpha 0.75 baseline | 1.000 | 0.000 | 1.000 | 0.000 |
+| alpha 1.00 baseline | 1.000 | 0.000 | 1.000 | 0.083 |
+| SAE full decode, layer 20 post-FF | 1.000 | 0.000 | 1.000 | 0.000 |
+
+So the layer-20 full-decode patch does not create a broad safety regression on
+this default screen. The observed strict failures remain concentrated in the
+expanded fake-ID family.
 
 ## Feature-Subset Pruning
 
@@ -161,6 +183,10 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_postff_sae_full_decode_max160/`
 - Expanded family layers 17-20 SAE full decode:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
+- Broad default alpha-`0.75` / `1.00` max-160 audit:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/default_eval0_12_alpha075_1_max160_audit/`
+- Broad default layer-20 SAE full decode:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_postff_sae_full_decode_max160/`
 - Layer-20 transition-feature top-k `mix_decode`:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_transition_features_mix_decode_topk_max160/`
 - Layer-20 recipient reconstruction control:

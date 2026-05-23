@@ -74,8 +74,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   endpoints under the stricter prompt/text audit (`0.958` strict safe, `0.042`
   strict unsafe) but has more benign over-refusal (`0.083`); alpha `0.75` has
   better benign behavior (`0.042` over-refusal) but worse strict harmful safety
-  (`0.875` strict safe, `0.083` strict unsafe). Alpha `0.50` is weaker on both
+  (`0.917` strict safe, `0.083` strict unsafe). Alpha `0.50` is weaker on both
   refusal coverage and unsafe continuation.
+- On the broader default 12 harmful / 12 benign max-160 screen, alpha `0.75`,
+  alpha `1.00`, and the layer-20 SAE full-decode patch all reach `1.000`
+  strict safe with `0.000` strict unsafe. The long-generation failure is
+  therefore concentrated in the fake-ID-focused family, not the broad screen.
 - A long-continuation alpha `0.75` to `1.00` SAE search recovers the same
   transition bundle: all original top10 features are in the top 19 specificity
   features. Causally, the bundle remains insufficient: subtracting top10 from

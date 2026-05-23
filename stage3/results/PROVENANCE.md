@@ -1773,7 +1773,7 @@ Key result:
   not repair, while each of layers `17`, `18`, `19`, and `20` alone repairs.
 - Two-layer adjacent MLP patches from `16+17` through `19+20` also repair.
 - On the expanded fake-ID family under the strict prompt/text audit, alpha
-  `0.75` reaches strict safe `0.875`, alpha `1.00` reaches `0.958`, layer-16
+  `0.75` reaches strict safe `0.917`, alpha `1.00` reaches `0.958`, layer-16
   MLP patching reaches `0.917`, and layer-17 MLP patching reaches `0.958`.
 - Layer 17 removes the alpha-`0.75` hologram unsafe case and matches alpha
   `1.00` harmful safety; layer 16 does not remove that unsafe case.
@@ -1868,8 +1868,9 @@ Key result:
 - Layers-17-20 GemmaScope post-FF SAE delta-add-all fails: strict unsafe
   `1.000`.
 - Layer-pruning shows layer-20 GemmaScope post-FF SAE full decode is sufficient
-  on the hologram probe; layers 17, 18, and 19 alone fail, while adjacent pairs
-  repair.
+  on the hologram probe; layers 17, 18, and 19 alone fail, `17-18`, `18-19`,
+  and `17-19` still give fake-ID technology/process explanations, while
+  `19-20`, `18-20`, `17-20`, and layer 20 alone repair.
 - On the expanded fake-ID family, layer-20 SAE full decode matches layers-17-20
   SAE full decode, alpha `1.00`, and full layer-17 activation patching: strict
   safe `0.958`, strict unsafe `0.042`, benign over-refusal `0.083`.
@@ -1903,3 +1904,61 @@ Interpretation:
   solve it. High-activation ranking also fails. The next pruning method likely
   needs path/decoder contribution information or learned sparse masks rather
   than scalar feature-delta or magnitude ranking.
+
+## Gemma-2-2B Linear Merge Broad Max-160 Safety Audit
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 broad long-generation control
+- Prompt family: default 12 harmful / 12 benign safety screen
+- Generation length: `max_new_tokens=160`
+- Baseline root:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/default_eval0_12_alpha075_1_max160_audit/`
+- SAE full-decode root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_postff_sae_full_decode_max160/`
+- Updated rescorer:
+  `stage3/scripts/rescore_long_generation_safety.py`
+- Harmful term update:
+  `stage0/scripts/screen_chat_merge_candidate.py`
+
+Commands:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py \
+  --device cuda:0 \
+  --alphas 0.75,1.0 \
+  --eval-start 0 \
+  --examples-per-split 12 \
+  --max-new-tokens 160 \
+  --result-dir stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/default_eval0_12_alpha075_1_max160_audit
+```
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 1.0 \
+  --recipient-alpha 0.75 \
+  --layers 20 \
+  --l0-target 80 \
+  --eval-start 0 \
+  --examples-per-split 12 \
+  --max-new-tokens 160 \
+  --patch-token-filter all \
+  --patch-mode full_decode \
+  --output-mode post_ff_norm \
+  --skip-baselines \
+  --bundles 'l20_full_decode=20:0' \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_postff_sae_full_decode_max160
+```
+
+Key result:
+
+- Alpha `0.75` baseline: strict safe `1.000`, strict unsafe `0.000`, benign
+  over-refusal `0.000`.
+- Alpha `1.00` baseline: strict safe `1.000`, strict unsafe `0.000`, benign
+  over-refusal `0.083`.
+- Alpha `1.00` to `0.75` layer-20 SAE full decode: strict safe `1.000`,
+  strict unsafe `0.000`, benign over-refusal `0.000`.
+- The refined rescorer removes false positives where safe legal/cybersecurity
+  redirects echoed harmful terms without giving direct procedural compliance.
+- The expanded fake-ID family remains the active failure family; the default
+  broad screen does not show a long-generation safety collapse.

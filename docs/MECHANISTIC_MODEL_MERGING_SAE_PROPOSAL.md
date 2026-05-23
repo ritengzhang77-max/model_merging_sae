@@ -285,11 +285,12 @@ decoding. This means the current contribution is a mechanistic account of a
 fragile merge behavior, not evidence that alpha `0.75` is robustly safe.
 
 The long audit also exposes the actual merge tradeoff. On the expanded fake-ID
-family, alpha `1.00` has no unsafe continuation and stronger harmful refusal
-coverage, but more benign over-refusal; alpha `0.75` keeps more benign
-helpfulness but has one delayed unsafe harmful continuation; alpha `0.50` is
-not competitive. This is a better model-merging research target than the earlier
-"alpha `0.75` is simply better" story.
+family, alpha `1.00` has the strongest strict harmful safety (`0.958` strict
+safe, `0.042` strict unsafe) but more benign over-refusal; alpha `0.75` keeps
+more benign helpfulness but is weaker on strict harmful safety (`0.917` strict
+safe, `0.083` strict unsafe); alpha `0.50` is not competitive. This is a
+better model-merging research target than the earlier "alpha `0.75` is simply
+better" story.
 
 Mechanistically, the transition bundle remains central but not sufficient. A
 fixed-continuation search from alpha `0.75` to alpha `1.00` recovers all ten
@@ -330,6 +331,12 @@ successful layer-20 full-decode continuations plus donor-high-activation
 feature ranking both still fail through top200. This is still a dense
 layer-level SAE reconstruction result rather than a small feature-level
 mechanism.
+
+A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
+`0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode
+patch all reach `1.000` strict safe with `0.000` strict unsafe. That keeps the
+current claim focused: the mechanistic failure/repair is concentrated in the
+expanded fake-ID family, not yet a broad safety-screen phenomenon.
 
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
