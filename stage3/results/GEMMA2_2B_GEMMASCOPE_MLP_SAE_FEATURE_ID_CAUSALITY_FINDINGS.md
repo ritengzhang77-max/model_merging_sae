@@ -260,6 +260,32 @@ antagonists are therefore mask-dependent: they disrupt the narrow
 `assistant_boundary_or_generated` trajectory, but broader
 `prompt_template_or_generated` patching bypasses that disruption.
 
+## Feature-Specific Timing
+
+The strongest feature-16048 necessity setting remains the basis `0:4`, k896
+prefix: k896 alone fails fake-ID, while k896 plus L19 feature `16048` passes.
+Splitting feature `16048` by timing shows:
+
+| condition | harmful clean | unsafe | fake-ID |
+|---|---:|---:|---|
+| k896 prefix only | 0.500 | 0.000 | fail |
+| + f16048 at assistant boundary | 0.500 | 0.000 | fail |
+| + f16048 at generated tokens | 0.750 | 0.250 | pass |
+| + f16048 at boundary or generated | 0.750 | 0.250 | pass |
+| broad template/generated k896 prefix only | 0.500 | 0.000 | fail |
+| broad prefix + f16048 at prompt template | 0.500 | 0.000 | fail |
+| broad prefix + f16048 at generated tokens | 0.750 | 0.250 | pass |
+| broad prefix + f16048 at template or generated | 0.750 | 0.250 | pass |
+
+So feature `16048` is not an assistant-boundary initialization feature in this
+test. It is a generated-token trajectory feature. The `0.250` unsafe rate comes
+from another harmful prompt, not fake-ID.
+
+A prefix-alone control also shows that under basis `0:8`, k256 already passes
+fake-ID without adding feature `16048`. This narrows earlier k256 language:
+feature `16048` is causal in the basis `0:4` k896/k1024 threshold setting, but
+not necessary in every passing prefix.
+
 ## L19 Tail Feature Audit
 
 The layer-19 rank-897-to-1024 band was exported separately in:
@@ -300,8 +326,10 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   feature-16048 conditions, so intervention semantics matter.
 - Timing-mask controls show the mechanism needs prompt-template state plus
   generated-token maintenance; content-token patching is not a substitute.
-- The next tests should split timing by feature ID and inspect signed feature
-  trajectories rather than only unsigned top-delta ranking.
+- Feature-specific timing shows feature `16048` acts on generated-token
+  trajectory maintenance in the clean k896 test.
+- The next tests should inspect signed feature trajectories rather than only
+  unsigned top-delta ranking.
 
 ## Artifacts
 
@@ -329,9 +357,17 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_timing_masks_v0/`
 - Feature `16048` timing-mask memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
+- Feature `16048` feature-specific timing root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
+- Feature `16048` feature-specific timing memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
+- Feature `16048` prefix-alone budget root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_alone_budget_v0/`
 - L19 tail audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/`
 - Script support:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+- Feature-specific timing script:
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_specific_timing.py`
 - Rank-stability script:
   `stage3/scripts/analyze_gemma2_2b_gemmascope_mlp_sae_feature_rank_stability.py`

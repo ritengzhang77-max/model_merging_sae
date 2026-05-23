@@ -190,6 +190,32 @@ L12 singleton antagonist result is real but narrow: it holds under the
 `assistant_boundary_or_generated` trajectory and is bypassed by broader
 template-state patching.
 
+## Feature-Specific Timing
+
+Feature-specific timing separates two previously bundled effects:
+
+1. Under basis `0:8`, k256 alone already recovers fake-ID. Feature `16048` is
+   redundant in that prefix, so k256 is useful for antagonist timing but not for
+   testing L19 necessity.
+2. Under the earlier basis `0:4`, k896 prefix where k896 fails and
+   `k896 + L19 f16048` passes, feature `16048` works when patched on generated
+   tokens and fails when patched only at the assistant boundary or prompt
+   template.
+
+The L12 singletons also split by timing under the narrow
+`assistant_boundary_or_generated` trajectory:
+
+| added L12 singleton to k256 trajectory | timing | fake-ID |
+|---|---|---|
+| rank 274 / feature 40 | assistant boundary | pass |
+| rank 274 / feature 40 | generated tokens | fail |
+| rank 295 / feature 12075 | assistant boundary | fail |
+| rank 295 / feature 12075 | generated tokens | pass |
+
+Thus feature `16048` is best described as a generated-token refusal trajectory
+feature in the basis `0:4` k896 setting, while the two L12 singleton
+antagonists disrupt different timing sites.
+
 ## Interpretation
 
 The live mechanism is now better described as an antagonistic feature-bundle
@@ -207,6 +233,9 @@ interaction:
 - The runtime position mask matters: the L12 singleton antagonist effect is
   visible under narrow assistant-boundary-plus-generation patching but not under
   broader prompt-template-plus-generation patching.
+- Feature-specific timing matters: L19 feature `16048` is generated-token
+  causal in the clean k896 test, while the two L12 disruptors split across
+  generated-token and assistant-boundary timing.
 
 This is a stronger mechanistic direction than a simple "single refusal feature"
 story because it exposes why merging/patching can be fragile even when the
@@ -226,5 +255,13 @@ selected features are high-delta and behaviorally relevant.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_timing_masks_v0/`
 - Timing-mask memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
+- Feature-specific timing:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
+- Feature-specific timing memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
+- Prefix-alone budget:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_alone_budget_v0/`
 - Main script:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+- Feature-specific timing script:
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_specific_timing.py`

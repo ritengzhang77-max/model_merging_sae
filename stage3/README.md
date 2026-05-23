@@ -219,6 +219,14 @@ Feature-ID causality follow-up:
   content-ish-or-generated masks fail, while prompt-template-or-generated
   succeeds and bypasses the two singleton L12 antagonist effects seen under
   the narrower assistant-boundary-or-generated mask.
+- feature-specific timing shows L19 feature `16048` acts during generated
+  tokens in the clean basis `0:4`, k896 test; assistant-boundary/template-only
+  patching of this feature fails. Under basis `0:8`, k256 already passes
+  fake-ID without feature `16048`, so the feature is causal in some prefixes,
+  redundant in others, and insufficient in others.
+- the two L12 singleton antagonists split by timing under the narrow trajectory:
+  rank `274` / feature `40` disrupts when patched during generation, while
+  rank `295` / feature `12075` disrupts when patched at the assistant boundary.
 
 Main artifacts:
 
@@ -229,6 +237,7 @@ Main artifacts:
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_ID_CAUSALITY_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_PREFIX_LOCALIZATION_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
+- `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`

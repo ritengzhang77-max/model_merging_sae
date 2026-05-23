@@ -181,6 +181,14 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_timing_masks_v0/`
 - Feature `16048` timing-mask memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
+- Feature `16048` feature-specific timing root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
+- Feature `16048` feature-specific timing memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
+- Feature `16048` prefix-alone budget root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_alone_budget_v0/`
+- Feature `16048` k256 prefix control:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_k256_prefix_control_v0/`
 - L12 interference feature audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
 
@@ -263,6 +271,14 @@ Key result:
   prompt-template-or-generated succeeds and bypasses the two singleton L12
   antagonist effects seen under the narrower assistant-boundary-or-generated
   mask.
+- Feature-specific timing shows feature `16048` is generated-token causal in
+  the basis `0:4`, k896 test: boundary/template-only patching fails, while
+  generated-only patching recovers fake-ID. Under basis `0:8`, k256 already
+  recovers fake-ID without feature `16048`, so the feature is causal in some
+  prefixes but redundant or insufficient in others.
+- The two singleton L12 antagonists split by timing under the narrow trajectory:
+  rank `274` / feature `40` disrupts when patched during generation, while
+  rank `295` / feature `12075` disrupts when patched at the assistant boundary.
 
 Interpretation:
 
@@ -279,8 +295,10 @@ Interpretation:
   `mix_decode` and weak under the tested `delta_add` path.
 - The runtime position mask matters: the current antagonist result is a narrow
   trajectory effect, not a context-free property of the two L12 features.
-- Next tests should split timing by feature ID and compare signed/directional
-  feature effects against unsigned top-delta ranking.
+- Feature-specific timing points to generated-token maintenance as the L19
+  feature-16048 role and separates the two L12 disruptors by timing site.
+- Next tests should compare signed/directional feature effects against unsigned
+  top-delta ranking.
 
 ## Qwen2.5-1.5B Residual Benchmark V0
 

@@ -49,14 +49,20 @@ template-state patching can compensate for or bypass that disruption.
 
 ## Next Test
 
-The next decisive experiment is feature-specific timing:
+The follow-up feature-specific timing test has now been run:
 
-- patch the broad k256 prefix on prompt-template and generated tokens;
-- patch L19 feature `16048` only at prompt-template, only at generated, or both;
-- patch L12 disruptors only at prompt-template, only at generated, or both.
+- In the basis `0:4`, k896 setting where k896 fails and k896 + feature `16048`
+  passes, feature `16048` works when patched on generated tokens and fails when
+  patched only at the assistant boundary or prompt template.
+- In the basis `0:8`, k256 setting, k256 already passes fake-ID without feature
+  `16048`; this setting is useful for L12 antagonist timing but not for L19
+  feature necessity.
+- L12 rank `274` / feature ID `40` disrupts when patched on generated tokens,
+  while L12 rank `295` / feature ID `12075` disrupts when patched at the
+  assistant boundary.
 
-That will separate whether feature `16048` mainly initializes the refusal
-trajectory, maintains it during generation, or needs both timing sites.
+See
+`stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`.
 
 ## Artifacts
 
@@ -68,3 +74,5 @@ trajectory, maintains it during generation, or needs both timing sites.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_band_localization_v0/`
 - Main script:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+- Feature-specific timing script:
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_specific_timing.py`
