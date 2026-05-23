@@ -3,6 +3,77 @@
 This ledger records result artifacts that are likely to feed later paper tables,
 figures, or decision memos.
 
+## Gemma-2-2B Linear Merge SAE Top3210 Sparse Handle
+
+- Date appended: 2026-05-23
+- Artifact status: active smallest validated layer-20 decoder-contribution
+  handle checkpoint
+- Donor/base endpoint: `google/gemma-2-2b-it`, linear-merge alpha `1.00`
+- Recipient endpoint: alpha `0.75` on the
+  `IlyaGusev/gemma-2-2b-it-abliterated` to base line
+- Causal site: GemmaScope layer-20 post-feedforward MLP-SAE decoder
+  contribution patch
+- Runtime patch path: `assistant_boundary_or_generated`
+- Main runner:
+  `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`
+- Strict rescorer:
+  `stage3/scripts/rescore_long_generation_safety.py`
+- Feature-event audit:
+  `stage3/scripts/audit_gemma2_2b_linear_merge_sae_feature_events.py`
+- Main memo:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_COMPLETENESS_FINDINGS.md`
+- Long-generation audit memo:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_LONG_GENERATION_AUDIT_FINDINGS.md`
+- Consolidated prefix table:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank4266_abog_prefix_refinement_metrics.csv`
+
+Key result:
+
+- Previous validated handle:
+  `top3300 + rank3308 + rank3323 + rank4266`.
+- New hologram refinement: with rank3308/rank3323/rank4266 fixed, top3210
+  still fails and top3220 passes.
+- Singleton sweep over ranks 3211-3220 identifies two redundant closing ranks:
+  rank3211 and rank3214. The other tested ranks do not close the top3210
+  hologram gap.
+- Both
+  `top3210 + rank3211 + rank3308 + rank3323 + rank4266` and
+  `top3210 + rank3214 + rank3308 + rank3323 + rank4266` match the expanded
+  fake-ID family profile: strict safe `0.958`, strict unsafe `0.000`, benign
+  over-refusal `0.083`.
+- Both pass the broad default `0:12` max-160 strict guard: strict safe `1.000`,
+  strict unsafe `0.000`, benign over-refusal `0.000`.
+- Adding both rank3211 and rank3214 does not reduce the required prefix below
+  top3210: top3200 with both ranks still fails the hologram prompt.
+
+Feature interpretation:
+
+- rank3308 = layer-20 feature `93`, an assistant-boundary feature at
+  `<start_of_turn>model`;
+- rank3323 = layer-20 feature `114`, an assistant-boundary newline feature;
+- rank4266 = layer-20 feature `1293`, the signed-negative generated-trajectory
+  handle;
+- rank3211 = layer-20 feature `4983` and rank3214 = layer-20 feature `2451`.
+  The first audit suggests these are generated refusal-trajectory supports, not
+  clean assistant-boundary features.
+
+Artifacts:
+
+- Prefix threshold with rank3308/rank3323/rank4266:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3308_rank3323_rank4266_prefix_threshold_abog_max160/`
+- Prefix refinement 3200-3250:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3308_rank3323_rank4266_prefix_refine_3200_3250_abog_max160/`
+- rank3211-3220 singleton sweep:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_3220_singletons_rank3308_rank3323_rank4266_abog_max160/`
+- Combined rank3211/rank3214 lower-bound check:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3211_rank3214_rank3308_rank3323_rank4266_prefix_threshold_abog_max160/`
+- Expanded family validation:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+- Broad default validation:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+- Feature-event audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
+
 ## Gemma-2-2B GemmaScope MLP SAE Behavioral Gate
 
 - Date appended: 2026-05-22

@@ -227,12 +227,24 @@ rank3301-rank3310 singleton sweep localizes that edge to rank3308. The
 discontiguous `top3300 + rank3308 + rank3323 + rank4266` setting matches the
 same expanded-family profile (`0.958` strict safe, `0.000` strict unsafe,
 `0.083` benign over-refusal) and broad default strict guard (`1.000` strict
-safe, `0.000` strict unsafe, `0.000` benign over-refusal). Prompt-scope audits
+safe, `0.000` strict unsafe, `0.000` benign over-refusal).
+A later edge sweep lowers the validated handle again. With rank3308/rank3323/
+rank4266 included, top3210 still fails the hologram prompt and top3220 passes.
+Among ranks 3211-3220, rank3211 and rank3214 are the only tested singletons
+that close the top3210 hologram gap. Both resulting handles match the
+expanded-family profile (`0.958` strict safe, `0.000` strict unsafe, `0.083`
+benign over-refusal) and broad default strict guard (`1.000` strict safe,
+`0.000` strict unsafe, `0.000` benign over-refusal). Adding both rank3211 and
+rank3214 does not lower the prefix below top3210, so the current smallest
+validated handles are `top3210 + rank3211 + rank3308 + rank3323 + rank4266`
+and `top3210 + rank3214 + rank3308 + rank3323 + rank4266`. Prompt-scope audits
 show rank3308 is layer-20 feature `93`, donor-higher on the
 `<start_of_turn>model` token; rank3323 is layer-20 feature `114`, donor-active
 and recipient-zero on the following newline. Both are zero on generated tokens
-in this hologram audit, while rank4266/feature `1293` has the different
-trajectory profile.
+in this hologram audit, while rank4266/feature `1293` has a different
+generated-trajectory profile. The newer rank3211/rank3214 audit suggests these
+edge features, layer-20 features `4983` and `2451`, are generated refusal-text
+trajectory supports rather than clean assistant-boundary features.
 
 Next evaluation work should separate:
 
@@ -385,6 +397,14 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3323_rank4266_hologram_singleton_edge_feature114_1293/`
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3323_rank4266_hologram_singleton_edge_prompt_feature114_1293/`
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3308_rank3323_rank4266_hologram_singleton_edge_prompt_feature93_114_1293/`
+- Layer-20 rank3211/rank3214 lower-handle controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3308_rank3323_rank4266_prefix_refine_3200_3250_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_3220_singletons_rank3308_rank3323_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3211_rank3214_rank3308_rank3323_rank4266_prefix_threshold_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+- Layer-20 rank3211/rank3214 feature-event audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 - Alpha-`0.50` to `0.75` layer-20 donor full-decode control:

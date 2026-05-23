@@ -362,15 +362,22 @@ localizes the top3320 edge to rank3323: `top3320 + rank3323 + rank4266`
 passes the hologram probe, matches top3325 on the expanded fake-ID family, and
 passes the broad default strict guard. Adding rank3323 lowers the boundary
 again: top3300 still fails, top3310 passes, and a rank3301-rank3310 singleton
-sweep localizes the edge to rank3308. The current smallest validated handle is
-`top3300 + rank3308 + rank3323 + rank4266`, which matches the same
-expanded-family profile and broad default strict guard. The local prefix
-effect remains nonmonotone: top3375 fails while top3390/top3400 pass.
+sweep localizes the edge to rank3308. A later edge sweep lowers the validated
+handle again: with rank3308/rank3323/rank4266 fixed, top3210 fails and top3220
+passes, while singleton rank3211 or rank3214 closes the top3210 hologram gap.
+The current smallest validated handles are
+`top3210 + rank3211 + rank3308 + rank3323 + rank4266` and
+`top3210 + rank3214 + rank3308 + rank3323 + rank4266`, both matching the same
+expanded-family profile and broad default strict guard. Adding both rank3211
+and rank3214 does not lower the required prefix below top3210. The local
+prefix effect remains nonmonotone: top3375 fails while top3390/top3400 pass.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are
-assistant-boundary features, not generated-token features, so this is a
-smaller causal target rather than a feature-semantics result.
+assistant-boundary features, not generated-token features. Rank3211 and
+rank3214 are layer-20 features `4983` and `2451`; their audit looks more like
+generated refusal-trajectory support. This is a smaller causal target rather
+than a feature-semantics result.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode

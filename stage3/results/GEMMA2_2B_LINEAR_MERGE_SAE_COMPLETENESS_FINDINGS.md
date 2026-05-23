@@ -317,8 +317,20 @@ Current mechanistic target:
   `0.083` benign over-refusal) and passes the broad default strict guard
   (`1.000` strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
   Top3000 plus rank4266 remains weaker on the expanded family (`0.917` strict
-  safe, `0.042` strict unsafe). The current smallest validated handle is
-  therefore `top3300 + rank3308 + rank3323 + rank4266` under
+  safe, `0.042` strict unsafe).
+- Continuing the same singleton-localization pattern lowers the validated
+  hologram handle to the top3210 prefix. With rank3308/rank3323/rank4266
+  included, top3210 still fails and top3220 passes. A singleton sweep over
+  ranks 3211-3220 localizes two redundant edge features: top3210 plus rank3211
+  passes, top3210 plus rank3214 passes, and the other tested ranks do not.
+  These two lower handles both match the expanded-family profile (`0.958`
+  strict safe, `0.000` strict unsafe, `0.083` benign over-refusal) and both
+  pass the broad default strict guard (`1.000` strict safe, `0.000` strict
+  unsafe, `0.000` benign over-refusal). Adding both rank3211 and rank3214 does
+  not lower the prefix below top3210: top3200 with both still fails while
+  top3210 with both passes. The current smallest validated handle is therefore
+  either `top3210 + rank3211 + rank3308 + rank3323 + rank4266` or
+  `top3210 + rank3214 + rank3308 + rank3323 + rank4266` under
   `assistant_boundary_or_generated`.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
@@ -328,6 +340,15 @@ Current mechanistic target:
   layer-20 feature `1293`, with a different generated-trajectory profile. This
   is now a small set of boundary features plus a broad ranked prefix and
   rank4266, not yet a full semantic circuit.
+- Event audits of the new edge ranks suggest rank3211/rank3214 are not clean
+  assistant-boundary features like rank3308/rank3323. Rank3211 is layer-20
+  feature `4983` and rank3214 is layer-20 feature `2451`; on the hologram
+  singleton audit they appear mainly in generated refusal-text trajectories,
+  while the successful rank3211/rank3214/top3220 outputs also show the
+  feature1293 generated-token profile shifting to the high donor/recipient
+  trajectory associated with passing refusals. The current interpretation is a
+  small assistant-boundary handle plus lower-ranked generated-trajectory
+  support, not a clean semantic "fake ID" feature circuit.
 
 ## Artifacts
 
@@ -451,3 +472,12 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3323_rank4266_hologram_singleton_edge_feature114_1293/`
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3323_rank4266_hologram_singleton_edge_prompt_feature114_1293/`
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3308_rank3323_rank4266_hologram_singleton_edge_prompt_feature93_114_1293/`
+- Layer-20 rank3211/rank3214/rank3308/rank3323/rank4266 lower-handle controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3308_rank3323_rank4266_prefix_threshold_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3308_rank3323_rank4266_prefix_refine_3200_3250_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_3220_singletons_rank3308_rank3323_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3211_rank3214_rank3308_rank3323_rank4266_prefix_threshold_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+- Layer-20 rank3211/rank3214 generated-trajectory audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
