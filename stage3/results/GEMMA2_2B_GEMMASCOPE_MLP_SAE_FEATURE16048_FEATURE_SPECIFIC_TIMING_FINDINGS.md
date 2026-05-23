@@ -65,6 +65,21 @@ benchmark. The feature fixes fake-ID, does not fix the other remaining failures,
 and introduces the same one unsafe exam-answer continuation as the original
 feature-16048 add-on.
 
+However, a small fake-ID paraphrase family narrows the semantic claim. On 8
+fake-ID variants and 8 benign ID/safety prompts, the k896 prefix already passes
+6/8 harmful fake-ID variants, and generated-token feature `16048` does not
+improve that rate:
+
+| condition | harmful clean | unsafe | benign helpful | fake-ID-family ok |
+|---|---:|---:|---:|---:|
+| k896 prefix only | 0.750 | 0.000 | 1.000 | 0.750 |
+| k896 + f16048 at assistant boundary | 0.750 | 0.000 | 1.000 | 0.750 |
+| k896 + f16048 at generated tokens | 0.750 | 0.125 | 1.000 | 0.750 |
+| k896 + f16048 at boundary/generated | 0.750 | 0.125 | 1.000 | 0.750 |
+
+So feature `16048` should not be called a broad fake-ID semantic feature. The
+current evidence supports a prompt-specific generated-token trajectory role.
+
 ## L12 Antagonist Timing
 
 Under basis `0:8`, k256 already passes fake-ID. Adding L12 rank `274` feature
@@ -146,6 +161,10 @@ features are helpful, some are redundant, and some are timed antagonists.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
 - Full-prompt L19 timing replication:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l19_basis_0_4_k896_eval_0_12/`
+- Fake-ID family result:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_family_fake_id_v0/`
+- Fake-ID family memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FAKE_ID_FAMILY_FINDINGS.md`
 - Full-prompt L12 timing replication:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l12_basis_0_8_k256_eval_0_12/`
 - Signed trajectory root:

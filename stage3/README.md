@@ -227,6 +227,10 @@ Feature-ID causality follow-up:
 - the generated-token timing result replicates on all 12 harmful and 12 benign
   prompts: generated-only `f16048` matches boundary-or-generated `f16048`,
   while assistant-boundary-only `f16048` matches the k896 prefix-only baseline.
+- a small fake-ID paraphrase family does not replicate the semantic story:
+  k896 already passes 6/8 fake-ID variants, and generated-token `f16048` does
+  not improve the family pass rate, so feature `16048` should not be labeled a
+  broad fake-ID semantic feature.
 - the two L12 singleton antagonists split by timing under the narrow trajectory:
   rank `274` / feature `40` disrupts when patched during generation, while
   rank `295` / feature `12075` disrupts when patched at the assistant boundary.
@@ -249,6 +253,7 @@ Main artifacts:
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_SIGNED_TRAJECTORY_FINDINGS.md`
+- `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FAKE_ID_FAMILY_FINDINGS.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`

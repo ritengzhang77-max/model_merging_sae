@@ -1,0 +1,50 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "12": "layer_12/width_16k/average_l0_108/params.npz",
+    "13": "layer_13/width_16k/average_l0_112/params.npz",
+    "14": "layer_14/width_16k/average_l0_97/params.npz",
+    "15": "layer_15/width_16k/average_l0_80/params.npz",
+    "16": "layer_16/width_16k/average_l0_72/params.npz",
+    "17": "layer_17/width_16k/average_l0_68/params.npz",
+    "18": "layer_18/width_16k/average_l0_106/params.npz",
+    "19": "layer_19/width_16k/average_l0_109/params.npz",
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "layers": [
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "output_mode": "post_ff_norm",
+  "feature_token_filter": "all",
+  "basis_start": 0,
+  "basis_examples_per_split": 4,
+  "eval_start": 8,
+  "examples_per_split": 4,
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl",
+  "prefix_k": 896,
+  "variant_set": "l19_narrow",
+  "variants": [
+    "narrow_prefix_only",
+    "narrow_f16048_assistant_boundary",
+    "narrow_f16048_generated",
+    "narrow_f16048_abog"
+  ],
+  "outputs": {
+    "metrics": "stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_family_fake_id_v0/l19_basis_0_4_k896_fake_id_family/gemma2_2b_gemmascope_mlp_sae_feature_specific_timing_metrics.csv",
+    "records": "stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_family_fake_id_v0/l19_basis_0_4_k896_fake_id_family/gemma2_2b_gemmascope_mlp_sae_feature_specific_timing_records.jsonl",
+    "groups": "stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_family_fake_id_v0/l19_basis_0_4_k896_fake_id_family/gemma2_2b_gemmascope_mlp_sae_feature_specific_timing_groups.csv",
+    "summary": "stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_family_fake_id_v0/l19_basis_0_4_k896_fake_id_family/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SPECIFIC_TIMING_SUMMARY.md"
+  }
+}

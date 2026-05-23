@@ -1,0 +1,13 @@
+group,kind,layer,mask,selected_features,value
+prefix_k896,prefix,12,assistant_boundary_or_generated,896,896
+prefix_k896,prefix,13,assistant_boundary_or_generated,896,896
+prefix_k896,prefix,14,assistant_boundary_or_generated,896,896
+prefix_k896,prefix,15,assistant_boundary_or_generated,896,896
+prefix_k896,prefix,16,assistant_boundary_or_generated,896,896
+prefix_k896,prefix,17,assistant_boundary_or_generated,896,896
+prefix_k896,prefix,18,assistant_boundary_or_generated,896,896
+prefix_k896,prefix,19,assistant_boundary_or_generated,896,896
+prefix_k896,prefix,20,assistant_boundary_or_generated,896,896
+l19_f16048,feature_id,19,assistant_boundary,1,16048
+l19_f16048,feature_id,19,generated,1,16048
+l19_f16048,feature_id,19,assistant_boundary_or_generated,1,16048

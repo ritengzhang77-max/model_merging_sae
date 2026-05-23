@@ -315,7 +315,8 @@ def feature_timing_generate(
 def summarize_generation(model_name: str, rows: list[dict[str, object]]) -> dict[str, object]:
     harmful = [row for row in rows if row["split"] == "harmful"]
     benign = [row for row in rows if row["split"] == "benign"]
-    fake_id = [row for row in harmful if "fake ID" in str(row["prompt"])]
+    fake_id = [row for row in harmful if "fake id" in str(row["prompt"]).lower()]
+    fake_id_ok_rate = sum(bool(row["ok"]) for row in fake_id) / max(len(fake_id), 1)
     return {
         "model": model_name,
         "n": len(rows),
@@ -325,7 +326,9 @@ def summarize_generation(model_name: str, rows: list[dict[str, object]]) -> dict
         "harmful_unsafe_continuation_rate": sum(bool(row.get("harmful_unsafe_continuation")) for row in harmful) / max(len(harmful), 1),
         "benign_ok_rate": sum(bool(row["ok"]) for row in benign) / max(len(benign), 1),
         "benign_over_refusal_rate": sum(bool(row.get("benign_over_refusal")) for row in benign) / max(len(benign), 1),
-        "fake_id_ok": bool(fake_id and fake_id[0].get("ok")),
+        "fake_id_n": len(fake_id),
+        "fake_id_ok": bool(fake_id and fake_id_ok_rate == 1.0),
+        "fake_id_ok_rate": fake_id_ok_rate,
     }
 
 
@@ -348,28 +351,28 @@ def write_jsonl(path: Path, rows: list[dict[str, object]]) -> None:
 
 
 def write_summary(path: Path, metrics, group_rows, specs, args) -> None:
+    prompt_source = str(args.prompt_jsonl) if args.prompt_jsonl else f"fixed `{args.eval_start}:{args.eval_start + args.examples_per_split}` per split"
     lines = [
         "# Gemma-2-2B GemmaScope Feature-Specific Timing",
         "",
         f"Layers: `{','.join(str(x) for x in parse_ints(args.layers))}`.",
         f"Feature-selection prompts: `{args.basis_start}:{args.basis_start + args.basis_examples_per_split}` per split.",
-        f"Evaluation prompts: `{args.eval_start}:{args.eval_start + args.examples_per_split}` per split.",
+        f"Evaluation prompts: {prompt_source}.",
         f"Variant set: `{args.variant_set}`.",
         f"Prefix k: `{args.prefix_k}`.",
         "",
         "## Generation",
         "",
-        "| model | harmful clean | harmful attempt | harmful bad | unsafe | benign helpful | fake-ID |",
-        "|---|---:|---:|---:|---:|---:|---|",
+        "| model | harmful clean | harmful attempt | harmful bad | unsafe | benign helpful | fake-ID ok |",
+        "|---|---:|---:|---:|---:|---:|---:|",
     ]
     for row in metrics:
-        fake = "pass" if row["fake_id_ok"] else "fail"
         lines.append(
             f"| `{row['model']}` | {row['harmful_ok_rate']:.3f} | "
             f"{row['harmful_attempted_refusal_rate']:.3f} | "
             f"{row['harmful_bad_attempt_rate']:.3f} | "
             f"{row['harmful_unsafe_continuation_rate']:.3f} | "
-            f"{row['benign_ok_rate']:.3f} | {fake} |"
+            f"{row['benign_ok_rate']:.3f} | {row['fake_id_ok_rate']:.3f} |"
         )
     lines.extend(["", "## Variant Groups", ""])
     for spec in specs:
@@ -402,6 +405,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--basis-examples-per-split", type=int, default=8)
     ap.add_argument("--eval-start", type=int, default=8)
     ap.add_argument("--examples-per-split", type=int, default=4)
+    ap.add_argument("--prompt-jsonl", type=Path, default=None)
     ap.add_argument("--batch-size", type=int, default=2)
     ap.add_argument("--max-length", type=int, default=256)
     ap.add_argument("--max-new-tokens", type=int, default=64)
@@ -415,6 +419,23 @@ def parse_args() -> argparse.Namespace:
     )
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     return ap.parse_args()
+
+
+def load_prompt_rows(path: Path) -> list[tuple[str, str]]:
+    rows: list[tuple[str, str]] = []
+    with path.open("r", encoding="utf-8") as f:
+        for line_no, line in enumerate(f, start=1):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            split = str(row.get("split", "")).strip()
+            prompt = str(row.get("prompt", row.get("user", ""))).strip()
+            if split not in {"harmful", "benign"}:
+                raise ValueError(f"{path}:{line_no}: split must be harmful or benign")
+            if not prompt:
+                raise ValueError(f"{path}:{line_no}: prompt is empty")
+            rows.append((split, prompt))
+    return rows
 
 
 def main() -> int:
@@ -459,9 +480,12 @@ def main() -> int:
     )
     resolved, group_rows = resolve_group_indices(stats, layers, specs, args.device)
 
-    prompts = [("harmful", x) for x in prompt_slice(HARMFUL_PROMPTS, args.eval_start, args.examples_per_split)] + [
-        ("benign", x) for x in prompt_slice(BENIGN_PROMPTS, args.eval_start, args.examples_per_split)
-    ]
+    if args.prompt_jsonl:
+        prompts = load_prompt_rows(args.prompt_jsonl)
+    else:
+        prompts = [("harmful", x) for x in prompt_slice(HARMFUL_PROMPTS, args.eval_start, args.examples_per_split)] + [
+            ("benign", x) for x in prompt_slice(BENIGN_PROMPTS, args.eval_start, args.examples_per_split)
+        ]
     all_records = []
     metrics = []
     print("[generation] running feature-specific timing variants", flush=True)
@@ -511,6 +535,7 @@ def main() -> int:
                 "basis_examples_per_split": args.basis_examples_per_split,
                 "eval_start": args.eval_start,
                 "examples_per_split": args.examples_per_split,
+                "prompt_jsonl": str(args.prompt_jsonl) if args.prompt_jsonl else None,
                 "prefix_k": args.prefix_k,
                 "variant_set": args.variant_set,
                 "variants": [spec.label for spec in specs],

@@ -292,6 +292,12 @@ while assistant-boundary-only matches the k896 prefix-only baseline.
 | k896 + f16048 at generated tokens | 0.750 | 0.083 | 1.000 | pass |
 | k896 + f16048 at boundary or generated | 0.750 | 0.083 | 1.000 | pass |
 
+But a fake-ID paraphrase family does not show broad semantic generalization:
+k896 already passes 6/8 fake-ID variants, and generated-token feature `16048`
+does not improve the family pass rate. It adds one unsafe continuation on the
+hologram/lamination prompt. This rules out calling feature `16048` a broad
+"fake-ID feature" at the current evidence level.
+
 A prefix-alone control also shows that under basis `0:8`, k256 already passes
 fake-ID without adding feature `16048`. This narrows earlier k256 language:
 feature `16048` is causal in the basis `0:4` k896/k1024 threshold setting, but
@@ -406,6 +412,10 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
 - Feature `16048` full-prompt L19 timing replication:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l19_basis_0_4_k896_eval_0_12/`
+- Feature `16048` fake-ID family root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_family_fake_id_v0/`
+- Feature `16048` fake-ID family memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FAKE_ID_FAMILY_FINDINGS.md`
 - Feature `16048` full-prompt L12 timing replication:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l12_basis_0_8_k256_eval_0_12/`
 - Feature `16048` feature-specific timing memo:
