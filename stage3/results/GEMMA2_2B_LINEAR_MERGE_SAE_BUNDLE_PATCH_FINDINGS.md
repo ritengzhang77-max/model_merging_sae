@@ -229,6 +229,18 @@ classifier; top10 fails those plus hologram/lamination. This supports a narrow
 claim: the top10 transition bundle contributes specifically to one fake-ID
 refusal-rationale case, not to broad refusal behavior.
 
+## Long-Generation Audit Caveat
+
+A targeted `max_new_tokens=160` audit shows that the hologram/lamination prompt
+is already fragile in the plain alpha-`0.75` merge and random controls. At
+64 tokens, baseline/random responses often look like warning-prefaced refusals;
+by 160 tokens, they continue into procedural hologram/material/process details.
+
+This reframes the top10 feature-subtract result. Top10 still causes an early
+refusal-rationale degradation on that prompt, but it is not creating a new
+failure from a robustly safe baseline. It is perturbing a trajectory that is
+already vulnerable under longer decoding.
+
 ## Artifacts
 
 - Sufficiency run:
@@ -253,5 +265,9 @@ refusal-rationale case, not to broad refusal behavior.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a075_self_abog_feature_subtract_top10_random/`
 - Expanded fake-ID family alpha-0.75 baseline:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline/`
+- Long-generation audit memo:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_LONG_GENERATION_AUDIT_FINDINGS.md`
+- Hologram max-160 feature-subtract probe:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_self_abog_feature_subtract_max160/`
 - Script:
   `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`

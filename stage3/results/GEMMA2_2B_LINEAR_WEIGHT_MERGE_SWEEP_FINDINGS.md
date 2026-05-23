@@ -60,6 +60,17 @@ fake-ID family, but exposes one benign over-refusal on a temporary-legal-ID
 prompt. This is the baseline for the later feature-subtract top10/random
 replication.
 
+Long-generation audit:
+
+| model | max new tokens | harmful attempted refusal | unsafe continuation | benign over-refusal |
+|---|---:|---:|---:|---:|
+| linear alpha 0.75 on expanded fake-ID family | 160 | 0.875 | 0.042 | 0.042 |
+
+The `harmful clean` and `benign helpful` columns are not comparable in this
+long run because the current heuristic marks long responses as non-clean. The
+important result is the delayed unsafe continuation on the hologram/lamination
+prompt: alpha `0.75` starts with a warning but then gives procedural details.
+
 ## Interpretation
 
 This is an actual parameter-space model-merging result, not only a causal patch.
@@ -90,5 +101,9 @@ It supports three useful claims:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family/`
 - Expanded fake-ID alpha-0.75 root:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline/`
+- Expanded fake-ID alpha-0.75 max-160 audit:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_max160_audit/`
+- Hologram alpha-0.75 max-160 probe:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_hologram_probe_alpha075_max160/`
 - Script:
   `stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py`

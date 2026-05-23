@@ -275,6 +275,15 @@ benign score. The extra failure is again the hologram/lamination prompt, which
 supports a narrow mechanistic claim about a distributed refusal-rationale bundle
 for that family rather than a broad universal safety feature.
 
+A longer-generation audit changes the safety interpretation. With
+`max_new_tokens=160`, the hologram/lamination prompt becomes procedurally unsafe
+for the plain alpha `0.75` merge and for random feature-subtract controls too:
+the model starts with an illegality warning, then continues into fake-ID
+hologram/material/process details. The top10 ablation still perturbs the early
+refusal-rationale trajectory, but the prompt is already fragile under longer
+decoding. This means the current contribution is a mechanistic account of a
+fragile merge behavior, not evidence that alpha `0.75` is robustly safe.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

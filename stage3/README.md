@@ -64,6 +64,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   replicates against the plain alpha `0.75` baseline: baseline and all three
   random feature-subtract controls reach 21/24 harmful clean, while top10 drops
   to 20/24; all share the same 23/24 benign helpfulness.
+- A longer `max_new_tokens=160` audit reframes the fake-ID result: the
+  hologram/lamination prompt becomes procedurally unsafe for the plain alpha
+  `0.75` merge and for random feature-subtract controls too, after an initial
+  illegality warning. The 64-token metric was hiding delayed unsafe
+  continuation, so the top10 effect is best read as an early refusal-rationale
+  trajectory perturbation on an already fragile prompt.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 
