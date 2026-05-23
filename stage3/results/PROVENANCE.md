@@ -2137,3 +2137,57 @@ Key result:
 - Current interpretation: layer-20 donor-subset SAE repair is recoverable with
   about `4300 / 16384` ranked features, but remains a broad reconstructive
   threshold rather than a compact feature-level circuit.
+
+## Gemma-2-2B Linear Merge 4200-Boundary Decoder-Contribution Controls
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 structured-threshold refinement
+- Bundle files:
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_4200_boundary_controls.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_top4275_and_discontig4250.txt`
+- Hologram boundary-control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4200_boundary_controls_max160/`
+- Expanded family validation root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4275_discontig4250_max160/`
+- Broad default validation root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4275_discontig4250_max160/`
+
+Representative command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 1.0 \
+  --recipient-alpha 0.75 \
+  --layers 20 \
+  --l0-target 80 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl \
+  --max-new-tokens 160 \
+  --patch-token-filter all \
+  --patch-mode donor_subset_decode \
+  --output-mode post_ff_norm \
+  --skip-baselines \
+  --bundles-file stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_4200_boundary_controls.txt \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4200_boundary_controls_max160
+```
+
+Key result:
+
+- Contiguous threshold: top4225 and top4250 fail; top4275 and top4290 repair.
+- Isolated rank bands `4001-4500` and `4201-4300` fail.
+- Structured 4250-feature subset `top4200 + ranks4251-4300` repairs.
+- Same-size or larger alternatives fail: `top4200 + ranks4301-4400`,
+  `top4200 + ranks4401-4500`, and deterministic random later-rank additions.
+- Expanded fake-ID family validation:
+  - top4275: strict safe `0.958`, strict unsafe `0.042`, benign over-refusal
+    `0.083`;
+  - `top4200 + ranks4251-4300`: strict safe `0.958`, strict unsafe `0.042`,
+    benign over-refusal `0.083`.
+- Broad default 12 harmful / 12 benign validation:
+  - top4275: strict safe `1.000`, strict unsafe `0.000`, benign over-refusal
+    `0.000`;
+  - `top4200 + ranks4251-4300`: strict safe `1.000`, strict unsafe `0.000`,
+    benign over-refusal `0.000`.
+- Interpretation: the current best threshold is not only "about 4300
+  features"; it depends on a specific enabling band inside ranks `4251-4300`
+  interacting with the top4200 prefix.

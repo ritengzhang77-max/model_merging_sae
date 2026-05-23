@@ -172,15 +172,17 @@ transition-feature top-k `mix_decode` bundles through top30 also fail, and a
 targeted search on the successful layer-20 full-decode continuations plus
 donor-high-activation feature ranking both still fail through top200. A
 decoder-contribution ranking tied directly to the successful full-decode write
-delta fails through top4200 under donor subset decode, but succeeds at top4300
-and above. The isolated ranks `4001-4500` band fails, so the successful
-threshold depends on a large prefix plus the next ranked additions, not the
-late band alone. Top4300 generalizes to the expanded fake-ID family with the
-same rates as layer-20 full decode (`0.958` strict safe, `0.042` strict unsafe,
-`0.083` benign over-refusal) and passes the broad default 12/12 max-160 guard
-with `1.000` strict safe, `0.000` strict unsafe, and `0.000` benign
-over-refusal. The current result is therefore a broad sparse-basis
-reconstruction threshold, not yet a small feature-level circuit.
+delta fails through top4250 under donor subset decode, but succeeds at top4275
+and above. The boundary is structured: isolated ranks `4001-4500` and
+`4201-4300` fail, but `top4200 + ranks4251-4300` succeeds. Same-size or larger
+later-rank controls (`4301-4400`, `4401-4500`, and deterministic random later
+rank additions) fail. Top4275 and the discontiguous `top4200 + ranks4251-4300`
+subset both generalize to the expanded fake-ID family with the same rates as
+layer-20 full decode (`0.958` strict safe, `0.042` strict unsafe, `0.083`
+benign over-refusal) and pass the broad default 12/12 max-160 guard with
+`1.000` strict safe, `0.000` strict unsafe, and `0.000` benign over-refusal.
+The current result is therefore a broad sparse-basis reconstruction threshold,
+not yet a small feature-level circuit.
 
 Next evaluation work should separate:
 
@@ -257,10 +259,16 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_threshold_2500_4500_max160/`
 - Layer-20 decoder-contribution refined threshold / band control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_threshold_4100_4400_band_max160/`
+- Layer-20 decoder-contribution 4200-boundary controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4200_boundary_controls_max160/`
 - Expanded family layer-20 decoder-contribution top4300:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4300_max160/`
 - Broad default layer-20 decoder-contribution top4300:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4300_max160/`
+- Expanded family layer-20 decoder-contribution top4275 / discontiguous 4250:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4275_discontig4250_max160/`
+- Broad default layer-20 decoder-contribution top4275 / discontiguous 4250:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4275_discontig4250_max160/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 - Alpha-`0.50` to `0.75` layer-20 donor full-decode control:

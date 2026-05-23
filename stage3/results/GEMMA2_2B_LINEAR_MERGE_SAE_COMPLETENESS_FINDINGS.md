@@ -162,11 +162,21 @@ subset decodes also failed:
 | layer-20 decoder-contribution top4000 donor subset decode | 1.000 | 0.000 |
 | layer-20 decoder-contribution top4100 donor subset decode | 1.000 | 0.000 |
 | layer-20 decoder-contribution top4200 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top4225 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top4250 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top4275 donor subset decode | 0.000 | 1.000 |
+| layer-20 decoder-contribution top4290 donor subset decode | 0.000 | 1.000 |
 | layer-20 decoder-contribution top4300 donor subset decode | 0.000 | 1.000 |
 | layer-20 decoder-contribution top4400 donor subset decode | 0.000 | 1.000 |
 | layer-20 decoder-contribution top4500 donor subset decode | 0.000 | 1.000 |
 | layer-20 decoder-contribution top5000 donor subset decode | 0.000 | 1.000 |
 | layer-20 decoder-contribution band4001-4500 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution band4201-4300 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + ranks4251-4300 donor subset decode | 0.000 | 1.000 |
+| layer-20 top4200 + ranks4301-4400 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + ranks4401-4500 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + random100 ranks4301-5000 donor subset decode | 1.000 | 0.000 |
+| layer-20 top4200 + random100 ranks4501-5000 donor subset decode | 1.000 | 0.000 |
 
 A recipient-reconstruction control also failed:
 
@@ -191,17 +201,21 @@ Current mechanistic target:
   gate.
 - Find a better layer-20 feature-pruning method; transition-feature top-k,
   targeted-continuation top-k, donor-high-mean top-k `mix_decode`, and
-  decoder-contribution top-k donor subset decodes through top4200 are
-  insufficient. Decoder-contribution top4300/top4400/top4500/top5000 work, so
-  the repair is recoverable below full decode but only at a broad,
-  non-compact subset scale. The isolated ranks `4001-4500` band fails, so the
-  boundary is not explained by the late band alone; the large prefix plus the
-  next ranked features is required.
-- Treat top4300 as the current best sparse-reconstruction threshold: it matches
-  layer-20 full decode on the expanded fake-ID family (`0.958` strict safe,
-  `0.042` strict unsafe, `0.083` benign over-refusal) and passes the broad
-  default 12/12 guard (`1.000` strict safe, `0.000` strict unsafe, `0.000`
-  benign over-refusal).
+  decoder-contribution top-k donor subset decodes through top4250 are
+  insufficient. Contiguous decoder-contribution top4275/top4290/top4300 and
+  above work, so the repair is recoverable below full decode but only at a
+  broad, non-compact subset scale.
+- The boundary is structured, not just a generic feature-count effect:
+  isolated ranks `4001-4500` and `4201-4300` fail, but `top4200 +
+  ranks4251-4300` works. Same-size or larger alternatives using ranks
+  `4301-4400`, `4401-4500`, or deterministic random later-rank additions fail.
+  This points to a narrow enabling band inside ranks `4251-4300` that only
+  matters when combined with the large prefix.
+- Treat contiguous top4275 and discontiguous `top4200 + ranks4251-4300` as the
+  current best sparse-reconstruction thresholds: both match layer-20 full
+  decode on the expanded fake-ID family (`0.958` strict safe, `0.042` strict
+  unsafe, `0.083` benign over-refusal) and pass the broad default 12/12 guard
+  (`1.000` strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
 
 ## Artifacts
 
@@ -249,7 +263,13 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_threshold_2500_4500_max160/`
 - Layer-20 decoder-contribution refined threshold / band control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_threshold_4100_4400_band_max160/`
+- Layer-20 decoder-contribution 4200-boundary controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_4200_boundary_controls_max160/`
 - Expanded family layer-20 decoder-contribution top4300:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4300_max160/`
 - Broad default layer-20 decoder-contribution top4300:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4300_max160/`
+- Expanded family layer-20 decoder-contribution top4275 / discontiguous 4250:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4275_discontig4250_max160/`
+- Broad default layer-20 decoder-contribution top4275 / discontiguous 4250:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4275_discontig4250_max160/`
