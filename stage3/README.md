@@ -112,7 +112,7 @@ The Gemma branch now has an actual linear weight-merge bridge:
   also fail. A targeted search on the successful layer-20 full-decode
   continuations and donor-high-activation feature ranking both still fail
   through top200. Decoder-contribution top-k donor subset decodes fail through
-  top500. This is not yet a small feature-level circuit.
+  top2000. This is not yet a small feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

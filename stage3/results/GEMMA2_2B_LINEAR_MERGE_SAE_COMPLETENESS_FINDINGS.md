@@ -154,6 +154,8 @@ subset decodes also failed:
 | layer-20 decoder-contribution top100 donor subset decode | 1.000 | 0.000 |
 | layer-20 decoder-contribution top200 donor subset decode | 1.000 | 0.000 |
 | layer-20 decoder-contribution top500 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top1000 donor subset decode | 1.000 | 0.000 |
+| layer-20 decoder-contribution top2000 donor subset decode | 1.000 | 0.000 |
 
 A recipient-reconstruction control also failed:
 
@@ -178,7 +180,8 @@ Current mechanistic target:
   gate.
 - Find a better layer-20 feature-pruning method; transition-feature top-k,
   targeted-continuation top-k, donor-high-mean top-k `mix_decode`, and
-  decoder-contribution top-k donor subset decodes are insufficient.
+  decoder-contribution top-k donor subset decodes through top2000 are
+  insufficient.
 
 ## Artifacts
 
@@ -218,3 +221,5 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1/`
 - Layer-20 decoder-contribution donor subset decode top-k:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_topk_max160/`
+- Layer-20 decoder-contribution top1000/top2000 donor subset decode:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top1000_2000_max160/`

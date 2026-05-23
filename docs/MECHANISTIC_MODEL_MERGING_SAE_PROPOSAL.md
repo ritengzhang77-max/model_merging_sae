@@ -332,8 +332,9 @@ than the full-decode operator alone. However, layer-20 transition-feature top-k
 successful layer-20 full-decode continuations plus donor-high-activation
 feature ranking both still fail through top200. A decoder-contribution ranking
 that scores features by alignment with the full-decode write delta also fails
-through top500 under donor-only subset decode. This is still a dense layer-level
-SAE reconstruction result rather than a small feature-level mechanism.
+through top2000 under donor-only subset decode. This is still a dense
+layer-level SAE reconstruction result rather than a small feature-level
+mechanism.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode
