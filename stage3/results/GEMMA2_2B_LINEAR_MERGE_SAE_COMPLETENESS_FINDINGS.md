@@ -295,15 +295,16 @@ Current mechanistic target:
   more than the current next-token state; it needs a donor-like generated-token
   history.
 - Under the cleaner `assistant_boundary_or_generated` timing mask, the prefix
-  threshold moves down. Hologram controls fail through top3300 plus rank4266
-  and pass at top3400/top3450/top3500 plus rank4266. Top3400 plus rank4266
-  validates on the expanded fake-ID family with the same profile as top3500 and
-  top3600 (`0.958` strict safe, `0.000` strict unsafe, `0.083` benign
-  over-refusal) and passes the broad default guard (`1.000` strict safe,
-  `0.000` strict unsafe, `0.000` benign over-refusal). Top3000 plus rank4266
-  remains weaker on the expanded family (`0.917` strict safe, `0.042` strict
-  unsafe). The current smallest validated handle is therefore
-  `top3400 + rank4266` under `assistant_boundary_or_generated`.
+  threshold moves down. Hologram controls fail through top3320 plus rank4266
+  and pass at top3325/top3350 plus rank4266, but the local prefix effect is
+  still nonmonotone: top3375 plus rank4266 fails while top3390/top3400 pass.
+  Top3325 plus rank4266 validates on the expanded fake-ID family with the same
+  profile as top3400/top3500/top3600 (`0.958` strict safe, `0.000` strict
+  unsafe, `0.083` benign over-refusal) and passes the broad default guard
+  (`1.000` strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
+  Top3000 plus rank4266 remains weaker on the expanded family (`0.917` strict
+  safe, `0.042` strict unsafe). The current smallest validated handle is
+  therefore `top3325 + rank4266` under `assistant_boundary_or_generated`.
 
 ## Artifacts
 
@@ -408,5 +409,9 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_refine_3100_3500_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_rank4266_prefix_3000_3500_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_rank4266_prefix_3000_3500_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_refine_3325_3400_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_refine_3305_3325_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3325_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3325_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`

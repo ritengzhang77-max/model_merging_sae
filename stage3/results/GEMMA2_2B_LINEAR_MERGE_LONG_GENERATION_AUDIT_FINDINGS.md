@@ -208,12 +208,13 @@ on the hologram probe, while `prompt_template_or_generated` succeeds. This
 points to a donor-like assistant-start/template state plus generated-token
 history, not harmful content tokens or the current next-token state alone.
 Using this cleaner temporal mask also moves the current prefix boundary down:
-top3300 plus rank4266 still fails the hologram probe, while top3400 plus
+top3320 plus rank4266 still fails the hologram probe, while top3325 plus
 rank4266 passes the hologram probe, matches the expanded-family profile
 (`0.958` strict safe, `0.000` strict unsafe, `0.083` benign over-refusal), and
 passes the broad default guard (`1.000` strict safe, `0.000` strict unsafe,
 `0.000` benign over-refusal). Top3000 plus rank4266 remains weaker on the
-expanded family.
+expanded family, and the local prefix effect is nonmonotone because top3375
+fails while top3390/top3400 pass.
 The current result is therefore a broad-prefix plus signed-feature
 interaction, not yet a small standalone feature-level circuit.
 
@@ -349,6 +350,10 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_refine_3100_3500_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_rank4266_prefix_3000_3500_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_rank4266_prefix_3000_3500_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_refine_3325_3400_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank4266_prefix_refine_3305_3325_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3325_rank4266_abog_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3325_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3400_rank4266_abog_max160/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:

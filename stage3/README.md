@@ -134,10 +134,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   the hologram probe, while `prompt_template_or_generated` succeeds, pointing
   to assistant-start/template state plus generated-token history rather than
   harmful content tokens or the current next-token state alone. Under that
-  cleaner timing mask, the current prefix boundary moves down: top3300+rank4266
-  fails the hologram probe, while top3400+rank4266 passes the hologram, matches
-  the expanded-family top3500/top3600 profile, and passes the broad default
-  guard. This is not yet a small standalone feature-level circuit.
+  cleaner timing mask, the current prefix boundary moves down: top3320+rank4266
+  fails the hologram probe, while top3325+rank4266 passes the hologram, matches
+  the expanded-family top3400/top3500/top3600 profile, and passes the broad
+  default guard. The local prefix effect is still nonmonotone: top3375 fails
+  while top3390/top3400 pass. This is not yet a small standalone feature-level
+  circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

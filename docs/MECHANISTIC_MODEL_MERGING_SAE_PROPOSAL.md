@@ -354,11 +354,12 @@ broad default benign behavior. `contentish_or_generated` and `last_token` fail
 on the hologram probe, while `prompt_template_or_generated` succeeds. The best
 current interpretation is assistant-start/template state plus generated-token
 history, not harmful content tokens or the current next-token state alone.
-With this cleaner timing mask, the prefix boundary moves down: top3300 plus
-rank4266 still fails the hologram probe, while top3400 plus rank4266 passes the
-hologram probe, matches the expanded-family top3500/top3600 profile, and passes
-the broad default guard. This is still not a small standalone feature-level
-mechanism.
+With this cleaner timing mask, the prefix boundary moves down: top3320 plus
+rank4266 still fails the hologram probe, while top3325 plus rank4266 passes the
+hologram probe, matches the expanded-family top3400/top3500/top3600 profile,
+and passes the broad default guard. The local prefix effect remains nonmonotone:
+top3375 fails while top3390/top3400 pass. This is still not a small standalone
+feature-level mechanism.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode
