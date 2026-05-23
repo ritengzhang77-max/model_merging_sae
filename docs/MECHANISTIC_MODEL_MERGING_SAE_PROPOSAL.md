@@ -221,6 +221,12 @@ Mechanism-aware pruning result:
 - Removing too broad a band, L12 ranks `257-384`, hurts the full benchmark even
   though it rescues the held-out fake-ID slice. Mechanism-aware pruning is
   scope-sensitive.
+- Same-size and composed-band controls show the effect is structured but
+  nonadditive. Removing L12 ranks `1-80` also repairs fake-ID, but composing
+  `1-80` with `273-352` does not improve beyond either removal alone; composing
+  the narrower `1-16` with `273-352` loses fake-ID recovery and adds one unsafe
+  continuation. The current best claim is interacting feature-bundle pruning,
+  not monotone removal of all apparent antagonists.
 
 Interpretation:
 

@@ -1100,3 +1100,51 @@ Caveats:
 - Position masks are token-level approximations over the Gemma chat template.
 - The current aggregate is k1024 only; k2048 and direct feature-ID ablations
   remain follow-up tests.
+
+## GemmaScope MLP SAE Feature-16048 L12 Pruning Composition
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 mechanism-aware pruning composition checkpoint
+- Result root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_composition_v0/`
+- Atomic run:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_composition_v0/basis_0_8_eval_0_12_abog/`
+- Main script:
+  `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+
+Representative command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py \
+  --device cuda:0 \
+  --layers 12,13,14,15,16,17,18,19,20 \
+  --feature-token-filter all \
+  --patch-token-filter assistant_boundary_or_generated \
+  --basis-start 0 \
+  --basis-examples-per-split 8 \
+  --eval-start 0 \
+  --examples-per-split 12 \
+  --batch-size 2 \
+  --max-new-tokens 64 \
+  --variants mix_decode_delta_abs_k384_plus_l19_f16048,mix_decode_delta_abs_k384_plus_l19_f16048_minus_l12_rank1_80,mix_decode_delta_abs_k384_plus_l19_f16048_minus_l12_rank273_352,mix_decode_delta_abs_k384_plus_l19_f16048_minus_l12_rank1_80_minus_l12_rank273_352,mix_decode_delta_abs_k384_plus_l19_f16048_minus_l12_rank1_16_minus_l12_rank273_352 \
+  --skip-baselines \
+  --result-dir stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_composition_v0/basis_0_8_eval_0_12_abog
+```
+
+Key result:
+
+- Anchor `k384 + L19 f16048` reaches harmful clean `0.667`, unsafe `0.000`,
+  benign helpful `1.000`, and fails fake-ID.
+- Removing L12 ranks `1-80` or `273-352` each reaches harmful clean `0.750`,
+  unsafe `0.000`, benign helpful `1.000`, and passes fake-ID.
+- Removing both `1-80` and `273-352` is not additive: harmful clean remains
+  `0.750`, unsafe remains `0.000`, and fake-ID remains passing.
+- Removing `1-16` plus `273-352` is worse: harmful clean drops to `0.667`,
+  unsafe rises to `0.083`, and fake-ID fails.
+
+Interpretation:
+
+- The mechanism-aware pruning effect is real but not monotone or compositional
+  in a simple way.
+- L12 appears to contain interacting keep/drop bundles. Helpful pruning rules
+  need context, not just a list of individually suspicious rank bands.

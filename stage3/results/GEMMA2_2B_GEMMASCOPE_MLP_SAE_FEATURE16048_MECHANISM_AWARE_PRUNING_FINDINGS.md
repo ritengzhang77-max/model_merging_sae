@@ -82,6 +82,26 @@ Neither half of `1-16` is sufficient by itself, but the combined removal
 recovers fake-ID. The early L12 band is therefore an interacting bundle, not an
 independent singleton switch at this resolution.
 
+## Composed L12 Band Removal
+
+Composing the two full-benchmark helpful removals shows that their benefits are
+not additive:
+
+| removed L12 rank band from k384 + f16048 | harmful clean | unsafe | fake-ID |
+|---|---:|---:|---|
+| none | 0.667 | 0.000 | fail |
+| 1-80 | 0.750 | 0.000 | pass |
+| 273-352 | 0.750 | 0.000 | pass |
+| 1-80 plus 273-352 | 0.750 | 0.000 | pass |
+| 1-16 plus 273-352 | 0.667 | 0.083 | fail |
+
+The `1-80` and `273-352` removals each repair the fake-ID failure, but removing
+both does not improve the aggregate over either removal alone. The narrower
+`1-16 plus 273-352` composition is worse: it loses fake-ID recovery and adds an
+unsafe continuation. This makes the pruning story more interaction-focused than
+simple "remove all antagonistic bands." L12 contains bundles whose effect depends
+on what surrounding L12 coordinates remain available.
+
 ## Interpretation
 
 This is a first mechanism-aware pruning result:
@@ -103,3 +123,5 @@ This is a first mechanism-aware pruning result:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_1_80_pruning_localization_v0/`
 - L12 top-rank localization:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_1_16_pruning_localization_v0/`
+- L12 composed-band removal:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_composition_v0/`

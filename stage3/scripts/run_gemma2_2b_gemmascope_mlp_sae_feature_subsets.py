@@ -387,6 +387,43 @@ def parse_variant(raw: str) -> dict[str, object]:
             "rank_start": rank_start,
             "rank_end": rank_end,
         }
+    minus_feature_two_ranges_match = re.fullmatch(
+        r"(delta_add|mix_decode)_delta_abs_k(\d+)_plus_l(\d+)_f(\d+)_minus_l(\d+)_rank(\d+)_(\d+)_minus_l(\d+)_rank(\d+)_(\d+)",
+        raw,
+    )
+    if minus_feature_two_ranges_match:
+        prefix_k = int(minus_feature_two_ranges_match.group(2))
+        feature_layer = int(minus_feature_two_ranges_match.group(3))
+        feature_id = int(minus_feature_two_ranges_match.group(4))
+        ranges = (
+            (
+                int(minus_feature_two_ranges_match.group(5)),
+                int(minus_feature_two_ranges_match.group(6)),
+                int(minus_feature_two_ranges_match.group(7)),
+            ),
+            (
+                int(minus_feature_two_ranges_match.group(8)),
+                int(minus_feature_two_ranges_match.group(9)),
+                int(minus_feature_two_ranges_match.group(10)),
+            ),
+        )
+        for range_layer, rank_start, rank_end in ranges:
+            if prefix_k < 1 or feature_id < 0 or rank_start < 1 or rank_end < rank_start or rank_end > prefix_k:
+                raise ValueError(f"invalid prefix/feature/rank range in variant: {raw}")
+        return {
+            "label": raw,
+            "mode": minus_feature_two_ranges_match.group(1),
+            "selector": "delta_abs_prefix_plus_feature_minus_layer_ranges",
+            "k": (
+                f"{prefix_k}+L{feature_layer}:f{feature_id}"
+                f"-L{ranges[0][0]}:{ranges[0][1]}-{ranges[0][2]}"
+                f"-L{ranges[1][0]}:{ranges[1][1]}-{ranges[1][2]}"
+            ),
+            "prefix_k": prefix_k,
+            "feature_layer": feature_layer,
+            "feature_id": feature_id,
+            "remove_ranges": ranges,
+        }
     minus_match = re.fullmatch(r"(delta_add|mix_decode)_delta_abs_k(\d+)_minus_l(\d+)_rank(\d+)_(\d+)", raw)
     if minus_match:
         prefix_k = int(minus_match.group(2))
@@ -561,6 +598,38 @@ def select_indices(stats, layers: tuple[int, ...], variants: list[dict[str, obje
                         parts = [ranked[: rank_start - 1], ranked[rank_end:]]
                     else:
                         parts = [ranked]
+                    if layer == int(variant["feature_layer"]):
+                        parts.append(torch.tensor([feature_id], dtype=torch.long))
+                    idx = torch.unique(torch.cat(parts), sorted=False)
+                selected[label][layer] = idx.to(device=device, dtype=torch.long)
+                counts.append(
+                    {
+                        "variant": label,
+                        "layer": layer,
+                        "selector": selector,
+                        "k": str(variant["k"]),
+                        "selected_features": int(idx.numel()),
+                        "score_sum": float(score[idx].sum().item()) if idx.numel() else 0.0,
+                    }
+                )
+                continue
+            if selector == "delta_abs_prefix_plus_feature_minus_layer_ranges":
+                score = row["harm_delta_abs"]
+                prefix_k = min(int(variant["prefix_k"]), int(score.numel()))
+                feature_id = int(variant["feature_id"])
+                if feature_id >= int(score.numel()):
+                    raise ValueError(f"feature ID {feature_id} is outside layer {layer} feature dimension {score.numel()}")
+                if float(score.abs().sum().item()) == 0.0:
+                    idx = torch.empty(0, dtype=torch.long)
+                else:
+                    ranked = torch.topk(score, prefix_k).indices
+                    keep = torch.ones(prefix_k, dtype=torch.bool)
+                    for range_layer, rank_start_raw, rank_end_raw in variant["remove_ranges"]:
+                        rank_start = int(rank_start_raw)
+                        rank_end = min(int(rank_end_raw), prefix_k)
+                        if layer == int(range_layer) and rank_start <= rank_end:
+                            keep[rank_start - 1 : rank_end] = False
+                    parts = [ranked[keep]]
                     if layer == int(variant["feature_layer"]):
                         parts.append(torch.tensor([feature_id], dtype=torch.long))
                     idx = torch.unique(torch.cat(parts), sorted=False)
