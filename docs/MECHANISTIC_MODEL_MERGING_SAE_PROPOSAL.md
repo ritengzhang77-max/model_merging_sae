@@ -338,8 +338,12 @@ rank4266` succeeds while nearby singleton controls fail. Rank `4266` is
 layer-20 feature `1293`, a donor-lower / signed-negative feature in the
 decoder-contribution table. Top4266 and `top4200 + rank4266` match layer-20
 full decode on the expanded fake-ID family and pass the broad default 12/12
-max-160 guard. This is now a broad-prefix plus one-feature interaction rather
-than a small standalone feature-level mechanism.
+max-160 guard. Prefix controls show rank4266 is not standalone: top3500 plus
+rank4266 is weaker, while top3600 plus rank4266 matches the full-decode
+strict-safe rate and benign tradeoff while avoiding strict unsafe continuation
+in this run; it also passes the broad default guard. The prefix effect is nonmonotone
+under hologram-only tests, so this is now a broad-prefix plus signed-feature
+interaction rather than a small standalone feature-level mechanism.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode

@@ -2252,3 +2252,66 @@ Key result:
   broad-prefix plus one-feature interaction. The decisive rank is not a
   high-positive-alignment donor feature; it is a signed-negative, donor-lower
   feature that only matters in combination with the large top4200 prefix.
+
+## Gemma-2-2B Linear Merge Rank-4266 Prefix Requirement And Event Audit
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 prefix-requirement and feature-event audit
+- Audit script:
+  `stage3/scripts/audit_gemma2_2b_linear_merge_sae_feature_events.py`
+- Bundle files:
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank4266_prefix_threshold.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank4266_prefix_refine_3600_4000.txt`
+  - `stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_threshold_bundles/bundles_rank4266_prefix_family_3500_3600_3900.txt`
+- Hologram prefix-threshold root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_threshold_max160/`
+- Hologram prefix-refinement root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_refine_3600_4000_max160/`
+- Expanded family validation root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_3500_3600_3900_max160/`
+- Broad default validation root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_donor_subset_decode_rank4266_prefix_3500_3600_3900_max160/`
+- Feature-event audit root:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank4266_family_harmful_feature1293_neighbors/`
+
+Feature-event audit command:
+
+```bash
+python3 stage3/scripts/audit_gemma2_2b_linear_merge_sae_feature_events.py \
+  --device cuda:0 \
+  --records stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_donor_subset_decode_top4265_4266_rank4266_max160/gemma2_2b_linear_merge_sae_bundle_patch_records.jsonl \
+  --split harmful \
+  --feature-ids 1292,1293,1294,1295,1297,14425 \
+  --event-k 8 \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank4266_family_harmful_feature1293_neighbors
+```
+
+Key result:
+
+- Rank4266 is not sufficient alone. Hologram strict safety stays `0.000` for
+  rank4266 alone and for top1000/top2000/top3000/top3500 plus rank4266.
+- Hologram strict safety becomes `1.000` for top3600/top3700/top3900/top4000
+  plus rank4266. The effect is nonmonotone: top3800 plus rank4266 fails.
+- Expanded fake-ID family:
+  - top3500 plus rank4266 is weaker: strict safe `0.917`, strict unsafe
+    `0.042`, benign over-refusal `0.083`;
+  - top3600 plus rank4266 matches the full layer-20 decode strict-safe rate
+    and benign tradeoff while avoiding strict unsafe continuation in this run:
+    strict safe `0.958`, strict unsafe `0.000`, benign over-refusal `0.083`;
+  - top3900 plus rank4266 matches the same strict safe rate but still has the
+    usual fake-ID "mistakes" unsafe failure: strict safe `0.958`, strict unsafe
+    `0.042`, benign over-refusal `0.083`.
+- Broad default 12 harmful / 12 benign validation is clean for top3500,
+  top3600, and top3900 plus rank4266 under the strict scorer: strict safe
+  `1.000`, strict unsafe `0.000`, benign over-refusal `0.000`.
+- Feature-event audit:
+  - feature 1293 is recipient-higher than donor on generated tokens across
+    harmful family texts;
+  - in the failing top4265 hologram text, a top recipient-minus-donor event
+    occurs at the unsafe bridge context around "Here's how people attempt to
+    create fake IDs";
+  - the neighboring features do not show the same one-rank causal sufficiency.
+- Interpretation: the smallest family-validated current setting is
+  `top3600 + rank4266`, but the nonmonotonic prefix result means the mechanism
+  should be framed as a broad-prefix plus signed-feature interaction, not as a
+  monotonic top-k threshold or standalone semantic feature.

@@ -117,8 +117,13 @@ The Gemma branch now has an actual linear weight-merge bridge:
   singleton controls fail. Rank `4266` is layer-20 feature `1293`, a
   donor-lower / signed-negative feature. Top4266 and `top4200 + rank4266`
   match layer-20 full decode on the expanded fake-ID family and pass the broad
-  default 12/12 max-160 guard. This is a broad-prefix plus one-feature
-  interaction, not yet a small standalone feature-level circuit.
+  default 12/12 max-160 guard. Rank4266 is not standalone: top3500+rank4266
+  is weaker, while top3600+rank4266 matches the full-decode strict-safe rate
+  and benign tradeoff while avoiding strict unsafe continuation in this run;
+  it also passes the broad default guard. The prefix effect is nonmonotone, since
+  top3800+rank4266 fails on the hologram probe while top3600/top3700/top3900
+  pass. This is a broad-prefix plus signed-feature interaction, not yet a
+  small standalone feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 
