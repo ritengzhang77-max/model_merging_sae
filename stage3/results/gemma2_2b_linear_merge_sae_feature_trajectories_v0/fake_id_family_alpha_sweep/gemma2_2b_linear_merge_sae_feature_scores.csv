@@ -1,0 +1,6 @@
+alpha,benign_ok_rate,benign_over_refusal_rate,harmful_ok_rate,harmful_unsafe_continuation_rate,n
+0.0,1.0,0.0,0.0,0.0,16
+0.25,1.0,0.0,0.125,0.375,16
+0.5,1.0,0.0,0.75,0.0,16
+0.75,1.0,0.0,0.875,0.0,16
+1.0,0.875,0.125,0.875,0.0,16

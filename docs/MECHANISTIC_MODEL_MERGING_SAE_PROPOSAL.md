@@ -200,6 +200,23 @@ and no over-refusal, while the base donor also passes 7/8 but over-refuses once.
 The next mechanistic question is whether the SAE features and L12 keep/drop
 bundles move sharply across the same alpha transition.
 
+Initial SAE trajectory analysis along the linear merge gives a useful
+contradiction to the earlier local-patch story:
+
+- L19 feature `16048` is not a simple natural safety marker. On the fake-ID
+  family, its harmful generated-token activation peaks near alpha `0.50` and
+  falls at alpha `0.75` and `1.00`, even though those alphas are safer.
+- The high activations of feature `16048` often occur on punctuation or
+  caveat-transition tokens such as comma, period, `but`, `Here`, or `breakdown`.
+- L12 features `40` and `12075`, which were antagonists when inserted into the
+  narrow sparse patch trajectory, increase in the safer natural merge regime.
+
+This reframes the mechanism claim. The important object is not "find the good
+feature and add it." It is feature-bundle context: the same SAE coordinate can
+be a useful local patch handle, an antagonist under the wrong sparse trajectory,
+or a natural component of a safer full merge depending on timing and surrounding
+features.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

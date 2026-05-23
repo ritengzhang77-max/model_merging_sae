@@ -1304,3 +1304,58 @@ Interpretation:
   endpoint under the current metric. The SAE question now becomes: what features
   or trajectories cross the behavioral threshold between alpha `0.25` and
   `0.50`/`0.75`?
+
+## Gemma-2-2B Linear Merge SAE Feature Trajectories
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 actual-merge feature trajectory checkpoint
+- Original fake-ID result root:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/original_fake_id_alpha_sweep/`
+- Fake-ID family result root:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/fake_id_family_alpha_sweep/`
+- Main script:
+  `stage3/scripts/analyze_gemma2_2b_linear_merge_sae_feature_trajectories.py`
+
+Representative commands:
+
+```bash
+python3 stage3/scripts/analyze_gemma2_2b_linear_merge_sae_feature_trajectories.py \
+  --device cuda:0 \
+  --alphas 0,0.25,0.5,0.75,1 \
+  --prompt-start 8 \
+  --examples-per-split 1 \
+  --max-new-tokens 64 \
+  --features 19:16048,12:40,12:12075 \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/original_fake_id_alpha_sweep
+
+python3 stage3/scripts/analyze_gemma2_2b_linear_merge_sae_feature_trajectories.py \
+  --device cuda:0 \
+  --alphas 0,0.25,0.5,0.75,1 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl \
+  --max-new-tokens 64 \
+  --features 19:16048,12:40,12:12075 \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/fake_id_family_alpha_sweep
+```
+
+Key result:
+
+- On the fake-ID family, the behavior transition replicates: alpha `0.50`
+  reaches harmful clean `0.750`; alpha `0.75` reaches `0.875`; alpha `1.00`
+  reaches `0.875` but has one benign over-refusal.
+- Harmful generated L19 feature `16048` does not increase monotonically with
+  safety. Its mean activation is `0.1510`, `0.3996`, `0.4414`, `0.0997`,
+  `0.0767` across alphas `0.00`, `0.25`, `0.50`, `0.75`, `1.00`.
+- The largest L19 `16048` activations are often punctuation/caveat-transition
+  tokens such as comma, period, `but`, `Here`, or `breakdown`.
+- Harmful L12 features `40` and `12075` increase in the safer alpha regime,
+  including assistant-boundary activation for harmful family prompts at alpha
+  `0.75` and `1.00`.
+
+Interpretation:
+
+- L19 `16048` is a local rescue handle, not the natural feature that explains
+  the successful full linear merge.
+- The L12 features are context-dependent. They are antagonistic in a narrow
+  sparse patch trajectory but are naturally active in the safer full merge.
+- The next decisive step is a fixed-continuation/teacher-forced trajectory check
+  to remove own-generation token-sequence confounding.

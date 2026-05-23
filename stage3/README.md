@@ -22,6 +22,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
 - The same alpha `0.75` result holds better than the sparse pruning branch on
   the fake-ID family: it passes 7/8 harmful variants with 8/8 benign helpfulness,
   while base passes 7/8 but over-refuses once.
+- SAE feature trajectories along the linear merge show that L19 feature `16048`
+  is not a simple natural safety marker: on the fake-ID family its harmful
+  generated activation peaks near alpha `0.50` and drops at safer alpha `0.75`
+  / `1.00`. The L12 features `40` and `12075` increase in the safe alpha regime,
+  even though they were antagonists in narrow sparse patches.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 
@@ -295,6 +300,7 @@ Main artifacts:
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FAKE_ID_FAMILY_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_MECHANISM_AWARE_PRUNING_FINDINGS.md`
 - `results/GEMMA2_2B_LINEAR_WEIGHT_MERGE_SWEEP_FINDINGS.md`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_FEATURE_TRAJECTORY_FINDINGS.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`

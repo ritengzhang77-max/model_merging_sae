@@ -1,0 +1,36 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "12": "layer_12/width_16k/average_l0_108/params.npz",
+    "19": "layer_19/width_16k/average_l0_109/params.npz"
+  },
+  "merge_line": "abliterated + alpha * (base - abliterated)",
+  "alphas": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "features": {
+    "19": [
+      16048
+    ],
+    "12": [
+      40,
+      12075
+    ]
+  },
+  "prompt_source": "stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl",
+  "outputs": {
+    "trajectories": "stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/fake_id_family_alpha_sweep/gemma2_2b_linear_merge_sae_feature_trajectories.csv",
+    "records": "stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/fake_id_family_alpha_sweep/gemma2_2b_linear_merge_sae_feature_records.jsonl",
+    "scores": "stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/fake_id_family_alpha_sweep/gemma2_2b_linear_merge_sae_feature_scores.csv",
+    "summary_csv": "stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/fake_id_family_alpha_sweep/gemma2_2b_linear_merge_sae_feature_summary.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_feature_trajectories_v0/fake_id_family_alpha_sweep/GEMMA2_2B_LINEAR_MERGE_SAE_FEATURE_TRAJECTORY_SUMMARY.md"
+  }
+}
