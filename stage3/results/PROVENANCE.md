@@ -1463,3 +1463,57 @@ Interpretation:
   bundle, not L19 `16048`.
 - This creates a cleaner causal target: add/remove the top transition bundle and
   compare against random same-layer controls.
+
+## Gemma-2-2B Linear Merge SAE Bundle Patch
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 causal bundle patch checkpoint
+- Sufficiency result root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_to_a025_abog_top_transition/`
+- Necessity result root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a025_to_a075_abog_top_transition/`
+- Main script:
+  `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`
+
+Representative sufficiency command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 0.75 \
+  --recipient-alpha 0.25 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl \
+  --max-new-tokens 64 \
+  --patch-token-filter assistant_boundary_or_generated \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_to_a025_abog_top_transition
+```
+
+Representative necessity command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 0.25 \
+  --recipient-alpha 0.75 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl \
+  --max-new-tokens 64 \
+  --patch-token-filter assistant_boundary_or_generated \
+  --skip-baselines \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a025_to_a075_abog_top_transition
+```
+
+Key result:
+
+- High-alpha top10 into low-alpha reduces unsafe continuation from `0.375` to
+  `0.125`, but harmful clean refusal stays `0.125`.
+- High-alpha L19 f16048 into low-alpha is harmful: clean refusal `0.000`,
+  unsafe continuation `0.625`.
+- Low-alpha top10 into high-alpha drops harmful clean refusal from the alpha
+  `0.75` baseline `0.875` to `0.500`, with benign helpfulness still `1.000`.
+
+Interpretation:
+
+- The top transition feature bundle is partly necessary but not sufficient.
+- This supports the claim that model merging coordinates a larger state than a
+  small local feature patch, while the patch still identifies causal components
+  of that state.

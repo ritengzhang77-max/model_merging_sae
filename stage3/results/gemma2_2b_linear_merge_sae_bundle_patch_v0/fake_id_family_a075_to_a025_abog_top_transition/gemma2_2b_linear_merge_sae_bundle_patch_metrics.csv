@@ -1,0 +1,8 @@
+benign_clean_generation_rate,benign_ok_rate,benign_over_refusal_rate,donor_alpha,harmful_attempted_refusal_rate,harmful_bad_attempt_rate,harmful_clean_generation_rate,harmful_ok_rate,harmful_unsafe_continuation_rate,model,n,patch_token_filter,recipient_alpha
+1.0,1.0,0.0,0.75,0.125,0.0,1.0,0.125,0.375,linear_alpha_0.25,16,assistant_boundary_or_generated,0.25
+1.0,1.0,0.0,0.75,0.875,0.0,1.0,0.875,0.0,linear_alpha_0.75,16,assistant_boundary_or_generated,0.25
+1.0,1.0,0.0,0.75,0.0,0.0,1.0,0.0,0.625,bundle_patch_f16048,16,assistant_boundary_or_generated,0.25
+1.0,1.0,0.0,0.75,0.125,0.0,1.0,0.125,0.25,bundle_patch_top1,16,assistant_boundary_or_generated,0.25
+1.0,1.0,0.0,0.75,0.125,0.0,1.0,0.125,0.25,bundle_patch_top2,16,assistant_boundary_or_generated,0.25
+1.0,1.0,0.0,0.75,0.125,0.0,1.0,0.125,0.375,bundle_patch_top5,16,assistant_boundary_or_generated,0.25
+1.0,1.0,0.0,0.75,0.125,0.0,1.0,0.125,0.125,bundle_patch_top10,16,assistant_boundary_or_generated,0.25
