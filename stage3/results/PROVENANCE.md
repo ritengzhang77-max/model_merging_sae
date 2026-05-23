@@ -189,6 +189,10 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_alone_budget_v0/`
 - Feature `16048` k256 prefix control:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_k256_prefix_control_v0/`
+- Feature `16048` signed trajectory root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_signed_trajectories_v0/`
+- Feature `16048` signed trajectory memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_SIGNED_TRAJECTORY_FINDINGS.md`
 - L12 interference feature audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
 
@@ -279,6 +283,11 @@ Key result:
 - The two singleton L12 antagonists split by timing under the narrow trajectory:
   rank `274` / feature `40` disrupts when patched during generation, while
   rank `295` / feature `12075` disrupts when patched at the assistant boundary.
+- Signed trajectory logging on fake-ID shows L19 feature `16048` has positive
+  donor-minus-recipient delta on generated positions, not prompt-template
+  positions. The L12 antagonist features are also donor-high, and one L12
+  failure has even stronger L19 f16048 generated-token delta than the passing
+  condition.
 
 Interpretation:
 
@@ -297,8 +306,10 @@ Interpretation:
   trajectory effect, not a context-free property of the two L12 features.
 - Feature-specific timing points to generated-token maintenance as the L19
   feature-16048 role and separates the two L12 disruptors by timing site.
-- Next tests should compare signed/directional feature effects against unsigned
-  top-delta ranking.
+- Signed trajectories show why unsigned top-delta ranking is inadequate:
+  donor-high features can be helpful, redundant, or timed antagonists.
+- Next tests should move from one prompt to prompt-family replication and
+  manual scoring of the generated outputs.
 
 ## Qwen2.5-1.5B Residual Benchmark V0
 

@@ -216,6 +216,21 @@ Thus feature `16048` is best described as a generated-token refusal trajectory
 feature in the basis `0:4` k896 setting, while the two L12 singleton
 antagonists disrupt different timing sites.
 
+## Signed-Trajectory Diagnostic
+
+Signed trajectory logging on the fake-ID prompt confirms that the relevant
+feature deltas are generated-token trajectory effects:
+
+- L19 feature `16048` has positive donor-minus-recipient delta on generated
+  positions and near-zero delta on prompt-template/boundary positions in the
+  basis `0:4`, k896 test.
+- The L12 antagonist features are also donor-high features. Under basis `0:8`,
+  L12 feature `40` and L12 feature `12075` have positive signed deltas, yet
+  patching them at the wrong timing site breaks fake-ID recovery.
+- In an L12 rank-274 generated-token failure, L19 feature `16048` still has a
+  strong positive generated-token signed delta. The failure is therefore not
+  simply loss of the L19 feature; it is an antagonistic trajectory interaction.
+
 ## Interpretation
 
 The live mechanism is now better described as an antagonistic feature-bundle
@@ -236,6 +251,8 @@ interaction:
 - Feature-specific timing matters: L19 feature `16048` is generated-token
   causal in the clean k896 test, while the two L12 disruptors split across
   generated-token and assistant-boundary timing.
+- Signed donor-minus-recipient deltas are not enough to identify helpful
+  features: some donor-high features are timed antagonists.
 
 This is a stronger mechanistic direction than a simple "single refusal feature"
 story because it exposes why merging/patching can be fragile even when the
@@ -261,7 +278,13 @@ selected features are high-delta and behaviorally relevant.
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - Prefix-alone budget:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_alone_budget_v0/`
+- Signed trajectories:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_signed_trajectories_v0/`
+- Signed trajectory memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_SIGNED_TRAJECTORY_FINDINGS.md`
 - Main script:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
 - Feature-specific timing script:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_specific_timing.py`
+- Signed trajectory script:
+  `stage3/scripts/export_gemma2_2b_gemmascope_mlp_sae_feature_trajectories.py`

@@ -89,13 +89,37 @@ Feature merging behavior is now best described as a trajectory interaction:
 - adding more high-delta features is nonmonotone because helpful, redundant,
   and antagonistic features share the same top-delta ranking.
 
+## Signed-Trajectory Follow-Up
+
+A signed trajectory diagnostic on the fake-ID prompt supports this timing
+interpretation:
+
+- In the basis `0:4`, k896 setting, L19 feature `16048` has near-zero
+  donor-recipient delta on prompt-template/boundary positions and positive
+  donor-minus-recipient delta on generated-token positions.
+- In the basis `0:8`, k256 antagonist setting, the L12 antagonist features are
+  also donor-high features. L12 feature `40` and L12 feature `12075` have
+  positive signed deltas, yet patching them can break the repaired trajectory.
+- The L12 rank-274 generated-token failure can occur even while L19 feature
+  `16048` has a larger positive generated-token delta than in the passing
+  condition.
+
+Thus the mechanism is not "add all donor-high features." Some donor-high
+features are helpful, some are redundant, and some are timed antagonists.
+
 ## Artifacts
 
 - Feature-specific timing root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
+- Signed trajectory root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_signed_trajectories_v0/`
+- Signed trajectory memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_SIGNED_TRAJECTORY_FINDINGS.md`
 - Prefix-alone budget root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_alone_budget_v0/`
 - k256 prefix control:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_k256_prefix_control_v0/`
 - Script:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_specific_timing.py`
+- Trajectory script:
+  `stage3/scripts/export_gemma2_2b_gemmascope_mlp_sae_feature_trajectories.py`

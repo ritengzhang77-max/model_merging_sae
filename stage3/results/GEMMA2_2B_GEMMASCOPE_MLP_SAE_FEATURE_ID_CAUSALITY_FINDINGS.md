@@ -286,6 +286,25 @@ fake-ID without adding feature `16048`. This narrows earlier k256 language:
 feature `16048` is causal in the basis `0:4` k896/k1024 threshold setting, but
 not necessary in every passing prefix.
 
+## Signed-Trajectory Diagnostic
+
+Signed trajectory logging on the fake-ID prompt supports the generated-token
+interpretation:
+
+- L19 feature `16048` has positive donor-minus-recipient delta on generated
+  positions and near-zero delta on prompt-template/boundary positions in the
+  basis `0:4`, k896 test.
+- L12 feature `40` and L12 feature `12075` also have positive signed deltas in
+  the basis `0:8`, k256 antagonist setting, but patching them can break the
+  repair.
+- In an L12 rank-274 generated-token failure, feature `16048` still has strong
+  positive generated-token signed delta, so the failure is not simply
+  disappearance of the L19 repair feature.
+
+This is the clearest current explanation for nonmonotone top-k behavior:
+donor-high sparse features include helpful trajectory features, redundant
+features, and timed antagonists.
+
 ## L19 Tail Feature Audit
 
 The layer-19 rank-897-to-1024 band was exported separately in:
@@ -328,8 +347,8 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   generated-token maintenance; content-token patching is not a substitute.
 - Feature-specific timing shows feature `16048` acts on generated-token
   trajectory maintenance in the clean k896 test.
-- The next tests should inspect signed feature trajectories rather than only
-  unsigned top-delta ranking.
+- Signed trajectory logging shows that donor-high features can still be
+  antagonistic, so unsigned top-delta ranking is not enough.
 
 ## Artifacts
 
@@ -363,11 +382,17 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - Feature `16048` prefix-alone budget root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_alone_budget_v0/`
+- Feature `16048` signed trajectory root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_signed_trajectories_v0/`
+- Feature `16048` signed trajectory memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_SIGNED_TRAJECTORY_FINDINGS.md`
 - L19 tail audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/`
 - Script support:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
 - Feature-specific timing script:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_specific_timing.py`
+- Signed trajectory script:
+  `stage3/scripts/export_gemma2_2b_gemmascope_mlp_sae_feature_trajectories.py`
 - Rank-stability script:
   `stage3/scripts/analyze_gemma2_2b_gemmascope_mlp_sae_feature_rank_stability.py`
