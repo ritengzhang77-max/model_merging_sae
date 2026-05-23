@@ -83,6 +83,65 @@ Interpretation:
   reproduce the repair and beat or explain broad coordinate baselines such as
   `top_neuron_k1536`.
 
+## Gemma-2-2B GemmaScope Position-Restricted Sparse Repair
+
+- Date appended: 2026-05-22
+- Artifact status: active mechanistic localization checkpoint
+- Base donor: `google/gemma-2-2b-it`
+- Abliterated recipient: `IlyaGusev/gemma-2-2b-it-abliterated`
+- Causal site: post-feedforward normalized MLP update, layers `12-20`
+- Main script: `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
+- Aggregator:
+  `stage3/scripts/aggregate_gemma2_2b_gemmascope_mlp_sae_position_restricted.py`
+- k1024 summary:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
+- k2048 summary:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
+- k512 boundary/generated budget summary:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_boundary_generated_budget_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
+
+Commands:
+
+```bash
+python3 stage3/scripts/aggregate_gemma2_2b_gemmascope_mlp_sae_position_restricted.py \
+  --result-root stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0
+```
+
+```bash
+python3 stage3/scripts/aggregate_gemma2_2b_gemmascope_mlp_sae_position_restricted.py \
+  --result-root stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0
+```
+
+```bash
+python3 stage3/scripts/aggregate_gemma2_2b_gemmascope_mlp_sae_position_restricted.py \
+  --result-root stage3/results/gemma2_2b_gemmascope_mlp_sae_boundary_generated_budget_v0
+```
+
+Key result:
+
+- Static assistant-boundary-only k1024 patching fails on all `12-20`,
+  heldout `4:8`: harmful clean refusal `0.000`, unsafe continuation `0.500`.
+- Generated-token-only and content-token-only patching also fail in the same
+  fold, both with harmful clean refusal `0.000`.
+- `assistant_boundary_or_generated` k1024 reaches `0.750` harmful clean refusal
+  on all `12-20` folds `4:8` and `8:12`, with unsafe continuation `0.000`.
+- k2048 confirms the same reduced mechanism: `assistant_boundary_or_generated`
+  reaches `0.750` on both folds, while `contentish_or_generated` reaches only
+  `0.250` with `0.250` unsafe continuation on `4:8`; its `8:12` run failed
+  twice during generation.
+- The k512 `assistant_boundary_or_generated` budget remains partially causal,
+  reaching `0.750` on `4:8` and `0.500` on `8:12`, both with unsafe
+  continuation `0.000`.
+
+Interpretation:
+
+- The current best explanation is autoregressive refusal-state trajectory
+  repair: a donor-like assistant-start/template state plus generated-token
+  state maintenance.
+- The result weakens a simple harmful-content semantic-feature explanation.
+- The next RQ should move from position masks to feature-ID causality inside
+  the `assistant_boundary_or_generated` path.
+
 ## Qwen2.5-1.5B Residual Benchmark V0
 
 - Date appended: 2026-05-21

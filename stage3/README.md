@@ -156,6 +156,24 @@ Position-restricted patching:
   refusal-state trajectory repair, not a static boundary patch and not
   harmful-content semantics.
 
+k2048 and budget follow-up:
+
+- increasing the selected-feature budget to k2048 preserves the same reduced
+  mechanism: all-position `12-20` reaches `1.000` harmful clean refusal on
+  `4:8` and `0.750` on `8:12`; `assistant_boundary_or_generated` reaches
+  `0.750` on both folds;
+- `prompt_template_or_generated` matches `assistant_boundary_or_generated`,
+  again pointing to chat-template/assistant-start state rather than ordinary
+  harmful content tokens;
+- `contentish_or_generated` is still not competitive: on k2048 it reaches only
+  `0.250` harmful clean refusal with `0.250` unsafe continuation on `4:8`, and
+  the `8:12` run failed twice during generation;
+- reducing the `assistant_boundary_or_generated` budget to k512 still repairs
+  partially: `0.750` harmful clean refusal on `4:8` and `0.500` on `8:12`, both
+  with `0.000` unsafe continuation;
+- k256 failed twice during generation, so the current practical threshold is
+  bracketed between k512 and k1024 rather than established exactly.
+
 Main artifacts:
 
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_FINDINGS.md`
@@ -167,6 +185,8 @@ Main artifacts:
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
+- `results/gemma2_2b_gemmascope_mlp_sae_boundary_generated_budget_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_4_8_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_layer_groups_pairs_eval_8_12_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_LAYER_GROUP_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_subsets_12_20_heldout_k_sweep_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_SUBSET_SUMMARY.md`

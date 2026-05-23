@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 from pathlib import Path
@@ -67,18 +68,28 @@ def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
         "source_dir",
     ]
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=keys)
+        writer = csv.DictWriter(handle, fieldnames=keys, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
 
-def metric(rows: list[dict[str, object]], group: str, eval_slice: str, patch_filter: str) -> dict[str, object] | None:
+def budget_sort_key(raw: str) -> int:
+    return int(raw.removeprefix("k"))
+
+
+def eval_slice_sort_key(raw: str) -> int:
+    return int(raw.split(":", 1)[0])
+
+
+def metric(
+    rows: list[dict[str, object]], group: str, eval_slice: str, budget: str, patch_filter: str
+) -> dict[str, object] | None:
     for row in rows:
         if (
             row["layer_group"] == group
             and row["eval_slice"] == eval_slice
+            and row["budget"] == budget
             and row["patch_token_filter"] == patch_filter
-            and row["budget"] == "k1024"
         ):
             return row
     return None
@@ -90,7 +101,45 @@ def fmt_cell(row: dict[str, object] | None) -> str:
     return f"{float(row['harmful_clean']):.3f} / {float(row['unsafe']):.3f}"
 
 
-def write_summary(path: Path, rows: list[dict[str, object]]) -> None:
+def main_result_lines(rows: list[dict[str, object]]) -> list[str]:
+    patch_filters = {str(row["patch_token_filter"]) for row in rows}
+    if patch_filters == {"assistant_boundary_or_generated"}:
+        return [
+            "This aggregate is a budget probe for the already-localized `assistant_boundary_or_generated` intervention.",
+            "",
+            "The k512 budget remains partially causal: it repairs the `4:8` fold strongly and the `8:12` fold partially while keeping unsafe continuation at zero.",
+        ]
+    return [
+        "The strongest current mechanism is not content-token semantics and not a static assistant-boundary-only patch.",
+        "",
+        "The best reduced patch is `assistant_boundary_or_generated`: patch the assistant response boundary in the prompt, then patch generated-token history during autoregressive rollout.",
+        "",
+        "This nearly matches all-position repair while `contentish_or_generated` remains weak or zero.",
+    ]
+
+
+def interpretation_lines(rows: list[dict[str, object]]) -> list[str]:
+    patch_filters = {str(row["patch_token_filter"]) for row in rows}
+    if patch_filters == {"assistant_boundary_or_generated"}:
+        return [
+            "- This root is a budget-threshold follow-up, not a full position-mask comparison.",
+            "- k512 keeps a real but weaker causal signal than k1024: `4:8` remains at `0.750`, while `8:12` drops to `0.500`.",
+            "- Both k512 folds keep unsafe continuation at `0.000`, so the smaller budget is weaker mainly in repair coverage rather than safety quality.",
+            "- k256 failed twice during generation, so the exact lower threshold is still unresolved.",
+        ]
+    return [
+        "- `assistant_boundary` alone fails on `12-20` `4:8` despite the audit showing top feature deltas at the assistant boundary.",
+        "- `contentish` and `contentish_or_generated` do not reproduce the repair, so harmful-content token features are not the main causal path in these runs.",
+        "- `generated` alone fails, so generated-history patching needs a prompt-side state seed.",
+        "- `assistant_boundary_or_generated` matches all-position repair on `12-20` `8:12` and reaches `0.750` on `12-20` `4:8`; it also tracks the late-layer `15-20` positive control on `8:12`.",
+        "- `prompt_template_or_generated` matches the same reduced performance, so the useful prompt-side seed appears to be template/boundary state rather than ordinary content words.",
+    ]
+
+
+def write_summary(path: Path, rows: list[dict[str, object]], result_root: Path) -> None:
+    budgets = sorted({str(row["budget"]) for row in rows}, key=budget_sort_key)
+    groups = sorted({str(row["layer_group"]) for row in rows})
+    eval_slices = sorted({str(row["eval_slice"]) for row in rows}, key=eval_slice_sort_key)
     lines = [
         "# Gemma-2-2B GemmaScope MLP-SAE Position-Restricted Patch Findings",
         "",
@@ -98,54 +147,55 @@ def write_summary(path: Path, rows: list[dict[str, object]]) -> None:
         "",
         "This checkpoint tests whether successful all-token selected SAE features repair refusal because of prompt content, static assistant-boundary tokens, generated-token trajectory state, or a combination.",
         "",
-        "All runs use the same all-token top-delta `mix_decode_delta_abs_k1024` feature selection from prompt slice `0:4` per split.",
+        f"Budgets in this aggregate: `{', '.join(budgets)}`.",
+        "",
+        "All runs use all-token top-delta feature selection from prompt slice `0:4` per split.",
         "",
         "## Main Result",
         "",
-        "The strongest current mechanism is not content-token semantics and not a static assistant-boundary-only patch.",
-        "",
-        "The best reduced patch is `assistant_boundary_or_generated`: patch the assistant response boundary in the prompt, then patch generated-token history during autoregressive rollout.",
-        "",
-        "This nearly matches all-position repair while `contentish_or_generated` remains weak or zero.",
+        *main_result_lines(rows),
         "",
         "## Key Aggregate Table",
         "",
         "Cells are `harmful clean / unsafe continuation`; benign helpfulness is `1.000` for all listed rows.",
         "",
-        "| layer group | eval slice | all positions | assistant boundary only | content only | generated only | prompt all | prompt+last | boundary+generated | content+generated | template+generated |",
-        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| budget | layer group | eval slice | all positions | assistant boundary only | content only | generated only | prompt all | prompt+last | boundary+generated | content+generated | template+generated |",
+        "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
-    for group in ("all", "mid_late"):
-        for eval_slice in ("4:8", "8:12"):
-            lines.append(
-                "| "
-                + " | ".join(
-                    [
-                        f"`{group}`",
-                        f"`{eval_slice}`",
-                        fmt_cell(metric(rows, group, eval_slice, "all")),
-                        fmt_cell(metric(rows, group, eval_slice, "assistant_boundary")),
-                        fmt_cell(metric(rows, group, eval_slice, "contentish")),
-                        fmt_cell(metric(rows, group, eval_slice, "generated")),
-                        fmt_cell(metric(rows, group, eval_slice, "prompt_all")),
-                        fmt_cell(metric(rows, group, eval_slice, "prompt_or_last")),
-                        fmt_cell(metric(rows, group, eval_slice, "assistant_boundary_or_generated")),
-                        fmt_cell(metric(rows, group, eval_slice, "contentish_or_generated")),
-                        fmt_cell(metric(rows, group, eval_slice, "prompt_template_or_generated")),
-                    ]
+    for budget in budgets:
+        for group in groups:
+            for eval_slice in eval_slices:
+                if not any(
+                    row["budget"] == budget and row["layer_group"] == group and row["eval_slice"] == eval_slice
+                    for row in rows
+                ):
+                    continue
+                lines.append(
+                    "| "
+                    + " | ".join(
+                        [
+                            f"`{budget}`",
+                            f"`{group}`",
+                            f"`{eval_slice}`",
+                            fmt_cell(metric(rows, group, eval_slice, budget, "all")),
+                            fmt_cell(metric(rows, group, eval_slice, budget, "assistant_boundary")),
+                            fmt_cell(metric(rows, group, eval_slice, budget, "contentish")),
+                            fmt_cell(metric(rows, group, eval_slice, budget, "generated")),
+                            fmt_cell(metric(rows, group, eval_slice, budget, "prompt_all")),
+                            fmt_cell(metric(rows, group, eval_slice, budget, "prompt_or_last")),
+                            fmt_cell(metric(rows, group, eval_slice, budget, "assistant_boundary_or_generated")),
+                            fmt_cell(metric(rows, group, eval_slice, budget, "contentish_or_generated")),
+                            fmt_cell(metric(rows, group, eval_slice, budget, "prompt_template_or_generated")),
+                        ]
+                    )
+                    + " |"
                 )
-                + " |"
-            )
     lines.extend(
         [
             "",
             "## Interpretation",
             "",
-            "- `assistant_boundary` alone fails on `12-20` `4:8` despite the audit showing top feature deltas at the assistant boundary.",
-            "- `contentish` and `contentish_or_generated` do not reproduce the repair, so harmful-content token features are not the main causal path in these runs.",
-            "- `generated` alone fails, so generated-history patching needs a prompt-side state seed.",
-            "- `assistant_boundary_or_generated` matches all-position repair on `12-20` `8:12` and reaches `0.750` on `12-20` `4:8`; it also tracks the late-layer `15-20` positive control on `8:12`.",
-            "- `prompt_template_or_generated` matches the same reduced performance, so the useful prompt-side seed appears to be template/boundary state rather than ordinary content words.",
+            *interpretation_lines(rows),
             "",
             "## Current Mechanistic Hypothesis",
             "",
@@ -155,12 +205,12 @@ def write_summary(path: Path, rows: list[dict[str, object]]) -> None:
             "",
             "- These are small heldout prompt slices with local heuristic scoring.",
             "- The position masks are token-level heuristics over the Gemma chat template.",
-            "- The result uses k1024 top-delta features; k2048 and direct feature-ID ablations remain useful follow-ups.",
+            "- Direct feature-ID ablations remain a useful follow-up.",
             "",
             "## Artifacts",
             "",
             f"- Aggregate CSV: `{path.parent / 'gemma2_2b_gemmascope_mlp_sae_position_restricted_metrics.csv'}`",
-            f"- Atomic result root: `{RESULT_ROOT}`",
+            f"- Atomic result root: `{result_root}`",
             "- Script support: `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`",
             "- Aggregator: `stage3/scripts/aggregate_gemma2_2b_gemmascope_mlp_sae_position_restricted.py`",
         ]
@@ -168,20 +218,35 @@ def write_summary(path: Path, rows: list[dict[str, object]]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def parse_args() -> argparse.Namespace:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--result-root", type=Path, default=RESULT_ROOT)
+    return ap.parse_args()
+
+
 def main() -> int:
-    rows = collect_rows(RESULT_ROOT)
+    args = parse_args()
+    result_root = args.result_root.resolve()
+    rows = collect_rows(result_root)
     if not rows:
-        raise SystemExit(f"no atomic metrics found under {RESULT_ROOT}")
-    rows.sort(key=lambda row: (str(row["layer_group"]), str(row["eval_slice"]), str(row["patch_token_filter"])))
-    csv_path = RESULT_ROOT / "gemma2_2b_gemmascope_mlp_sae_position_restricted_metrics.csv"
-    summary_path = RESULT_ROOT / "GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md"
-    manifest_path = RESULT_ROOT / "manifest.json"
+        raise SystemExit(f"no atomic metrics found under {result_root}")
+    rows.sort(
+        key=lambda row: (
+            budget_sort_key(str(row["budget"])),
+            str(row["layer_group"]),
+            eval_slice_sort_key(str(row["eval_slice"])),
+            str(row["patch_token_filter"]),
+        )
+    )
+    csv_path = result_root / "gemma2_2b_gemmascope_mlp_sae_position_restricted_metrics.csv"
+    summary_path = result_root / "GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md"
+    manifest_path = result_root / "manifest.json"
     write_csv(csv_path, rows)
-    write_summary(summary_path, rows)
+    write_summary(summary_path, rows, result_root)
     manifest_path.write_text(
         json.dumps(
             {
-                "result_root": str(RESULT_ROOT),
+                "result_root": str(result_root),
                 "aggregate_metrics": str(csv_path),
                 "summary": str(summary_path),
                 "n_atomic_runs": len(rows),

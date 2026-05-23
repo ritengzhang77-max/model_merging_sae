@@ -79,29 +79,46 @@ just "the harmful concept is missing"; it may be a failure to carry a response
 initialization/state-setting mechanism that converts harmful prompt recognition
 into refusal generation.
 
+## Position-Restricted Follow-Up
+
+The follow-up causal test is now complete enough to refine the claim:
+
+- static assistant-boundary-only patching does not reproduce the repair;
+- generated-token-only patching also fails;
+- the strongest reduced runtime intervention is
+  `assistant_boundary_or_generated`: patch the assistant response boundary in
+  the prompt, then continue patching generated-token history during rollout;
+- `prompt_template_or_generated` matches the same behavior, while
+  `contentish_or_generated` remains weak and can introduce unsafe continuation
+  at k2048;
+- a smaller k512 `assistant_boundary_or_generated` budget still repairs
+  partially, so the causal state is not just a full k1024 artifact.
+
+This shifts the working mechanism from "boundary features alone" to
+autoregressive refusal-state trajectory repair seeded by assistant-start or
+template state.
+
 ## Caveats
 
 - Current token filters are heuristic. `contentish` excludes special tokens and
   role tokens, but does not perfectly parse the chat template.
-- We have not yet patched only boundary positions versus only content positions.
-  The current comparison changes feature selection, not the runtime patch
-  position.
-- We still need a position-restricted causal test to prove the boundary tokens
-  are the necessary patch location.
+- The position-restricted test is still small: heldout prompt slices have four
+  harmful and four benign prompts per split, and scoring is heuristic.
+- Direct feature-ID ablations remain necessary before treating this as a
+  mechanistic explanation rather than a localized causal patch.
 
 ## Next Tests
 
-1. Position-restricted patching: patch selected all-token features only at
-   assistant-boundary positions, only at content positions, or everywhere.
-2. Boundary-only feature selection: explicitly select features from assistant
+1. Feature identity audit: inspect top boundary/template features such as layer
+   18 feature `15518`, layer 16 feature `11167`, layer 17 feature `14566`, and
+   layer 20 feature `14991`.
+2. Direct feature-ID ablation inside the successful
+   `assistant_boundary_or_generated` path.
+3. Boundary-only feature selection: explicitly select features from assistant
    start/newline/role tokens and test whether they reproduce the all-token
    repair.
-3. Feature identity audit: inspect top boundary features such as layer 18
-   feature `15518`, layer 16 feature `11167`, layer 17 feature `14566`, and
-   layer 20 feature `14991`.
-4. If boundary-only patching works, reframe the paper claim around
-   response-boundary state transfer in model merging rather than generic
-   harmful-content semantics.
+4. Time-slice generated-token history to find whether the state needs only the
+   first generated token or continuous rollout maintenance.
 
 ## Artifacts
 
@@ -110,3 +127,6 @@ into refusal generation.
 - `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/`
 - `stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_audit_v0/`
 - `stage3/results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/`
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/`
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0/`
+- `stage3/results/gemma2_2b_gemmascope_mlp_sae_boundary_generated_budget_v0/`

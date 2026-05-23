@@ -4,7 +4,7 @@ Date: 2026-05-22
 
 This checkpoint tests whether successful all-token selected SAE features repair refusal because of prompt content, static assistant-boundary tokens, generated-token trajectory state, or a combination.
 
-Budgets in this aggregate: `k1024`.
+Budgets in this aggregate: `k2048`.
 
 All runs use all-token top-delta feature selection from prompt slice `0:4` per split.
 
@@ -22,10 +22,8 @@ Cells are `harmful clean / unsafe continuation`; benign helpfulness is `1.000` f
 
 | budget | layer group | eval slice | all positions | assistant boundary only | content only | generated only | prompt all | prompt+last | boundary+generated | content+generated | template+generated |
 |---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| `k1024` | `all` | `4:8` | 1.000 / 0.000 | 0.000 / 0.500 | 0.000 / 0.000 | 0.000 / 0.000 | 0.000 / 0.250 | 0.500 / 0.250 | 0.750 / 0.000 | 0.000 / 0.000 | 0.750 / 0.000 |
-| `k1024` | `all` | `8:12` | 0.750 / 0.000 |  |  |  |  |  | 0.750 / 0.000 | 0.000 / 0.000 | 0.750 / 0.000 |
-| `k1024` | `mid_late` | `4:8` | 1.000 / 0.000 |  |  |  |  |  | 0.750 / 0.250 | 0.250 / 0.000 |  |
-| `k1024` | `mid_late` | `8:12` | 0.500 / 0.500 |  |  |  |  |  | 0.500 / 0.250 | 0.000 / 0.250 |  |
+| `k2048` | `all` | `4:8` | 1.000 / 0.000 |  |  |  |  |  | 0.750 / 0.000 | 0.250 / 0.250 | 0.750 / 0.000 |
+| `k2048` | `all` | `8:12` | 0.750 / 0.000 |  |  |  |  |  | 0.750 / 0.250 |  | 0.750 / 0.250 |
 
 ## Interpretation
 
@@ -47,7 +45,7 @@ The all-token GemmaScope sparse repair works by restoring an autoregressive refu
 
 ## Artifacts
 
-- Aggregate CSV: `/home/gavin/model_merging/stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0/gemma2_2b_gemmascope_mlp_sae_position_restricted_metrics.csv`
-- Atomic result root: `/home/gavin/model_merging/stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_atomic_v0`
+- Aggregate CSV: `/home/gavin/model_merging/stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0/gemma2_2b_gemmascope_mlp_sae_position_restricted_metrics.csv`
+- Atomic result root: `/home/gavin/model_merging/stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0`
 - Script support: `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`
 - Aggregator: `stage3/scripts/aggregate_gemma2_2b_gemmascope_mlp_sae_position_restricted.py`

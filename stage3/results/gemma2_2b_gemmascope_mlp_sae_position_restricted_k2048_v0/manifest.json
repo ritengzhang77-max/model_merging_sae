@@ -1,0 +1,6 @@
+{
+  "result_root": "/home/gavin/model_merging/stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0",
+  "aggregate_metrics": "/home/gavin/model_merging/stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0/gemma2_2b_gemmascope_mlp_sae_position_restricted_metrics.csv",
+  "summary": "/home/gavin/model_merging/stage3/results/gemma2_2b_gemmascope_mlp_sae_position_restricted_k2048_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_POSITION_RESTRICTED_SUMMARY.md",
+  "n_atomic_runs": 7
+}

@@ -1,0 +1,10 @@
+k,layer,score_sum,selected_features,selector,variant
+512,12,8314.091796875,512,delta_abs,mix_decode_delta_abs_k512
+512,13,10091.830078125,512,delta_abs,mix_decode_delta_abs_k512
+512,14,10438.365234375,512,delta_abs,mix_decode_delta_abs_k512
+512,15,9193.515625,512,delta_abs,mix_decode_delta_abs_k512
+512,16,10872.08984375,512,delta_abs,mix_decode_delta_abs_k512
+512,17,11726.271484375,512,delta_abs,mix_decode_delta_abs_k512
+512,18,15238.7265625,512,delta_abs,mix_decode_delta_abs_k512
+512,19,15561.630859375,512,delta_abs,mix_decode_delta_abs_k512
+512,20,15062.185546875,512,delta_abs,mix_decode_delta_abs_k512
