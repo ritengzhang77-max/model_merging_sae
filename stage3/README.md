@@ -210,6 +210,10 @@ Feature-ID causality follow-up:
 - the feature audit is still mostly assistant-template/boundary and prompt-end
   events, so the lead is a layer-local response-state refinement rather than a
   clean harmful-content semantic feature.
+- a decoded-delta-add robustness check does not recover fake-ID for
+  `k256 + L19 f16048`, `k384 + L19 f16048`, or their L12 antagonist/removal
+  variants, so the strongest claim currently belongs to the `mix_decode`
+  coordinate-replacement operator rather than to generic decoded delta addition.
 
 Main artifacts:
 

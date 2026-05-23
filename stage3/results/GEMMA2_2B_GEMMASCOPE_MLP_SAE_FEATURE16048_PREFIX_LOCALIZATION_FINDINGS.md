@@ -151,6 +151,24 @@ prompt-ending tokens such as newline, `model`, and `<start_of_turn>`. This
 strengthens the response-state trajectory interpretation and weakens a direct
 harmful-content semantic interpretation.
 
+## Operator Robustness
+
+The feature-16048/L12-antagonist result currently depends on the `mix_decode`
+operator. A small `delta_add` robustness check did not recover fake-ID even
+before adding the L12 disruptors:
+
+| delta-add condition | harmful clean | unsafe | fake-ID |
+|---|---:|---:|---|
+| k256 + L19 f16048 | 0.250 | 0.000 | fail |
+| k384 + L19 f16048 | 0.500 | 0.000 | fail |
+| k256 + L19 f16048 + L12 rank 274 | 0.250 | 0.000 | fail |
+| k256 + L19 f16048 + L12 rank 295 | 0.250 | 0.000 | fail |
+| k384 + L19 f16048 minus L12 ranks 257-384 | 0.500 | 0.000 | fail |
+
+This does not invalidate the `mix_decode` mechanism, but it does narrow the
+claim. The current evidence is about replacing selected SAE coordinates with
+donor coordinates, not about arbitrary decoded delta addition.
+
 ## Interpretation
 
 The live mechanism is now better described as an antagonistic feature-bundle
@@ -163,6 +181,8 @@ interaction:
   repaired behavior.
 - Feature-level explanations need signed/interaction-aware analysis, not only
   top-k delta feature ranking.
+- The intervention operator matters: the current fake-ID mechanism is visible
+  under `mix_decode`, not under the tested `delta_add` variant.
 
 This is a stronger mechanistic direction than a simple "single refusal feature"
 story because it exposes why merging/patching can be fragile even when the
@@ -176,5 +196,7 @@ selected features are high-delta and behaviorally relevant.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_band_localization_v0/`
 - L12 interference audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
+- Operator robustness:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_operator_robustness_v0/`
 - Main script:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`

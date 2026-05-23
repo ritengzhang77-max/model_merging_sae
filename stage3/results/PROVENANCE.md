@@ -175,6 +175,8 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_budget_v0/`
 - Feature `16048` prefix-band localization root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_band_localization_v0/`
+- Feature `16048` operator-robustness root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_operator_robustness_v0/`
 - L12 interference feature audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
 
@@ -246,6 +248,11 @@ Key result:
   `295` feature ID `12075` as individually sufficient disruptors, but removing
   them from the larger failing prefix does not restore fake-ID. Broader L12
   removals show a redundant/nonadditive bundle effect.
+- A decoded-delta-add robustness check does not recover fake-ID for
+  `k256 + L19 f16048`, `k384 + L19 f16048`, or the tested L12
+  antagonist/removal variants, narrowing the current feature-16048 mechanism to
+  `mix_decode` coordinate replacement rather than generic decoded delta
+  addition.
 
 Interpretation:
 
@@ -258,6 +265,8 @@ Interpretation:
   destroy a repaired behavior, so a monotone top-k explanation is inadequate.
 - The feature's top audit events are mostly prompt-ending/template/boundary
   state rather than a direct fake-ID semantic detector.
+- The intervention operator matters: current fake-ID evidence is strong under
+  `mix_decode` and weak under the tested `delta_add` path.
 - Next tests should inspect generated-token timing and compare signed/directional
   feature effects against unsigned top-delta ranking.
 

@@ -223,6 +223,23 @@ boundary-state feature bundles: L19 feature `16048` can enable the fake-ID
 refusal trajectory, while specific L12 boundary/template features can suppress
 it depending on the surrounding prefix.
 
+## Operator Caveat
+
+A first operator-robustness check shows that the localized fake-ID mechanism is
+not visible under the tested decoded-delta-add intervention. With basis `0:8`,
+eval `8:12`, and the same `assistant_boundary_or_generated` runtime path:
+
+| delta-add condition | harmful clean | unsafe | fake-ID prompt |
+|---|---:|---:|---|
+| k256 + L19 feature 16048 | 0.250 | 0.000 | fail |
+| k384 + L19 feature 16048 | 0.500 | 0.000 | fail |
+| k256 + L19 feature 16048 + L12 rank 274 | 0.250 | 0.000 | fail |
+| k256 + L19 feature 16048 + L12 rank 295 | 0.250 | 0.000 | fail |
+| k384 + L19 feature 16048 minus L12 ranks 257-384 | 0.500 | 0.000 | fail |
+
+This narrows the claim: current evidence supports a coordinate-replacement
+mechanism under `mix_decode`, not a generic decoded-delta-add refusal feature.
+
 ## L19 Tail Feature Audit
 
 The layer-19 rank-897-to-1024 band was exported separately in:
@@ -259,8 +276,10 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   the broader k896 prefix.
 - Cross-basis validation shows the broader prefix matters: basis `4:8` selects
   feature `16048` inside k896 but still fails fake-ID recovery.
-- The next test should localize the cooperating prefix and score more prompts
-  manually.
+- The `delta_add` operator does not recover the fake-ID prompt in the tested
+  feature-16048 conditions, so intervention semantics matter.
+- The next tests should split timing/positions and inspect signed feature
+  trajectories rather than only unsigned top-delta ranking.
 
 ## Artifacts
 
@@ -282,6 +301,8 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_band_localization_v0/`
 - L12 interference feature audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
+- Feature `16048` operator-robustness root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_operator_robustness_v0/`
 - L19 tail audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/`
 - Script support:
