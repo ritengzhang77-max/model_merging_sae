@@ -173,6 +173,31 @@ test is feature selection: can a smaller, interpretable SAE feature subset
 recover the repair, and can it generalize to held-out harmful and benign
 controls?
 
+## 2026-05-23 Linear Weight-Merge Bridge Update
+
+We now have an actual parameter-space merge curve for the Gemma safety pair.
+Along the line
+
+```text
+abliterated + alpha * (base - abliterated)
+```
+
+the 12 harmful / 12 benign prompt screen shows a sharp behavioral transition:
+
+- alpha `0.00`: harmful clean `0.000`, unsafe `0.083`, benign helpful `1.000`;
+- alpha `0.25`: harmful clean `0.000`, unsafe `0.167`, benign helpful `1.000`;
+- alpha `0.50`: harmful clean `0.667`, unsafe `0.083`, benign helpful `1.000`;
+- alpha `0.75`: harmful clean `0.917`, unsafe `0.000`, benign helpful `1.000`;
+- alpha `1.00`: harmful clean `0.917`, unsafe `0.000`, benign helpful `0.917`
+  with one benign over-refusal.
+
+This is the first clean bridge from our causal SAE patching work back to actual
+model merging. On this small screen, alpha `0.75` is better than either endpoint
+under the project metric: it keeps base-like harmful refusal while preserving
+recipient-like benign helpfulness. The next mechanistic question is whether the
+SAE features and L12 keep/drop bundles move sharply across the same alpha
+transition.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

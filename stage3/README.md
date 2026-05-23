@@ -11,6 +11,17 @@ attempted-refusal transfer with frequent quality failure, not as reliable clean
 refusal transfer. The main decision memo is
 `results/STAGE3_REFUSAL_FAILURE_FINDINGS.md`.
 
+The Gemma branch now has an actual linear weight-merge bridge:
+
+- Along `abliterated + alpha * (base - abliterated)`, harmful clean refusal
+  jumps from `0.000` at alpha `0.25` to `0.667` at alpha `0.50` and `0.917` at
+  alpha `0.75`.
+- Alpha `0.75` matches the base donor's harmful clean-refusal rate on the
+  12-prompt screen while preserving `1.000` benign helpfulness and avoiding the
+  base model's one benign over-refusal.
+- This gives the SAE feature-trajectory work a concrete parameter-space merge
+  curve to explain.
+
 The first target is deliberately conservative. Before training or trusting
 SAEs/transcoders, compare simple bases:
 
@@ -280,6 +291,7 @@ Main artifacts:
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_SIGNED_TRAJECTORY_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FAKE_ID_FAMILY_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_MECHANISM_AWARE_PRUNING_FINDINGS.md`
+- `results/GEMMA2_2B_LINEAR_WEIGHT_MERGE_SWEEP_FINDINGS.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`

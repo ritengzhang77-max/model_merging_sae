@@ -1245,3 +1245,45 @@ Interpretation:
 - The current best family-level sparse baseline is still k896, and feature
   `16048`/L12 pruning remain local trajectory tools rather than general fake-ID
   safety mechanisms.
+
+## Gemma-2-2B Linear Weight-Merge Sweep
+
+- Date appended: 2026-05-23
+- Artifact status: Stage 3 actual parameter-space merge bridge
+- Result root:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12/`
+- Main summary:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12/GEMMA2_2B_LINEAR_WEIGHT_MERGE_SWEEP_SUMMARY.md`
+- Main script:
+  `stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py`
+
+Representative command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_weight_merge_sweep.py \
+  --device cuda:0 \
+  --alphas 0,0.25,0.5,0.75,1 \
+  --eval-start 0 \
+  --examples-per-split 12 \
+  --max-new-tokens 64 \
+  --result-dir stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/full_0_12
+```
+
+Key result:
+
+- Linear merge line: `abliterated + alpha * (base - abliterated)`.
+- Harmful clean refusal jumps from `0.000` at alpha `0.25` to `0.667` at alpha
+  `0.50` and `0.917` at alpha `0.75`.
+- Alpha `0.75` has harmful clean `0.917`, unsafe `0.000`, benign helpful
+  `1.000`, and benign over-refusal `0.000`.
+- Alpha `1.00` has the same harmful clean rate but benign helpful falls to
+  `0.917` because of one over-refusal.
+
+Interpretation:
+
+- This gives the project a direct model-merging object, not just an activation
+  patching object.
+- On the small screen, an intermediate linear merge is better than either
+  endpoint under the current metric. The SAE question now becomes: what features
+  or trajectories cross the behavioral threshold between alpha `0.25` and
+  `0.50`/`0.75`?
