@@ -49,6 +49,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   generated texts are identical across these four delta-add conditions. This
   makes the current causal evidence negative: top10 is an interpretable natural
   transition correlate, but not yet a proved necessary feature set.
+- A cleaner high-alpha `feature_subtract` ablation recovers a modest
+  feature-specific signal: subtracting top10 drops the fake-ID family from 7/8
+  to 6/8 harmful clean while matched random same-layer bundles stay at 7/8 and
+  benign helpfulness remains 8/8. The effect is nonadditive: L19 f16048, top1,
+  top2, top5, tail5, top5 plus any one tail feature, and cumulative top6/top9
+  all stay at 7/8; only the full top10 bundle causes the extra failure.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

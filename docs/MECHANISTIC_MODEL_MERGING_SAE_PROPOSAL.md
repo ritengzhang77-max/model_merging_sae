@@ -250,6 +250,17 @@ conditions. This is a useful narrowing result. The current story should be
 framed as feature-trajectory interpretation of model merging, with causal
 selected-feature necessity still open rather than established.
 
+A cleaner subtractive high-alpha ablation gives a narrower positive result.
+Removing the top10 SAE decoder contributions from the alpha `0.75` model drops
+fake-ID family clean refusal from 7/8 to 6/8, while three matched random
+same-layer ten-feature bundles stay at 7/8 and benign helpfulness remains 8/8.
+The effect is not a singleton: L19 f16048, top1, top2, top5, tail5, top5 plus
+any one tail feature, and cumulative top6 through top9 all stay at 7/8. Only
+the full top10 bundle creates the extra failure. The current causal claim is
+therefore modest but interesting: a distributed ten-feature refusal-rationale
+state contributes to the safe merged behavior, but no individual feature in the
+bundle is independently necessary on this benchmark.
+
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 
 The GemmaScope branch has moved from "SAE reconstruction is behaviorally

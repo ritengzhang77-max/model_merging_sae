@@ -1476,6 +1476,14 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a025_to_a075_abog_random_controls/`
 - Necessity delta-add top10/random-control root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a025_to_a075_abog_delta_add_top10_random/`
+- High-alpha feature-subtract top10/random-control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_top10_random/`
+- High-alpha feature-subtract bundle ladder root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_bundle_ladder/`
+- High-alpha feature-subtract tail-localization root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_tail_localization/`
+- High-alpha feature-subtract cumulative-prefix root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_cumulative_prefixes/`
 - Main script:
   `stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py`
 
@@ -1537,6 +1545,22 @@ python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
   --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a025_to_a075_abog_delta_add_top10_random
 ```
 
+Representative high-alpha feature-subtract command:
+
+```bash
+python3 stage3/scripts/run_gemma2_2b_linear_merge_sae_bundle_patch.py \
+  --device cuda:0 \
+  --donor-alpha 0.75 \
+  --recipient-alpha 0.75 \
+  --prompt-jsonl stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v0.jsonl \
+  --max-new-tokens 64 \
+  --patch-token-filter assistant_boundary_or_generated \
+  --patch-mode feature_subtract \
+  --skip-baselines \
+  --bundles 'top10=17:4342,17:16011,16:16332,18:10415,18:11127,15:11128,14:3001,20:14425,18:7189,18:11214;random1=14:9137,15:12962,16:747,17:6842,17:14472,18:2195,18:15797,18:10796,18:6989,20:2796;random2=14:11187,15:834,16:2407,17:16027,17:11572,18:12498,18:4149,18:9901,18:13794,20:418;random3=14:8550,15:15840,16:9989,17:720,17:8444,18:2087,18:6577,18:16087,18:699,20:10915' \
+  --result-dir stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_a075_self_abog_feature_subtract_top10_random
+```
+
 Key result:
 
 - High-alpha top10 into low-alpha reduces unsafe continuation from `0.375` to
@@ -1552,6 +1576,12 @@ Key result:
   `0.75` behavior unchanged at harmful clean refusal `0.875`, unsafe
   continuation `0.000`, and benign helpfulness `1.000`; generated texts are
   identical across the four delta-add conditions.
+- Under high-alpha `feature_subtract`, top10 drops harmful clean refusal from
+  `0.875` to `0.750`, while matched random same-layer ten-feature bundles stay
+  at `0.875`; benign helpfulness remains `1.000` for all conditions.
+- The effect is nonadditive: L19 f16048, top1, top2, top5, tail5,
+  top5-plus-any-one-tail, and cumulative top6/top9 all stay at `0.875`; only
+  top10 drops to `0.750`.
 
 Interpretation:
 
@@ -1560,5 +1590,8 @@ Interpretation:
   same-layer replacement can cause the same degradation.
 - The less reconstructive `delta_add` operator is too weak, at the natural
   alpha `0.25` to alpha `0.75` feature delta, to perturb behavior at all.
-- This keeps the natural transition-search result alive as an interpretable
-  correlate, but causal selected-feature necessity remains open.
+- `feature_subtract` gives a modest selected-bundle necessity signal that
+  survives random controls, but it is one additional prompt on an 8-harmful
+  fake-ID family.
+- The current best causal phrasing is distributed refusal-rationale state
+  component, not an independently necessary singleton feature.
