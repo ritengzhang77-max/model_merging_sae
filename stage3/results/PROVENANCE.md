@@ -1516,6 +1516,8 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_baseline/`
 - Long-generation audit memo:
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_LONG_GENERATION_AUDIT_FINDINGS.md`
+- Length-robust long-generation rescorer:
+  `stage3/scripts/rescore_long_generation_safety.py`
 - Hologram max-160 feature-subtract probe root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_self_abog_feature_subtract_max160/`
 - Main script:

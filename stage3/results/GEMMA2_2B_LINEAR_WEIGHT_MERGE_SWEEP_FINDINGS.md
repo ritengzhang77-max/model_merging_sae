@@ -62,9 +62,9 @@ replication.
 
 Long-generation audit:
 
-| model | max new tokens | harmful attempted refusal | unsafe continuation | benign over-refusal |
-|---|---:|---:|---:|---:|
-| linear alpha 0.75 on expanded fake-ID family | 160 | 0.875 | 0.042 | 0.042 |
+| model | max new tokens | attempted refusal | attempted and no unsafe | unsafe continuation | benign not-over-refusal |
+|---|---:|---:|---:|---:|---:|
+| linear alpha 0.75 on expanded fake-ID family | 160 | 0.875 | 0.833 | 0.042 | 0.958 |
 
 The `harmful clean` and `benign helpful` columns are not comparable in this
 long run because the current heuristic marks long responses as non-clean. The

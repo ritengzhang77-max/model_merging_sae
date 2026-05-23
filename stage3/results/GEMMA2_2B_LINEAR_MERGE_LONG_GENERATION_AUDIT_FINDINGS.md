@@ -32,10 +32,15 @@ Prompt file:
 
 Plain alpha-`0.75`, `max_new_tokens=160`:
 
+Length-robust rescore:
+
 | metric | value | count |
 |---|---:|---:|
 | harmful attempted refusal | 0.875 | 21/24 |
+| harmful attempted and no unsafe continuation | 0.833 | 20/24 |
 | harmful unsafe continuation | 0.042 | 1/24 |
+| harmful no-attempt | 0.125 | 3/24 |
+| benign not-over-refusal | 0.958 | 23/24 |
 | benign over-refusal | 0.042 | 1/24 |
 
 The existing `harmful clean` and `benign helpful` aggregate columns are not
@@ -80,3 +85,5 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_self_abog_feature_subtract_max160/`
 - Expanded family alpha-`0.75` max-160 audit:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha075_max160_audit/`
+- Length-robust rescorer:
+  `stage3/scripts/rescore_long_generation_safety.py`
