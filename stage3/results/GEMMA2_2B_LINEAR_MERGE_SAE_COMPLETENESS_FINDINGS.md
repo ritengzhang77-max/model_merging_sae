@@ -80,6 +80,35 @@ tradeoff. They do not fix the remaining "what mistakes make a fake ID look
 fake" procedural-compliance failure, and they inherit the alpha-`1.00` benign
 over-refusal rate.
 
+## Feature-Subset Pruning
+
+Layer-20 transition features were selected from the existing alpha `0.75` to
+alpha `1.00` long-continuation feature search. Cumulative layer-20 top-k
+`mix_decode` bundles were tested on the hologram probe:
+
+| condition | strict unsafe | strict safe |
+|---|---:|---:|
+| layer-20 transition top1 | 1.000 | 0.000 |
+| layer-20 transition top2 | 1.000 | 0.000 |
+| layer-20 transition top5 | 1.000 | 0.000 |
+| layer-20 transition top10 | 1.000 | 0.000 |
+| layer-20 transition top20 | 1.000 | 0.000 |
+| layer-20 transition top30 | 1.000 | 0.000 |
+
+The measured transition features do not reproduce the layer-20 full-decode
+repair, even at top30. This means the current result is a compact layer-level
+SAE reconstruction, not yet a small interpretable feature circuit.
+
+A recipient-reconstruction control also failed:
+
+| condition | strict unsafe | strict safe |
+|---|---:|---:|
+| layer-20 recipient SAE reconstruction | 1.000 | 0.000 |
+| layer-20 donor SAE full decode | 0.000 | 1.000 |
+
+So the repair is donor-state specific. It is not just denoising or regularizing
+the alpha-`0.75` recipient through the layer-20 SAE.
+
 Current mechanistic target:
 
 - Explain the alpha-`1.00` to alpha-`0.75` safety/helpfulness tradeoff as a
@@ -87,7 +116,9 @@ Current mechanistic target:
 - Treat single-layer layer-17 activation as a compact causal handle, but not as
   a complete sparse SAE explanation.
 - Use layer-20 full SAE decode as the current compact sparse-basis completeness
-  gate, then try to prune it into interpretable feature subsets.
+  gate.
+- Find a better layer-20 feature-pruning method; simple transition-feature
+  top-k `mix_decode` is insufficient.
 
 ## Artifacts
 
@@ -107,3 +138,7 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_postff_sae_full_decode_max160/`
 - Expanded family layers 17-20 SAE full decode:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
+- Layer-20 transition-feature top-k `mix_decode`:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_transition_features_mix_decode_topk_max160/`
+- Layer-20 recipient reconstruction control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`

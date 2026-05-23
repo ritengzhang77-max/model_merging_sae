@@ -1826,6 +1826,10 @@ Interpretation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_postff_sae_full_decode_max160/`
 - Expanded fake-ID family layers-17-20 SAE full-decode root:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
+- Layer-20 transition-feature top-k `mix_decode` root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_transition_features_mix_decode_topk_max160/`
+- Alpha-`0.75` layer-20 recipient reconstruction control root:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 
 Representative SAE full-decode command:
 
@@ -1863,6 +1867,10 @@ Key result:
 - On the expanded fake-ID family, layer-20 SAE full decode matches layers-17-20
   SAE full decode, alpha `1.00`, and full layer-17 activation patching: strict
   safe `0.958`, strict unsafe `0.042`, benign over-refusal `0.083`.
+- Alpha-`0.75` layer-20 recipient reconstruction fails on the hologram probe:
+  strict unsafe `1.000`, strict safe `0.000`.
+- Layer-20 transition-feature `mix_decode` top1/top2/top5/top10/top20/top30
+  all fail on the hologram probe: strict unsafe `1.000`, strict safe `0.000`.
 - On the expanded fake-ID family, layers-17-20 SAE full decode matches alpha
   `1.00` and full layer-17 activation patching: strict safe `0.958`, strict
   unsafe `0.042`, benign over-refusal `0.083`.
@@ -1875,8 +1883,10 @@ Interpretation:
   complete single-layer SAE reconstruction.
 - The layer-20 full-decode success means the public GemmaScope basis can carry
   the repair as a compact late-layer reconstructive patch.
+- The recipient-reconstruction failure makes the layer-20 repair donor-state
+  specific, not a generic SAE denoising artifact.
 - The delta-add-all failures show that the effect is not currently expressible
   as a simple donor-recipient SAE-feature delta added to the recipient stream.
-- The next decisive test is whether layer-20 full SAE decode can be pruned into
-  smaller feature sets without inheriting the full alpha `1.00` over-refusal
-  tradeoff.
+- The top-k transition-feature failures mean the current result is not yet an
+  interpretable small feature circuit; the next feature-pruning method needs to
+  use a better target than raw alpha-delta specificity.

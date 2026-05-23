@@ -323,7 +323,10 @@ tradeoff (`0.958` strict safe, `0.083` benign over-refusal), removing the
 hologram unsafe case but not the fake-ID "mistakes" failure. Pruning shows
 layer 20 alone is sufficient in the GemmaScope post-FF SAE basis and also
 generalizes to the expanded family, making layer-20 full decode the current
-smallest sparse-basis completeness gate.
+smallest sparse-basis completeness gate. Recipient reconstruction fails, so the
+effect is donor-state specific. However, layer-20 transition-feature top-k
+`mix_decode` bundles through top30 also fail, so this is still a layer-level
+SAE reconstruction result rather than a small feature-level mechanism.
 
 ## 2026-05-22 GemmaScope Feature-Trajectory Update
 

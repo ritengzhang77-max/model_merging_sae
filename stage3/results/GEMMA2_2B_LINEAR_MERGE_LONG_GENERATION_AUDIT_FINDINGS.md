@@ -146,6 +146,12 @@ GemmaScope post-FF basis. Layer-20 full decode repairs the hologram probe and
 generalizes to the expanded family with the same strict safe (`0.958`) and
 benign over-refusal (`0.083`) rates as `17-20` full decode.
 
+Two controls sharpen that claim. Alpha-`0.75` layer-20 recipient reconstruction
+does not repair the hologram probe, so the layer-20 full-decode result is
+donor-state specific rather than a generic SAE reconstruction artifact. But
+layer-20 transition-feature top-k `mix_decode` bundles through top30 also fail,
+so the current result is not yet a small feature-level circuit.
+
 Next evaluation work should separate:
 
 - early clean-refusal shape;
@@ -197,5 +203,9 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_postff_sae_full_decode_max160/`
 - Expanded family alpha-`1.00` to `0.75` layers-17-20 SAE full decode:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l17_20_postff_sae_full_decode_max160/`
+- Layer-20 transition-feature top-k `mix_decode`:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_transition_features_mix_decode_topk_max160/`
+- Alpha-`0.75` layer-20 recipient reconstruction control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 - Length-robust rescorer:
   `stage3/scripts/rescore_long_generation_safety.py`

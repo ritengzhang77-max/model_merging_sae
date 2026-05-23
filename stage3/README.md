@@ -102,6 +102,9 @@ The Gemma branch now has an actual linear weight-merge bridge:
 - Pruning that full-decode patch shows layer 20 alone is enough in the
   GemmaScope post-FF SAE basis. Layer-20 full decode also generalizes to the
   expanded family with the same strict safe/benign-over-refusal tradeoff.
+- The layer-20 repair is donor-specific: recipient SAE reconstruction fails.
+  But cumulative layer-20 transition-feature `mix_decode` bundles through top30
+  also fail, so this is not yet a small feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 
