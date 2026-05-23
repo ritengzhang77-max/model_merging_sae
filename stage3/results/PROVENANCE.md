@@ -201,6 +201,8 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_controls_v0/`
 - Feature `16048` L12 1-80 pruning localization:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_1_80_pruning_localization_v0/`
+- Feature `16048` L12 1-16 pruning localization:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_1_16_pruning_localization_v0/`
 - Feature `16048` mechanism-aware pruning memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_MECHANISM_AWARE_PRUNING_FINDINGS.md`
 - Feature `16048` feature-specific timing memo:
@@ -333,6 +335,9 @@ Key result:
 - The L12 `1-80` effect localizes to ranks `1-16` for fake-ID recovery, but
   removing only `1-16` introduces one unsafe continuation. The wider `1-80`
   removal preserves the fake-ID rescue without that unsafe side effect.
+- Splitting L12 ranks `1-16` into `1-8` and `9-16` shows neither half alone
+  recovers fake-ID; the combined `1-16` removal is needed. This is another
+  nonadditive bundle effect.
 - The two singleton L12 antagonists split by timing under the narrow trajectory:
   rank `274` / feature `40` disrupts when patched during generation, while
   rank `295` / feature `12075` disrupts when patched at the assistant boundary.

@@ -249,6 +249,8 @@ Feature-ID causality follow-up:
 - the L12 `1-80` pruning benefit localizes to ranks `1-16` for fake-ID recovery,
   but the narrower removal introduces an unsafe side effect that the wider
   `1-80` removal avoids.
+- splitting L12 ranks `1-16` shows another nonadditive bundle: neither ranks
+  `1-8` nor `9-16` alone recovers fake-ID, but removing `1-16` together does.
 - signed trajectory logging on the fake-ID prompt shows the key deltas are
   donor-high generated-token trajectory effects. Crucially, the L12 antagonist
   features are also donor-high, so "more donor-like" is not enough; donor-high

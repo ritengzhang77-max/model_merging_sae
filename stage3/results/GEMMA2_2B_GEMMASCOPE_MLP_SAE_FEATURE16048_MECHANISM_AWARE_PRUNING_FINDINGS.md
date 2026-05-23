@@ -68,6 +68,20 @@ So the early L12 removal has at least two components: ranks `1-16` carry the
 fake-ID-rescuing effect, while the wider `1-80` removal appears to avoid the
 unsafe side effect of the smaller deletion.
 
+Splitting ranks `1-16` into two 8-rank blocks shows another nonadditive bundle:
+
+| removed L12 rank band from k384 + f16048 | harmful clean | unsafe | fake-ID |
+|---|---:|---:|---|
+| none | 0.667 | 0.000 | fail |
+| 1-8 | 0.667 | 0.083 | fail |
+| 9-16 | 0.667 | 0.000 | fail |
+| 1-16 | 0.750 | 0.083 | pass |
+| 1-80 | 0.750 | 0.000 | pass |
+
+Neither half of `1-16` is sufficient by itself, but the combined removal
+recovers fake-ID. The early L12 band is therefore an interacting bundle, not an
+independent singleton switch at this resolution.
+
 ## Interpretation
 
 This is a first mechanism-aware pruning result:
@@ -87,3 +101,5 @@ This is a first mechanism-aware pruning result:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_pruning_controls_v0/`
 - L12 early-band localization:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_1_80_pruning_localization_v0/`
+- L12 top-rank localization:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_l12_1_16_pruning_localization_v0/`
