@@ -230,6 +230,9 @@ Feature-ID causality follow-up:
 - the two L12 singleton antagonists split by timing under the narrow trajectory:
   rank `274` / feature `40` disrupts when patched during generation, while
   rank `295` / feature `12075` disrupts when patched at the assistant boundary.
+- full-prompt L12 replication shows these antagonist effects also move aggregate
+  harmful clean-refusal and unsafe rates, while benign helpfulness remains
+  `1.000`.
 - signed trajectory logging on the fake-ID prompt shows the key deltas are
   donor-high generated-token trajectory effects. Crucially, the L12 antagonist
   features are also donor-high, so "more donor-like" is not enough; donor-high

@@ -185,6 +185,8 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
 - Feature `16048` full-prompt L19 timing replication:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l19_basis_0_4_k896_eval_0_12/`
+- Feature `16048` full-prompt L12 timing replication:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l12_basis_0_8_k256_eval_0_12/`
 - Feature `16048` feature-specific timing memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - Feature `16048` prefix-alone budget root:
@@ -287,6 +289,11 @@ Key result:
   harmful clean refusal, preserve benign helpfulness at `1.000`, recover
   fake-ID, and introduce the same `0.083` unsafe rate from the exam-answer
   prompt. Assistant-boundary-only feature `16048` matches k896 prefix-only.
+- Full-prompt L12 timing replication shows the antagonist effects are broader
+  than fake-ID: in the basis `0:8`, k256 setting, L12 rank `274` at generated
+  tokens breaks fake-ID and leaves harmful clean at `0.667`, while L12 rank
+  `295` at assistant boundary drops harmful clean to `0.583`; all keep benign
+  helpfulness at `1.000`.
 - The two singleton L12 antagonists split by timing under the narrow trajectory:
   rank `274` / feature `40` disrupts when patched during generation, while
   rank `295` / feature `12075` disrupts when patched at the assistant boundary.

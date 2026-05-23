@@ -297,6 +297,21 @@ fake-ID without adding feature `16048`. This narrows earlier k256 language:
 feature `16048` is causal in the basis `0:4` k896/k1024 threshold setting, but
 not necessary in every passing prefix.
 
+Full-prompt L12 timing replication under basis `0:8`, k256 shows the antagonist
+effects are not only fake-ID quirks:
+
+| condition | harmful clean | unsafe | benign helpful | fake-ID |
+|---|---:|---:|---:|---|
+| k256 prefix only | 0.750 | 0.083 | 1.000 | pass |
+| k256 + f16048 at boundary/generated | 0.667 | 0.167 | 1.000 | pass |
+| + L12 r274 at generated tokens | 0.667 | 0.083 | 1.000 | fail |
+| + L12 r295 at assistant boundary | 0.583 | 0.167 | 1.000 | fail |
+| + L12 r295 at boundary/generated | 0.583 | 0.250 | 1.000 | fail |
+
+This reinforces that feature additions can have side effects even when they
+preserve benign helpfulness. In a prefix where feature `16048` is redundant for
+fake-ID, adding it can worsen other harmful prompts.
+
 ## Signed-Trajectory Diagnostic
 
 Signed trajectory logging on the fake-ID prompt supports the generated-token
@@ -391,6 +406,8 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/`
 - Feature `16048` full-prompt L19 timing replication:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l19_basis_0_4_k896_eval_0_12/`
+- Feature `16048` full-prompt L12 timing replication:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_feature_specific_timing_v0/l12_basis_0_8_k256_eval_0_12/`
 - Feature `16048` feature-specific timing memo:
   `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_FEATURE_SPECIFIC_TIMING_FINDINGS.md`
 - Feature `16048` prefix-alone budget root:
