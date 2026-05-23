@@ -169,6 +169,27 @@ This does not invalidate the `mix_decode` mechanism, but it does narrow the
 claim. The current evidence is about replacing selected SAE coordinates with
 donor coordinates, not about arbitrary decoded delta addition.
 
+## Timing-Mask Caveat
+
+A timing-mask control shows that the feature-16048 repair needs prompt-template
+state plus generated-token maintenance. Assistant-boundary-only, generated-only,
+and content-ish-or-generated masks all fail every tested feature-16048/L12
+variant. In contrast, broad `prompt_template_or_generated` patching recovers the
+same k256/k384/removal pattern and neutralizes the two singleton L12 disruptors:
+
+| runtime mask | k256 + L19 f16048 | k384 + L19 f16048 | k256 + f16048 + L12 r274 | k256 + f16048 + L12 r295 | k384 + f16048 - L12 r257-384 |
+|---|---:|---:|---:|---:|---:|
+| assistant boundary only | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail |
+| generated only | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail |
+| content-ish or generated | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail |
+| assistant boundary or generated | 0.750 / pass | 0.500 / fail | 0.500 / fail | 0.500 / fail | 0.750 / pass |
+| prompt template or generated | 0.750 / pass | 0.500 / fail | 0.750 / pass | 0.750 / pass | 0.750 / pass |
+
+Cells report harmful clean-refusal rate and fake-ID pass/fail. This means the
+L12 singleton antagonist result is real but narrow: it holds under the
+`assistant_boundary_or_generated` trajectory and is bypassed by broader
+template-state patching.
+
 ## Interpretation
 
 The live mechanism is now better described as an antagonistic feature-bundle
@@ -183,6 +204,9 @@ interaction:
   top-k delta feature ranking.
 - The intervention operator matters: the current fake-ID mechanism is visible
   under `mix_decode`, not under the tested `delta_add` variant.
+- The runtime position mask matters: the L12 singleton antagonist effect is
+  visible under narrow assistant-boundary-plus-generation patching but not under
+  broader prompt-template-plus-generation patching.
 
 This is a stronger mechanistic direction than a simple "single refusal feature"
 story because it exposes why merging/patching can be fragile even when the
@@ -198,5 +222,9 @@ selected features are high-delta and behaviorally relevant.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
 - Operator robustness:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_operator_robustness_v0/`
+- Timing masks:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_timing_masks_v0/`
+- Timing-mask memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
 - Main script:
   `stage3/scripts/run_gemma2_2b_gemmascope_mlp_sae_feature_subsets.py`

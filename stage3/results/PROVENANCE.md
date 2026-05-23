@@ -177,6 +177,10 @@ Interpretation:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_prefix_band_localization_v0/`
 - Feature `16048` operator-robustness root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_operator_robustness_v0/`
+- Feature `16048` timing-mask root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_timing_masks_v0/`
+- Feature `16048` timing-mask memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
 - L12 interference feature audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
 
@@ -253,6 +257,12 @@ Key result:
   antagonist/removal variants, narrowing the current feature-16048 mechanism to
   `mix_decode` coordinate replacement rather than generic decoded delta
   addition.
+- Timing-mask controls show the feature-16048 repair needs prompt-template
+  state plus generated-token maintenance. Assistant-boundary-only,
+  generated-only, and content-ish-or-generated masks all fail, while
+  prompt-template-or-generated succeeds and bypasses the two singleton L12
+  antagonist effects seen under the narrower assistant-boundary-or-generated
+  mask.
 
 Interpretation:
 
@@ -267,7 +277,9 @@ Interpretation:
   state rather than a direct fake-ID semantic detector.
 - The intervention operator matters: current fake-ID evidence is strong under
   `mix_decode` and weak under the tested `delta_add` path.
-- Next tests should inspect generated-token timing and compare signed/directional
+- The runtime position mask matters: the current antagonist result is a narrow
+  trajectory effect, not a context-free property of the two L12 features.
+- Next tests should split timing by feature ID and compare signed/directional
   feature effects against unsigned top-delta ranking.
 
 ## Qwen2.5-1.5B Residual Benchmark V0

@@ -214,6 +214,11 @@ Feature-ID causality follow-up:
   `k256 + L19 f16048`, `k384 + L19 f16048`, or their L12 antagonist/removal
   variants, so the strongest claim currently belongs to the `mix_decode`
   coordinate-replacement operator rather than to generic decoded delta addition.
+- timing-mask controls show the repair needs prompt-template state plus
+  generated-token maintenance: assistant-boundary-only, generated-only, and
+  content-ish-or-generated masks fail, while prompt-template-or-generated
+  succeeds and bypasses the two singleton L12 antagonist effects seen under
+  the narrower assistant-boundary-or-generated mask.
 
 Main artifacts:
 
@@ -223,6 +228,7 @@ Main artifacts:
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_BOUNDARY_VS_CONTENT_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_ID_CAUSALITY_FINDINGS.md`
 - `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_PREFIX_LOCALIZATION_FINDINGS.md`
+- `results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`

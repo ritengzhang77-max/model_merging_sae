@@ -240,6 +240,26 @@ eval `8:12`, and the same `assistant_boundary_or_generated` runtime path:
 This narrows the claim: current evidence supports a coordinate-replacement
 mechanism under `mix_decode`, not a generic decoded-delta-add refusal feature.
 
+## Timing-Mask Caveat
+
+Changing only the runtime patch-position mask further narrows the claim.
+Assistant-boundary-only, generated-only, and content-ish-or-generated patching
+fail all tested feature-16048/L12 variants. The repair appears when template
+state and generated-token state are patched together.
+
+| runtime mask | k256 + L19 f16048 | k384 + L19 f16048 | k256 + f16048 + L12 r274 | k256 + f16048 + L12 r295 | k384 + f16048 - L12 r257-384 |
+|---|---:|---:|---:|---:|---:|
+| assistant boundary only | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail |
+| generated only | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail |
+| content-ish or generated | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail | 0.000 / fail |
+| assistant boundary or generated | 0.750 / pass | 0.500 / fail | 0.500 / fail | 0.500 / fail | 0.750 / pass |
+| prompt template or generated | 0.750 / pass | 0.500 / fail | 0.750 / pass | 0.750 / pass | 0.750 / pass |
+
+Cells report harmful clean-refusal rate and fake-ID pass/fail. The L12 singleton
+antagonists are therefore mask-dependent: they disrupt the narrow
+`assistant_boundary_or_generated` trajectory, but broader
+`prompt_template_or_generated` patching bypasses that disruption.
+
 ## L19 Tail Feature Audit
 
 The layer-19 rank-897-to-1024 band was exported separately in:
@@ -278,7 +298,9 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   feature `16048` inside k896 but still fails fake-ID recovery.
 - The `delta_add` operator does not recover the fake-ID prompt in the tested
   feature-16048 conditions, so intervention semantics matter.
-- The next tests should split timing/positions and inspect signed feature
+- Timing-mask controls show the mechanism needs prompt-template state plus
+  generated-token maintenance; content-token patching is not a substitute.
+- The next tests should split timing by feature ID and inspect signed feature
   trajectories rather than only unsigned top-delta ranking.
 
 ## Artifacts
@@ -303,6 +325,10 @@ response-state/refusal-setup feature, not a direct harmful-topic feature.
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l12_interference_feature_audit_v0/`
 - Feature `16048` operator-robustness root:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_operator_robustness_v0/`
+- Feature `16048` timing-mask root:
+  `stage3/results/gemma2_2b_gemmascope_mlp_sae_feature16048_timing_masks_v0/`
+- Feature `16048` timing-mask memo:
+  `stage3/results/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE16048_TIMING_MASK_FINDINGS.md`
 - L19 tail audit:
   `stage3/results/gemma2_2b_gemmascope_mlp_sae_l19_tail_feature_audit_v0/`
 - Script support:
