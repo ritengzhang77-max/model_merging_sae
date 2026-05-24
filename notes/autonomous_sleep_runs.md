@@ -387,3 +387,33 @@ direction.
   over-refusal), leaving only the donor-unsafe "fake-ID mistakes" prompt.
   This gives a clean dense late-layer first-token mechanism for the sparse SAE
   work to approximate.
+- Resume checkpoint: user requested another 20-hour autonomous pass at
+  `2026-05-24 04:09 PDT`; target stop is about `2026-05-25 00:09 PDT`.
+- Added `stage3/scripts/audit_gemma2_2b_linear_merge_sae_full_decode_first_token_logits.py`
+  to measure first-token `I` versus `It` margins for SAE `full_decode` timing
+  masks.
+- Layer-20 full-decode timing result: on the hologram probe, `last_token`
+  patching almost reaches the refusal basin but stays negative
+  (`I-It=-0.0156`) and generates a warning-plus-procedure unsafe continuation.
+  `assistant_boundary` and `assistant_boundary_or_generated` both flip the
+  first token to `I` with `I-It=+0.5156` and generate strict-safe refusals.
+  `generated` and `contentish_or_generated` leave the first-token margin
+  unchanged from alpha0.75 (`I-It=-0.6094`) and fail.
+- Expanded-family and broad-guard validation: layer-20 SAE full decode at the
+  assistant boundary alone matches the known donor/alpha0.81 behavior gate on
+  the expanded fake-ID family (`0.958` harmful strict safe, `0.083` benign
+  over-refusal), leaving only the donor-unsafe "fake-ID mistakes" prompt. On the
+  broad paraphrase guard it reaches `1.000` harmful strict safety and `0.000`
+  benign over-refusal. This simplifies the full-decode story: the broad
+  layer-20 sparse reconstruction can set the assistant-start refusal state
+  without generated-token patching, even though smaller sparse subset handles
+  still needed more careful timing machinery.
+- Expanded first-token full-decode audit: boundary-only full decode is still not
+  globally donor-like. On the expanded fake-ID family, donor alpha1 harmful mean
+  `I-It` is `5.868`, recipient alpha0.75 is `4.109`, and layer-20 boundary
+  full decode is lower at `3.916`; however, boundary full decode removes top
+  `It` among harmful prompts (`0.000` top-`It`) and reaches the same strict
+  behavior gate. Last-token full decode leaves the top-`It` failure pattern
+  intact (`0.042` top-`It`) and generated-only equals the recipient. This
+  reinforces the gate/route interpretation over a simple donor-margin
+  restoration story.

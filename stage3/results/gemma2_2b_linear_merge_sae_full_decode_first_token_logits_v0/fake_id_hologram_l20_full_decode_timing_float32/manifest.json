@@ -1,0 +1,30 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_files": {
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "donor_alpha": 1.0,
+  "recipient_alpha": 0.75,
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl",
+  "layers": [
+    20
+  ],
+  "output_mode": "post_ff_norm",
+  "patch_token_filters": [
+    "all",
+    "assistant_boundary",
+    "assistant_boundary_or_generated",
+    "last_token",
+    "generated",
+    "prompt_template_or_generated",
+    "contentish_or_generated"
+  ],
+  "outputs": {
+    "detail": "stage3/results/gemma2_2b_linear_merge_sae_full_decode_first_token_logits_v0/fake_id_hologram_l20_full_decode_timing_float32/first_token_logits.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_full_decode_first_token_logits_v0/fake_id_hologram_l20_full_decode_timing_float32/first_token_logit_summary.csv",
+    "markdown": "stage3/results/gemma2_2b_linear_merge_sae_full_decode_first_token_logits_v0/fake_id_hologram_l20_full_decode_timing_float32/SAE_FULL_DECODE_FIRST_TOKEN_LOGIT_SUMMARY.md"
+  }
+}

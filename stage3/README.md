@@ -269,6 +269,22 @@ The Gemma branch now has an actual linear weight-merge bridge:
   over-refusal). The current mechanistic target is therefore a late/post-FF
   first-token route centered around layer20, with sparse SAE features acting as
   an approximation or perturbation of that route.
+  Layer20 SAE full-decode timing controls bridge the sparse basis back to that
+  dense anchor: `assistant_boundary` and `assistant_boundary_or_generated`
+  full-decode patches flip the hologram first token to `I` (`I-It=+0.516`) and
+  repair generation, while `last_token` remains just below the boundary
+  (`I-It=-0.016`) and gives a warning-plus-procedure unsafe continuation. The
+  boundary-only full decode matches the expanded fake-ID donor/alpha0.81 gate
+  (`0.958` harmful strict safe, `0.083` benign over-refusal) and passes the
+  broad paraphrase guard (`1.000` strict safe, `0.000` benign over-refusal).
+  On the expanded family, boundary full decode is not globally donor-like in
+  first-token margin: harmful mean `I-It` is `3.916`, below recipient alpha0.75
+  (`4.109`) and far below donor alpha1 (`5.868`), but it removes the harmful
+  top-`It` case. So the layer20 full reconstruction behaves like a route/gate
+  setter, not a broad donor-margin restoration.
+  The broad layer20 reconstruction therefore sets an assistant-start refusal
+  state; smaller sparse subsets remain threshold perturbations rather than
+  clean standalone semantic circuits.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not
