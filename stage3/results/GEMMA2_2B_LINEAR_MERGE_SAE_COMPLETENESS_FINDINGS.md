@@ -1077,6 +1077,16 @@ one failing random 14-feature subset has similar harmful norm/cosine
 gate. The success signal is therefore not just "large vector aligned with the
 all-feature delta"; exact signed feature composition still matters.
 
+The support-pair screen also shows a narrow combinatorial structure. Reusing
+the first-token sweep over `critical12` plus one or two noncritical top-33
+ranks, 0/21 single support ranks pass and only 5/210 support pairs pass. Every
+passing pair lands at the minimum positive margin (`I-It = +0.015625`). The
+passing support graph is small: ranks `10`, `22`, `23`, `29`, and `31`, with
+rank `22` appearing in three passing pairs. Some equally high-interaction
+pairs still only tie at `I-It = 0.000000`, so "pair synergy" alone is not a
+sufficient explanation. The useful condition is exact signed support
+composition on top of an already tied critical12 core.
+
 Artifacts:
 
 - Prompt-token delta ranking:
@@ -1129,9 +1139,12 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_alpha060_float32/`
 - Delta-geometry audit:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_geometry_alpha075_float32/`
+- Critical14 support-synergy audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_critical14_support_synergy_v0/fake_id_hologram_l20_final_newline_delta_add_support_pair_synergy_float32/`
 - Scripts:
   `stage3/scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
   `stage3/scripts/build_sae_bundles_from_rank_csv.py`
   `stage3/scripts/build_sae_bundles_from_delta_detail.py`
   `stage3/scripts/audit_gemma2_2b_linear_merge_sae_bundle_first_token_logits.py`
   `stage3/scripts/audit_gemma2_2b_linear_merge_sae_bundle_delta_geometry.py`
+  `stage3/scripts/analyze_gemma2_2b_linear_merge_sae_critical14_support_synergy.py`

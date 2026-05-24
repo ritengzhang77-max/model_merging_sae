@@ -628,6 +628,12 @@ Feature-ID causality follow-up:
   delta is only about `0.586-0.593`, and a failing random k14 subset has similar
   norm/cosine. The success signal is therefore exact signed feature composition
   near the first-token gate, not coarse vector alignment alone.
+- the two support ranks in the critical14 handles are genuinely pair-like:
+  reanalysis of the first-token sweep finds 0/21 single-support passes and only
+  5/210 two-support passes, all at the minimum positive margin
+  (`I-It = +0.015625`). High-interaction nonpassing pairs still tie at zero, so
+  support synergy is a gate-level combinatorial effect rather than an
+  independently interpretable support-feature effect.
 
 Main artifacts:
 
@@ -680,6 +686,7 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_family_prompt_delta_top33_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_family_harmful_prompt_delta_top33_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_geometry_alpha075_float32/`
+- `results/gemma2_2b_linear_merge_sae_critical14_support_synergy_v0/fake_id_hologram_l20_final_newline_delta_add_support_pair_synergy_float32/`
 - `scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
 - `scripts/build_sae_bundles_from_rank_csv.py`
 

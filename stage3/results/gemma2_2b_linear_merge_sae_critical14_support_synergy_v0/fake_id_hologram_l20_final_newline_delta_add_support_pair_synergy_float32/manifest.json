@@ -1,0 +1,36 @@
+{
+  "input_dir": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_plus_two_screen_float32",
+  "feature_table": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/critical14_feature_table/critical14_feature_table.csv",
+  "prompt_delta_detail": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/prompt_token_delta_detail_top33.csv",
+  "neuronpedia_table": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/neuronpedia_top33/neuronpedia_feature_metadata.csv",
+  "critical12_margin": 0.0,
+  "single_support_count": 21,
+  "single_pass_count": 0,
+  "single_margin_counts": {
+    "0.000000": 11,
+    "-0.015625": 8,
+    "-0.031250": 2
+  },
+  "pair_count": 210,
+  "pair_pass_count": 5,
+  "pair_margin_counts": {
+    "0.015625": 5,
+    "0.000000": 114,
+    "-0.015625": 63,
+    "-0.031250": 23,
+    "-0.046875": 4,
+    "-0.062500": 1
+  },
+  "passing_rank_frequency": {
+    "10": 2,
+    "22": 3,
+    "23": 2,
+    "29": 1,
+    "31": 2
+  },
+  "outputs": {
+    "singletons": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_critical14_support_synergy_v0/fake_id_hologram_l20_final_newline_delta_add_support_pair_synergy_float32/support_singletons.csv",
+    "pairs": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_critical14_support_synergy_v0/fake_id_hologram_l20_final_newline_delta_add_support_pair_synergy_float32/support_pair_synergy.csv",
+    "summary": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_critical14_support_synergy_v0/fake_id_hologram_l20_final_newline_delta_add_support_pair_synergy_float32/CRITICAL14_SUPPORT_SYNERGY_SUMMARY.md"
+  }
+}

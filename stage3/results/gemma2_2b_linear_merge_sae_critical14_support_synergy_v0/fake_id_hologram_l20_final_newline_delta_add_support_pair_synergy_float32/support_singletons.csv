@@ -1,0 +1,22 @@
+rank,feature_id,sign,harmful_delta,single_margin,single_passes,top_i_rate,top_it_rate,description,url
+3,13060,recipient_higher,-3.16807222366333,0.0,False,0.0,1.0,references to notable relationships or marriages,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/13060
+4,6169,donor_higher,5.85761833190918,-0.03125,False,0.0,1.0,"references to medical conditions and treatments, particularly relating to pregnancy",https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/6169
+5,13882,recipient_higher,-5.467704772949219,0.0,False,0.0,1.0,numeric values and their contextual references in various documents,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/13882
+6,9407,recipient_higher,-2.116802215576172,-0.015625,False,0.0,1.0,phrases related to self-reflection and personal growth,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/9407
+8,5355,recipient_higher,-4.980377197265625,0.0,False,0.0,1.0,references to automotive manufacturing and production specifics,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/5355
+10,8754,donor_higher,4.640984535217285,-0.015625,False,0.0,1.0,"information about specific individuals, particularly athletes and their backgrounds",https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/8754
+11,3850,donor_higher,4.436105251312256,0.0,False,0.0,1.0,instances of textual analysis and commentary about people and groups in political or social contexts,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/3850
+12,13854,donor_higher,4.372747421264648,0.0,False,0.0,1.0,phrases emphasizing caution and the need for careful interpretation in medical research,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/13854
+13,7965,donor_higher,4.151318550109863,0.0,False,0.0,1.0,programming structures and function definitions,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/7965
+15,11414,recipient_higher,-3.9184131622314453,-0.015625,False,0.0,1.0,phrases that indicate opinions or assertions about the subject matter,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/11414
+17,12002,donor_higher,3.8390164375305176,-0.015625,False,0.0,1.0,financial terms and values associated with stock performance,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/12002
+18,9001,donor_higher,3.807616710662842,0.0,False,0.0,1.0,specific characters and their representations in names and titles,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/9001
+19,9024,donor_higher,3.807344436645508,-0.015625,False,0.0,1.0,phrases that express desire or intention regarding collaboration and communication,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/9024
+21,11545,recipient_higher,-3.3612194061279297,0.0,False,0.0,1.0,references to credit reports and their related processes,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/11545
+22,9149,recipient_higher,-3.7410659790039062,0.0,False,0.0,1.0,key phrases related to established organizations and their foundations,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/9149
+23,7531,donor_higher,3.6762232780456543,-0.015625,False,0.0,1.0,"sections of code, specifically highlighting variable declarations and control structures in programming",https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/7531
+26,5990,recipient_higher,-3.564218044281006,-0.015625,False,0.0,1.0,"references to migration or transitions, particularly in a technological or procedural context",https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/5990
+29,321,donor_higher,3.5058860778808594,-0.03125,False,0.0,1.0,phrases and connections related to reasoning and justification,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/321
+30,12313,donor_higher,3.488645553588867,-0.015625,False,0.0,1.0,names of individuals and geographical locations,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/12313
+31,1813,donor_higher,3.4750499725341797,0.0,False,0.0,1.0,expressive statements of excitement and emotion,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/1813
+32,1100,donor_higher,3.422802448272705,0.0,False,0.0,1.0,references to changes in technology and its implications,https://www.neuronpedia.org/gemma-2-2b/20-gemmascope-mlp-16k/1100

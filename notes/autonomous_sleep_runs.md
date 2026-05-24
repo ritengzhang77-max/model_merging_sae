@@ -545,3 +545,10 @@ direction.
   similar harmful norm/cosine (`21.24`, cosine `0.589`, residual `0.815`) yet
   stays below the first-token gate. Exact signed feature composition matters
   beyond vector size/alignment.
+- Critical14 support-synergy audit: reanalyzing the existing first-token screen
+  shows 0/21 single support ranks pass and only 5/210 support pairs pass. Every
+  passing pair is barely positive (`I-It = +0.015625`), while 114 pairs tie at
+  `0.000000` and 91 are negative. Several high-interaction pairs still only
+  tie and fail, so pair synergy by itself is not sufficient; exact signed
+  support composition plus an already tied critical12 core is the useful
+  condition.
