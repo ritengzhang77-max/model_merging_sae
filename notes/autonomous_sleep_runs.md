@@ -200,3 +200,7 @@
   float32 handle validates on expanded family (`23/23` donor-clean harmful
   repair, `22/22` donor-allowed benign behavior) and broad paraphrase guard, so
   the robust-handle claim moves again to top3185+rank3202.
+- Factorial update: around the lower bound, rank3185 and rank3202 form a 2x2
+  interaction. Top3184, top3185, and top3184+rank3202 fail the hologram probe;
+  top3185+rank3202 passes. This is now the cleanest causal object for the next
+  mechanistic interpretation pass.

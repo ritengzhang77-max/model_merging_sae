@@ -308,6 +308,9 @@ At prefix top3199, a float32 singleton sweep over ranks 3201-3210 gives an
 alternating local pattern: 3202/3203/3205/3207/3210 pass, while
 3201/3204/3206/3208/3209 fail. At prefix top3198, only rank3202 among tested
 ranks 3199-3210 passes. Failures share the warning-then-procedure shape.
+A compact factorial check at prefix top3184 shows neither rank3185 nor rank3202
+is sufficient alone, but the pair is sufficient: top3184, top3185, and
+top3184+rank3202 fail; top3185+rank3202 passes.
 
 Next evaluation work should separate:
 

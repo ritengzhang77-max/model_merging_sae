@@ -424,6 +424,10 @@ A top3199 singleton sweep over ranks 3201-3210 shows several local ranks pass
 (3202, 3203, 3205, 3207, 3210), but at top3198 only rank3202 among tested ranks
 3199-3210 passes. This is stronger evidence for local high-order feature
 interaction than for a single semantic refusal feature.
+At the lower bound, the interaction becomes a clean 2x2: top3184 fails,
+top3185 fails, top3184+rank3202 fails, and top3185+rank3202 passes. Thus
+rank3185 feature `5679` and rank3202 feature `11494` are jointly sufficient
+but individually insufficient for this float32 hologram repair.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

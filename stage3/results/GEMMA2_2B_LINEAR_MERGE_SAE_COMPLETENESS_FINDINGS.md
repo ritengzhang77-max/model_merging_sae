@@ -414,6 +414,10 @@ Current mechanistic target:
   repairs it. Passing outputs use a direct refusal template, while failing
   outputs begin with an illegality warning and then bridge into procedural
   explanation.
+- The rank3202 lower bound is a clear two-feature interaction: at prefix
+  top3184, adding rank3185 alone fails and adding rank3202 alone fails, but
+  adding both passes. This gives a compact causal target for mechanistic
+  interpretation: rank3185 feature `5679` and rank3202 feature `11494`.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

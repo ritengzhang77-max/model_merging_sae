@@ -208,3 +208,13 @@ results are in
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3199_rank3201_3210_float32_singleton_sweep_metrics.csv`.
 The rank3202 lower-bound table is
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank3202_float32_prefix_lower_bound_metrics.csv`.
+
+The float32 lower bound has a clean two-feature interaction around ranks 3185
+and 3202: `top3184`, `top3185`, and `top3184+rank3202` all fail the hologram
+probe, but `top3185+rank3202` passes. In rank terms, rank3185 is feature
+`5679` and rank3202 is feature `11494`; neither is sufficient on this probe
+under float32, but both together close the behavior. The compact factorial table
+is
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3185_rank3202_float32_factorial_metrics.csv`.
+The feature-event audit for the four final trajectories is
+`stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/top3184_rank3185_rank3202_factorial_float32_hologram_harmful/`.
