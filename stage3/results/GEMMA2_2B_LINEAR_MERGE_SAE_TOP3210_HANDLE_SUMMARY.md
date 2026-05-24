@@ -188,13 +188,13 @@ under the refined timing mask.
 However, this smaller `top3185` handle is precision-sensitive: with the SAE
 loaded in float32, `top3184`, `top3185`, `top3200`, and `top3200+rank3201` all
 fail the hologram probe. Bracketing the float32-SAE threshold first showed
-top3200+rank3202 and contiguous top3202 pass. Lower skip controls then showed
-rank3202 can compensate for the fp32 failure down to `top3185`: `top3184 +
-rank3202` fails, while `top3185 + rank3202` passes the hologram probe,
-expanded fake-ID family (`23/23` donor-clean repair, `22/22` donor-allowed
-benign behavior), and broad paraphrase guard. The robust current handle is
-therefore `top3185+rank3202` edge-cross. Dtype stability results are summarized
-in
+top3200+rank3202 and contiguous top3202 pass. Later timing controls showed the
+critical rank3202 operation should be boundary-only: `top3183 +
+rank3202@boundary` fails, while `top3184 + rank3202@boundary` passes the
+hologram probe, expanded fake-ID family (`23/23` donor-clean repair, `22/22`
+donor-allowed benign behavior), and broad paraphrase guard. The robust current
+handle is therefore `top3184+rank3202@assistant_boundary`. Dtype stability
+results are summarized in
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/edge_cross_sae_dtype_stability_metrics.csv`.
 
 A float32 singleton sweep at the `top3199` prefix shows rank3202 is not a
@@ -209,12 +209,13 @@ results are in
 The rank3202 lower-bound table is
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank3202_float32_prefix_lower_bound_metrics.csv`.
 
-The float32 lower bound has a clean two-feature interaction around ranks 3185
-and 3202: `top3184`, `top3185`, and `top3184+rank3202` all fail the hologram
-probe, but `top3185+rank3202` passes. In rank terms, rank3185 is feature
-`5679` and rank3202 is feature `11494`; neither is sufficient on this probe
-under float32, but both together close the behavior. The compact factorial table
-is
+An earlier AB/G-timing factorial around ranks 3185 and 3202 remains useful but
+must be read narrowly: when rank3202 is patched under the broader
+`assistant_boundary_or_generated` mask, `top3184`, `top3185`, and
+`top3184+rank3202` all fail, while `top3185+rank3202` passes. The follow-up
+timing control shows why this was not true necessity for rank3185: rank3202
+at the assistant boundary alone is sufficient at the top3184 prefix, and
+rank3202 on generated tokens alone fails. The compact AB/G factorial table is
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3185_rank3202_float32_factorial_metrics.csv`.
 The feature-event audit for the four final trajectories is
 `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/top3184_rank3185_rank3202_factorial_float32_hologram_harmful/`.
@@ -225,9 +226,13 @@ hologram probe. Ranks 3201 and 3203-3210 all fail under the same float32
 edge-cross setup. Compact partner sweep:
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3201_3210_float32_partner_sweep_metrics.csv`.
 
-Timing for rank3202 is also localized: with `top3185` fixed, rank3202 patched
-only at the assistant boundary is sufficient, while rank3202 patched only on
-generated tokens fails. Thus the rank3202 partner looks like a boundary/setup
-feature for this repair, not a generated-token-only continuation feature.
-Timing probe:
+Timing for rank3202 is localized: with `top3184` fixed, rank3202 patched only
+at the assistant boundary is sufficient, while rank3202 patched under
+`assistant_boundary_or_generated` or only on generated tokens fails. With
+`top3185` fixed, assistant-boundary-only rank3202 also passes and generated-only
+rank3202 fails. Thus rank3202 looks like a boundary/setup feature for this
+repair, not a generated-token-only continuation feature. Main boundary-only
+validation:
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3202_boundary_only_validation_metrics.csv`.
+Top3185 timing probe:
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3202_float32_timing_probe_metrics.csv`.

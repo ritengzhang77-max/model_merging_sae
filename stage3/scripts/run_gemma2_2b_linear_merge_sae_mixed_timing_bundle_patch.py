@@ -61,7 +61,12 @@ def read_rank_features(path: Path) -> dict[int, int]:
     return out
 
 
-def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int, extra_probe_ranks: tuple[int, ...]) -> list[dict[str, object]]:
+def variant_groups(
+    rank_to_feature: dict[int, int],
+    prefix_top_k: int,
+    extra_probe_ranks: tuple[int, ...],
+    timing_pair_ranks: tuple[int, ...],
+) -> list[dict[str, object]]:
     prefix = [rank_to_feature[rank] for rank in range(1, prefix_top_k + 1)]
     boundary = [rank_to_feature[3308], rank_to_feature[3323]]
     generated_base = [rank_to_feature[4266]]
@@ -313,6 +318,32 @@ def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int, extra_pro
                 ],
             }
         )
+    if len(timing_pair_ranks) == 2 and all(rank > prefix_top_k for rank in timing_pair_ranks):
+        first_rank, second_rank = timing_pair_ranks
+        first_feature = rank_to_feature[first_rank]
+        second_feature = rank_to_feature[second_rank]
+        for first_filter, first_label in (
+            ("assistant_boundary_or_generated", "abog"),
+            ("assistant_boundary", "boundary"),
+            ("generated", "generated"),
+        ):
+            variants.append(
+                {
+                    "label": f"top{prefix_top_k}_rank{first_rank}_{first_label}_rank{second_rank}_boundary_pair_timing",
+                    "groups": [
+                        {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                        {"name": f"rank{first_rank}", "filter": first_filter, "layer": 20, "features": [first_feature]},
+                        {"name": f"rank{second_rank}", "filter": "assistant_boundary", "layer": 20, "features": [second_feature]},
+                        {
+                            "name": "boundary_base_edge3211",
+                            "filter": "assistant_boundary",
+                            "layer": 20,
+                            "features": boundary + generated_base + [edge3211_feature],
+                        },
+                        {"name": "edge3214", "filter": "generated", "layer": 20, "features": [edge3214_feature]},
+                    ],
+                }
+            )
     return variants
 
 
@@ -494,6 +525,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--rank-csv", type=Path, default=DEFAULT_RANK_CSV)
     ap.add_argument("--prefix-top-k", type=int, default=3210)
     ap.add_argument("--extra-probe-ranks", default="3215,3250,3300,3400,3600,4000")
+    ap.add_argument("--timing-pair-ranks", default="")
     ap.add_argument("--variant-labels", default="")
     ap.add_argument("--max-new-tokens", type=int, default=160)
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
@@ -501,6 +533,7 @@ def parse_args() -> argparse.Namespace:
     args = ap.parse_args()
     args.layers = tuple(parse_ints(args.layers))
     args.extra_probe_ranks = tuple(parse_ints(args.extra_probe_ranks))
+    args.timing_pair_ranks = tuple(parse_ints(args.timing_pair_ranks))
     if args.layers != (20,):
         raise ValueError("mixed timing runner currently supports layer 20 only")
     return args
@@ -514,7 +547,7 @@ def main() -> int:
     cache_dir = os.environ.get("HF_HOME")
     prompts = load_prompt_rows(args.prompt_jsonl)
     rank_to_feature = read_rank_features(args.rank_csv)
-    raw_variants = variant_groups(rank_to_feature, args.prefix_top_k, args.extra_probe_ranks)
+    raw_variants = variant_groups(rank_to_feature, args.prefix_top_k, args.extra_probe_ranks, args.timing_pair_ranks)
     if args.variant_labels.strip():
         keep = {item.strip() for item in args.variant_labels.split(",") if item.strip()}
         raw_variants = [variant for variant in raw_variants if str(variant["label"]) in keep]

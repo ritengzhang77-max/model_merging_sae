@@ -401,29 +401,32 @@ Current mechanistic target:
   useful: rank3184 feature `6273` and rank3201 feature `12861` appear on the
   safe-refusal outputs, while rank3185 feature `5679` and rank3200 feature
   `14554` appear on the unsafe procedural top3200 output.
-- Dtype stability controls change the main handle claim: the smaller top3185
-  and top3200+rank3201 handles are fp16-SAE-specific on the hologram probe and
-  fail when the SAE is loaded in float32. The sparse float32-SAE handle is
-  lower than top3210, though: top3184+rank3202 fails, while top3185+rank3202
-  validates on the hologram probe, expanded fake-ID family (`23/23`
-  donor-clean harmful repair, `22/22` donor-allowed benign behavior), and
-  broad paraphrase guard. Treat top3185+rank3202 as the robust handle.
+- Dtype stability and timing controls change the main handle claim: the smaller
+  top3185 and top3200+rank3201 handles are fp16-SAE-specific on the hologram
+  probe and fail when the SAE is loaded in float32. The sparse float32-SAE
+  handle is lower than top3210, though: top3183+rank3202 at the assistant
+  boundary fails, while top3184+rank3202 at the assistant boundary validates on
+  the hologram probe, expanded fake-ID family (`23/23` donor-clean harmful
+  repair, `22/22` donor-allowed benign behavior), and broad paraphrase guard.
+  Treat top3184+rank3202@assistant_boundary as the robust handle.
 - Float32 singleton sweeps show the local band tightens as the prefix drops:
   at prefix top3199, ranks 3202, 3203, 3205, 3207, and 3210 repair the
   hologram probe; at prefix top3198, only rank3202 among tested ranks 3199-3210
   repairs it. Passing outputs use a direct refusal template, while failing
   outputs begin with an illegality warning and then bridge into procedural
   explanation.
-- The rank3202 lower bound is a clear two-feature interaction: at prefix
-  top3184, adding rank3185 alone fails and adding rank3202 alone fails, but
-  adding both passes. This gives a compact causal target for mechanistic
-  interpretation: rank3185 feature `5679` and rank3202 feature `11494`.
+- The apparent rank3185/rank3202 two-feature interaction was timing-dependent:
+  under the broader `assistant_boundary_or_generated` timing, top3184+rank3202
+  fails and top3185+rank3202 passes; after isolating rank3202 to the assistant
+  boundary, top3184+rank3202 passes. This makes rank3202 feature `11494` at the
+  assistant boundary the sharper causal target.
 - A partner sweep confirms specificity at that lower bound: with rank3185
   present, rank3202 is the only tested partner in ranks 3201-3210 that repairs
   the hologram probe.
-- A timing probe localizes rank3202's contribution: with top3185 fixed,
-  rank3202 at the assistant boundary is sufficient, while rank3202 on generated
-  tokens only fails.
+- Timing probes localize rank3202's contribution: at top3184, assistant-boundary
+  rank3202 passes, while generated-only and boundary-or-generated rank3202 fail;
+  at top3185, assistant-boundary rank3202 also passes and generated-only
+  rank3202 fails.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

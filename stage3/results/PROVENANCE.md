@@ -101,12 +101,12 @@ Key result:
   audit substrate, not a final semantic label.
 - Dtype stability controls show the smaller top3185 and top3200+rank3201
   refinements are fp16-SAE-sensitive: both fail the hologram probe when the SAE
-  is loaded in float32. Adding rank3202 repairs the float32 path down to
-  top3185: top3184+rank3202 fails, while top3185+rank3202 validates on the
-  hologram probe, expanded fake-ID family (`23/23` donor-clean harmful repair
-  and `22/22` donor-allowed benign behavior), and broad paraphrase guard. This
-  lowers the robust sparse prefix below the earlier top3199/top3200+rank3202
-  checkpoints.
+  is loaded in float32. Adding rank3202 at the assistant boundary repairs the
+  float32 path down to top3184: top3183+rank3202@boundary fails, while
+  top3184+rank3202@boundary validates on the hologram probe, expanded fake-ID
+  family (`23/23` donor-clean harmful repair and `22/22` donor-allowed benign
+  behavior), and broad paraphrase guard. This lowers the robust sparse prefix
+  below the earlier top3185/top3199/top3200+rank3202 checkpoints.
 - A float32 singleton sweep at prefix top3199 shows the closing rank is not
   unique there: ranks 3202, 3203, 3205, 3207, and 3210 repair the hologram
   probe, while ranks 3201, 3204, 3206, 3208, and 3209 fail. At prefix top3198,
@@ -114,10 +114,11 @@ Key result:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3199_rank3201_3210_float32_singleton_sweep_metrics.csv`.
   Rank3202 lower-bound table:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank3202_float32_prefix_lower_bound_metrics.csv`.
-- A float32 2x2 factorial at prefix top3184 shows rank3185 and rank3202 are
-  jointly sufficient but individually insufficient on the hologram probe:
-  top3184, top3185, and top3184+rank3202 fail; top3185+rank3202 passes.
-  Factorial table:
+- A float32 2x2 factorial at prefix top3184 showed a timing-specific
+  interaction when rank3202 used the broader `assistant_boundary_or_generated`
+  mask: top3184, top3185, and top3184+rank3202 fail; top3185+rank3202 passes.
+  The follow-up timing control revises the causal interpretation because
+  top3184+rank3202@boundary passes. AB/G factorial table:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3185_rank3202_float32_factorial_metrics.csv`.
   Factorial feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/top3184_rank3185_rank3202_factorial_float32_hologram_harmful/`.
@@ -125,8 +126,13 @@ Key result:
   tested ranks 3201-3210 repairs the hologram probe under float32 edge-cross
   timing. Compact partner sweep:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3201_3210_float32_partner_sweep_metrics.csv`.
-- Rank3202 timing control: with top3185 fixed, assistant-boundary-only rank3202
-  passes, while generated-only rank3202 fails. Compact timing table:
+- Rank3202 timing control: with top3184 fixed, assistant-boundary-only rank3202
+  passes, while generated-only and `assistant_boundary_or_generated` rank3202
+  fail; top3183+rank3202@boundary also fails. With top3185 fixed,
+  assistant-boundary-only rank3202 passes and generated-only rank3202 fails.
+  Main boundary-only validation:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3202_boundary_only_validation_metrics.csv`.
+  Top3185 compact timing table:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3202_float32_timing_probe_metrics.csv`.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.

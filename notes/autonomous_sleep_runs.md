@@ -209,3 +209,8 @@
 - Rank3202 timing update: with top3185 fixed, rank3202 at the assistant
   boundary is sufficient; rank3202 on generated tokens only fails. This points
   to boundary/setup state rather than a generated-token-only repair.
+- Boundary-only correction: top3184+rank3202 fails only under broad
+  `assistant_boundary_or_generated` rank3202 timing. With rank3202 patched only
+  at the assistant boundary, top3184+rank3202 passes and validates on expanded
+  fake-ID family plus broad paraphrase guard; top3183+rank3202@boundary fails.
+  The robust-handle claim moves again to top3184+rank3202@assistant_boundary.

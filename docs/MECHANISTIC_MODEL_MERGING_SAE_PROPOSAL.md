@@ -417,21 +417,19 @@ show rank3184 feature `6273` and rank3201 feature `12861`, while the unsafe
 top3200 output shows rank3185 feature `5679` and rank3200 feature `14554` on
 procedural explanation tokens.
 Dtype stability controls show the smaller top3185/top3201 refinements are
-fp16-SAE-sensitive. With float32 SAE, adding rank3202 repairs the path down to
-top3185: top3184+rank3202 fails, while top3185+rank3202 validates on the
-hologram probe, expanded fake-ID family, and broad paraphrase guard.
+fp16-SAE-sensitive. With float32 SAE, adding rank3202 at the assistant boundary
+repairs the path down to top3184: top3183+rank3202@boundary fails, while
+top3184+rank3202@boundary validates on the hologram probe, expanded fake-ID
+family, and broad paraphrase guard.
 A top3199 singleton sweep over ranks 3201-3210 shows several local ranks pass
 (3202, 3203, 3205, 3207, 3210), but at top3198 only rank3202 among tested ranks
 3199-3210 passes. This is stronger evidence for local high-order feature
 interaction than for a single semantic refusal feature.
-At the lower bound, the interaction becomes a clean 2x2: top3184 fails,
-top3185 fails, top3184+rank3202 fails, and top3185+rank3202 passes. Thus
-rank3185 feature `5679` and rank3202 feature `11494` are jointly sufficient
-but individually insufficient for this float32 hologram repair.
-With rank3185 already present, rank3202 is also the only tested partner in
-ranks 3201-3210 that repairs the probe.
-Rank3202's timing is boundary-like: with top3185 fixed, assistant-boundary-only
-rank3202 passes, while generated-only rank3202 fails.
+The lower-bound interaction is timing-sensitive. Under broad
+`assistant_boundary_or_generated` timing, top3184+rank3202 fails and
+top3185+rank3202 passes; under assistant-boundary-only timing, top3184+rank3202
+passes, so rank3185 is not required for the validated repair. Rank3202's timing
+is boundary-like: assistant-boundary-only passes, while generated-only fails.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

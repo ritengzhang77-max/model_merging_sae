@@ -300,21 +300,24 @@ Additional local controls show the boundary is nonmonotone and high-order:
 Contiguous top3190/top3195/top3199 pass, top3200 fails, and the skip control
 `top3199 + rank3201` fails even though `top3200 + rank3201` passes.
 Precision controls show this local edge is fp16-SAE-sensitive: top3185 and
-top3200+rank3201 fail the hologram probe with float32 SAE. Adding rank3202
-repairs the float32 path down to a lower bound: top3184+rank3202 fails, while
-top3185+rank3202 validates on hologram, expanded fake-ID family, and broad
-paraphrase guard.
+top3200+rank3201 fail the hologram probe with float32 SAE. Adding rank3202 at
+the assistant boundary repairs the float32 path down to a lower bound:
+top3183+rank3202@boundary fails, while top3184+rank3202@boundary validates on
+hologram, expanded fake-ID family, and broad paraphrase guard.
 At prefix top3199, a float32 singleton sweep over ranks 3201-3210 gives an
 alternating local pattern: 3202/3203/3205/3207/3210 pass, while
 3201/3204/3206/3208/3209 fail. At prefix top3198, only rank3202 among tested
 ranks 3199-3210 passes. Failures share the warning-then-procedure shape.
-A compact factorial check at prefix top3184 shows neither rank3185 nor rank3202
-is sufficient alone, but the pair is sufficient: top3184, top3185, and
-top3184+rank3202 fail; top3185+rank3202 passes.
+The earlier compact factorial check at prefix top3184 was timing-specific:
+with rank3202 under `assistant_boundary_or_generated`, top3184, top3185, and
+top3184+rank3202 fail while top3185+rank3202 passes. Isolating rank3202 to the
+assistant boundary shows rank3185 is not required for the hologram repair.
 With rank3185 present, a partner sweep over ranks 3201-3210 shows rank3202 is
 the only tested partner that passes.
 Rank3202 timing is boundary-like: assistant-boundary-only rank3202 passes, but
-generated-only rank3202 fails.
+generated-only rank3202 fails. At top3184, the broader
+`assistant_boundary_or_generated` timing also fails, so generated-token rank3202
+appears destabilizing rather than helpful.
 
 Next evaluation work should separate:
 

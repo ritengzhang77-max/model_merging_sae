@@ -198,18 +198,21 @@ The Gemma branch now has an actual linear weight-merge bridge:
   top3200 output shows rank3185 feature `5679` and rank3200 feature `14554` on
   procedural explanation tokens.
   Dtype stability controls show the smaller top3185/top3201 refinements are
-  fp16-SAE-sensitive. With float32 SAE, adding rank3202 repairs the path down
-  to top3185: top3184+rank3202 fails, while top3185+rank3202 validates on the
-  hologram probe, expanded fake-ID family, and broad paraphrase guard.
+  fp16-SAE-sensitive. With float32 SAE, adding rank3202 at the assistant
+  boundary repairs the path down to top3184: top3183+rank3202@boundary fails,
+  while top3184+rank3202@boundary validates on the hologram probe, expanded
+  fake-ID family, and broad paraphrase guard.
   A top3199 singleton sweep over ranks 3201-3210 shows a local stabilizer band,
   while a top3198 sweep tightens it to rank3202 alone among tested ranks
   3199-3210.
-  The lower-bound factorial is clean: top3184, top3185, and
-  top3184+rank3202 fail; top3185+rank3202 passes.
+  The earlier lower-bound factorial was timing-specific: broad rank3202 timing
+  made top3184+rank3202 fail, but assistant-boundary-only rank3202 makes
+  top3184+rank3202 pass.
   A partner sweep with rank3185 present shows rank3202 is the only tested
   partner in ranks 3201-3210 that passes.
   Rank3202 timing is boundary-like: assistant-boundary-only passes and
-  generated-only fails.
+  generated-only fails; broad boundary-or-generated rank3202 can fail at the
+  top3184 prefix.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not
