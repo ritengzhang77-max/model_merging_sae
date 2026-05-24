@@ -537,3 +537,11 @@ direction.
   (`-1.15625` baseline to about `-0.39`) and alpha0.60 (`-2.125` to about
   `-1.10`). Among tested alphas, they first cross the hologram `I-It` gate at
   alpha0.80.
+- Delta-geometry audit: full33 is closer to the all-feature SAE delta than the
+  critical14 handles on the harmful final newline (cosine `0.734` vs.
+  `0.586-0.593`; residual/all-SAE `0.685` vs. `0.814-0.819`). Critical14 is
+  almost inactive on the paired benign final newline (norm `0.244`), but coarse
+  geometry alone does not predict success: a failing random k14 subset has
+  similar harmful norm/cosine (`21.24`, cosine `0.589`, residual `0.815`) yet
+  stays below the first-token gate. Exact signed feature composition matters
+  beyond vector size/alignment.

@@ -1065,6 +1065,18 @@ and at alpha `0.50`, from `-2.921875` to about `-1.56`. Generation at alpha
 handles are local donor-delta repairs near the existing refusal boundary, not
 universal rescues for much weaker merge points.
 
+A delta-geometry audit adds a negative interpretability result. On the harmful
+hologram final newline, the full top-33 decoded delta has norm `28.30`,
+cosine `0.734` with the all-feature SAE delta, and residual/all-SAE norm
+`0.685`. The validated 14-feature handles are smaller and less complete
+(norm about `20.55-20.99`, cosine `0.586-0.593`, residual/all-SAE norm about
+`0.814-0.819`). They are almost inactive on the paired benign final newline
+(norm `0.244`). However, coarse geometry is not sufficient to predict success:
+one failing random 14-feature subset has similar harmful norm/cosine
+(`21.24`, cosine `0.589`, residual `0.815`) but remains below the first-token
+gate. The success signal is therefore not just "large vector aligned with the
+all-feature delta"; exact signed feature composition still matters.
+
 Artifacts:
 
 - Prompt-token delta ranking:
@@ -1115,8 +1127,11 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_alpha050_float32/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_alpha070_float32/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_alpha060_float32/`
+- Delta-geometry audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_geometry_alpha075_float32/`
 - Scripts:
   `stage3/scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
   `stage3/scripts/build_sae_bundles_from_rank_csv.py`
   `stage3/scripts/build_sae_bundles_from_delta_detail.py`
   `stage3/scripts/audit_gemma2_2b_linear_merge_sae_bundle_first_token_logits.py`
+  `stage3/scripts/audit_gemma2_2b_linear_merge_sae_bundle_delta_geometry.py`

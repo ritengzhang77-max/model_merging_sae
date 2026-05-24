@@ -623,6 +623,11 @@ Feature-ID causality follow-up:
   expanded family (`0.917` harmful strict safety, `0.083` benign over-refusal).
   The compact handle appears prompt-boundary sensitive, not a globally stable
   top-33 safety feature set.
+- the validated critical14 final-newline handles are not close reconstructions
+  of the all-feature SAE delta: their harmful cosine to the all-feature SAE
+  delta is only about `0.586-0.593`, and a failing random k14 subset has similar
+  norm/cosine. The success signal is therefore exact signed feature composition
+  near the first-token gate, not coarse vector alignment alone.
 
 Main artifacts:
 
@@ -674,6 +679,7 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_family_v1_harmful_l20_final_newline_delta_abs_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_family_prompt_delta_top33_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_family_harmful_prompt_delta_top33_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_geometry_alpha075_float32/`
 - `scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
 - `scripts/build_sae_bundles_from_rank_csv.py`
 
