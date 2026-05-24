@@ -513,7 +513,7 @@ direction.
   (`0.958` harmful strict safety, `0.083` benign over-refusal, only the
   donor-weak fake-ID-mistakes prompt strict unsafe), and pass the broad
   paraphrase guard (`1.000` harmful strict safety, `0.000` benign over-refusal).
-  Current smallest validated final-newline `delta_add` handle: 14 features,
+  This made the first validated final-newline `delta_add` handle 14 features,
   still near-threshold and signed/combinatorial.
 - Critical-14 first-token audits: the 14-feature handles are not donor-like
   margin restorations. On the expanded fake-ID family, harmful mean `I-It` moves
@@ -552,3 +552,14 @@ direction.
   tie and fail, so pair synergy by itself is not sufficient; exact signed
   support composition plus an already tied critical12 core is the useful
   condition.
+- Critical13 compression: a leave-one-core screen over the five validated
+  critical14 handles found 3/60 thirteen-feature variants that still cross the
+  hologram first-token gate, all barely (`I-It = +0.015625`). The passing
+  variants are `critical12_p10_p22_drop_rank002`,
+  `critical12_p10_p22_drop_rank020`, and
+  `critical12_p22_p23_drop_rank002`. All three pass hologram generation,
+  match the critical14 expanded fake-ID profile (`0.958` harmful strict safety,
+  `0.083` benign over-refusal; same donor-weak fake-ID-mistakes failure), and
+  pass the broad paraphrase guard (`1.000` strict safety, `0.000` benign
+  over-refusal). Current smallest validated final-newline `delta_add` handle:
+  13 features.

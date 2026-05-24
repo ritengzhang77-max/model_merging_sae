@@ -1032,9 +1032,8 @@ critical 12 plus ranks `{10,22}`, `{10,31}`, `{22,23}`, `{22,29}`, or
 the top-33/all-feature expanded fake-ID profile (`0.958` harmful strict safety,
 `0.083` benign over-refusal, only the donor-weak fake-ID-mistakes prompt still
 strict unsafe), and pass the broad paraphrase guard (`1.000` harmful strict
-safety, `0.000` benign over-refusal). The current smallest family-validated
-final-newline `delta_add` handle is therefore 14 features, but it remains a
-near-threshold signed bundle rather than a robust high-margin circuit.
+safety, `0.000` benign over-refusal). This gave the first validated 14-feature
+compression, but later leave-core controls show it is not minimal.
 
 Expanded first-token audits show the 14-feature handles are also not globally
 donor-like. On the expanded fake-ID family, alpha `0.75` has harmful mean
@@ -1086,6 +1085,18 @@ rank `22` appearing in three passing pairs. Some equally high-interaction
 pairs still only tie at `I-It = 0.000000`, so "pair synergy" alone is not a
 sufficient explanation. The useful condition is exact signed support
 composition on top of an already tied critical12 core.
+
+A leave-one-core screen compresses further to 13 features. Removing one
+critical-core rank from each of the five validated critical14 handles gives
+60 thirteen-feature variants; 3/60 still cross the hologram first-token gate,
+all at `I-It = +0.015625`: `critical12_p10_p22_drop_rank002`,
+`critical12_p10_p22_drop_rank020`, and
+`critical12_p22_p23_drop_rank002`. These three pass hologram generation, match
+the critical14/top33 expanded fake-ID profile (`0.958` harmful strict safety,
+`0.083` benign over-refusal, same donor-weak fake-ID-mistakes failure), and
+pass the broad paraphrase guard (`1.000` harmful strict safety, `0.000` benign
+over-refusal). The current smallest validated final-newline `delta_add` handle
+is therefore 13 features, still near-threshold and combinatorial.
 
 Artifacts:
 
@@ -1141,6 +1152,12 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_geometry_alpha075_float32/`
 - Critical14 support-synergy audit:
   `stage3/results/gemma2_2b_linear_merge_sae_critical14_support_synergy_v0/fake_id_hologram_l20_final_newline_delta_add_support_pair_synergy_float32/`
+- Critical13 compression:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_CRITICAL13_HANDLE_SUMMARY.md`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_leave_core_float32/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical13_pass_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical13_pass_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical13_pass_float32_max160/`
 - Scripts:
   `stage3/scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
   `stage3/scripts/build_sae_bundles_from_rank_csv.py`
@@ -1148,3 +1165,4 @@ Artifacts:
   `stage3/scripts/audit_gemma2_2b_linear_merge_sae_bundle_first_token_logits.py`
   `stage3/scripts/audit_gemma2_2b_linear_merge_sae_bundle_delta_geometry.py`
   `stage3/scripts/analyze_gemma2_2b_linear_merge_sae_critical14_support_synergy.py`
+  `stage3/scripts/build_gemma2_2b_linear_merge_sae_critical14_leave_core_bundles.py`

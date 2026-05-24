@@ -634,6 +634,11 @@ Feature-ID causality follow-up:
   (`I-It = +0.015625`). High-interaction nonpassing pairs still tie at zero, so
   support synergy is a gate-level combinatorial effect rather than an
   independently interpretable support-feature effect.
+- a leave-one-core screen compresses the validated final-newline handle further
+  from 14 to 13 features. Three 13-feature variants still cross the hologram
+  first-token gate by `+0.015625`, pass hologram generation, match the critical14
+  expanded fake-ID profile, and pass the broad paraphrase guard. This revises
+  the smallest validated final-newline `delta_add` handle to 13 features.
 
 Main artifacts:
 
@@ -653,6 +658,7 @@ Main artifacts:
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_TRANSITION_FEATURE_SEARCH_FINDINGS.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_BUNDLE_PATCH_FINDINGS.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_TOP3210_HANDLE_SUMMARY.md`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_CRITICAL13_HANDLE_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
@@ -687,6 +693,10 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_family_harmful_prompt_delta_top33_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_geometry_alpha075_float32/`
 - `results/gemma2_2b_linear_merge_sae_critical14_support_synergy_v0/fake_id_hologram_l20_final_newline_delta_add_support_pair_synergy_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_leave_core_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical13_pass_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical13_pass_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical13_pass_float32_max160/`
 - `scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
 - `scripts/build_sae_bundles_from_rank_csv.py`
 

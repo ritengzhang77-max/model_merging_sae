@@ -1,0 +1,9 @@
+{
+  "candidate_bundles": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_float32_max160/critical14_candidate_bundles.txt",
+  "feature_table": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/critical14_feature_table/critical14_feature_table.csv",
+  "outputs": {
+    "bundles": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_leave_core_float32/critical14_leave_core_bundles.txt",
+    "manifest_csv": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_leave_core_float32/critical14_leave_core_manifest.csv"
+  },
+  "bundle_count": 60
+}
