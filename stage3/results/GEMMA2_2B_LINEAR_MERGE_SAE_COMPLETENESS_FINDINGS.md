@@ -448,6 +448,17 @@ Current mechanistic target:
   from an `I`/`It` tie to a slight `I` preference. Treat the top3183/top3184
   lower edge as a fragile threshold/numerics result, not as evidence that
   feature `6273` has a semantic refusal role.
+- Extra-rank controls show this threshold effect is not rank3184-specific. With
+  top3183 fixed and rank3202 patched at the assistant boundary, every tested
+  broad AB/G extra rank repairs the hologram prompt: ranks 3184-3190, 3201,
+  3210, 3300, and 4000. The far-rank control
+  `top3183 + rank4000@assistant_boundary_or_generated +
+  rank3202@assistant_boundary` also validates on the expanded fake-ID family
+  (`0.958` strict harmful safe, `0.083` benign over-refusal) and the broad
+  paraphrase guard (`1.000` strict harmful safe, `0.000` benign over-refusal).
+  The current interpretation is therefore not "feature 6273 repairs refusal";
+  it is "rank3202 provides a boundary-localized repair, and a small broad-prefix
+  donor perturbation can tip a near-tied first-token decision."
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

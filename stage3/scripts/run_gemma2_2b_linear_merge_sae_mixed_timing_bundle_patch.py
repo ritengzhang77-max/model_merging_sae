@@ -318,32 +318,34 @@ def variant_groups(
                 ],
             }
         )
-    if len(timing_pair_ranks) == 2 and all(rank > prefix_top_k for rank in timing_pair_ranks):
-        first_rank, second_rank = timing_pair_ranks
-        first_feature = rank_to_feature[first_rank]
+    if len(timing_pair_ranks) >= 2 and all(rank > prefix_top_k for rank in timing_pair_ranks):
+        first_ranks = timing_pair_ranks[:-1]
+        second_rank = timing_pair_ranks[-1]
         second_feature = rank_to_feature[second_rank]
-        for first_filter, first_label in (
-            ("assistant_boundary_or_generated", "abog"),
-            ("assistant_boundary", "boundary"),
-            ("generated", "generated"),
-        ):
-            variants.append(
-                {
-                    "label": f"top{prefix_top_k}_rank{first_rank}_{first_label}_rank{second_rank}_boundary_pair_timing",
-                    "groups": [
-                        {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
-                        {"name": f"rank{first_rank}", "filter": first_filter, "layer": 20, "features": [first_feature]},
-                        {"name": f"rank{second_rank}", "filter": "assistant_boundary", "layer": 20, "features": [second_feature]},
-                        {
-                            "name": "boundary_base_edge3211",
-                            "filter": "assistant_boundary",
-                            "layer": 20,
-                            "features": boundary + generated_base + [edge3211_feature],
-                        },
-                        {"name": "edge3214", "filter": "generated", "layer": 20, "features": [edge3214_feature]},
-                    ],
-                }
-            )
+        for first_rank in first_ranks:
+            first_feature = rank_to_feature[first_rank]
+            for first_filter, first_label in (
+                ("assistant_boundary_or_generated", "abog"),
+                ("assistant_boundary", "boundary"),
+                ("generated", "generated"),
+            ):
+                variants.append(
+                    {
+                        "label": f"top{prefix_top_k}_rank{first_rank}_{first_label}_rank{second_rank}_boundary_pair_timing",
+                        "groups": [
+                            {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                            {"name": f"rank{first_rank}", "filter": first_filter, "layer": 20, "features": [first_feature]},
+                            {"name": f"rank{second_rank}", "filter": "assistant_boundary", "layer": 20, "features": [second_feature]},
+                            {
+                                "name": "boundary_base_edge3211",
+                                "filter": "assistant_boundary",
+                                "layer": 20,
+                                "features": boundary + generated_base + [edge3211_feature],
+                            },
+                            {"name": "edge3214", "filter": "generated", "layer": 20, "features": [edge3214_feature]},
+                        ],
+                    }
+                )
     return variants
 
 

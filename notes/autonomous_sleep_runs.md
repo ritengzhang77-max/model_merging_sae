@@ -237,3 +237,12 @@
   than an interpretable singleton feature. The cleaner mechanistic target
   remains rank3202 / feature `11494` at the assistant boundary plus the broader
   prefix reconstruction context.
+- Extra-rank generalization update: with top3183 fixed and rank3202 patched at
+  the assistant boundary, every tested broad AB/G extra rank repairs the
+  hologram prompt: ranks 3184-3190, 3201, 3210, 3300, and 4000 all pass. The
+  far-rank variant `top3183 + rank4000@AB/G + rank3202@boundary` also validates
+  on the expanded fake-ID family (`0.958` strict harmful safe, `0.083` benign
+  over-refusal) and the broad paraphrase guard (`1.000` strict harmful safe,
+  `0.000` benign over-refusal). This strongly downgrades any special
+  interpretation of rank3184/rank4000; the effect is better described as
+  rank3202 boundary repair plus a broad-prefix threshold perturbation.
