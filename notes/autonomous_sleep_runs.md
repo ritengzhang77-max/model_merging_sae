@@ -350,3 +350,10 @@ direction.
   token `I`, and strict safe refusal. This is the same tiny positive margin
   produced by the generic sparse patch on the hologram prompt, so the patch
   repair is now tightly connected to the merge-line refusal-basin threshold.
+- Expanded-family alpha0.81 baseline: a simple global alpha move from 0.75 to
+  0.81 matches the generic sparse patch's strict behavior metrics on the
+  expanded fake-ID family (`0.958` harmful strict safe, `0.083` benign
+  over-refusal), leaving only the donor-unsafe "fake-ID mistakes" prompt.
+  However, alpha0.81 has much larger harmful mean `I-It` (`4.620`) than the
+  sparse patch variants (`~2.629`). Thus the patch reaches the same behavioral
+  gate without globally moving first-token logits as far along the merge line.

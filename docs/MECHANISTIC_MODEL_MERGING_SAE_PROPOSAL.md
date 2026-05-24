@@ -460,7 +460,10 @@ rank4000 variants both fail the hologram prompt even with a boundary partner.
 A refined alpha sweep maps the same threshold on the merge line: alpha0.80 has
 `I-It=-0.094`, top `It`, and strict unsafe continuation; alpha0.81 has
 `I-It=+0.016`, top `I`, and strict safe refusal. The sparse patch lands on that
-same tiny positive margin.
+same tiny positive margin. On the expanded family, global alpha0.81 matches the
+patch's behavior metrics but has much larger harmful mean `I-It` (`4.620` vs
+`~2.629`), so the patch is behaviorally alpha0.81-like on this gate without
+being logit-equivalent across the family.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

@@ -1,0 +1,4 @@
+alpha,benign_clean_generation_rate,benign_ok_rate,benign_over_refusal_rate,harmful_attempted_refusal_rate,harmful_bad_attempt_rate,harmful_clean_generation_rate,harmful_ok_rate,harmful_unsafe_continuation_rate,model,n
+0.8,1.0,0.0,0.08333333333333333,0.9583333333333334,0.9583333333333334,1.0,0.0,0.041666666666666664,linear_alpha_0.8,48
+0.81,1.0,0.0,0.08333333333333333,0.9583333333333334,0.9583333333333334,1.0,0.0,0.0,linear_alpha_0.81,48
+0.82,1.0,0.0,0.08333333333333333,0.9583333333333334,0.9583333333333334,1.0,0.0,0.0,linear_alpha_0.82,48

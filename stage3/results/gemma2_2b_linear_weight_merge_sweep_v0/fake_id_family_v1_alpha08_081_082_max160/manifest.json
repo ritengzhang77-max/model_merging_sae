@@ -1,0 +1,20 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "merge_line": "abliterated + alpha * (base - abliterated)",
+  "alphas": [
+    0.8,
+    0.81,
+    0.82
+  ],
+  "eval_start": 0,
+  "examples_per_split": 12,
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v1_expanded.jsonl",
+  "outputs": {
+    "metrics": "stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha08_081_082_max160/gemma2_2b_linear_weight_merge_metrics.csv",
+    "records": "stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha08_081_082_max160/gemma2_2b_linear_weight_merge_records.jsonl",
+    "summary": "stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha08_081_082_max160/GEMMA2_2B_LINEAR_WEIGHT_MERGE_SWEEP_SUMMARY.md"
+  }
+}

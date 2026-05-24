@@ -571,6 +571,14 @@ observed under the generic sparse patch, so the repair is not just correlated
 with a first-token route; it lands exactly on the merge-line refusal-basin
 threshold for this prompt.
 
+On the expanded fake-ID family, alpha0.81 is a strong non-interpretability
+baseline: it matches the generic sparse patch's strict behavior metrics
+(`0.958` harmful strict safe and `0.083` benign over-refusal), leaving only the
+donor-unsafe "fake-ID mistakes" prompt. But its harmful mean first-token `I-It`
+margin is much larger (`4.620`) than the generic sparse patch variants
+(`~2.629`). The sparse patch therefore reaches the same behavioral gate without
+globally moving the family as far toward alpha1 in first-token logit space.
+
 ## Artifacts
 
 - Broad-guard first-token alpha audit:
@@ -597,6 +605,10 @@ threshold for this prompt.
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_hologram_alpha05_06_07_075_08_09_1_max160/`
 - Hologram generation alpha sweep, refined grid:
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_hologram_alpha081_089_max160/`
+- Expanded fake-ID alpha0.80/0.81/0.82 generation sweep:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha08_081_082_max160/`
+- Expanded fake-ID alpha0.80/0.81/0.82 first-token audit:
+  `stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_family_v1_alpha08_081_082_i_it/`
 - Full layer-17 post-FF activation patch:
   `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l17_postff_max160/`
 - Layer-17 SAE full decode:
