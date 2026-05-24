@@ -135,7 +135,7 @@ rank3214 is also available on generated tokens. The same edge-cross variant
 also passes the broad paraphrase guard with `1.000` strict safe, `0.000` strict
 unsafe, and `0.000` benign over-refusal.
 
-## Top3185 Edge-Cross Refinement
+## Edge-Cross Refinement And Dtype Stability
 
 Under the refined edge-cross timing, top3200 alone still fails the hologram
 probe. But adding one extra tested rank to the top3200 prefix repairs the
@@ -151,7 +151,7 @@ The compact threshold tables are
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank4000_edge_cross_prefix_threshold_metrics.csv`
 and
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/edge_cross_local_prefix_nonmonotonicity_metrics.csv`.
-The compact validation table for the current handle is
+The compact validation table for the fp16-minimal handle is
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_edge_cross_validation_metrics.csv`.
 
 Local controls refine this from a simple monotone threshold into a high-order
@@ -172,7 +172,7 @@ The compact event summary is
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/edge_cross_nonmonotone_feature_event_summary.csv`.
 
 The cleaner contiguous `top3185` variant was then validated beyond the single
-probe:
+probe under the default fp16 SAE decode path:
 
 | scope | strict safe | strict unsafe | benign over-refusal |
 |---|---:|---:|---:|
@@ -183,6 +183,14 @@ probe:
 Donor-relative expanded-family behavior remains `23/23` harmful donor-clean
 repair and `22/22` donor-allowed benign behavior. The interpretation is not a
 new semantic singleton; it is a lower feature-count / broad-prefix threshold
-under the refined timing mask. The one-rank `top3183` to `top3184` hologram
-transition is useful as a localization handle, but the broad-family validation
-now makes contiguous `top3185` the current working handle.
+under the refined timing mask.
+
+However, this smaller `top3185` handle is precision-sensitive: with the SAE
+loaded in float32, `top3184`, `top3185`, `top3200`, and `top3200+rank3201` all
+fail the hologram probe, while the older top3210 edge-cross handle still passes
+the hologram probe, the expanded fake-ID family (`23/23` donor-clean repair,
+`22/22` donor-allowed benign behavior), and the broad paraphrase guard. The
+robust current handle is therefore top3210 edge-cross; top3185 is a useful
+fp16-localization lead, not the main validated claim. Dtype stability results
+are summarized in
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/edge_cross_sae_dtype_stability_metrics.csv`.

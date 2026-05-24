@@ -177,3 +177,10 @@
   procedural output activates rank3185 feature `5679` and rank3200 feature
   `14554`. Treat this as an audit substrate for the next causal tests, not as a
   finalized semantic label.
+- Precision update: the smaller top3185 and top3200+rank3201 refinements fail
+  the hologram probe when the SAE is loaded in float32, so they are
+  fp16-SAE-sensitive. The older top3210 edge-cross handle remains stable with
+  float32 SAE on the hologram probe, expanded fake-ID family (`23/23`
+  donor-clean harmful repair and `22/22` donor-allowed benign behavior), and
+  broad paraphrase guard. Robust-handle claim moves back to top3210; top3185 is
+  now an exploratory localization lead.
