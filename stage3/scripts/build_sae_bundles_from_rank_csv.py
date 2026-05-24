@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import itertools
+import random
 from pathlib import Path
 
 
@@ -77,6 +78,10 @@ def main() -> int:
         help="With --base-ranks and --extra-singleton-ranks, also emit all base-plus-two-extra-rank bundles.",
     )
     ap.add_argument("--base-label", default="base")
+    ap.add_argument("--random-subsets-top-k", type=int, default=0)
+    ap.add_argument("--random-subset-size", type=int, default=0)
+    ap.add_argument("--random-subset-count", type=int, default=0)
+    ap.add_argument("--random-seed", type=int, default=0)
     ap.add_argument("--prefix", default="prompt_delta_top")
     ap.add_argument("--output", type=Path, required=True)
     args = ap.parse_args()
@@ -85,6 +90,7 @@ def main() -> int:
         and not args.rank_sets
         and args.leave_one_out_top_k <= 0
         and not (args.base_ranks and args.extra_singleton_ranks)
+        and args.random_subset_count <= 0
     ):
         raise SystemExit("provide --cutoffs or --rank-sets")
 
@@ -125,6 +131,29 @@ def main() -> int:
                 selected = base_features + [feature_ids[left - 1], feature_ids[right - 1]]
                 spec = ",".join(f"{layer}:{feature_id}" for feature_id in selected)
                 parts.append(f"{args.base_label}_plus_rank{left:03d}_rank{right:03d}={spec}")
+    if args.random_subset_count > 0:
+        if args.random_subsets_top_k <= 0 or args.random_subset_size <= 0:
+            raise SystemExit("--random-subsets-top-k and --random-subset-size are required for random subsets")
+        if args.random_subsets_top_k > len(feature_ids):
+            raise ValueError(f"--random-subsets-top-k exceeds ranking length: {args.random_subsets_top_k}")
+        if args.random_subset_size > args.random_subsets_top_k:
+            raise ValueError("--random-subset-size must be <= --random-subsets-top-k")
+        rng = random.Random(args.random_seed)
+        population = list(range(1, args.random_subsets_top_k + 1))
+        seen: set[tuple[int, ...]] = set()
+        attempts = 0
+        while len(seen) < args.random_subset_count:
+            attempts += 1
+            if attempts > args.random_subset_count * 100:
+                raise RuntimeError("could not sample enough unique random subsets")
+            ranks = tuple(sorted(rng.sample(population, args.random_subset_size)))
+            if ranks in seen:
+                continue
+            seen.add(ranks)
+            selected = [feature_ids[rank - 1] for rank in ranks]
+            spec = ",".join(f"{layer}:{feature_id}" for feature_id in selected)
+            label = f"random_seed{args.random_seed}_top{args.random_subsets_top_k}_k{args.random_subset_size}_{len(seen):03d}"
+            parts.append(f"{label}={spec}")
     for label, ranks in args.rank_sets:
         selected = []
         for rank in ranks:

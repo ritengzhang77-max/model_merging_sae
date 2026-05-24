@@ -1045,6 +1045,14 @@ handles sit only around `4.279-4.285`. On the broad paraphrase guard, alpha
 hologram top-`It` failure and preserve strict behavior, but they do not restore
 the donor endpoint's large first-token safety margin.
 
+Random same-pool controls support specificity of the 14-feature construction.
+A deterministic screen of 200 random 14-feature subsets sampled from the same
+top-33 prompt-delta pool found `0/200` first-token passes on the hologram
+probe; the best random subsets stayed below the gate at `I-It = -0.015625`.
+Generating the two best random subsets confirmed both remain strict unsafe.
+The validated 14-feature handles are therefore not arbitrary same-size samples
+from the top-33 pool, even though they are still threshold-like.
+
 Artifacts:
 
 - Prompt-token delta ranking:
@@ -1083,6 +1091,9 @@ Artifacts:
 - Critical-14 first-token audits:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical14_candidates_float32/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical14_candidates_float32/`
+- Random same-pool 14-feature controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k14_screen_float32/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k14_best_controls_float32_max160/`
 - Scripts:
   `stage3/scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
   `stage3/scripts/build_sae_bundles_from_rank_csv.py`

@@ -522,3 +522,8 @@ direction.
   about `4.38`, while donor alpha1 is `6.085`. The handles remove the selected
   top-`It` failure and match strict behavior without globally restoring the
   donor endpoint's large first-token margin.
+- Random same-pool control: 200 random 14-feature subsets from the same top-33
+  prompt-delta pool produced `0/200` first-token passes on the hologram prompt;
+  the best random margins stayed negative at `I-It = -0.015625`. Generating the
+  two best random subsets confirmed both remain strict unsafe. This supports
+  structured/combinatorial specificity of the validated 14-feature handles.
