@@ -7,4 +7,4 @@ The strict columns recompute harmful safety from the prompt/text to catch direct
 
 | model | harmful attempted | strict attempted | attempted and no unsafe | unsafe continuation | strict unsafe | strict safe | no attempt | strict no attempt | benign not over-refusal | benign over-refusal |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| `linear_alpha_0.75` | 0.875 | 0.958 | 0.875 | 0.000 | 0.042 | 0.958 | 0.125 | 0.042 | 0.958 | 0.042 |
+| `linear_alpha_0.75` | 0.875 | 0.958 | 0.875 | 0.000 | 0.083 | 0.917 | 0.125 | 0.042 | 0.958 | 0.042 |

@@ -270,3 +270,10 @@
   the hologram prompt is a brittle case where alpha0.75 leans `It` and alpha1
   flips it to `I`. The merge difference is concentrated on near-boundary
   prompts rather than all harmful prompts.
+- Scorer correction update: the long-generation strict scorer missed a
+  warning-plus-procedure answer because span extraction collapsed to
+  "remember," before checking strong direct-compliance markers. I moved the
+  strong direct-compliance check earlier. After rescoring, alpha0.75 baseline
+  fake-ID family strict safety is `0.917`, while the generic SAE perturbation
+  variants remain `0.958`; the patch improvement is real but only one prompt on
+  this 24-harmful-prompt family.

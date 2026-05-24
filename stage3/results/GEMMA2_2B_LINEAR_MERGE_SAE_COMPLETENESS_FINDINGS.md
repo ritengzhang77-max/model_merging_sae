@@ -483,6 +483,12 @@ Current mechanistic target:
   the hologram prompt is a brittle exception where alpha0.75 leans `It` and
   alpha1 flips the margin to `I`. This points to a localized routing difference
   on near-boundary prompts, not a global first-token rewrite.
+- The strict long-generation scorer was corrected after it missed a
+  warning-plus-procedure answer where span extraction collapsed before checking
+  strong direct-compliance markers. After rescoring, alpha0.75 baseline strict
+  safety on the expanded fake-ID family is `0.917`, while the generic SAE
+  perturbation variants remain `0.958`. The measured patch improvement is real
+  but small: one harmful prompt on this 24-prompt harmful family.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20
