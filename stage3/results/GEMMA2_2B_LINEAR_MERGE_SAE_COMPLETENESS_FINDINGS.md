@@ -489,6 +489,12 @@ Current mechanistic target:
   safety on the expanded fake-ID family is `0.917`, while the generic SAE
   perturbation variants remain `0.958`. The measured patch improvement is real
   but small: one harmful prompt on this 24-prompt harmful family.
+- A wider alpha logit audit shows a smooth merge-coefficient effect. Harmful
+  fake-ID first-token `I-It` margins rise from alpha0.5 to alpha0.75 to alpha1
+  (`1.4652`, `4.1094`, `5.8685` mean), while benign margins stay negative and
+  move only slightly (`-3.9206`, `-3.7074`, `-3.5259`). This supports the
+  current framing: model merging shifts harmful prompts toward an existing
+  direct-refusal first-token basin rather than creating a new refusal mechanism.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

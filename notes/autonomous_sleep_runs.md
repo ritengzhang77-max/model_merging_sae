@@ -277,3 +277,9 @@
   fake-ID family strict safety is `0.917`, while the generic SAE perturbation
   variants remain `0.958`; the patch improvement is real but only one prompt on
   this 24-harmful-prompt family.
+- Alpha-margin update: first-token `I-It` margins move smoothly with the linear
+  merge coefficient on harmful fake-ID prompts: alpha0.5 mean `1.4652`,
+  alpha0.75 mean `4.1094`, alpha1 mean `5.8685`. Benign margins stay negative
+  and move only slightly (`-3.9206`, `-3.7074`, `-3.5259`). This supports a
+  merge-coefficient story: the safety endpoint mainly shifts harmful prompts
+  toward an existing direct-refusal first-token basin.
