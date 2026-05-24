@@ -645,6 +645,11 @@ Feature-ID causality follow-up:
   while 0/12 one-feature removals from it cross the hologram first-token gate.
   Current local smallest validated final-newline `delta_add` handle: 12
   features.
+- a same-pool random control tested 200 unique random 12-feature subsets from
+  the top-33 prompt-delta pool. None crossed the hologram first-token gate; the
+  best random subset only tied at `I-It = 0.000000`. This supports the
+  structured-combination account for the validated 12-feature handle, while
+  still falling short of an exhaustive all-subset proof.
 
 Main artifacts:
 
@@ -709,8 +714,10 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k12_screen_float32/`
 - `scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
 - `scripts/build_sae_bundles_from_rank_csv.py`
+- `scripts/build_sae_random_subset_bundles.py`
 
 Primary script:
 

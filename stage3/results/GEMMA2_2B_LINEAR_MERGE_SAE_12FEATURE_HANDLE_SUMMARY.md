@@ -80,6 +80,24 @@ So the current local smallest validated final-newline `delta_add` handle is
 12 features. This is a local result around the discovered compression path, not
 a proof that no other 11-feature subset of the top-33 pool can work.
 
+## Random Same-Pool Control
+
+A deterministic random control sampled 200 unique 12-feature subsets from the
+same top-33 prompt-delta pool. None crossed the hologram first-token gate:
+
+| screen | count |
+|---|---:|
+| random top-33 k=12 subsets tested | 200 |
+| first-token passes | 0 |
+| ties at `I-It = 0.000000` | 1 |
+| best positive margin | none |
+| lowest margin | `-0.625000` |
+
+The best random subset only tied the `I`/`It` gate. This strengthens the
+structured-combination interpretation of the validated 12-feature handle, but
+it is still a sampled control rather than an exhaustive proof over all
+top-33 12-subsets.
+
 ## Interpretation
 
 The result further weakens a literal independent-feature story. Ranks `2` and
@@ -102,3 +120,7 @@ and most one-feature removals only tie or fall below the `I`/`It` boundary.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/`
 - Generic leave-one builder:
   `stage3/scripts/build_sae_bundle_leave_one_variants.py`
+- Random top-33 k=12 control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k12_screen_float32/`
+- Generic random-subset bundle builder:
+  `stage3/scripts/build_sae_random_subset_bundles.py`

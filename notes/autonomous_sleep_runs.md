@@ -573,3 +573,31 @@ direction.
   strict safety, `0.000` benign over-refusal). A leave-one screen over this
   12-feature handle found 0/12 eleven-feature first-token passes. Current local
   smallest validated final-newline `delta_add` handle: 12 features.
+
+## 2026-05-24 11:22 PDT 20-Hour Continuation
+
+- User request: continue the model-merging SAE project autonomously for another
+  20-hour window and report afterward.
+- Planned stop window: 2026-05-25 07:23 PDT unless a hard blocker,
+  project-level decision point, major thesis-changing result, or explicit user
+  instruction appears.
+- Current project claim: the Gemma-2-2B linear merge shifts harmful fake-ID
+  prompts near an existing first-token direct-refusal route; compact layer-20
+  SAE donor-delta handles can tip near-boundary prompts, but the useful handles
+  are signed, threshold-like, and combinatorial rather than clean semantic
+  refusal features.
+- Unit of analysis: layer-20 GemmaScope MLP-SAE feature bundles patched from
+  donor alpha `1.0` into recipient alpha `0.75` at the assistant final newline
+  under `delta_add` with float32 SAE activations.
+- Allowed experiment family: continue same-model, same-layer final-newline
+  prompt-delta compression controls, first-token gate audits, generation
+  validations, geometry/locality checks, and provenance updates.
+- Immediate next step: finish the random same-pool k=12 control for the current
+  validated 12-feature handle, then run structured neighborhood controls around
+  that handle if no stop condition appears.
+- Random k=12 control update: 200 unique random 12-feature subsets from the
+  same top-33 prompt-delta pool produced 0/200 first-token passes on the
+  hologram prompt. One random subset tied the gate exactly at `I-It = 0.000000`;
+  the worst margin was `-0.625000`. This supports the structured-combination
+  account for the validated 12-feature handle, while remaining a sampled
+  control rather than an exhaustive all-subset proof.
