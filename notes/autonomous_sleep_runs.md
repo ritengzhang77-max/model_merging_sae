@@ -441,3 +441,14 @@ direction.
   minimal handle: `model` token repairs (`+0.0156`), final newline fails
   (`-0.0156`). Treat SAE full decode as a behaviorally useful reconstructed
   intervention, not as a faithful raw-donor activation patch at the same token.
+- Formula decomposition: at the assistant `model` token, only full donor SAE
+  reconstruction repairs. Dense donor, recipient reconstruction, donor SAE
+  delta-add, and reconstruction-error-only all fail. At the final newline,
+  dense donor and donor SAE delta-add repair, while full donor SAE
+  reconstruction fails. The final-newline `sae_delta_add` intervention validates
+  on the expanded fake-ID family (`0.958` harmful strict safe, `0.083` benign
+  over-refusal) and broad paraphrase guard (`1.000` strict harmful safe,
+  `0.000` benign over-refusal). Current interpretation: there are two
+  all-feature layer20 SAE routes to the same gate, full reconstruction at the
+  `model` token and SAE delta-add at the final newline; neither is a small
+  interpretable feature circuit yet.

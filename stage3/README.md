@@ -298,6 +298,14 @@ The Gemma branch now has an actual linear weight-merge bridge:
   at this two-token resolution: `model` token repairs and final newline fails.
   So SAE full decode is a reconstructed behavioral intervention, not a faithful
   tokenwise raw-activation substitute.
+  Formula controls give a cleaner split: at the `model` token, only full donor
+  SAE reconstruction repairs; dense donor, recipient reconstruction, SAE
+  delta-add, and reconstruction-error-only all fail. At the final newline,
+  dense donor and SAE delta-add repair, while full donor SAE reconstruction
+  fails. Final-newline SAE delta-add validates on the expanded fake-ID family
+  and broad paraphrase guard, so there are two all-feature layer20 SAE handles
+  to the same gate: full reconstruction at `model`, and delta-add at the final
+  newline.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

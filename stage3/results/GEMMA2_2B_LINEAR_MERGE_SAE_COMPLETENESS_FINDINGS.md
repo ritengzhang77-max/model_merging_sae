@@ -684,6 +684,20 @@ described as simply reproducing the raw dense donor activation at the same
 token. It is a behaviorally useful reconstructed intervention that reaches the
 same refusal route through a nearby but distinct template-token perturbation.
 
+A formula decomposition separates full reconstruction from delta and
+reconstruction-error effects. At the assistant `model` token, only full donor
+SAE reconstruction repairs; dense donor activation, recipient reconstruction,
+donor SAE delta-add, and reconstruction-error-only all remain strict unsafe.
+At the final newline, dense donor activation and SAE delta-add both repair,
+while full donor SAE reconstruction fails. The final-newline SAE delta-add
+formula validates on the expanded fake-ID family with the same donor/alpha0.81
+gate (`0.958` harmful strict safety, `0.083` benign over-refusal) and passes the
+broad paraphrase guard (`1.000` harmful strict safety, `0.000` benign
+over-refusal). Thus there are now two all-feature layer20 SAE handles to the
+same behavioral gate: donor full reconstruction at the assistant `model` token,
+and donor-recipient SAE delta-add at the final newline. Neither is a small
+interpretable sparse circuit yet.
+
 ## Artifacts
 
 - Broad-guard first-token alpha audit:
@@ -716,6 +730,16 @@ same refusal route through a nearby but distinct template-token perturbation.
   `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l20_postff_model_token_max160/`
 - Hologram dense layer20 post-FF generation, final newline:
   `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l20_postff_final_newline_max160/`
+- SAE reconstruction formula patch script:
+  `stage3/scripts/run_gemma2_2b_linear_merge_sae_reconstruction_formula_patch.py`
+- Hologram layer20 formula decomposition, assistant `model` token:
+  `stage3/results/gemma2_2b_linear_merge_sae_reconstruction_formula_patch_v0/fake_id_hologram_l20_postff_model_token_formulas_float32_max160/`
+- Hologram layer20 formula decomposition, final newline:
+  `stage3/results/gemma2_2b_linear_merge_sae_reconstruction_formula_patch_v0/fake_id_hologram_l20_postff_final_newline_formulas_float32_max160/`
+- Expanded fake-ID final-newline SAE delta-add validation:
+  `stage3/results/gemma2_2b_linear_merge_sae_reconstruction_formula_patch_v0/fake_id_family_v1_l20_postff_final_newline_sae_delta_add_float32_max160/`
+- Broad paraphrase final-newline SAE delta-add validation:
+  `stage3/results/gemma2_2b_linear_merge_sae_reconstruction_formula_patch_v0/default_paraphrase_guard_v0_l20_postff_final_newline_sae_delta_add_float32_max160/`
 - Hologram layer20 SAE full decode, last-token timing:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_postff_sae_full_decode_last_token_float32_max160/`
 - Hologram layer20 SAE full decode, assistant-boundary timing:
