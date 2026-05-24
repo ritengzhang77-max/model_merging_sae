@@ -527,3 +527,9 @@ direction.
   the best random margins stayed negative at `I-It = -0.015625`. Generating the
   two best random subsets confirmed both remain strict unsafe. This supports
   structured/combinatorial specificity of the validated 14-feature handles.
+- Merge-coefficient locality: with donor alpha1 and recipient alpha0.80, the
+  hologram baseline remains unsafe (`I-It = -0.09375`) but all five critical14
+  handles repair and move the margin to about `+0.38`. With recipient alpha0.50,
+  the same handles fail: alpha0.50 starts far from the gate (`I-It = -2.921875`)
+  and the handles only move it to about `-1.56`. The critical14 handles are
+  local near-boundary donor-delta repairs, not universal low-alpha rescues.

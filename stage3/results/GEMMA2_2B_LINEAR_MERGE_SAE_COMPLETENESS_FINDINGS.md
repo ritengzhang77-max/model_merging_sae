@@ -1053,6 +1053,16 @@ Generating the two best random subsets confirmed both remain strict unsafe.
 The validated 14-feature handles are therefore not arbitrary same-size samples
 from the top-33 pool, even though they are still threshold-like.
 
+Merge-coefficient controls show the 14-feature handles are local along the
+merge trajectory. With donor alpha `1.00` and recipient alpha `0.80`, the
+hologram baseline is still unsafe (`I-It = -0.09375`, top token `It`), but all
+five 14-feature final-newline `delta_add` handles repair it and move the
+first-token margin to about `+0.375` to `+0.391`. With recipient alpha `0.50`,
+the same handles fail: the baseline is far from the gate (`I-It = -2.921875`),
+and the handles only move it to about `-1.56`. Thus the compact handles are
+local donor-delta repairs near the existing refusal boundary, not universal
+rescues for much weaker merge points.
+
 Artifacts:
 
 - Prompt-token delta ranking:
@@ -1096,6 +1106,11 @@ Artifacts:
 - Random same-pool 14-feature controls:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k14_screen_float32/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k14_best_controls_float32_max160/`
+- Merge-coefficient locality controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_alpha080_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_alpha050_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_alpha080_float32/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_alpha050_float32/`
 - Scripts:
   `stage3/scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
   `stage3/scripts/build_sae_bundles_from_rank_csv.py`
