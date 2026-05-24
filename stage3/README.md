@@ -193,6 +193,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   extras fails, top3184 plus tested extras passes, contiguous top3199 passes,
   top3200 fails, and the skip control `top3199 + rank3201` fails even though
   `top3200 + rank3201` passes.
+  Feature-event audits describe a pass/fail/pass split: safe-refusal outputs
+  show rank3184 feature `6273` and rank3201 feature `12861`, while the unsafe
+  top3200 output shows rank3185 feature `5679` and rank3200 feature `14554` on
+  procedural explanation tokens.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

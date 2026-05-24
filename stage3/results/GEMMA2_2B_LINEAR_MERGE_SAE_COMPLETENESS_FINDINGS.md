@@ -397,6 +397,10 @@ Current mechanistic target:
   Contiguous top3190/top3195/top3199 pass, top3200 fails, and
   `top3199 + rank3201` fails even though `top3200 + rank3201` passes. This is
   high-order prefix behavior, not an isolated interpretable singleton.
+- Feature-event audits on the pass/fail/pass trajectories are descriptive but
+  useful: rank3184 feature `6273` and rank3201 feature `12861` appear on the
+  safe-refusal outputs, while rank3185 feature `5679` and rank3200 feature
+  `14554` appear on the unsafe procedural top3200 output.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

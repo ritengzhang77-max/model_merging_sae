@@ -163,6 +163,14 @@ control, `top3199 + rank3201`, fails. So the current evidence is not "one
 good singleton"; it is a nonmonotone local prefix interaction where adjacent
 features can flip the generated safety trajectory.
 
+Feature-event audits on the top3199 safe, top3200 unsafe, and
+top3200+rank3201 safe trajectories give a descriptive split, not yet a causal
+label: safe-refusal outputs show activity in rank3184 feature `6273` and
+rank3201 feature `12861`, while the unsafe top3200 output shows rank3185
+feature `5679` and rank3200 feature `14554` on procedural explanation tokens.
+The compact event summary is
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/edge_cross_nonmonotone_feature_event_summary.csv`.
+
 The cleaner contiguous `top3185` variant was then validated beyond the single
 probe:
 

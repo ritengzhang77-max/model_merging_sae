@@ -171,3 +171,9 @@
   guard with `1.000` strict safe, `0.000` strict unsafe, and `0.000` benign
   over-refusal. This replaces `top3184 + rank4000` as the cleaner current
   working handle.
+- Feature-event update: pass/fail/pass audits around top3199, top3200, and
+  top3200+rank3201 show a descriptive split. Safe-refusal outputs activate
+  rank3184 feature `6273` and rank3201 feature `12861`; the unsafe top3200
+  procedural output activates rank3185 feature `5679` and rank3200 feature
+  `14554`. Treat this as an audit substrate for the next causal tests, not as a
+  finalized semantic label.
