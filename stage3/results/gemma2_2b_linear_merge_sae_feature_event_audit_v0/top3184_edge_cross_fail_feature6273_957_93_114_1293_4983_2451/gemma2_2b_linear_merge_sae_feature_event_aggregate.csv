@@ -1,0 +1,8 @@
+abs_delta_gen_max,abs_delta_gen_mean,donor_gen_max,donor_gen_mean,donor_minus_recipient_gen_mean,feature_id,n,recipient_gen_max,recipient_gen_mean,recipient_minus_donor_gen_mean,source_model,split
+0.0,0.0,0.0,0.0,0.0,93,1,0.0,0.0,0.0,mixed_timing_prefix_abog_boundarybase_edge3211_boundary_edge3214_generated,harmful
+0.0,0.0,0.0,0.0,0.0,114,1,0.0,0.0,0.0,mixed_timing_prefix_abog_boundarybase_edge3211_boundary_edge3214_generated,harmful
+0.0,0.0,0.0,0.0,0.0,957,1,0.0,0.0,0.0,mixed_timing_prefix_abog_boundarybase_edge3211_boundary_edge3214_generated,harmful
+3.369140625,0.05216064304113388,7.87109375,0.31196290254592896,-0.013684081844985485,1293,1,8.1953125,0.3256469666957855,0.013684081844985485,mixed_timing_prefix_abog_boundarybase_edge3211_boundary_edge3214_generated,harmful
+2.72265625,0.01896972581744194,5.54296875,0.09035644680261612,-0.01604003831744194,2451,1,5.56640625,0.10639648139476776,0.01604003831744194,mixed_timing_prefix_abog_boundarybase_edge3211_boundary_edge3214_generated,harmful
+0.0,0.0,0.0,0.0,0.0,4983,1,0.0,0.0,0.0,mixed_timing_prefix_abog_boundarybase_edge3211_boundary_edge3214_generated,harmful
+0.0,0.0,0.0,0.0,0.0,6273,1,0.0,0.0,0.0,mixed_timing_prefix_abog_boundarybase_edge3211_boundary_edge3214_generated,harmful

@@ -61,7 +61,7 @@ def read_rank_features(path: Path) -> dict[int, int]:
     return out
 
 
-def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int) -> list[dict[str, object]]:
+def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int, extra_probe_ranks: tuple[int, ...]) -> list[dict[str, object]]:
     prefix = [rank_to_feature[rank] for rank in range(1, prefix_top_k + 1)]
     boundary = [rank_to_feature[3308], rank_to_feature[3323]]
     generated_base = [rank_to_feature[4266]]
@@ -261,7 +261,7 @@ def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int) -> list[d
                 ],
             }
         )
-    for extra_rank in (3215, 3250, 3300, 3400, 3600, 4000):
+    for extra_rank in extra_probe_ranks:
         if extra_rank <= prefix_top_k:
             continue
         prefix_plus = prefix + [rank_to_feature[extra_rank]]
@@ -460,12 +460,14 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--prompt-jsonl", type=Path, required=True)
     ap.add_argument("--rank-csv", type=Path, default=DEFAULT_RANK_CSV)
     ap.add_argument("--prefix-top-k", type=int, default=3210)
+    ap.add_argument("--extra-probe-ranks", default="3215,3250,3300,3400,3600,4000")
     ap.add_argument("--variant-labels", default="")
     ap.add_argument("--max-new-tokens", type=int, default=160)
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     args = ap.parse_args()
     args.layers = tuple(parse_ints(args.layers))
+    args.extra_probe_ranks = tuple(parse_ints(args.extra_probe_ranks))
     if args.layers != (20,):
         raise ValueError("mixed timing runner currently supports layer 20 only")
     return args
@@ -479,7 +481,7 @@ def main() -> int:
     cache_dir = os.environ.get("HF_HOME")
     prompts = load_prompt_rows(args.prompt_jsonl)
     rank_to_feature = read_rank_features(args.rank_csv)
-    raw_variants = variant_groups(rank_to_feature, args.prefix_top_k)
+    raw_variants = variant_groups(rank_to_feature, args.prefix_top_k, args.extra_probe_ranks)
     if args.variant_labels.strip():
         keep = {item.strip() for item in args.variant_labels.split(",") if item.strip()}
         raw_variants = [variant for variant in raw_variants if str(variant["label"]) in keep]
@@ -531,6 +533,7 @@ def main() -> int:
                 "sae_file": sae_file,
                 "rank_csv": str(args.rank_csv),
                 "prefix_top_k": args.prefix_top_k,
+                "extra_probe_ranks": args.extra_probe_ranks,
                 "donor_alpha": args.donor_alpha,
                 "recipient_alpha": args.recipient_alpha,
                 "variants": raw_variants,

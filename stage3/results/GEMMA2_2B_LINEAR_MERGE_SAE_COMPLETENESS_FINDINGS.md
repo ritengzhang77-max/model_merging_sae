@@ -387,10 +387,16 @@ Current mechanistic target:
   ranks 3215, 3250, 3300, 3400, 3600, and 4000. Bracketing with rank4000 then
   shows `top3100`, `top3150`, `top3180`, `top3182`, and `top3183` fail, while
   `top3184`, `top3185`, `top3190`, and `top3200` pass on the hologram probe.
-  The `top3184 + rank4000` variant validates on the expanded fake-ID family
+  The cleaner contiguous `top3185` variant validates on the expanded fake-ID family
   (`23/23` donor-clean harmful repair, `22/22` donor-allowed benign behavior)
   and passes the broad paraphrase guard. This weakens a singleton-specific
   interpretation of the prefix edge and points to a broad prefix-size threshold.
+- Local nonmonotonicity controls sharpen that claim: `top3183 + rank3184`
+  fails, and `top3183` plus each tested far extra rank fails, while `top3184`
+  plus ranks 3185-3190 or the far tested ranks repairs the hologram probe.
+  Contiguous top3190/top3195/top3199 pass, top3200 fails, and
+  `top3199 + rank3201` fails even though `top3200 + rank3201` passes. This is
+  high-order prefix behavior, not an isolated interpretable singleton.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

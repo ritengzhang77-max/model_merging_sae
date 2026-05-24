@@ -135,7 +135,7 @@ rank3214 is also available on generated tokens. The same edge-cross variant
 also passes the broad paraphrase guard with `1.000` strict safe, `0.000` strict
 unsafe, and `0.000` benign over-refusal.
 
-## Top3184 Edge-Cross Refinement
+## Top3185 Edge-Cross Refinement
 
 Under the refined edge-cross timing, top3200 alone still fails the hologram
 probe. But adding one extra tested rank to the top3200 prefix repairs the
@@ -147,10 +147,24 @@ prefix edge on the hologram probe: `top3100`, `top3150`, `top3180`, `top3182`,
 and `top3183` plus rank4000 fail, while `top3184`, `top3185`, `top3190`, and
 `top3200` plus rank4000 pass. The smallest currently validated
 rank4000 edge-cross handle is therefore `top3184 + rank4000`.
-The compact threshold table is
-`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank4000_edge_cross_prefix_threshold_metrics.csv`.
+The compact threshold tables are
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank4000_edge_cross_prefix_threshold_metrics.csv`
+and
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/edge_cross_local_prefix_nonmonotonicity_metrics.csv`.
+The compact validation table for the current handle is
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_edge_cross_validation_metrics.csv`.
 
-The `top3184 + rank4000` variant was validated beyond the single probe:
+Local controls refine this from a simple monotone threshold into a high-order
+prefix interaction. `top3183 + rank3184` fails, and `top3183` plus each tested
+far extra rank also fails. But `top3184 + rank3185..3190` and `top3184` plus
+each tested far extra rank pass. Contiguous top3190/top3195/top3199 pass, then
+top3200 fails, while the known `top3200 + rank3201` handle passes. A skip
+control, `top3199 + rank3201`, fails. So the current evidence is not "one
+good singleton"; it is a nonmonotone local prefix interaction where adjacent
+features can flip the generated safety trajectory.
+
+The cleaner contiguous `top3185` variant was then validated beyond the single
+probe:
 
 | scope | strict safe | strict unsafe | benign over-refusal |
 |---|---:|---:|---:|
@@ -160,7 +174,7 @@ The `top3184 + rank4000` variant was validated beyond the single probe:
 
 Donor-relative expanded-family behavior remains `23/23` harmful donor-clean
 repair and `22/22` donor-allowed benign behavior. The interpretation is not a
-new semantic singleton at rank4000; it is a lower feature-count / broad-prefix
-threshold under the refined timing mask. The one-rank `top3183` to `top3184`
-hologram transition is useful as a localization handle, but the broad-family
-validation is what makes `top3184 + rank4000` a current working handle.
+new semantic singleton; it is a lower feature-count / broad-prefix threshold
+under the refined timing mask. The one-rank `top3183` to `top3184` hologram
+transition is useful as a localization handle, but the broad-family validation
+now makes contiguous `top3185` the current working handle.

@@ -158,3 +158,16 @@
   repair and `22/22` donor-allowed benign behavior, and it passes the broad
   paraphrase guard with `1.000` strict safe, `0.000` strict unsafe, and
   `0.000` benign over-refusal.
+- Local nonmonotonicity update: `top3183 + rank3184` fails, and top3183 plus
+  each tested far extra rank fails. `top3184` alone still fails, but top3184
+  plus ranks 3185-3190 or each tested far extra rank repairs the hologram
+  prompt. Contiguous top3190/top3195/top3199 pass, top3200 fails, and
+  `top3199 + rank3201` fails even though the known `top3200 + rank3201`
+  control passes. This is now a high-order local prefix interaction rather than
+  a monotone prefix threshold.
+- Validated-handle update: contiguous `top3185` with the same edge-cross timing
+  validates on the expanded fake-ID family with `23/23` donor-clean harmful
+  repair and `22/22` donor-allowed benign behavior, and on the broad paraphrase
+  guard with `1.000` strict safe, `0.000` strict unsafe, and `0.000` benign
+  over-refusal. This replaces `top3184 + rank4000` as the cleaner current
+  working handle.

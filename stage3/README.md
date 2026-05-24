@@ -186,9 +186,13 @@ The Gemma branch now has an actual linear weight-merge bridge:
   one extra tested rank. Top3200 alone fails, but top3200 plus every tested rank
   in 3201-3210 and farther probes through rank4000 repair the hologram probe.
   Bracketing the far rank4000 probe shows top3183 fails while top3184 passes;
-  `top3184 + rank4000` also validates on the expanded family and broad
-  paraphrase guard, pointing to a broad prefix-size threshold rather than a new
-  semantic singleton.
+  the cleaner contiguous `top3185` handle validates on the expanded family and
+  broad paraphrase guard, pointing to a broad prefix-size threshold rather than
+  a new semantic singleton.
+  Local controls show this is nonmonotone and high-order: top3183 plus tested
+  extras fails, top3184 plus tested extras passes, contiguous top3199 passes,
+  top3200 fails, and the skip control `top3199 + rank3201` fails even though
+  `top3200 + rank3201` passes.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

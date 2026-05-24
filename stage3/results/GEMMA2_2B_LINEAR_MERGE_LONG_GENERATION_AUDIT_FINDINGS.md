@@ -290,9 +290,15 @@ contiguous top3210 to top3184 plus one extra tested feature. Top3200 alone
 still fails the hologram probe, but top3200 plus every tested rank in
 3201-3210 repairs it, and farther probes at ranks 3215, 3250, 3300, 3400,
 3600, and 4000 also repair it. Bracketing the far rank4000 probe shows
-`top3183 + rank4000` fails while `top3184 + rank4000` passes; the latter
-validates on the expanded fake-ID family and broad paraphrase guard, which
-points to a broad prefix-size threshold rather than a new semantic singleton.
+`top3183 + rank4000` fails while `top3184 + rank4000` passes. The cleaner
+contiguous `top3185` handle validates on the expanded fake-ID family and broad
+paraphrase guard, which points to a broad prefix-size threshold rather than a
+new semantic singleton.
+Additional local controls show the boundary is nonmonotone and high-order:
+`top3183 + rank3184` and `top3183` plus each tested far extra rank fail, while
+`top3184 + rank3185..3190` and `top3184` plus each tested far extra rank pass.
+Contiguous top3190/top3195/top3199 pass, top3200 fails, and the skip control
+`top3199 + rank3201` fails even though `top3200 + rank3201` passes.
 
 Next evaluation work should separate:
 
