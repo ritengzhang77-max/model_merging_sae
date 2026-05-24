@@ -1,0 +1,22 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl",
+  "bundles_file": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/critical12_feature_leave_one_bundles.txt",
+  "donor_alpha": 1.0,
+  "recipient_alpha": 0.75,
+  "patch_mode": "delta_add",
+  "patch_token_filter": "assistant_boundary_final_newline",
+  "outputs": {
+    "detail": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/first_token_logits.csv",
+    "summary_csv": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/first_token_logit_summary.csv",
+    "counts": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/selected_feature_counts.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/BUNDLE_FIRST_TOKEN_LOGIT_SUMMARY.md"
+  }
+}

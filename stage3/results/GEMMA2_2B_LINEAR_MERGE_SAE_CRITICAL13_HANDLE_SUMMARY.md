@@ -58,12 +58,13 @@ At least two of the leave-one-out-critical ranks, rank `2` and rank `20`, can
 be removed in specific support-pair contexts without losing the validated
 behavioral profile.
 
-The current smallest validated final-newline `delta_add` handle is therefore
-13 features, not 14. It is still a near-threshold handle: all passing
-13-feature variants cross the hologram first-token gate by only `+0.015625`.
-The result strengthens the combinatorial-threshold account and weakens any
-literal reading of the 12 leave-one-out-critical ranks as independently
-necessary semantic features.
+This result was the first reduction below 14 features, but it is superseded by
+the follow-up 12-feature handle in
+`stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_12FEATURE_HANDLE_SUMMARY.md`.
+The important lesson remains: all passing 13-feature variants cross the
+hologram first-token gate by only `+0.015625`, strengthening the
+combinatorial-threshold account and weakening any literal reading of the
+12 leave-one-out-critical ranks as independently necessary semantic features.
 
 ## Artifacts
 

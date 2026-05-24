@@ -561,5 +561,15 @@ direction.
   match the critical14 expanded fake-ID profile (`0.958` harmful strict safety,
   `0.083` benign over-refusal; same donor-weak fake-ID-mistakes failure), and
   pass the broad paraphrase guard (`1.000` strict safety, `0.000` benign
-  over-refusal). Current smallest validated final-newline `delta_add` handle:
-  13 features.
+  over-refusal). This made the first validated 13-feature handle.
+- 12-feature compression: leaving one feature out of the three validated
+  13-feature handles found two passing labels, but they are the same unique
+  feature set: `critical12 + support ranks 10 and 22 - core ranks 2 and 20`
+  (features retained: `15169`, `14991`, `12704`, `8754`, `8775`, `4339`,
+  `9149`, `9135`, `13622`, `12652`, `1338`, `6289`). This 12-feature handle
+  passes hologram generation, matches the expanded fake-ID profile (`0.958`
+  harmful strict safety, `0.083` benign over-refusal; same donor-weak
+  fake-ID-mistakes failure), and passes the broad paraphrase guard (`1.000`
+  strict safety, `0.000` benign over-refusal). A leave-one screen over this
+  12-feature handle found 0/12 eleven-feature first-token passes. Current local
+  smallest validated final-newline `delta_add` handle: 12 features.

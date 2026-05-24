@@ -1096,7 +1096,20 @@ the critical14/top33 expanded fake-ID profile (`0.958` harmful strict safety,
 `0.083` benign over-refusal, same donor-weak fake-ID-mistakes failure), and
 pass the broad paraphrase guard (`1.000` harmful strict safety, `0.000` benign
 over-refusal). The current smallest validated final-newline `delta_add` handle
-is therefore 13 features, still near-threshold and combinatorial.
+was therefore reduced to 13 features, still near-threshold and combinatorial.
+
+A follow-up leave-one screen reduces this local path to 12 features. Leaving
+one feature out of the three validated 13-feature handles gives 39 candidate
+12-feature variants. Two passing labels are the same unique set:
+`critical12 + support ranks 10 and 22 - core ranks 2 and 20`, retaining
+features `15169`, `14991`, `12704`, `8754`, `8775`, `4339`, `9149`, `9135`,
+`13622`, `12652`, `1338`, and `6289`. This 12-feature handle passes hologram
+generation, matches the expanded fake-ID profile (`0.958` harmful strict
+safety, `0.083` benign over-refusal, same donor-weak fake-ID-mistakes failure),
+and passes the broad paraphrase guard (`1.000` harmful strict safety, `0.000`
+benign over-refusal). Leaving one feature out of this 12-feature handle gives
+0/12 eleven-feature first-token passes. The current local smallest validated
+final-newline `delta_add` handle is therefore 12 features.
 
 Artifacts:
 
@@ -1158,6 +1171,13 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical13_pass_float32_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical13_pass_float32_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical13_pass_float32_max160/`
+- 12-feature compression:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_12FEATURE_HANDLE_SUMMARY.md`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical13_leave_one_float32/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/`
 - Scripts:
   `stage3/scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
   `stage3/scripts/build_sae_bundles_from_rank_csv.py`
@@ -1166,3 +1186,4 @@ Artifacts:
   `stage3/scripts/audit_gemma2_2b_linear_merge_sae_bundle_delta_geometry.py`
   `stage3/scripts/analyze_gemma2_2b_linear_merge_sae_critical14_support_synergy.py`
   `stage3/scripts/build_gemma2_2b_linear_merge_sae_critical14_leave_core_bundles.py`
+  `stage3/scripts/build_sae_bundle_leave_one_variants.py`

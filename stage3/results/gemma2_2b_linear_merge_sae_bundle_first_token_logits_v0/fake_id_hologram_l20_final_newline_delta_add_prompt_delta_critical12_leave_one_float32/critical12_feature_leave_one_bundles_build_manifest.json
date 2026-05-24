@@ -1,0 +1,6 @@
+{
+  "bundles_file": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical13_leave_one_float32/critical12_pass_bundles.txt",
+  "output_bundles": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/critical12_feature_leave_one_bundles.txt",
+  "manifest_csv": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/critical12_feature_leave_one_bundles_manifest.csv",
+  "bundle_count": 12
+}

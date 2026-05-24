@@ -1,0 +1,39 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_repo": "google/gemma-scope-2b-pt-mlp",
+  "sae_files": {
+    "20": "layer_20/width_16k/average_l0_109/params.npz"
+  },
+  "donor_alpha": 1.0,
+  "recipient_alpha": 0.75,
+  "patch_mode": "delta_add",
+  "patch_token_filter": "assistant_boundary_final_newline",
+  "bundles": {
+    "critical12_p10_p22_drop_rank002_rank020": {
+      "20": [
+        1338,
+        4339,
+        6289,
+        8754,
+        8775,
+        9135,
+        9149,
+        12652,
+        12704,
+        13622,
+        14991,
+        15169
+      ]
+    }
+  },
+  "prompt_source": "stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v1_expanded.jsonl",
+  "outputs": {
+    "metrics": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/gemma2_2b_linear_merge_sae_bundle_patch_metrics.csv",
+    "records": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/gemma2_2b_linear_merge_sae_bundle_patch_records.jsonl",
+    "counts": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/gemma2_2b_linear_merge_sae_bundle_patch_counts.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/GEMMA2_2B_LINEAR_MERGE_SAE_BUNDLE_PATCH_SUMMARY.md"
+  }
+}
