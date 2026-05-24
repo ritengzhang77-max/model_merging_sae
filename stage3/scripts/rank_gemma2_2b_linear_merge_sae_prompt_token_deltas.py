@@ -129,6 +129,7 @@ def write_summary(path: Path, args, rows, bundles: str) -> None:
         "# Gemma-2-2B Prompt-Token SAE Delta Ranking",
         "",
         f"Prompt file: `{args.prompt_jsonl}`.",
+        f"Prompt split filter: `{args.split}`.",
         f"Layer/output: `{args.layer}:{args.output_mode}`.",
         f"Patch token filter: `{args.patch_token_filter}`.",
         f"Alphas: donor `{args.donor_alpha:g}`, recipient `{args.recipient_alpha:g}`.",
@@ -164,6 +165,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--donor-alpha", type=float, default=1.0)
     ap.add_argument("--recipient-alpha", type=float, default=0.75)
     ap.add_argument("--prompt-jsonl", type=Path, required=True)
+    ap.add_argument("--split", choices=("all", "harmful", "benign"), default="all")
     ap.add_argument("--patch-token-filter", default="assistant_boundary_final_newline")
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--top-k", type=int, default=16000)
@@ -179,6 +181,10 @@ def main() -> int:
     sae_dtype = {"float16": torch.float16, "bfloat16": torch.bfloat16, "float32": torch.float32}[args.sae_dtype]
     cache_dir = os.environ.get("HF_HOME")
     prompts = load_prompt_rows(args.prompt_jsonl)
+    if args.split != "all":
+        prompts = [(split, user) for split, user in prompts if split == args.split]
+    if not prompts:
+        raise ValueError(f"No prompts remain after split filter: {args.split}")
 
     print("[load] tokenizer", flush=True)
     tokenizer = AutoTokenizer.from_pretrained(MODEL_IDS["base"], cache_dir=cache_dir)
@@ -217,6 +223,7 @@ def main() -> int:
                 "models": MODEL_IDS,
                 "sae_file": select_sae_file(args.layer, args.l0_target),
                 "prompt_jsonl": str(args.prompt_jsonl),
+                "split": args.split,
                 "layer": args.layer,
                 "patch_token_filter": args.patch_token_filter,
                 "donor_alpha": args.donor_alpha,

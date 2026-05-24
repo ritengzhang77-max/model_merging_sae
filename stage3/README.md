@@ -585,6 +585,12 @@ Feature-ID causality follow-up:
   top30+rank33 fail, while top31+rank33 and top32 plus rank34 or rank35 repair
   the hologram prompt. The current handle is best treated as a compact
   cumulative donor-delta bundle, not a clean singleton refusal feature.
+- expanded-family prompt-token rankings are not automatically better at the
+  same budget: all-split and harmful-only family top-33 bundles overlap the
+  hologram top-33 in only 6/33 and 7/33 features, and both underperform on the
+  expanded family (`0.917` harmful strict safety, `0.083` benign over-refusal).
+  The compact handle appears prompt-boundary sensitive, not a globally stable
+  top-33 safety feature set.
 
 Main artifacts:
 
@@ -632,6 +638,10 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_top32_33_l20_final_newline_delta_add_prompt_delta_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_top33_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_rank33_controls_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_family_v1_expanded_l20_final_newline_delta_abs_float32/`
+- `results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_family_v1_harmful_l20_final_newline_delta_abs_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_family_prompt_delta_top33_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_family_harmful_prompt_delta_top33_float32_max160/`
 - `scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
 - `scripts/build_sae_bundles_from_rank_csv.py`
 

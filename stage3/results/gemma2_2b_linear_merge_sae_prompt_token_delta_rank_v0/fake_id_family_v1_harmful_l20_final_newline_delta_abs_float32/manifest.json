@@ -1,0 +1,28 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "sae_file": "layer_20/width_16k/average_l0_109/params.npz",
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v1_expanded.jsonl",
+  "split": "harmful",
+  "layer": 20,
+  "patch_token_filter": "assistant_boundary_final_newline",
+  "donor_alpha": 1.0,
+  "recipient_alpha": 0.75,
+  "top_k": 16000,
+  "bundle_cutoffs": [
+    33,
+    100,
+    500,
+    1000,
+    4000,
+    8000,
+    16000
+  ],
+  "outputs": {
+    "features": "stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_family_v1_harmful_l20_final_newline_delta_abs_float32/prompt_token_delta_features.csv",
+    "bundles": "stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_family_v1_harmful_l20_final_newline_delta_abs_float32/bundles.txt",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_family_v1_harmful_l20_final_newline_delta_abs_float32/PROMPT_TOKEN_DELTA_RANKING_SUMMARY.md"
+  }
+}
