@@ -1,0 +1,31 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl",
+  "rank_csv": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_decoder_contribution_rank_v0/hologram_success_l20_a075_to_a1_top5000/gemma2_2b_l20_decoder_contribution_features.csv",
+  "recipient_alpha": 0.75,
+  "donor_alpha": 1.0,
+  "prefix_top_k": 3183,
+  "variant_labels": [
+    "top3183_rank3184_abog_rank3202_boundary_pair_timing",
+    "top3183_rank3185_abog_rank3202_boundary_pair_timing",
+    "top3183_rank3186_abog_rank3202_boundary_pair_timing",
+    "top3183_rank3187_abog_rank3202_boundary_pair_timing",
+    "top3183_rank3188_abog_rank3202_boundary_pair_timing",
+    "top3183_rank3189_abog_rank3202_boundary_pair_timing",
+    "top3183_rank3190_abog_rank3202_boundary_pair_timing",
+    "top3183_rank3201_abog_rank3202_boundary_pair_timing",
+    "top3183_rank3210_abog_rank3202_boundary_pair_timing",
+    "top3183_rank3300_abog_rank3202_boundary_pair_timing",
+    "top3183_rank4000_abog_rank3202_boundary_pair_timing"
+  ],
+  "merge_same_filter_groups": true,
+  "outputs": {
+    "detail": "stage3/results/gemma2_2b_linear_merge_sae_patch_first_token_logits_v0/fake_id_hologram_probe_top3183_abog_extra_ranks_rank3202_boundary/first_token_logits.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_patch_first_token_logits_v0/fake_id_hologram_probe_top3183_abog_extra_ranks_rank3202_boundary/first_token_logit_summary.csv",
+    "feature_counts": "stage3/results/gemma2_2b_linear_merge_sae_patch_first_token_logits_v0/fake_id_hologram_probe_top3183_abog_extra_ranks_rank3202_boundary/selected_feature_counts.csv",
+    "markdown": "stage3/results/gemma2_2b_linear_merge_sae_patch_first_token_logits_v0/fake_id_hologram_probe_top3183_abog_extra_ranks_rank3202_boundary/PATCH_FIRST_TOKEN_LOGIT_SUMMARY.md"
+  }
+}

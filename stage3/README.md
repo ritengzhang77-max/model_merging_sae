@@ -257,6 +257,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   threshold: alpha0.5 to alpha0.75 raises harmful mean `I-It` from `1.535` to
   `4.229` and strict harmful safety from `0.500` to `1.000`, while benign
   over-refusal stays `0.000`.
+  First-token genericity controls are now negative for singleton rank identity:
+  boundary partners 3201-3210 with rank4000@AB/G all give exactly
+  `I-It=+0.015625` on the hologram prompt, and AB/G extras from rank3184 through
+  rank4000 with rank3202@boundary give the same margin. The shared patch context
+  and near-threshold quantization dominate the first-token bottleneck.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

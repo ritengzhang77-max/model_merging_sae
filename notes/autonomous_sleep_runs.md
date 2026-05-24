@@ -364,3 +364,11 @@ direction.
   `0.917` at alpha0.7, and `1.000` at alpha0.75. This generalizes the merge-line
   refusal-basin trend beyond fake-ID prompts, though the broad guard has several
   prompt-specific failure modes rather than a single clean threshold.
+- First-token genericity audit: with top3183 fixed, changing the boundary partner
+  across ranks 3201-3210 while keeping rank4000@AB/G fixed gives exactly the
+  same hologram first-token margin every time (`I-It = +0.015625`). The
+  complementary audit, changing the AB/G extra rank across 3184-3190, 3201,
+  3210, 3300, and 4000 while keeping rank3202@boundary fixed, also gives exactly
+  `+0.015625`. Individual rank identity is not visible at the first-token
+  margin level; the shared patch context and a quantized near-threshold decision
+  dominate.

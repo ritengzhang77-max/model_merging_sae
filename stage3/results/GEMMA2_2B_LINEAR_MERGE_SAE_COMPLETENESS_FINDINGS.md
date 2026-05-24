@@ -587,6 +587,16 @@ alpha0.6, `0.917` at alpha0.7, and `1.000` at alpha0.75. This supports the
 broader refusal-basin account while keeping the exact alpha0.80-to-0.81
 threshold claim scoped to the hologram prompt.
 
+Feature-identity genericity is now visible at the first-token level too. With
+top3183 fixed, changing the boundary partner across ranks 3201-3210 while
+holding rank4000@AB/G fixed gives exactly the same hologram margin every time:
+`I-It = +0.015625`. Changing the AB/G extra rank across 3184-3190, 3201, 3210,
+3300, and 4000 while holding rank3202@boundary fixed also gives exactly
+`+0.015625`. This makes the single-rank interpretation untenable at the
+first-token bottleneck: the individual rank identity is not what determines the
+observed margin; the shared patch context and a quantized near-threshold
+decision dominate.
+
 ## Artifacts
 
 - Broad-guard first-token alpha audit:
@@ -621,6 +631,10 @@ threshold claim scoped to the hologram prompt.
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/default_paraphrase_guard_v0_alpha05_06_07_075_max160/`
 - Broad paraphrase alpha0.5/0.6/0.7/0.75 first-token audit:
   `stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/default_paraphrase_guard_v0_alpha05_06_07_075_i_it/`
+- Hologram first-token boundary-partner genericity audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_patch_first_token_logits_v0/fake_id_hologram_probe_top3183_rank4000_boundary_partner_3201_3210/`
+- Hologram first-token AB/G-extra genericity audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_patch_first_token_logits_v0/fake_id_hologram_probe_top3183_abog_extra_ranks_rank3202_boundary/`
 - Full layer-17 post-FF activation patch:
   `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l17_postff_max160/`
 - Layer-17 SAE full decode:

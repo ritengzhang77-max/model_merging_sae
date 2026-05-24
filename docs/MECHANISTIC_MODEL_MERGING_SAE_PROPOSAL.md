@@ -466,6 +466,9 @@ patch's behavior metrics but has much larger harmful mean `I-It` (`4.620` vs
 being logit-equivalent across the family. A broad paraphrase guard shows the
 same merge-line trend more diffusely: alpha0.5 to alpha0.75 raises strict
 harmful safety from `0.500` to `1.000` while benign over-refusal stays `0.000`.
+First-token genericity controls make the singleton-rank reading weaker still:
+many tested boundary partners and many tested AB/G extra ranks land on the exact
+same hologram margin, `I-It=+0.015625`.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are
