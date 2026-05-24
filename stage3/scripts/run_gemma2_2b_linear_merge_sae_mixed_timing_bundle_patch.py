@@ -66,6 +66,8 @@ def variant_groups(
     prefix_top_k: int,
     extra_probe_ranks: tuple[int, ...],
     timing_pair_ranks: tuple[int, ...],
+    fixed_abog_ranks: tuple[int, ...],
+    boundary_partner_ranks: tuple[int, ...],
 ) -> list[dict[str, object]]:
     prefix = [rank_to_feature[rank] for rank in range(1, prefix_top_k + 1)]
     boundary = [rank_to_feature[3308], rank_to_feature[3323]]
@@ -346,6 +348,31 @@ def variant_groups(
                         ],
                     }
                 )
+    for fixed_rank in fixed_abog_ranks:
+        if fixed_rank <= prefix_top_k:
+            continue
+        fixed_feature = rank_to_feature[fixed_rank]
+        for boundary_rank in boundary_partner_ranks:
+            if boundary_rank <= prefix_top_k or boundary_rank == fixed_rank:
+                continue
+            boundary_feature = rank_to_feature[boundary_rank]
+            variants.append(
+                {
+                    "label": f"top{prefix_top_k}_rank{fixed_rank}_abog_rank{boundary_rank}_boundary_partner_sweep",
+                    "groups": [
+                        {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                        {"name": f"rank{fixed_rank}", "filter": "assistant_boundary_or_generated", "layer": 20, "features": [fixed_feature]},
+                        {"name": f"rank{boundary_rank}", "filter": "assistant_boundary", "layer": 20, "features": [boundary_feature]},
+                        {
+                            "name": "boundary_base_edge3211",
+                            "filter": "assistant_boundary",
+                            "layer": 20,
+                            "features": boundary + generated_base + [edge3211_feature],
+                        },
+                        {"name": "edge3214", "filter": "generated", "layer": 20, "features": [edge3214_feature]},
+                    ],
+                }
+            )
     return variants
 
 
@@ -568,6 +595,8 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--prefix-top-k", type=int, default=3210)
     ap.add_argument("--extra-probe-ranks", default="3215,3250,3300,3400,3600,4000")
     ap.add_argument("--timing-pair-ranks", default="")
+    ap.add_argument("--fixed-abog-ranks", default="")
+    ap.add_argument("--boundary-partner-ranks", default="")
     ap.add_argument("--merge-same-filter-groups", action="store_true")
     ap.add_argument("--variant-labels", default="")
     ap.add_argument("--max-new-tokens", type=int, default=160)
@@ -577,6 +606,8 @@ def parse_args() -> argparse.Namespace:
     args.layers = tuple(parse_ints(args.layers))
     args.extra_probe_ranks = tuple(parse_ints(args.extra_probe_ranks))
     args.timing_pair_ranks = tuple(parse_ints(args.timing_pair_ranks))
+    args.fixed_abog_ranks = tuple(parse_ints(args.fixed_abog_ranks))
+    args.boundary_partner_ranks = tuple(parse_ints(args.boundary_partner_ranks))
     if args.layers != (20,):
         raise ValueError("mixed timing runner currently supports layer 20 only")
     return args
@@ -590,7 +621,14 @@ def main() -> int:
     cache_dir = os.environ.get("HF_HOME")
     prompts = load_prompt_rows(args.prompt_jsonl)
     rank_to_feature = read_rank_features(args.rank_csv)
-    raw_variants = variant_groups(rank_to_feature, args.prefix_top_k, args.extra_probe_ranks, args.timing_pair_ranks)
+    raw_variants = variant_groups(
+        rank_to_feature,
+        args.prefix_top_k,
+        args.extra_probe_ranks,
+        args.timing_pair_ranks,
+        args.fixed_abog_ranks,
+        args.boundary_partner_ranks,
+    )
     if args.variant_labels.strip():
         keep = {item.strip() for item in args.variant_labels.split(",") if item.strip()}
         raw_variants = [variant for variant in raw_variants if str(variant["label"]) in keep]
@@ -646,6 +684,8 @@ def main() -> int:
                 "prefix_top_k": args.prefix_top_k,
                 "extra_probe_ranks": args.extra_probe_ranks,
                 "timing_pair_ranks": args.timing_pair_ranks,
+                "fixed_abog_ranks": args.fixed_abog_ranks,
+                "boundary_partner_ranks": args.boundary_partner_ranks,
                 "merge_same_filter_groups": bool(args.merge_same_filter_groups),
                 "donor_alpha": args.donor_alpha,
                 "recipient_alpha": args.recipient_alpha,

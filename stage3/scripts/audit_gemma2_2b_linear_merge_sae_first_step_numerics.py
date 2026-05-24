@@ -188,7 +188,7 @@ def main() -> int:
         f"top{args.high_prefix_top_k}_plus_rank{args.extra_rank}_extra_boundary_only",
     }
     for prefix_top_k in (args.low_prefix_top_k, args.high_prefix_top_k):
-        for variant in variant_groups(rank_to_feature, prefix_top_k, (args.extra_rank,), ()):
+        for variant in variant_groups(rank_to_feature, prefix_top_k, (args.extra_rank,), (), (), ()):
             if str(variant["label"]) in wanted_labels:
                 raw_variants.append(variant)
     variants, _count_rows = tensor_groups(raw_variants, (args.layer,), args.device)

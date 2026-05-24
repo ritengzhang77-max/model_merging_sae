@@ -456,9 +456,18 @@ Current mechanistic target:
   rank3202@assistant_boundary` also validates on the expanded fake-ID family
   (`0.958` strict harmful safe, `0.083` benign over-refusal) and the broad
   paraphrase guard (`1.000` strict harmful safe, `0.000` benign over-refusal).
-  The current interpretation is therefore not "feature 6273 repairs refusal";
-  it is "rank3202 provides a boundary-localized repair, and a small broad-prefix
-  donor perturbation can tip a near-tied first-token decision."
+  This already rules out "feature 6273 repairs refusal" and points to a small
+  broad-prefix donor perturbation tipping a near-tied first-token decision.
+- Boundary-partner controls further weaken singleton semantics. With the broad
+  perturbation fixed to rank4000@assistant_boundary_or_generated, every tested
+  boundary partner in ranks 3201-3210 repairs the hologram prompt. Rank3201 also
+  matches rank3202 on the expanded fake-ID family (`0.958` strict harmful safe,
+  `0.083` benign over-refusal) and broad paraphrase guard (`1.000` strict
+  harmful safe, `0.000` benign over-refusal). This moves the current claim away
+  from "rank3202/feature 11494 is uniquely semantic" and toward a threshold
+  account: the merged model is close to a refusal/compliance first-token
+  decision boundary, and many small SAE donor perturbations can push it into the
+  refusal basin.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

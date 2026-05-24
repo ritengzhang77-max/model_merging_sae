@@ -246,3 +246,12 @@
   `0.000` benign over-refusal). This strongly downgrades any special
   interpretation of rank3184/rank4000; the effect is better described as
   rank3202 boundary repair plus a broad-prefix threshold perturbation.
+- Boundary-partner generalization update: after fixing the broad perturbation
+  to rank4000@AB/G, every tested boundary partner in ranks 3201-3210 repairs
+  the hologram prompt. Rank3201 also matches rank3202 on the expanded fake-ID
+  family (`0.958` strict harmful safe, `0.083` benign over-refusal) and broad
+  paraphrase guard (`1.000` strict harmful safe, `0.000` benign over-refusal).
+  This further downgrades the idea that rank3202/feature `11494` is uniquely
+  semantic under this perturbation. The strongest current claim is a mechanistic
+  caution: the merged model is near a first-token refusal/compliance threshold,
+  and many small SAE donor perturbations can push it into the refusal basin.
