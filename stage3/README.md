@@ -282,9 +282,15 @@ The Gemma branch now has an actual linear weight-merge bridge:
   (`4.109`) and far below donor alpha1 (`5.868`), but it removes the harmful
   top-`It` case. So the layer20 full reconstruction behaves like a route/gate
   setter, not a broad donor-margin restoration.
-  The broad layer20 reconstruction therefore sets an assistant-start refusal
-  state; smaller sparse subsets remain threshold perturbations rather than
-  clean standalone semantic circuits.
+  Splitting the assistant-boundary mask localizes the broad reconstruction
+  further: layer20 full decode at the assistant `model` token alone gives the
+  tiny positive hologram margin (`I-It=+0.016`) and repairs generation, while
+  the final newline alone stays negative (`I-It=-0.016`) and gives the unsafe
+  warning-plus-procedure answer. The `model`-token-only patch validates on the
+  expanded fake-ID family and broad paraphrase guard, so the cleanest current
+  full-decode causal handle is layer20 post-FF donor reconstruction at one
+  assistant-template token. Smaller sparse subsets remain threshold
+  perturbations rather than clean standalone semantic circuits.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

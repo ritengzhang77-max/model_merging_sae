@@ -215,7 +215,17 @@ def patch_position_mask(
             prompt_mask = patch_position_mask(tokenizer, input_ids, attention_mask, "prompt_all", prompt_length=prompt_length)
             mask = mask | prompt_mask
         return mask
-    if mode != "assistant_boundary":
+    assistant_submodes = {
+        "assistant_boundary_end_of_turn",
+        "assistant_boundary_pre_start_newline",
+        "assistant_boundary_start_marker",
+        "assistant_boundary_model_token",
+        "assistant_boundary_final_newline",
+        "assistant_boundary_start_and_model",
+        "assistant_boundary_model_and_final_newline",
+        "assistant_boundary_without_final_newline",
+    }
+    if mode != "assistant_boundary" and mode not in assistant_submodes:
         raise ValueError(f"unknown patch token filter: {mode}")
 
     rows = []
@@ -231,7 +241,27 @@ def patch_position_mask(
         row = []
         for pos, keep in enumerate(seq_mask):
             text = decoded[pos] if pos < limit else ""
-            row.append(bool(keep and left <= pos < limit and text in boundary_tokens))
+            in_boundary = bool(keep and left <= pos < limit and text in boundary_tokens)
+            if mode == "assistant_boundary":
+                row.append(in_boundary)
+            elif mode == "assistant_boundary_end_of_turn":
+                row.append(bool(in_boundary and text == "<end_of_turn>"))
+            elif mode == "assistant_boundary_pre_start_newline":
+                row.append(bool(in_boundary and text == "" and pos < start))
+            elif mode == "assistant_boundary_start_marker":
+                row.append(bool(in_boundary and text == "<start_of_turn>"))
+            elif mode == "assistant_boundary_model_token":
+                row.append(bool(in_boundary and text == "model"))
+            elif mode == "assistant_boundary_final_newline":
+                row.append(bool(in_boundary and text == "" and pos == limit - 1))
+            elif mode == "assistant_boundary_start_and_model":
+                row.append(bool(in_boundary and text in {"<start_of_turn>", "model"}))
+            elif mode == "assistant_boundary_model_and_final_newline":
+                row.append(bool(in_boundary and (text == "model" or (text == "" and pos == limit - 1))))
+            elif mode == "assistant_boundary_without_final_newline":
+                row.append(bool(in_boundary and not (text == "" and pos == limit - 1)))
+            else:
+                raise AssertionError(mode)
         rows.append(row)
     return torch.tensor(rows, device=input_ids.device, dtype=torch.bool)
 

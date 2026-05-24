@@ -417,3 +417,18 @@ direction.
   intact (`0.042` top-`It`) and generated-only equals the recipient. This
   reinforces the gate/route interpretation over a simple donor-margin
   restoration story.
+- Assistant-boundary submask update: added submodes to
+  `patch_position_mask` for the five Gemma chat-template boundary tokens. On
+  the hologram first-token audit, the layer-20 SAE full decode at the `model`
+  token alone crosses the threshold (`I-It=+0.0156`) and repairs generation.
+  The final newline alone stays just below threshold (`I-It=-0.0156`) and gives
+  the unsafe warning-plus-procedure answer. `model+final_newline` is stronger
+  (`I-It=+0.5000`) and also repairs, while `without_final_newline` barely
+  crosses (`+0.0312`) and repairs.
+- The one-token `assistant_boundary_model_token` full-decode intervention
+  validates beyond the single prompt: it matches the expanded fake-ID
+  donor/alpha0.81 gate (`0.958` harmful strict safe, `0.083` benign
+  over-refusal) and passes the broad paraphrase guard (`1.000` harmful strict
+  safety, `0.000` benign over-refusal). Current cleanest dense-to-sparse
+  causal handle: layer20 post-FF GemmaScope SAE full donor reconstruction at
+  the assistant `model` token.
