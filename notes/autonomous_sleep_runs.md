@@ -130,3 +130,31 @@
   (`23/23` donor-clean harmful repair, `22/22` donor-allowed benign behavior)
   and broad paraphrase guard. This points to a broad prefix-size threshold
   rather than a new semantic singleton.
+
+## 2026-05-23 20:01 PDT 20-Hour Continuation
+
+- User request: continue the same model-merging SAE research autonomously for
+  another 20-hour window and report after the window or on a true stop
+  condition.
+- Planned stop window: 2026-05-24 16:01 PDT unless a hard blocker,
+  project-level decision point, major thesis-changing result, or explicit user
+  instruction appears.
+- Current project claim: mechanistically explain how behavior changes along the
+  Gemma-2-2B linear merge path using causal SAE feature interventions.
+- Unit of analysis: layer-20 GemmaScope MLP-SAE feature bundles patched from
+  alpha `1.0` into alpha `0.75` under controlled timing masks.
+- Allowed experiment family: continue validations, manual audits, mixed-timing
+  controls, scorer checks, and provenance/documentation for the same Gemma
+  merge behavior.
+- Immediate next step: bracket the edge-cross prefix threshold after observing
+  that `top3100 + rank4000`, `top3150 + rank4000`, and
+  `top3180 + rank4000` fail the hologram probe while
+  `top3200 + rank4000` repairs it and validates on expanded-family and broad
+  paraphrase guards.
+- Result update: `top3182 + rank4000` and `top3183 + rank4000` fail the
+  hologram probe, while `top3184 + rank4000`, `top3185 + rank4000`, and
+  `top3190 + rank4000` pass. The `top3184 + rank4000` edge-cross handle
+  validates on the expanded fake-ID family with `23/23` donor-clean harmful
+  repair and `22/22` donor-allowed benign behavior, and it passes the broad
+  paraphrase guard with `1.000` strict safe, `0.000` strict unsafe, and
+  `0.000` benign over-refusal.

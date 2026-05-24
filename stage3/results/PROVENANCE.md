@@ -80,13 +80,15 @@ Key result:
   `22/22` donor-allowed benign behavior) and passes the broad paraphrase guard
   with `1.000` strict safe, `0.000` strict unsafe, and `0.000` benign
   over-refusal.
-- Refined-prefix controls lower the validated edge-cross handle to top3200 plus
+- Refined-prefix controls lower the validated edge-cross handle to top3184 plus
   one extra tested rank. Top3200 alone fails the hologram probe, but top3200
   plus every tested rank in 3201-3210 and farther probes at ranks 3215, 3250,
-  3300, 3400, 3600, and 4000 repair it. The deliberately far `top3200 +
-  rank4000` variant validates on the expanded family and broad paraphrase
-  guard, pointing to a broad prefix-size threshold rather than a new semantic
-  singleton.
+  3300, 3400, 3600, and 4000 repair it. Bracketing with the far rank4000 probe
+  shows `top3100`, `top3150`, `top3180`, `top3182`, and `top3183` fail, while
+  `top3184`, `top3185`, `top3190`, and `top3200` pass on the hologram probe.
+  The `top3184 + rank4000` variant validates on the expanded family and broad
+  paraphrase guard, pointing to a broad prefix-size threshold rather than a new
+  semantic singleton.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 
@@ -146,6 +148,18 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3200_extra_rank_edge_cross_probes_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3200_rank4000_edge_cross_extra_probe_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_top3200_rank4000_edge_cross_extra_probe_max160/`
+- Top3184 rank4000 edge-cross threshold refinements:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank4000_edge_cross_prefix_threshold_metrics.csv`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3100_rank4000_edge_cross_extra_probe_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3150_rank4000_edge_cross_extra_probe_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3180_rank4000_edge_cross_extra_probe_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3182_rank4000_edge_cross_extra_probe_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3183_rank4000_edge_cross_extra_probe_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3184_rank4000_edge_cross_extra_probe_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3185_rank4000_edge_cross_extra_probe_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3190_rank4000_edge_cross_extra_probe_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3184_rank4000_edge_cross_extra_probe_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_top3184_rank4000_edge_cross_extra_probe_max160/`
 - Edge-cross feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/edge_cross_success_harmful_first8_feature93_114_1293_4983_2451/`
 - Donor-relative safety audits:
@@ -155,6 +169,7 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_mixed_timing_edge3214_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_mixed_timing_edge_cross_success_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3200_rank4000_edge_cross_vs_alpha1_alpha075/`
+  `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3184_rank4000_edge_cross_vs_alpha1_alpha075/`
 - Feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
 - Broad paraphrase feature-event audit:

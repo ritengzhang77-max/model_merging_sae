@@ -381,11 +381,13 @@ Current mechanistic target:
   edge-cross variant also passes the broad paraphrase guard with `1.000` strict
   safe, `0.000` strict unsafe, and `0.000` benign over-refusal.
 - Refined-prefix controls show the edge-cross timing lowers the current
-  validated prefix from contiguous top3210 to top3200 plus one extra tested
+  validated prefix from contiguous top3210 to top3184 plus one extra tested
   feature. Top3200 alone still fails the hologram probe, but top3200 plus every
   tested extra rank in 3201-3210 repairs it, as do farther extra probes at
-  ranks 3215, 3250, 3300, 3400, 3600, and 4000. The deliberately far
-  `top3200 + rank4000` variant validates on the expanded fake-ID family
+  ranks 3215, 3250, 3300, 3400, 3600, and 4000. Bracketing with rank4000 then
+  shows `top3100`, `top3150`, `top3180`, `top3182`, and `top3183` fail, while
+  `top3184`, `top3185`, `top3190`, and `top3200` pass on the hologram probe.
+  The `top3184 + rank4000` variant validates on the expanded fake-ID family
   (`23/23` donor-clean harmful repair, `22/22` donor-allowed benign behavior)
   and passes the broad paraphrase guard. This weakens a singleton-specific
   interpretation of the prefix edge and points to a broad prefix-size threshold.
