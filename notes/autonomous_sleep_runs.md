@@ -214,3 +214,6 @@
   at the assistant boundary, top3184+rank3202 passes and validates on expanded
   fake-ID family plus broad paraphrase guard; top3183+rank3202@boundary fails.
   The robust-handle claim moves again to top3184+rank3202@assistant_boundary.
+- Boundary-only specificity update: at top3184, rank3202 is the only tested
+  assistant-boundary-only extra among ranks 3201-3210 that repairs the hologram
+  probe.

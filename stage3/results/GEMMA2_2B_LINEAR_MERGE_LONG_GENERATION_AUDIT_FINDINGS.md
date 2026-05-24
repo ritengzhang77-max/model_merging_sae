@@ -318,6 +318,8 @@ Rank3202 timing is boundary-like: assistant-boundary-only rank3202 passes, but
 generated-only rank3202 fails. At top3184, the broader
 `assistant_boundary_or_generated` timing also fails, so generated-token rank3202
 appears destabilizing rather than helpful.
+A top3184 boundary-only singleton sweep shows rank3202 is the only tested rank
+in 3201-3210 that repairs the hologram probe.
 
 Next evaluation work should separate:
 

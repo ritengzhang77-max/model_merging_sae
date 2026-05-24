@@ -430,6 +430,8 @@ The lower-bound interaction is timing-sensitive. Under broad
 top3185+rank3202 passes; under assistant-boundary-only timing, top3184+rank3202
 passes, so rank3185 is not required for the validated repair. Rank3202's timing
 is boundary-like: assistant-boundary-only passes, while generated-only fails.
+At top3184, rank3202 is also the only tested assistant-boundary extra among
+ranks 3201-3210 that repairs the hologram probe.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

@@ -132,6 +132,8 @@ Key result:
   assistant-boundary-only rank3202 passes and generated-only rank3202 fails.
   Main boundary-only validation:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3202_boundary_only_validation_metrics.csv`.
+  Boundary-only singleton specificity sweep:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3201_3210_boundary_only_singleton_sweep_metrics.csv`.
   Top3185 compact timing table:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3202_float32_timing_probe_metrics.csv`.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below

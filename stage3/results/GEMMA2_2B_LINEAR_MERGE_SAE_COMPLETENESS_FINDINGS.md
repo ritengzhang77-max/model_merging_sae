@@ -420,6 +420,9 @@ Current mechanistic target:
   fails and top3185+rank3202 passes; after isolating rank3202 to the assistant
   boundary, top3184+rank3202 passes. This makes rank3202 feature `11494` at the
   assistant boundary the sharper causal target.
+- A boundary-only singleton sweep confirms rank specificity: at top3184, rank
+  3202 is the only tested assistant-boundary extra in ranks 3201-3210 that
+  repairs the hologram probe.
 - A partner sweep confirms specificity at that lower bound: with rank3185
   present, rank3202 is the only tested partner in ranks 3201-3210 that repairs
   the hologram probe.

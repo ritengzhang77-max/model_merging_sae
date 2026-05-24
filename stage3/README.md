@@ -213,6 +213,8 @@ The Gemma branch now has an actual linear weight-merge bridge:
   Rank3202 timing is boundary-like: assistant-boundary-only passes and
   generated-only fails; broad boundary-or-generated rank3202 can fail at the
   top3184 prefix.
+  A top3184 boundary-only singleton sweep shows rank3202 is the only tested
+  rank in 3201-3210 that passes.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

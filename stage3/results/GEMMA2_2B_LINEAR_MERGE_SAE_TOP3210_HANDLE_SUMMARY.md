@@ -234,5 +234,9 @@ rank3202 fails. Thus rank3202 looks like a boundary/setup feature for this
 repair, not a generated-token-only continuation feature. Main boundary-only
 validation:
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3202_boundary_only_validation_metrics.csv`.
+The boundary-only singleton sweep confirms rank specificity: at top3184, rank
+3202 is the only tested assistant-boundary extra in ranks 3201-3210 that
+repairs the hologram probe. Compact sweep:
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3201_3210_boundary_only_singleton_sweep_metrics.csv`.
 Top3185 timing probe:
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3202_float32_timing_probe_metrics.csv`.
