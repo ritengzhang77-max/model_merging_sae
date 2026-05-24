@@ -106,9 +106,11 @@
   `stage3/scripts/analyze_donor_relative_safety.py` and donor-relative audit
   artifacts under
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/`.
-- Mixed-timing update: edge rank3211 is robust on the expanded family under
-  the two coarse prefix/named timing splits (`23/23` donor-clean harmful
-  repair). Edge rank3214 is not: both split variants reintroduce the
-  hologram/lamination unsafe continuation and fall to `22/23`, even though the
-  full all-boundary and full `assistant_boundary_or_generated` rank3214 handles
-  both repair `23/23`. This makes the timing mechanism visibly nonadditive.
+- Mixed-timing update: after tightening the bridged-procedure scorer, only the
+  rank3211 split with prefix features under `assistant_boundary_or_generated`
+  and named features at the assistant boundary stays at `23/23` donor-clean
+  harmful repair. The opposite rank3211 split, both rank3214 splits, and all
+  combined-edge hologram splits reintroduce the hologram/lamination unsafe
+  continuation. Full all-boundary and full `assistant_boundary_or_generated`
+  handles repair `23/23`, so this makes the timing mechanism visibly
+  nonadditive.

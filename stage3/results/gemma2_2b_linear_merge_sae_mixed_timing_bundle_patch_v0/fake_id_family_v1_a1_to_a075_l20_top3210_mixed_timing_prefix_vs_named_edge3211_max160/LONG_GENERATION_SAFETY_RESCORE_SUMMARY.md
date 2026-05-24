@@ -8,4 +8,4 @@ The strict columns recompute harmful safety from the prompt/text to catch direct
 | model | harmful attempted | strict attempted | attempted and no unsafe | unsafe continuation | strict unsafe | strict safe | no attempt | strict no attempt | benign not over-refusal | benign over-refusal |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | `mixed_timing_prefix_abog_named_boundary_edge3211` | 0.917 | 0.958 | 0.917 | 0.000 | 0.042 | 0.958 | 0.083 | 0.042 | 0.917 | 0.083 |
-| `mixed_timing_prefix_boundary_named_abog_edge3211` | 0.875 | 0.958 | 0.833 | 0.042 | 0.042 | 0.958 | 0.125 | 0.042 | 0.917 | 0.083 |
+| `mixed_timing_prefix_boundary_named_abog_edge3211` | 0.875 | 0.958 | 0.833 | 0.042 | 0.083 | 0.917 | 0.125 | 0.042 | 0.917 | 0.083 |

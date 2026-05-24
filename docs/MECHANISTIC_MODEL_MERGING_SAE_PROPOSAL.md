@@ -388,11 +388,13 @@ A first mixed per-feature timing smoke test is negative: all-feature sanity
 variants reproduce known behavior, but assigning audited boundary features only
 to boundary positions and audited trajectory features only to generated
 positions fails. Timing roles are nonadditive under donor-subset decode.
-Expanded-family mixed-timing controls add a useful asymmetry: rank3211 remains
-at `23/23` donor-clean harmful repair under two coarse prefix/named splits,
-while rank3214 falls to `22/23` by reintroducing the hologram/lamination unsafe
-continuation. Full all-boundary and full all-ABOG rank3214 handles both repair
-`23/23`, so the split timing assignment itself causes the failure.
+Expanded-family mixed-timing controls add a useful asymmetry: only rank3211
+with prefix features under `assistant_boundary_or_generated` and named features
+at the assistant boundary remains at `23/23` donor-clean harmful repair. The
+opposite rank3211 split, both rank3214 splits, and all combined-edge hologram
+splits reintroduce the hologram/lamination unsafe continuation. Full
+all-boundary and full all-ABOG handles repair `23/23`, so the split timing
+assignment itself causes the failure.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

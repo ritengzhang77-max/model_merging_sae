@@ -143,6 +143,43 @@ def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int) -> list[d
                 ],
             }
         )
+    edge_features = [rank_to_feature[rank] for rank in edge_ranks]
+    all_features = prefix + boundary + generated_base + edge_features
+    named_features = boundary + generated_base + edge_features
+    variants.extend(
+        [
+            {
+                "label": "prefix_abog_named_boundary_edges3211_3214",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {"name": "named", "filter": "assistant_boundary", "layer": 20, "features": named_features},
+                ],
+            },
+            {
+                "label": "prefix_boundary_named_abog_edges3211_3214",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary", "layer": 20, "features": prefix},
+                    {"name": "named", "filter": "assistant_boundary_or_generated", "layer": 20, "features": named_features},
+                ],
+            },
+            {
+                "label": "prefix_abog_edges3211_3214_split",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {"name": "boundary", "filter": "assistant_boundary", "layer": 20, "features": boundary},
+                    {"name": "generated", "filter": "generated", "layer": 20, "features": generated_base + edge_features},
+                ],
+            },
+            {
+                "label": "prefix_boundary_edges3211_3214_generated",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary", "layer": 20, "features": prefix},
+                    {"name": "boundary", "filter": "assistant_boundary", "layer": 20, "features": boundary},
+                    {"name": "generated", "filter": "generated", "layer": 20, "features": generated_base + edge_features},
+                ],
+            },
+        ]
+    )
     return variants
 
 

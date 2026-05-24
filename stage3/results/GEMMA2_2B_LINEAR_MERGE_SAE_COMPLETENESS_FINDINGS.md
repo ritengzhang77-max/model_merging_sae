@@ -361,13 +361,15 @@ Current mechanistic target:
   nonadditive at the subset-decode level; audit-derived feature roles do not
   directly compose into separate token masks.
 - Expanded-family mixed-timing follow-up shows the nonadditivity is not just a
-  single-prompt artifact. Edge rank3211 is robust under two coarse prefix/named
-  timing splits (`23/23` donor-clean harmful repair), but edge rank3214 is not:
-  both prefix/named split variants fall to `22/23` donor-clean harmful repair
-  by reintroducing the hologram/lamination unsafe continuation. The full
-  all-boundary and full `assistant_boundary_or_generated` rank3214 handles both
-  repair `23/23`, so the failure is caused by splitting timing assignments
-  across the subset-decode components.
+  single-prompt artifact. Only the rank3211 variant with prefix features under
+  `assistant_boundary_or_generated` and named features at the assistant boundary
+  keeps `23/23` donor-clean harmful repair. The opposite rank3211 split and
+  both rank3214 splits fall to `22/23` by reintroducing the
+  hologram/lamination unsafe continuation. Adding both rank3211 and rank3214 to
+  the split-timing hologram test also fails for all tested split variants. The
+  full all-boundary and full `assistant_boundary_or_generated` handles repair
+  `23/23`, so the failure is caused by splitting timing assignments across the
+  subset-decode components.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

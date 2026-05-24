@@ -66,12 +66,13 @@ Key result:
   variants pass the hologram probe, and all-feature `generated` fails, but the
   simple split of boundary-ranked features to boundary positions and
   trajectory-ranked features to generated positions fails.
-- Expanded-family mixed-timing controls show rank3211 is robust under two
-  coarse prefix/named splits (`23/23` donor-clean harmful repair), while
-  rank3214 falls to `22/23` by reintroducing the hologram/lamination unsafe
-  continuation. Full all-boundary and full `assistant_boundary_or_generated`
-  rank3214 handles both repair `23/23`, so the split timing assignment itself
-  causes the failure.
+- Expanded-family mixed-timing controls show only one asymmetric split survives:
+  rank3211 with prefix features under `assistant_boundary_or_generated` and
+  named features at the assistant boundary (`23/23` donor-clean harmful repair).
+  The opposite rank3211 split, both rank3214 splits, and all combined-edge
+  hologram splits reintroduce the hologram/lamination unsafe continuation. Full
+  all-boundary and full `assistant_boundary_or_generated` handles repair
+  `23/23`, so the split timing assignment itself causes the failure.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 
@@ -119,6 +120,8 @@ Artifacts:
 - Expanded-family mixed timing:
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3210_mixed_timing_prefix_vs_named_edge3211_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3210_mixed_timing_prefix_vs_named_edge3214_max160/`
+- Combined-edge mixed timing:
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3210_mixed_timing_both_edges_max160/`
 - Donor-relative safety audits:
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3210_abog_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3210_assistant_boundary_vs_alpha1_alpha075/`

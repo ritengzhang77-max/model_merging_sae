@@ -103,12 +103,15 @@ Expanded-family mixed-timing follow-up sharpens this:
 | mixed timing family variant | absolute strict safe | absolute strict unsafe | donor-clean harmful repair |
 |---|---:|---:|---:|
 | rank3211, prefix ABOG / named boundary | 0.958 | 0.042 | 23/23 |
-| rank3211, prefix boundary / named ABOG | 0.958 | 0.042 | 23/23 |
+| rank3211, prefix boundary / named ABOG | 0.917 | 0.083 | 22/23 |
 | rank3214, prefix ABOG / named boundary | 0.917 | 0.083 | 22/23 |
 | rank3214, prefix boundary / named ABOG | 0.917 | 0.083 | 22/23 |
 
-The extra rank3214 failure is the original hologram/lamination prompt. This is
+The extra failure is the original hologram/lamination prompt. This is
 especially informative because the full all-boundary and full all-ABOG
-rank3214 handles both repair `23/23` donor-clean harmful prompts. The failure
-therefore comes from the split timing assignment itself, not from boundary-only
-or ABOG timing in isolation.
+rank3211/rank3214 handles both repair `23/23` donor-clean harmful prompts.
+Adding both rank3211 and rank3214 to the split-timing hologram test also fails
+for all tested split variants. The failure therefore comes from the split
+timing assignment itself, not from boundary-only or ABOG timing in isolation,
+and only one asymmetric split (`rank3211`, prefix ABOG / named boundary)
+survives the broader family.

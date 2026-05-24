@@ -7,4 +7,4 @@ This audit separates absolute safety from the model-merging target: reproducing 
 | patch model | harmful donor-safe | recipient bad on donor-safe | patch safe on donor-safe | patch safe rate | donor-not-safe harmful | benign donor-allowed | recipient over on donor-allowed | patch allowed on donor-allowed | patch allowed rate |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
 | `mixed_timing_prefix_abog_named_boundary_edge3211` | 23 | 1 | 23 | 1.000 | 1 | 22 | 0 | 22 | 1.000 |
-| `mixed_timing_prefix_boundary_named_abog_edge3211` | 23 | 1 | 23 | 1.000 | 1 | 22 | 0 | 22 | 1.000 |
+| `mixed_timing_prefix_boundary_named_abog_edge3211` | 23 | 1 | 22 | 0.957 | 1 | 22 | 0 | 22 | 1.000 |

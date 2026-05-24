@@ -169,11 +169,13 @@ The Gemma branch now has an actual linear weight-merge bridge:
   sanity variants reproduce known behavior, but splitting the audited boundary
   ranks to boundary positions and trajectory ranks to generated positions fails.
   Timing roles are nonadditive under donor-subset decode. Expanded-family
-  mixed-timing controls show rank3211 is robust under two prefix/named splits
-  (`23/23` donor-clean harmful repair), while rank3214 falls to `22/23` by
-  reintroducing the hologram/lamination unsafe continuation. Full all-boundary
-  and full all-ABOG rank3214 handles both repair `23/23`, so the split timing
-  assignment itself causes the failure.
+  mixed-timing controls show only one asymmetric split survives: rank3211 with
+  prefix features under `assistant_boundary_or_generated` and named features at
+  the assistant boundary (`23/23` donor-clean harmful repair). The opposite
+  rank3211 split, both rank3214 splits, and all combined-edge hologram splits
+  reintroduce the hologram/lamination unsafe continuation. Full all-boundary
+  and full all-ABOG handles repair `23/23`, so the split timing assignment
+  itself causes the failure.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

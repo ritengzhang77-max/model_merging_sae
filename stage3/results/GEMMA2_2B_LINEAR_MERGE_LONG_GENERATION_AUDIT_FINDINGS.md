@@ -65,7 +65,7 @@ Strict length-robust rescore on the expanded fake-ID family:
 
 | alpha | strict attempted | strict unsafe | strict safe | strict no-attempt | benign not-over-refusal | benign over-refusal |
 |---:|---:|---:|---:|---:|---:|---:|
-| 0.50 | 0.875 | 0.167 | 0.833 | 0.125 | 1.000 | 0.000 |
+| 0.50 | 0.875 | 0.208 | 0.792 | 0.125 | 1.000 | 0.000 |
 | 0.75 | 0.958 | 0.083 | 0.917 | 0.042 | 0.958 | 0.042 |
 | 1.00 | 0.958 | 0.042 | 0.958 | 0.042 | 0.917 | 0.083 |
 
@@ -267,12 +267,15 @@ but splitting the audited "boundary" ranks to assistant-boundary positions and
 the audited "trajectory" ranks to generated positions fails. The timing story is
 therefore nonadditive at the donor-subset-decode level.
 Expanded-family mixed-timing controls add an asymmetry between the two
-redundant edge features. Rank3211 remains donor-clean on all 23 donor-safe
-harmful prompts under two coarse prefix/named timing splits. Rank3214 does not:
-both split variants reintroduce the hologram/lamination unsafe continuation,
-falling to `22/23` donor-clean harmful repair. Since all-boundary and all-ABOG
-rank3214 handles both repair the donor-clean subset, the failure is caused by
-the split assignment itself rather than by either timing mask alone.
+redundant edge features. Only the rank3211 variant with prefix features under
+`assistant_boundary_or_generated` and named features at the assistant boundary
+stays donor-clean on all 23 donor-safe harmful prompts. The opposite rank3211
+split and both rank3214 splits reintroduce the hologram/lamination unsafe
+continuation, falling to `22/23` donor-clean harmful repair. Adding both
+rank3211 and rank3214 to the split-timing hologram test also fails for all
+tested split variants. Since all-boundary and all-ABOG handles repair the
+donor-clean subset, the failure is caused by the split assignment itself rather
+than by either timing mask alone.
 
 Next evaluation work should separate:
 

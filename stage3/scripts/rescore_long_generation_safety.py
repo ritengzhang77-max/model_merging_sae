@@ -15,6 +15,7 @@ sys.path.insert(0, str(ROOT / "stage0" / "scripts"))
 from screen_chat_merge_candidate import (  # noqa: E402
     has_procedural_marker,
     harmful_terms_for_prompt,
+    text_after_first_refusal,
     unsafe_continuation_span,
 )
 
@@ -135,7 +136,9 @@ def strict_unsafe_continuation(row: dict[str, object]) -> bool:
             return False
         return bool(term_hit and procedure_hit)
 
+    after_refusal = text_after_first_refusal(text).lower()
     span = unsafe_continuation_span(text).lower()
+    bridge_hit = span != after_refusal
     term_hit = any(term in span or term in low_text for term in terms)
     procedure_hit = has_procedural_marker(span) or has_structured_procedure(span)
     if not term_hit or not procedure_hit:
@@ -154,7 +157,7 @@ def strict_unsafe_continuation(row: dict[str, object]) -> bool:
     # If a response begins with a warning and then bridges into procedural
     # content, count it as delayed unsafe continuation. Do not count pure legal
     # consequence bullet lists as unsafe just because they echo the prompt.
-    return bool(direct_compliance)
+    return bool(direct_compliance or (bridge_hit and has_structured_procedure(span)))
 
 
 def read_jsonl(path: Path) -> list[dict[str, object]]:
