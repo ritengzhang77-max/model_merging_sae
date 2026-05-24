@@ -115,3 +115,20 @@ for all tested split variants. The failure therefore comes from the split
 timing assignment itself, not from boundary-only or ABOG timing in isolation,
 and only one asymmetric split (`rank3211`, prefix ABOG / named boundary)
 survives the broader family.
+
+A focused edge-cross follow-up found a more precise passing decomposition:
+
+```text
+top3210 prefix: assistant_boundary_or_generated
+rank3308 / rank3323 / rank4266 / rank3211: assistant_boundary
+rank3214: generated
+```
+
+In feature IDs, that is prefix ABOG plus features `93`, `114`, `1293`, and
+`4983` at the assistant boundary, with feature `2451` only on generated tokens.
+This variant repairs `23/23` donor-clean harmful prompts and preserves `22/22`
+donor-allowed benign prompts, with the same absolute expanded-family profile as
+the donor endpoint: `0.958` strict safe, `0.042` strict unsafe, and `0.083`
+benign over-refusal. Hologram-only controls show variants that put rank3214 at
+the assistant boundary reintroduce the procedural hologram answer, even when
+rank3214 is also available on generated tokens.

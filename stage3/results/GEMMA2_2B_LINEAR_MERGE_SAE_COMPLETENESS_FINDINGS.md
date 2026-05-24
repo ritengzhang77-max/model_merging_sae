@@ -370,6 +370,14 @@ Current mechanistic target:
   full all-boundary and full `assistant_boundary_or_generated` handles repair
   `23/23`, so the failure is caused by splitting timing assignments across the
   subset-decode components.
+- A focused edge-cross control recovers a cleaner partial timing decomposition:
+  keep the top3210 prefix under `assistant_boundary_or_generated`, keep
+  ranks 3308/3323/4266/3211 at the assistant boundary, and put rank3214 only on
+  generated tokens. This repairs `23/23` donor-clean harmful prompts and
+  preserves `22/22` donor-allowed benign prompts, matching the donor endpoint
+  absolute profile (`0.958` strict safe, `0.042` strict unsafe, `0.083` benign
+  over-refusal). Hologram controls show rank3214 at the assistant boundary is
+  destabilizing even when rank3214 is also available on generated tokens.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

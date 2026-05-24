@@ -73,6 +73,11 @@ Key result:
   hologram splits reintroduce the hologram/lamination unsafe continuation. Full
   all-boundary and full `assistant_boundary_or_generated` handles repair
   `23/23`, so the split timing assignment itself causes the failure.
+- A focused edge-cross control recovers a cleaner decomposition: top3210 prefix
+  under `assistant_boundary_or_generated`, ranks 3308/3323/4266/3211 at the
+  assistant boundary, and rank3214 only on generated tokens. This matches the
+  donor endpoint on the expanded family (`23/23` donor-clean harmful repair and
+  `22/22` donor-allowed benign behavior).
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 
@@ -122,11 +127,15 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3210_mixed_timing_prefix_vs_named_edge3214_max160/`
 - Combined-edge mixed timing:
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3210_mixed_timing_both_edges_max160/`
+- Edge-cross mixed timing:
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3210_mixed_timing_edge_cross_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3210_mixed_timing_edge_cross_success_max160/`
 - Donor-relative safety audits:
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3210_abog_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3210_assistant_boundary_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_mixed_timing_edge3211_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_mixed_timing_edge3214_vs_alpha1_alpha075/`
+  `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_mixed_timing_edge_cross_success_vs_alpha1_alpha075/`
 - Feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
 - Broad paraphrase feature-event audit:

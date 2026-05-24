@@ -175,7 +175,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   rank3211 split, both rank3214 splits, and all combined-edge hologram splits
   reintroduce the hologram/lamination unsafe continuation. Full all-boundary
   and full all-ABOG handles repair `23/23`, so the split timing assignment
-  itself causes the failure.
+  itself causes the failure. A focused edge-cross control recovers a cleaner
+  decomposition: top3210 prefix under `assistant_boundary_or_generated`,
+  ranks 3308/3323/4266/3211 at the assistant boundary, and rank3214 only on
+  generated tokens. That variant matches the donor endpoint on the expanded
+  family (`23/23` donor-clean harmful repair and `22/22` donor-allowed benign
+  behavior).
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

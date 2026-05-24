@@ -144,6 +144,8 @@ def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int) -> list[d
             }
         )
     edge_features = [rank_to_feature[rank] for rank in edge_ranks]
+    edge3211_feature = rank_to_feature[3211]
+    edge3214_feature = rank_to_feature[3214]
     all_features = prefix + boundary + generated_base + edge_features
     named_features = boundary + generated_base + edge_features
     variants.extend(
@@ -176,6 +178,66 @@ def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int) -> list[d
                     {"name": "prefix", "filter": "assistant_boundary", "layer": 20, "features": prefix},
                     {"name": "boundary", "filter": "assistant_boundary", "layer": 20, "features": boundary},
                     {"name": "generated", "filter": "generated", "layer": 20, "features": generated_base + edge_features},
+                ],
+            },
+            {
+                "label": "prefix_abog_boundary3211_edge3214_abog",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {
+                        "name": "boundary_base_edge3211",
+                        "filter": "assistant_boundary",
+                        "layer": 20,
+                        "features": boundary + generated_base + [edge3211_feature],
+                    },
+                    {"name": "edge3214", "filter": "assistant_boundary_or_generated", "layer": 20, "features": [edge3214_feature]},
+                ],
+            },
+            {
+                "label": "prefix_abog_boundary3214_edge3211_abog",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {
+                        "name": "boundary_base_edge3214",
+                        "filter": "assistant_boundary",
+                        "layer": 20,
+                        "features": boundary + generated_base + [edge3214_feature],
+                    },
+                    {"name": "edge3211", "filter": "assistant_boundary_or_generated", "layer": 20, "features": [edge3211_feature]},
+                ],
+            },
+            {
+                "label": "prefix_abog_boundarybase_edges_generated",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {"name": "boundary_base", "filter": "assistant_boundary", "layer": 20, "features": boundary + generated_base},
+                    {"name": "edges", "filter": "generated", "layer": 20, "features": edge_features},
+                ],
+            },
+            {
+                "label": "prefix_abog_boundarybase_edge3211_boundary_edge3214_generated",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {
+                        "name": "boundary_base_edge3211",
+                        "filter": "assistant_boundary",
+                        "layer": 20,
+                        "features": boundary + generated_base + [edge3211_feature],
+                    },
+                    {"name": "edge3214", "filter": "generated", "layer": 20, "features": [edge3214_feature]},
+                ],
+            },
+            {
+                "label": "prefix_abog_boundarybase_edge3214_boundary_edge3211_generated",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {
+                        "name": "boundary_base_edge3214",
+                        "filter": "assistant_boundary",
+                        "layer": 20,
+                        "features": boundary + generated_base + [edge3214_feature],
+                    },
+                    {"name": "edge3211", "filter": "generated", "layer": 20, "features": [edge3211_feature]},
                 ],
             },
         ]

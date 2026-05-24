@@ -114,3 +114,10 @@
   continuation. Full all-boundary and full `assistant_boundary_or_generated`
   handles repair `23/23`, so this makes the timing mechanism visibly
   nonadditive.
+- Edge-cross update: a cleaner decomposition does validate. Keep the top3210
+  prefix under `assistant_boundary_or_generated`, keep ranks
+  3308/3323/4266/3211 at the assistant boundary, and put rank3214 only on
+  generated tokens. This repairs `23/23` donor-clean harmful prompts and
+  preserves `22/22` donor-allowed benign prompts. Hologram controls show
+  rank3214 at the assistant boundary is destabilizing even when rank3214 is
+  also present on generated tokens.

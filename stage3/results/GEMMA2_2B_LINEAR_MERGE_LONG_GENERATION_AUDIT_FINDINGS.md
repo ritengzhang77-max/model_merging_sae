@@ -276,6 +276,13 @@ rank3211 and rank3214 to the split-timing hologram test also fails for all
 tested split variants. Since all-boundary and all-ABOG handles repair the
 donor-clean subset, the failure is caused by the split assignment itself rather
 than by either timing mask alone.
+A focused edge-cross variant then recovers a cleaner decomposition: top3210
+prefix under `assistant_boundary_or_generated`, ranks 3308/3323/4266/3211 at
+the assistant boundary, and rank3214 only on generated tokens. This matches the
+donor endpoint on the expanded family (`23/23` donor-clean harmful repair and
+`22/22` donor-allowed benign behavior). Hologram controls show rank3214 at the
+assistant boundary is destabilizing even when rank3214 is also present on
+generated tokens.
 
 Next evaluation work should separate:
 
