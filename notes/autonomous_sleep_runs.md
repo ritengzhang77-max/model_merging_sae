@@ -179,8 +179,9 @@
   finalized semantic label.
 - Precision update: the smaller top3185 and top3200+rank3201 refinements fail
   the hologram probe when the SAE is loaded in float32, so they are
-  fp16-SAE-sensitive. The robust float32-SAE threshold is top3202: top3201
-  fails, while top3202 validates on the hologram probe, expanded fake-ID family
-  (`23/23` donor-clean harmful repair and `22/22` donor-allowed benign
-  behavior), and broad paraphrase guard. Robust-handle claim moves to top3202;
+  fp16-SAE-sensitive. The robust sparse float32-SAE handle is
+  top3200+rank3202: top3200 and top3200+rank3201 fail, while top3200+rank3202
+  validates on the hologram probe, expanded fake-ID family (`23/23`
+  donor-clean harmful repair and `22/22` donor-allowed benign behavior), and
+  broad paraphrase guard. Robust-handle claim moves to top3200+rank3202;
   top3185 remains an exploratory localization lead.

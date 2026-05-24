@@ -403,11 +403,12 @@ Current mechanistic target:
   `14554` appear on the unsafe procedural top3200 output.
 - Dtype stability controls change the main handle claim: the smaller top3185
   and top3200+rank3201 handles are fp16-SAE-specific on the hologram probe and
-  fail when the SAE is loaded in float32. The float32-SAE threshold is lower
-  than top3210, though: top3201 fails, while top3202 validates on the hologram
-  probe, expanded fake-ID family (`23/23` donor-clean harmful repair, `22/22`
-  donor-allowed benign behavior), and broad paraphrase guard. Treat top3202 as
-  the robust handle and top3185 as an exploratory localization lead.
+  fail when the SAE is loaded in float32. The sparse float32-SAE handle is
+  lower than top3210, though: top3200 and top3200+rank3201 fail, while
+  top3200+rank3202 validates on the hologram probe, expanded fake-ID family
+  (`23/23` donor-clean harmful repair, `22/22` donor-allowed benign behavior),
+  and broad paraphrase guard. Treat top3200+rank3202 as the robust handle and
+  top3185 as an exploratory localization lead.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

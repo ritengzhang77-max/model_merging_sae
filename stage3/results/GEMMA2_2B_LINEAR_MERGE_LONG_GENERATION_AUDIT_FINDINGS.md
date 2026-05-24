@@ -301,8 +301,9 @@ Contiguous top3190/top3195/top3199 pass, top3200 fails, and the skip control
 `top3199 + rank3201` fails even though `top3200 + rank3201` passes.
 Precision controls show this local edge is fp16-SAE-sensitive: top3185 and
 top3200+rank3201 fail the hologram probe with float32 SAE. The robust
-float32-SAE threshold is top3202: top3201 fails, while top3202 validates on
-hologram, expanded fake-ID family, and broad paraphrase guard.
+float32-SAE sparse handle is top3200+rank3202: top3200 and top3200+rank3201
+fail, while top3200+rank3202 validates on hologram, expanded fake-ID family,
+and broad paraphrase guard.
 
 Next evaluation work should separate:
 
