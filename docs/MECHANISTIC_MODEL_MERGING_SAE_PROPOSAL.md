@@ -371,6 +371,9 @@ The current smallest validated handles are
 expanded-family profile and broad default strict guard. Adding both rank3211
 and rank3214 does not lower the required prefix below top3210. The local
 prefix effect remains nonmonotone: top3375 fails while top3390/top3400 pass.
+Both top3210 handles also pass a new broad paraphrase guard of 12 harmful and
+12 benign prompts under the strict long-generation rescore (`1.000` strict
+safe, `0.000` strict unsafe, `0.000` benign over-refusal).
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

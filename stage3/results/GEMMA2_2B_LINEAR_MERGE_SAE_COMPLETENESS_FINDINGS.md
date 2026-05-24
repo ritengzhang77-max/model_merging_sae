@@ -332,6 +332,13 @@ Current mechanistic target:
   either `top3210 + rank3211 + rank3308 + rank3323 + rank4266` or
   `top3210 + rank3214 + rank3308 + rank3323 + rank4266` under
   `assistant_boundary_or_generated`.
+- A new broad paraphrase guard gives an additional robustness check beyond the
+  original 12-prompt default screen. On 12 new harmful paraphrases and 12
+  paired benign prompts, both top3210 handles reach `1.000` strict safe,
+  `0.000` strict unsafe, and `0.000` benign over-refusal under the
+  long-generation rescore. The legacy unsafe-continuation heuristic flags two
+  baseline safe refusals because they discuss malware/phishing harms; manual
+  inspection and the strict rescore treat these as safe refusal rationales.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20
@@ -479,5 +486,8 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3211_rank3214_rank3308_rank3323_rank4266_prefix_threshold_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+- Broad paraphrase guard prompt file and top3210 validation:
+  `stage3/data/gemma2_feature16048_family_prompts/default_paraphrase_guard_v0.jsonl`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
 - Layer-20 rank3211/rank3214 generated-trajectory audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`

@@ -43,6 +43,9 @@ Key result:
   over-refusal `0.083`.
 - Both pass the broad default `0:12` max-160 strict guard: strict safe `1.000`,
   strict unsafe `0.000`, benign over-refusal `0.000`.
+- Both also pass a new broad paraphrase guard with 12 fresh harmful and 12
+  paired benign prompts: strict safe `1.000`, strict unsafe `0.000`, benign
+  over-refusal `0.000`.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 
@@ -71,6 +74,10 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
 - Broad default validation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+- Broad paraphrase prompt file:
+  `stage3/data/gemma2_feature16048_family_prompts/default_paraphrase_guard_v0.jsonl`
+- Broad paraphrase validation:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
 - Feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
 

@@ -152,6 +152,9 @@ The Gemma branch now has an actual linear weight-merge bridge:
   both rank3211 and rank3214 still does not lower the prefix below top3210.
   The local prefix effect is still nonmonotone: top3375 fails while
   top3390/top3400 pass.
+  Both top3210 handles also pass a new broad paraphrase guard of 12 harmful
+  and 12 benign prompts under the strict long-generation rescore (`1.000`
+  strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

@@ -48,3 +48,8 @@
   either rank3211 or rank3214, alongside rank3308/rank3323/rank4266. Feature
   audits suggest rank3211/rank3214 are generated refusal-trajectory supports,
   unlike the cleaner assistant-boundary ranks 3308/3323.
+- Robustness update: because the default prompt bank has only 12 harmful and 12
+  benign prompts, I added a new broad paraphrase guard with the same paired
+  safety-control intent. Both top3210 handles pass it under the strict
+  long-generation rescore with `1.000` strict safe, `0.000` strict unsafe, and
+  `0.000` benign over-refusal.

@@ -245,6 +245,10 @@ in this hologram audit, while rank4266/feature `1293` has a different
 generated-trajectory profile. The newer rank3211/rank3214 audit suggests these
 edge features, layer-20 features `4983` and `2451`, are generated refusal-text
 trajectory supports rather than clean assistant-boundary features.
+The top3210 handles also pass a new broad paraphrase guard with 12 fresh
+harmful requests and 12 paired benign controls: both reach `1.000` strict safe,
+`0.000` strict unsafe, and `0.000` benign over-refusal under the
+long-generation rescore.
 
 Next evaluation work should separate:
 
@@ -403,6 +407,9 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_rank3211_rank3214_rank3308_rank3323_rank4266_prefix_threshold_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_eval0_12_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+- Broad paraphrase guard for top3210 handles:
+  `stage3/data/gemma2_feature16048_family_prompts/default_paraphrase_guard_v0.jsonl`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
 - Layer-20 rank3211/rank3214 feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:
