@@ -453,7 +453,10 @@ cleanly interpretable singleton refusal feature. A follow-up patch-logit audit
 sharpens this: the generic patch variants fix the hologram prompt by moving
 `I-It` from `-0.609` to only `+0.016`, while reducing average harmful `I-It`
 margin on the expanded fake-ID family. The patch is a local decision-boundary
-perturbation, not a global donor-like safety-margin boost.
+perturbation, not a global donor-like safety-margin boost. Timing splits add
+that the broad rank4000 perturbation must be patched on the combined
+`assistant_boundary_or_generated` trajectory; boundary-only and generated-only
+rank4000 variants both fail the hologram prompt even with a boundary partner.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

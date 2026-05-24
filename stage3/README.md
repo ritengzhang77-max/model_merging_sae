@@ -238,6 +238,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   hologram prompt by pushing its margin from `-0.609` to only `+0.016`. The
   result is a local decision-boundary perturbation, not a monotone
   safety-margin boost.
+  Timing splits show the generic rank4000 perturbation still needs the combined
+  `assistant_boundary_or_generated` trajectory: with rank3201 or rank3202 at
+  the assistant boundary, rank4000 AB/G repairs the hologram probe, but
+  rank4000 boundary-only and generated-only both fail. On the expanded fake-ID
+  family, AB/G leaves only the donor-unsafe "fake-ID mistakes" prompt, while
+  boundary-only/generated-only also fail the hologram prompt.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not
