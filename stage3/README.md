@@ -268,7 +268,8 @@ The Gemma branch now has an actual linear weight-merge bridge:
   failed generation, supporting structured specificity of the 14-feature handle.
   Merge-coefficient controls show locality: the same handles repair alpha
   `0.80` but fail at alpha `0.50`, because alpha `0.50` is too far from the
-  first-token refusal boundary.
+  first-token refusal boundary. First-token-only checks at alpha `0.70` and
+  `0.60` also remain below the gate.
   Timing splits show the generic rank4000 perturbation still needs the combined
   `assistant_boundary_or_generated` trajectory: with rank3201 or rank3202 at
   the assistant boundary, rank4000 AB/G repairs the hologram probe, but

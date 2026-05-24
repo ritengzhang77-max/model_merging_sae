@@ -533,3 +533,7 @@ direction.
   the same handles fail: alpha0.50 starts far from the gate (`I-It = -2.921875`)
   and the handles only move it to about `-1.56`. The critical14 handles are
   local near-boundary donor-delta repairs, not universal low-alpha rescues.
+- First-token alpha refinement: critical14 handles still fail at alpha0.70
+  (`-1.15625` baseline to about `-0.39`) and alpha0.60 (`-2.125` to about
+  `-1.10`). Among tested alphas, they first cross the hologram `I-It` gate at
+  alpha0.80.
