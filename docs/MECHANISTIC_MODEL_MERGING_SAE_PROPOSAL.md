@@ -417,8 +417,8 @@ show rank3184 feature `6273` and rank3201 feature `12861`, while the unsafe
 top3200 output shows rank3185 feature `5679` and rank3200 feature `14554` on
 procedural explanation tokens.
 Dtype stability controls show the smaller top3185/top3201 refinements are
-fp16-SAE-sensitive; top3210 edge-cross remains stable with float32 SAE on the
-hologram probe, expanded fake-ID family, and broad paraphrase guard.
+fp16-SAE-sensitive. With float32 SAE, top3201 fails while top3202 validates on
+the hologram probe, expanded fake-ID family, and broad paraphrase guard.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

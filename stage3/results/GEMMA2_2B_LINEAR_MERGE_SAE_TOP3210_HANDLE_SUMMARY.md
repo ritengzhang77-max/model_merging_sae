@@ -187,10 +187,10 @@ under the refined timing mask.
 
 However, this smaller `top3185` handle is precision-sensitive: with the SAE
 loaded in float32, `top3184`, `top3185`, `top3200`, and `top3200+rank3201` all
-fail the hologram probe, while the older top3210 edge-cross handle still passes
-the hologram probe, the expanded fake-ID family (`23/23` donor-clean repair,
-`22/22` donor-allowed benign behavior), and the broad paraphrase guard. The
-robust current handle is therefore top3210 edge-cross; top3185 is a useful
-fp16-localization lead, not the main validated claim. Dtype stability results
-are summarized in
+fail the hologram probe. Bracketing the float32-SAE threshold shows top3201
+fails, while top3202 passes the hologram probe, expanded fake-ID family
+(`23/23` donor-clean repair, `22/22` donor-allowed benign behavior), and broad
+paraphrase guard. The robust current handle is therefore top3202 edge-cross;
+top3185 is a useful fp16-localization lead, not the main validated claim. Dtype
+stability results are summarized in
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/edge_cross_sae_dtype_stability_metrics.csv`.

@@ -101,10 +101,10 @@ Key result:
   audit substrate, not a final semantic label.
 - Dtype stability controls show the smaller top3185 and top3200+rank3201
   refinements are fp16-SAE-sensitive: both fail the hologram probe when the SAE
-  is loaded in float32. The older top3210 edge-cross handle remains stable with
-  float32 SAE on the hologram probe, expanded fake-ID family (`23/23`
-  donor-clean harmful repair and `22/22` donor-allowed benign behavior), and
-  broad paraphrase guard.
+  is loaded in float32. The robust float32-SAE threshold is top3202: top3201
+  fails, while top3202 validates on the hologram probe, expanded fake-ID family
+  (`23/23` donor-clean harmful repair and `22/22` donor-allowed benign
+  behavior), and broad paraphrase guard.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 
@@ -199,6 +199,11 @@ Artifacts:
 - Float32 SAE dtype-stability controls:
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3184_top3185_edge_cross_float32_sae_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3200_top3201_edge_cross_float32_sae_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3202_edge_cross_float32_sae_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3203_edge_cross_float32_sae_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3205_edge_cross_float32_sae_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3202_edge_cross_float32_sae_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_top3202_edge_cross_float32_sae_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3210_edge_cross_float32_sae_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3210_edge_cross_float32_sae_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_top3210_edge_cross_float32_sae_max160/`
@@ -213,6 +218,7 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3200_rank4000_edge_cross_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3184_rank4000_edge_cross_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3185_edge_cross_vs_alpha1_alpha075/`
+  `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3202_edge_cross_float32_sae_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3210_edge_cross_float32_sae_vs_alpha1_alpha075/`
 - Feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
