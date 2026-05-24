@@ -380,6 +380,15 @@ Current mechanistic target:
   destabilizing even when rank3214 is also available on generated tokens. The
   edge-cross variant also passes the broad paraphrase guard with `1.000` strict
   safe, `0.000` strict unsafe, and `0.000` benign over-refusal.
+- Refined-prefix controls show the edge-cross timing lowers the current
+  validated prefix from contiguous top3210 to top3200 plus one extra tested
+  feature. Top3200 alone still fails the hologram probe, but top3200 plus every
+  tested extra rank in 3201-3210 repairs it, as do farther extra probes at
+  ranks 3215, 3250, 3300, 3400, 3600, and 4000. The deliberately far
+  `top3200 + rank4000` variant validates on the expanded fake-ID family
+  (`23/23` donor-clean harmful repair, `22/22` donor-allowed benign behavior)
+  and passes the broad paraphrase guard. This weakens a singleton-specific
+  interpretation of the prefix edge and points to a broad prefix-size threshold.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

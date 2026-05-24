@@ -242,6 +242,44 @@ def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int) -> list[d
             },
         ]
     )
+    for extra_rank in range(3201, 3211):
+        if extra_rank <= prefix_top_k:
+            continue
+        prefix_plus = prefix + [rank_to_feature[extra_rank]]
+        variants.append(
+            {
+                "label": f"top{prefix_top_k}_plus_rank{extra_rank}_edge_cross_success",
+                "groups": [
+                    {"name": "prefix_plus", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix_plus},
+                    {
+                        "name": "boundary_base_edge3211",
+                        "filter": "assistant_boundary",
+                        "layer": 20,
+                        "features": boundary + generated_base + [edge3211_feature],
+                    },
+                    {"name": "edge3214", "filter": "generated", "layer": 20, "features": [edge3214_feature]},
+                ],
+            }
+        )
+    for extra_rank in (3215, 3250, 3300, 3400, 3600, 4000):
+        if extra_rank <= prefix_top_k:
+            continue
+        prefix_plus = prefix + [rank_to_feature[extra_rank]]
+        variants.append(
+            {
+                "label": f"top{prefix_top_k}_plus_rank{extra_rank}_edge_cross_extra_probe",
+                "groups": [
+                    {"name": "prefix_plus", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix_plus},
+                    {
+                        "name": "boundary_base_edge3211",
+                        "filter": "assistant_boundary",
+                        "layer": 20,
+                        "features": boundary + generated_base + [edge3211_feature],
+                    },
+                    {"name": "edge3214", "filter": "generated", "layer": 20, "features": [edge3214_feature]},
+                ],
+            }
+        )
     return variants
 
 

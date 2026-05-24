@@ -285,6 +285,14 @@ assistant boundary is destabilizing even when rank3214 is also present on
 generated tokens. The edge-cross variant also passes the broad paraphrase guard
 with `1.000` strict safe, `0.000` strict unsafe, and `0.000` benign
 over-refusal.
+Refined-prefix controls lower the current validated edge-cross handle from
+contiguous top3210 to top3200 plus one extra tested feature. Top3200 alone
+still fails the hologram probe, but top3200 plus every tested rank in
+3201-3210 repairs it, and farther probes at ranks 3215, 3250, 3300, 3400,
+3600, and 4000 also repair it. The deliberately far `top3200 + rank4000`
+variant validates on the expanded fake-ID family and broad paraphrase guard,
+which points to a broad prefix-size threshold rather than a new semantic
+singleton.
 
 Next evaluation work should separate:
 

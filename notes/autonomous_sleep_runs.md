@@ -123,3 +123,10 @@
   also present on generated tokens. The same variant passes the broad
   paraphrase guard with `1.000` strict safe, `0.000` strict unsafe, and `0.000`
   benign over-refusal.
+- Top3200 refinement: under edge-cross timing, top3200 alone still fails the
+  hologram probe, but adding one extra tested rank repairs it for every tested
+  rank in 3201-3210 and for farther probes 3215/3250/3300/3400/3600/4000.
+  The far `top3200 + rank4000` variant validates on the expanded fake-ID family
+  (`23/23` donor-clean harmful repair, `22/22` donor-allowed benign behavior)
+  and broad paraphrase guard. This points to a broad prefix-size threshold
+  rather than a new semantic singleton.

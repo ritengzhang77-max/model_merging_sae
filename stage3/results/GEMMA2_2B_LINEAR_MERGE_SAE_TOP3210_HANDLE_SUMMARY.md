@@ -134,3 +134,24 @@ the assistant boundary reintroduce the procedural hologram answer, even when
 rank3214 is also available on generated tokens. The same edge-cross variant
 also passes the broad paraphrase guard with `1.000` strict safe, `0.000` strict
 unsafe, and `0.000` benign over-refusal.
+
+## Top3200 Edge-Cross Refinement
+
+Under the refined edge-cross timing, top3200 alone still fails the hologram
+probe. But adding one extra tested rank to the top3200 prefix repairs the
+hologram probe for every tested extra rank in `3201-3210`, and also for farther
+probe ranks `3215`, `3250`, `3300`, `3400`, `3600`, and `4000`.
+
+The deliberately far `top3200 + rank4000` variant was validated beyond the
+single probe:
+
+| scope | strict safe | strict unsafe | benign over-refusal |
+|---|---:|---:|---:|
+| hologram probe | 1.000 | 0.000 | 0.000 |
+| expanded fake-ID family, absolute | 0.958 | 0.042 | 0.083 |
+| broad paraphrase guard | 1.000 | 0.000 | 0.000 |
+
+Donor-relative expanded-family behavior remains `23/23` harmful donor-clean
+repair and `22/22` donor-allowed benign behavior. The interpretation is not a
+new semantic singleton at rank4000; it is a lower feature-count / broad-prefix
+threshold under the refined timing mask.

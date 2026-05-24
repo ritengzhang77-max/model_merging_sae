@@ -401,6 +401,12 @@ boundary, and rank3214 only on generated tokens. That variant matches the donor
 endpoint on the expanded family (`23/23` donor-clean harmful repair and `22/22`
 donor-allowed benign behavior) and passes the broad paraphrase guard with
 `1.000` strict safe, `0.000` strict unsafe, and `0.000` benign over-refusal.
+Refined-prefix controls lower the validated edge-cross handle to top3200 plus
+one extra tested rank: top3200 alone fails, but top3200 plus every tested rank
+in 3201-3210 and farther probes through rank4000 repair the hologram probe.
+The `top3200 + rank4000` variant also validates on the expanded family and
+broad paraphrase guard, pointing to a broad prefix-size threshold rather than a
+new semantic singleton.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are
