@@ -188,19 +188,23 @@ under the refined timing mask.
 However, this smaller `top3185` handle is precision-sensitive: with the SAE
 loaded in float32, `top3184`, `top3185`, `top3200`, and `top3200+rank3201` all
 fail the hologram probe. Bracketing the float32-SAE threshold first showed
-top3200+rank3202 and contiguous top3202 pass. A lower skip control then showed
-`top3199` alone fails, while sparse `top3199+rank3202` passes the hologram
-probe, expanded fake-ID family (`23/23` donor-clean repair, `22/22`
-donor-allowed benign behavior), and broad paraphrase guard. The robust current
-handle is therefore `top3199+rank3202` edge-cross; top3185 is a useful
-fp16-localization lead, not the main validated claim. Dtype stability results
-are summarized in
+top3200+rank3202 and contiguous top3202 pass. Lower skip controls then showed
+rank3202 can compensate for the fp32 failure down to `top3185`: `top3184 +
+rank3202` fails, while `top3185 + rank3202` passes the hologram probe,
+expanded fake-ID family (`23/23` donor-clean repair, `22/22` donor-allowed
+benign behavior), and broad paraphrase guard. The robust current handle is
+therefore `top3185+rank3202` edge-cross. Dtype stability results are summarized
+in
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/edge_cross_sae_dtype_stability_metrics.csv`.
 
 A float32 singleton sweep at the `top3199` prefix shows rank3202 is not a
-unique magic feature. Added ranks `3202`, `3203`, `3205`, `3207`, and `3210`
-repair the hologram probe, while ranks `3201`, `3204`, `3206`, `3208`, and
-`3209` do not. The failing variants begin with an illegality warning but then
-continue into a procedural explanation; the passing variants switch to a direct
-refusal template. Compact results are in
+unique magic feature at that prefix. Added ranks `3202`, `3203`, `3205`,
+`3207`, and `3210` repair the hologram probe, while ranks `3201`, `3204`,
+`3206`, `3208`, and `3209` do not. One step lower, at `top3198`, rank3202 is
+the only tested rank in 3199-3210 that repairs the hologram probe. The failing
+variants begin with an illegality warning but then continue into a procedural
+explanation; the passing variants switch to a direct refusal template. Compact
+results are in
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3199_rank3201_3210_float32_singleton_sweep_metrics.csv`.
+The rank3202 lower-bound table is
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank3202_float32_prefix_lower_bound_metrics.csv`.

@@ -404,16 +404,16 @@ Current mechanistic target:
 - Dtype stability controls change the main handle claim: the smaller top3185
   and top3200+rank3201 handles are fp16-SAE-specific on the hologram probe and
   fail when the SAE is loaded in float32. The sparse float32-SAE handle is
-  lower than top3210, though: top3199 alone fails, while top3199+rank3202
+  lower than top3210, though: top3184+rank3202 fails, while top3185+rank3202
   validates on the hologram probe, expanded fake-ID family (`23/23`
   donor-clean harmful repair, `22/22` donor-allowed benign behavior), and
-  broad paraphrase guard. Treat top3199+rank3202 as the robust handle and
-  top3185 as an exploratory localization lead.
-- A float32 singleton sweep at prefix top3199 shows this is a local stabilizer
-  band rather than a single magic feature: ranks 3202, 3203, 3205, 3207, and
-  3210 repair the hologram probe; ranks 3201, 3204, 3206, 3208, and 3209 do
-  not. Passing outputs use a direct refusal template, while failing outputs
-  begin with an illegality warning and then bridge into procedural explanation.
+  broad paraphrase guard. Treat top3185+rank3202 as the robust handle.
+- Float32 singleton sweeps show the local band tightens as the prefix drops:
+  at prefix top3199, ranks 3202, 3203, 3205, 3207, and 3210 repair the
+  hologram probe; at prefix top3198, only rank3202 among tested ranks 3199-3210
+  repairs it. Passing outputs use a direct refusal template, while failing
+  outputs begin with an illegality warning and then bridge into procedural
+  explanation.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

@@ -101,16 +101,19 @@ Key result:
   audit substrate, not a final semantic label.
 - Dtype stability controls show the smaller top3185 and top3200+rank3201
   refinements are fp16-SAE-sensitive: both fail the hologram probe when the SAE
-  is loaded in float32. The robust sparse float32-SAE handle is now
-  top3199+rank3202: top3199 alone fails, while top3199+rank3202 validates on
-  the hologram probe, expanded fake-ID family (`23/23` donor-clean harmful
-  repair and `22/22` donor-allowed benign behavior), and broad paraphrase
-  guard. This lowers the robust sparse prefix one step below the earlier
-  top3200+rank3202 checkpoint.
+  is loaded in float32. Adding rank3202 repairs the float32 path down to
+  top3185: top3184+rank3202 fails, while top3185+rank3202 validates on the
+  hologram probe, expanded fake-ID family (`23/23` donor-clean harmful repair
+  and `22/22` donor-allowed benign behavior), and broad paraphrase guard. This
+  lowers the robust sparse prefix below the earlier top3199/top3200+rank3202
+  checkpoints.
 - A float32 singleton sweep at prefix top3199 shows the closing rank is not
-  unique: ranks 3202, 3203, 3205, 3207, and 3210 repair the hologram probe,
-  while ranks 3201, 3204, 3206, 3208, and 3209 fail. Compact sweep table:
+  unique there: ranks 3202, 3203, 3205, 3207, and 3210 repair the hologram
+  probe, while ranks 3201, 3204, 3206, 3208, and 3209 fail. At prefix top3198,
+  only rank3202 among tested ranks 3199-3210 repairs it. Compact sweep table:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3199_rank3201_3210_float32_singleton_sweep_metrics.csv`.
+  Rank3202 lower-bound table:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank3202_float32_prefix_lower_bound_metrics.csv`.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 

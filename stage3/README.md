@@ -198,12 +198,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   top3200 output shows rank3185 feature `5679` and rank3200 feature `14554` on
   procedural explanation tokens.
   Dtype stability controls show the smaller top3185/top3201 refinements are
-  fp16-SAE-sensitive. With float32 SAE, top3199 alone fails, while sparse
-  top3199+rank3202 validates on the hologram probe, expanded fake-ID family,
-  and broad paraphrase guard.
-  A top3199 singleton sweep over ranks 3201-3210 shows a local stabilizer band:
-  ranks 3202, 3203, 3205, 3207, and 3210 pass; ranks 3201, 3204, 3206, 3208,
-  and 3209 fail.
+  fp16-SAE-sensitive. With float32 SAE, adding rank3202 repairs the path down
+  to top3185: top3184+rank3202 fails, while top3185+rank3202 validates on the
+  hologram probe, expanded fake-ID family, and broad paraphrase guard.
+  A top3199 singleton sweep over ranks 3201-3210 shows a local stabilizer band,
+  while a top3198 sweep tightens it to rank3202 alone among tested ranks
+  3199-3210.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

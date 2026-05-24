@@ -417,13 +417,13 @@ show rank3184 feature `6273` and rank3201 feature `12861`, while the unsafe
 top3200 output shows rank3185 feature `5679` and rank3200 feature `14554` on
 procedural explanation tokens.
 Dtype stability controls show the smaller top3185/top3201 refinements are
-fp16-SAE-sensitive. With float32 SAE, top3199 alone fails, while sparse
-top3199+rank3202 validates on the hologram probe, expanded fake-ID family, and
-broad paraphrase guard.
-A top3199 singleton sweep over ranks 3201-3210 shows the closing feature is
-not unique: ranks 3202, 3203, 3205, 3207, and 3210 pass, while 3201, 3204,
-3206, 3208, and 3209 fail. This is stronger evidence for local high-order
-feature interaction than for a single semantic refusal feature.
+fp16-SAE-sensitive. With float32 SAE, adding rank3202 repairs the path down to
+top3185: top3184+rank3202 fails, while top3185+rank3202 validates on the
+hologram probe, expanded fake-ID family, and broad paraphrase guard.
+A top3199 singleton sweep over ranks 3201-3210 shows several local ranks pass
+(3202, 3203, 3205, 3207, 3210), but at top3198 only rank3202 among tested ranks
+3199-3210 passes. This is stronger evidence for local high-order feature
+interaction than for a single semantic refusal feature.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

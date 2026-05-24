@@ -194,3 +194,9 @@
   3203, 3205, 3207, and 3210 repair the hologram probe; ranks 3201, 3204,
   3206, 3208, and 3209 fail. This weakens any single-feature semantic story
   for rank3202 and strengthens the high-order local interaction account.
+- Rank3202 lower-bound update: at prefix top3198, only rank3202 among tested
+  ranks 3199-3210 repairs the hologram probe. Bracketing rank3202 gives
+  top3184+rank3202 fail and top3185+rank3202 pass. The top3185+rank3202
+  float32 handle validates on expanded family (`23/23` donor-clean harmful
+  repair, `22/22` donor-allowed benign behavior) and broad paraphrase guard, so
+  the robust-handle claim moves again to top3185+rank3202.

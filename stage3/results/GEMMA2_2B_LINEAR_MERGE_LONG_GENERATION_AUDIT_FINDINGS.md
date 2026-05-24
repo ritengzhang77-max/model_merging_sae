@@ -300,13 +300,14 @@ Additional local controls show the boundary is nonmonotone and high-order:
 Contiguous top3190/top3195/top3199 pass, top3200 fails, and the skip control
 `top3199 + rank3201` fails even though `top3200 + rank3201` passes.
 Precision controls show this local edge is fp16-SAE-sensitive: top3185 and
-top3200+rank3201 fail the hologram probe with float32 SAE. The robust
-float32-SAE sparse handle is top3199+rank3202: top3199 alone fails, while
-top3199+rank3202 validates on hologram, expanded fake-ID family, and broad
+top3200+rank3201 fail the hologram probe with float32 SAE. Adding rank3202
+repairs the float32 path down to a lower bound: top3184+rank3202 fails, while
+top3185+rank3202 validates on hologram, expanded fake-ID family, and broad
 paraphrase guard.
-At the same prefix, a float32 singleton sweep over ranks 3201-3210 gives an
+At prefix top3199, a float32 singleton sweep over ranks 3201-3210 gives an
 alternating local pattern: 3202/3203/3205/3207/3210 pass, while
-3201/3204/3206/3208/3209 fail with the same warning-then-procedure shape.
+3201/3204/3206/3208/3209 fail. At prefix top3198, only rank3202 among tested
+ranks 3199-3210 passes. Failures share the warning-then-procedure shape.
 
 Next evaluation work should separate:
 
