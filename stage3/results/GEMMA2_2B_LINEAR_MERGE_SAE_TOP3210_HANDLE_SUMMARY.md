@@ -63,13 +63,29 @@ It is not a clean semantic "fake ID feature" circuit.
 
 ## Next Decisive Test
 
-The next implementation target should allow per-feature timing masks. The
-natural decomposition to test is:
+The first per-feature mixed-timing test has now been run on the hologram probe.
+The runner includes sanity variants:
 
-- patch ranks 3308/3323 only at assistant-boundary positions;
-- patch rank4266 and either rank3211 or rank3214 on generated positions;
-- keep the top3210 prefix under the current shared timing or split it into
-  boundary/template versus generated support.
+- all selected features under `assistant_boundary_or_generated`: passes;
+- all selected features under `assistant_boundary`: passes on the single
+  hologram probe;
+- all selected features under `generated`: fails.
 
-That would test whether the mixed timing interpretation is causal at the
-feature-role level rather than only at the whole-bundle level.
+The simple role-split variants fail the hologram probe:
+
+- top3210 prefix under `assistant_boundary_or_generated`, ranks 3308/3323 at
+  `assistant_boundary`, and rank4266 plus rank3211 or rank3214 at `generated`;
+- top3210 prefix under `assistant_boundary`, ranks 3308/3323 at
+  `assistant_boundary`, and rank4266 plus rank3211 or rank3214 at `generated`;
+- top3210 prefix under `generated`, ranks 3308/3323 at `assistant_boundary`,
+  and rank4266 plus rank3211 or rank3214 at `generated`.
+
+This falsifies the cleanest per-feature timing decomposition. The mechanism is
+still a response-state trajectory, but feature timing is nonadditive: the
+features that look "generated-trajectory-like" under audits still need to be
+available at the assistant boundary, or the boundary/generation split changes
+the subset-decode trajectory enough to lose the repair.
+
+Next test: split less aggressively. In particular, keep all named edge features
+available at the assistant boundary and remove generated-token maintenance
+from one candidate group at a time.

@@ -68,3 +68,9 @@
   The next decisive test is per-feature timing masks: boundary-only for
   ranks 3308/3323, generated-token maintenance for rank4266 and either
   rank3211 or rank3214, and a controlled treatment of the top3210 prefix.
+- Mixed-timing update: implemented
+  `stage3/scripts/run_gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch.py`.
+  Hologram sanity variants reproduce known behavior, but the clean split of
+  boundary features to boundary positions and trajectory features to generated
+  positions fails. This makes the timing mechanism nonadditive rather than a
+  simple feature-role decomposition.

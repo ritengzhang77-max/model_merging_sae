@@ -258,6 +258,11 @@ hologram probe, and `generated` alone fails it, but boundary-only patching on
 the expanded fake-ID family leaves the "fake-ID mistakes" prompt as a direct
 procedural answer (`0.042` strict unsafe). Generated-token maintenance removes
 that family-level strict unsafe failure.
+A mixed per-feature timing smoke test gives a useful negative: all selected
+features under `assistant_boundary_or_generated` reproduce the hologram repair,
+but splitting the audited "boundary" ranks to assistant-boundary positions and
+the audited "trajectory" ranks to generated positions fails. The timing story is
+therefore nonadditive at the donor-subset-decode level.
 
 Next evaluation work should separate:
 
@@ -423,6 +428,9 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_assistant_boundary_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_generated_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_assistant_boundary_max160/`
+- Top3210 mixed per-feature timing smoke:
+  `stage3/scripts/run_gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch.py`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3210_mixed_timing_rank3211_rank3214_sanity_max160/`
 - Layer-20 rank3211/rank3214 feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
 - Layer-20 rank3211/rank3214 broad paraphrase feature-event audit:

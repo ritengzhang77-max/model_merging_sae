@@ -379,6 +379,10 @@ Timing controls preserve the response-state trajectory interpretation:
 fails it, and boundary-only patching leaves the "fake-ID mistakes" prompt as a
 strict unsafe direct answer on the expanded fake-ID family. The cleaner
 family-level intervention is still `assistant_boundary_or_generated`.
+A first mixed per-feature timing smoke test is negative: all-feature sanity
+variants reproduce known behavior, but assigning audited boundary features only
+to boundary positions and audited trajectory features only to generated
+positions fails. Timing roles are nonadditive under donor-subset decode.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

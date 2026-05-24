@@ -160,6 +160,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   leaves the "fake-ID mistakes" prompt as a strict unsafe direct answer, while
   `assistant_boundary_or_generated` removes it. `generated` alone fails the
   hologram probe. This preserves the response-state trajectory interpretation.
+  A first mixed per-feature timing smoke test is negative: the all-feature
+  sanity variants reproduce known behavior, but splitting the audited boundary
+  ranks to boundary positions and trajectory ranks to generated positions fails.
+  Timing roles are nonadditive under donor-subset decode.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

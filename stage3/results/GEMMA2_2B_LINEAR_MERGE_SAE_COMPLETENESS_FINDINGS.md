@@ -348,6 +348,16 @@ Current mechanistic target:
   `assistant_boundary_or_generated` removes that strict unsafe failure. Thus the
   boundary state can start the safe trajectory, but generated-token maintenance
   is needed for the cleaner family-level behavior.
+- A first per-feature mixed-timing test falsifies the cleanest role split.
+  Sanity variants reproduce known hologram behavior: all selected features under
+  `assistant_boundary_or_generated` pass, all selected features under
+  `assistant_boundary` pass on the single hologram probe, and all selected
+  features under `generated` fail. But variants that keep ranks 3308/3323 at
+  the assistant boundary and move rank4266 plus rank3211/rank3214 to generated
+  positions fail, even when the top3210 prefix remains under
+  `assistant_boundary_or_generated`. The timed mechanism is therefore
+  nonadditive at the subset-decode level; audit-derived feature roles do not
+  directly compose into separate token masks.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20
@@ -510,6 +520,9 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_assistant_boundary_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_generated_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_assistant_boundary_max160/`
+- Top3210 mixed per-feature timing smoke:
+  `stage3/scripts/run_gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch.py`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3210_mixed_timing_rank3211_rank3214_sanity_max160/`
 - Layer-20 rank3211/rank3214 generated-trajectory audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
 - Layer-20 rank3211/rank3214 broad paraphrase audit:
