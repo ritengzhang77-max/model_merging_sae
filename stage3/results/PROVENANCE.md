@@ -46,6 +46,11 @@ Key result:
 - Both also pass a new broad paraphrase guard with 12 fresh harmful and 12
   paired benign prompts: strict safe `1.000`, strict unsafe `0.000`, benign
   over-refusal `0.000`.
+- Timing controls show `assistant_boundary` alone repairs the hologram probe and
+  `generated` alone fails it. On the expanded fake-ID family, `assistant_boundary`
+  leaves one strict unsafe direct answer on the fake-ID mistakes prompt
+  (`0.042` strict unsafe), while `assistant_boundary_or_generated` removes that
+  strict unsafe failure.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 
@@ -80,6 +85,12 @@ Artifacts:
   `stage3/data/gemma2_feature16048_family_prompts/default_paraphrase_guard_v0.jsonl`
 - Broad paraphrase validation:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+- Hologram top3210 assistant-boundary timing:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_assistant_boundary_max160/`
+- Hologram top3210 generated-only timing:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_generated_max160/`
+- Expanded family top3210 assistant-boundary timing:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_assistant_boundary_max160/`
 - Feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
 - Broad paraphrase feature-event audit:

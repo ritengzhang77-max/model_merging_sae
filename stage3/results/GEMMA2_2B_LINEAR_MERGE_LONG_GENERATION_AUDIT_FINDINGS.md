@@ -252,6 +252,12 @@ long-generation rescore. A feature-event audit on this broad paraphrase guard
 shows `4983` and `2451` are not harmful-specific: they fire on benign advice
 and formatting tokens too, so the most defensible interpretation is broad
 response-trajectory support rather than a safety-semantic feature label.
+Timing controls for the same top3210 handles show why the operative mask remains
+`assistant_boundary_or_generated`: `assistant_boundary` alone repairs the
+hologram probe, and `generated` alone fails it, but boundary-only patching on
+the expanded fake-ID family leaves the "fake-ID mistakes" prompt as a direct
+procedural answer (`0.042` strict unsafe). Generated-token maintenance removes
+that family-level strict unsafe failure.
 
 Next evaluation work should separate:
 
@@ -413,6 +419,10 @@ strong enough for final safety claims.
 - Broad paraphrase guard for top3210 handles:
   `stage3/data/gemma2_feature16048_family_prompts/default_paraphrase_guard_v0.jsonl`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
+- Top3210 timing controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_assistant_boundary_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_generated_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_assistant_boundary_max160/`
 - Layer-20 rank3211/rank3214 feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
 - Layer-20 rank3211/rank3214 broad paraphrase feature-event audit:

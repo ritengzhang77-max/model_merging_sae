@@ -155,6 +155,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   Both top3210 handles also pass a new broad paraphrase guard of 12 harmful
   and 12 benign prompts under the strict long-generation rescore (`1.000`
   strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
+  Top3210 timing controls show the boundary is enough for the single hologram
+  probe, but not for the broader fake-ID family: `assistant_boundary` alone
+  leaves the "fake-ID mistakes" prompt as a strict unsafe direct answer, while
+  `assistant_boundary_or_generated` removes it. `generated` alone fails the
+  hologram probe. This preserves the response-state trajectory interpretation.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

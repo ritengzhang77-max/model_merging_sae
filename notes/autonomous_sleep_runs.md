@@ -58,3 +58,8 @@
   20 features `4983` and `2451` activate on benign advice and formatting tokens
   too, so the current story is a response-trajectory support bundle plus
   assistant-boundary features, not a clean semantic circuit.
+- Timing update: for the top3210 handles, `assistant_boundary` alone repairs the
+  hologram probe and `generated` alone fails it. But on the expanded fake-ID
+  family, boundary-only leaves the "fake-ID mistakes" prompt as a strict unsafe
+  direct answer, while `assistant_boundary_or_generated` removes that failure.
+  This supports the assistant-start plus generated-state-maintenance mechanism.

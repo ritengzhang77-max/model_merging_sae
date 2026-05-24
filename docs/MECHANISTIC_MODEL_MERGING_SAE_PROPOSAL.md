@@ -374,6 +374,11 @@ prefix effect remains nonmonotone: top3375 fails while top3390/top3400 pass.
 Both top3210 handles also pass a new broad paraphrase guard of 12 harmful and
 12 benign prompts under the strict long-generation rescore (`1.000` strict
 safe, `0.000` strict unsafe, `0.000` benign over-refusal).
+Timing controls preserve the response-state trajectory interpretation:
+`assistant_boundary` alone repairs the single hologram probe, `generated` alone
+fails it, and boundary-only patching leaves the "fake-ID mistakes" prompt as a
+strict unsafe direct answer on the expanded fake-ID family. The cleaner
+family-level intervention is still `assistant_boundary_or_generated`.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are
