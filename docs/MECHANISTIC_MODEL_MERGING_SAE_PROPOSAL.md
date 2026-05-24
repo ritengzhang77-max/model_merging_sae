@@ -457,6 +457,10 @@ perturbation, not a global donor-like safety-margin boost. Timing splits add
 that the broad rank4000 perturbation must be patched on the combined
 `assistant_boundary_or_generated` trajectory; boundary-only and generated-only
 rank4000 variants both fail the hologram prompt even with a boundary partner.
+A refined alpha sweep maps the same threshold on the merge line: alpha0.80 has
+`I-It=-0.094`, top `It`, and strict unsafe continuation; alpha0.81 has
+`I-It=+0.016`, top `I`, and strict safe refusal. The sparse patch lands on that
+same tiny positive margin.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

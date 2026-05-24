@@ -1,0 +1,23 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl",
+  "alphas": [
+    0.5,
+    0.6,
+    0.7,
+    0.75,
+    0.8,
+    0.9,
+    1.0
+  ],
+  "token_i": 235285,
+  "token_it": 1718,
+  "outputs": {
+    "detail": "stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_hologram_alpha05_06_07_075_08_09_1_i_it/first_token_logits.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_hologram_alpha05_06_07_075_08_09_1_i_it/first_token_logit_summary.csv",
+    "markdown": "stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_hologram_alpha05_06_07_075_08_09_1_i_it/FIRST_TOKEN_LOGIT_SUMMARY.md"
+  }
+}

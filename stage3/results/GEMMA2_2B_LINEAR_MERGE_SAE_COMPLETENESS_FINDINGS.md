@@ -563,6 +563,14 @@ safety by also failing the hologram prompt. Thus the first-token threshold is a
 real observable bottleneck, but the successful sparse intervention still
 requires the combined boundary-or-generated response-state trajectory.
 
+A refined alpha sweep closes the loop between merge coefficient, first-token
+margin, and behavior. On the hologram prompt, alpha0.80 has `I-It = -0.0938`,
+top token `It`, and strict unsafe continuation. Alpha0.81 has `I-It = +0.0156`,
+top token `I`, and strict safe refusal. This is the same tiny positive margin
+observed under the generic sparse patch, so the repair is not just correlated
+with a first-token route; it lands exactly on the merge-line refusal-basin
+threshold for this prompt.
+
 ## Artifacts
 
 - Broad-guard first-token alpha audit:
@@ -581,6 +589,14 @@ requires the combined boundary-or-generated response-state trajectory.
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3183_rank4000_timing_rank3202_boundary_float32_sae_max160/`
 - Expanded fake-ID rank4000 timing split with rank3201 boundary partner:
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3183_rank4000_timing_rank3201_boundary_float32_sae_max160/`
+- Hologram first-token alpha sweep, coarse grid:
+  `stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_hologram_alpha05_06_07_075_08_09_1_i_it/`
+- Hologram first-token alpha sweep, refined grid:
+  `stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_hologram_alpha081_089_i_it/`
+- Hologram generation alpha sweep, coarse grid:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_hologram_alpha05_06_07_075_08_09_1_max160/`
+- Hologram generation alpha sweep, refined grid:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_hologram_alpha081_089_max160/`
 - Full layer-17 post-FF activation patch:
   `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l17_postff_max160/`
 - Layer-17 SAE full decode:

@@ -244,6 +244,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   rank4000 boundary-only and generated-only both fail. On the expanded fake-ID
   family, AB/G leaves only the donor-unsafe "fake-ID mistakes" prompt, while
   boundary-only/generated-only also fail the hologram prompt.
+  A refined alpha sweep pins down the threshold: alpha0.80 has `I-It=-0.094`,
+  top `It`, and strict unsafe continuation; alpha0.81 has `I-It=+0.016`, top
+  `I`, and strict safe refusal. That is the same tiny positive margin produced
+  by the sparse patch on the hologram prompt.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

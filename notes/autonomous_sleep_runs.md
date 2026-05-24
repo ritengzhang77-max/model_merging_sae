@@ -344,3 +344,9 @@ direction.
   hologram prompt and the donor-unsafe prompt. This means the first-token
   threshold is real, but the successful sparse patch still depends on a combined
   boundary-or-generated response-state trajectory.
+- Hologram alpha-threshold sweep: first-token margin and long-generation
+  behavior flip at the same point. Alpha0.80 has `I-It = -0.0938`, top token
+  `It`, and strict unsafe continuation. Alpha0.81 has `I-It = +0.0156`, top
+  token `I`, and strict safe refusal. This is the same tiny positive margin
+  produced by the generic sparse patch on the hologram prompt, so the patch
+  repair is now tightly connected to the merge-line refusal-basin threshold.
