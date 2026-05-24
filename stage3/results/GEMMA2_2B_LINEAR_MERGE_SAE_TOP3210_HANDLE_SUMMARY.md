@@ -240,3 +240,10 @@ repairs the hologram probe. Compact sweep:
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3201_3210_boundary_only_singleton_sweep_metrics.csv`.
 Top3185 timing probe:
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3202_float32_timing_probe_metrics.csv`.
+
+External Neuronpedia autointerp does not yet explain the causal handle: feature
+`11494` is labeled as SSH-command/configuration related. The local prompt-scope
+audit is more relevant here: on the repaired hologram trajectory, feature
+`11494` has its largest donor-minus-recipient prompt event at the assistant
+`model` token. Interpretation memo:
+`stage3/results/gemma2_2b_linear_merge_sae_feature_interpretation_v0/FEATURE_11494_INTERPRETATION_NOTES.md`.

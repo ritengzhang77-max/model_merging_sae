@@ -217,3 +217,7 @@
 - Boundary-only specificity update: at top3184, rank3202 is the only tested
   assistant-boundary-only extra among ranks 3201-3210 that repairs the hologram
   probe.
+- Interpretation update: Neuronpedia's autointerp label for feature 11494 is
+  SSH-command/configuration related, not safety-related. Local prompt-scope
+  audit is more informative: the top donor-minus-recipient event is at the
+  assistant `model` boundary token on the repaired trajectory.

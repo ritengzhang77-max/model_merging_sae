@@ -136,6 +136,12 @@ Key result:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3201_3210_boundary_only_singleton_sweep_metrics.csv`.
   Top3185 compact timing table:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3202_float32_timing_probe_metrics.csv`.
+- Feature-interpretation note: Neuronpedia autointerp labels feature 11494 as
+  SSH-command/configuration related, which does not explain the safety repair.
+  Local prompt-scope audit finds the top donor-minus-recipient event for 11494
+  at the assistant `model` boundary token on the repaired trajectory.
+  Interpretation memo:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_interpretation_v0/FEATURE_11494_INTERPRETATION_NOTES.md`.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 
