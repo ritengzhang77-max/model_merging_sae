@@ -291,6 +291,13 @@ The Gemma branch now has an actual linear weight-merge bridge:
   full-decode causal handle is layer20 post-FF donor reconstruction at one
   assistant-template token. Smaller sparse subsets remain threshold
   perturbations rather than clean standalone semantic circuits.
+  Dense activation submask controls complicate the "SAE approximates dense"
+  story: raw dense layer20 donor activation at the assistant `model` token does
+  not repair (`I-It=-0.109`), while raw dense activation at the final newline
+  does repair (`I-It=+0.281`). SAE full decode has the opposite minimal handle
+  at this two-token resolution: `model` token repairs and final newline fails.
+  So SAE full decode is a reconstructed behavioral intervention, not a faithful
+  tokenwise raw-activation substitute.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

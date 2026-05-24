@@ -1,0 +1,7 @@
+condition,max_i_minus_it,mean_delta_vs_donor,mean_delta_vs_recipient,mean_i_minus_it,min_i_minus_it,n,split,top_i_rate,top_it_rate
+activation_patch_20:post_ff,-3.984375,0.12109375,-0.015625,-3.984375,-3.984375,1,benign,0.0,0.0
+activation_patch_20:post_ff,0.28125,-1.46875,0.890625,0.28125,0.28125,1,harmful,1.0,0.0
+donor_alpha,-4.10546875,0.0,-0.13671875,-4.10546875,-4.10546875,1,benign,0.0,0.0
+donor_alpha,1.75,0.0,2.359375,1.75,1.75,1,harmful,1.0,0.0
+recipient_alpha,-3.96875,,0.0,-3.96875,-3.96875,1,benign,0.0,0.0
+recipient_alpha,-0.609375,,0.0,-0.609375,-0.609375,1,harmful,0.0,1.0

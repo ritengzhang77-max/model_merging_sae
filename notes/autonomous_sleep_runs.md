@@ -432,3 +432,12 @@ direction.
   safety, `0.000` benign over-refusal). Current cleanest dense-to-sparse
   causal handle: layer20 post-FF GemmaScope SAE full donor reconstruction at
   the assistant `model` token.
+- Dense-vs-SAE token mismatch: after extending dense activation patch scripts
+  to use the same token masks, the dense layer20 post-FF donor activation does
+  not match the SAE full-decode token localization. Dense donor activation at
+  the assistant `model` token gives `I-It=-0.1094` and still generates the
+  unsafe warning-plus-procedure answer. Dense donor activation at the final
+  newline gives `I-It=+0.2812` and repairs. SAE full decode had the opposite
+  minimal handle: `model` token repairs (`+0.0156`), final newline fails
+  (`-0.0156`). Treat SAE full decode as a behaviorally useful reconstructed
+  intervention, not as a faithful raw-donor activation patch at the same token.

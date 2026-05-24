@@ -20,7 +20,15 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "stage0" / "scripts"))
 sys.path.insert(0, str(ROOT / "stage2" / "scripts"))
 sys.path.insert(0, str(ROOT / "stage3" / "scripts"))
-from run_gemma2_2b_activation_patch_target_loss import MODEL_IDS, install_hooks, parse_specs, remove_hooks  # noqa: E402
+from run_gemma2_2b_activation_patch_target_loss import (  # noqa: E402
+    MODEL_IDS,
+    first_tensor,
+    module_for,
+    parse_specs,
+    remove_hooks,
+    replace_first_tensor,
+)
+from run_gemma2_2b_gemmascope_mlp_sae_feature_subsets import patch_position_mask  # noqa: E402
 from run_gemma2_2b_linear_weight_merge_sweep import set_linear_merge_weights  # noqa: E402
 from screen_chat_merge_candidate import clean_assistant_text, generate, score_record  # noqa: E402
 
@@ -69,11 +77,51 @@ def activation_patch_generate(
     enc = tokenizer(prompt, return_tensors="pt").to(device)
     input_ids = enc["input_ids"]
     attention_mask = enc["attention_mask"]
-    cache, donor_handles, recipient_handles = install_hooks(donor, recipient, patch_points, position)
+    prompt_length = int(input_ids.shape[1])
+    cache: dict[tuple[int, str], torch.Tensor] = {}
+    donor_handles = []
+    recipient_handles = []
+    current_mask = None
+
+    def make_donor_hook(key):
+        def hook(_module, _inputs, output):
+            tensor, _rest = first_tensor(output)
+            cache[key] = tensor.detach()
+
+        return hook
+
+    def make_recipient_hook(key):
+        def hook(_module, _inputs, output):
+            tensor, _rest = first_tensor(output)
+            donor_tensor = cache[key].to(device=tensor.device, dtype=tensor.dtype)
+            if position == "all":
+                patched = donor_tensor
+            else:
+                assert current_mask is not None
+                mask = current_mask.to(device=tensor.device).unsqueeze(-1)
+                patched = torch.where(mask, donor_tensor, tensor)
+            return replace_first_tensor(output, patched)
+
+        return hook
+
+    for key in patch_points:
+        layer, kind = key
+        donor_handles.append(module_for(donor, layer, kind).register_forward_hook(make_donor_hook(key)))
+        recipient_handles.append(module_for(recipient, layer, kind).register_forward_hook(make_recipient_hook(key)))
+
     try:
         for _ in range(max_new_tokens):
             cache.clear()
             _ = donor(input_ids=input_ids, attention_mask=attention_mask, use_cache=False)
+            if position != "all":
+                mask_mode = "last_token" if position == "target" else position
+                current_mask = patch_position_mask(
+                    tokenizer,
+                    input_ids,
+                    attention_mask,
+                    mask_mode,
+                    prompt_length=prompt_length,
+                )
             out = recipient(input_ids=input_ids, attention_mask=attention_mask, use_cache=False)
             next_id = out.logits[:, -1, :].argmax(dim=-1, keepdim=True)
             input_ids = torch.cat([input_ids, next_id], dim=1)
@@ -153,7 +201,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--prompt-jsonl", type=Path, required=True)
     ap.add_argument("--max-new-tokens", type=int, default=160)
     ap.add_argument("--patch-specs", default="16+17+18+19+20:mlp,12+13+14+15+16+17+18+19+20:mlp")
-    ap.add_argument("--position", choices=("all", "target"), default="all")
+    ap.add_argument("--position", default="all")
     ap.add_argument("--skip-baselines", action="store_true")
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     return ap.parse_args()

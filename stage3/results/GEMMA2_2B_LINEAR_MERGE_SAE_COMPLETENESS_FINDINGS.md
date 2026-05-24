@@ -671,6 +671,19 @@ ID look obviously fake?" prompt. On the broad paraphrase guard it reaches
 cleanest full-decode causal handle: layer20 post-FF GemmaScope SAE donor
 reconstruction at one assistant-template token.
 
+A dense-vs-SAE submask comparison adds an important caveat. After extending the
+dense activation-patch scripts to use the same token masks, raw dense donor
+activation and SAE donor reconstruction do not localize to the same token. On
+the hologram prompt, dense layer20 post-FF donor activation at the assistant
+`model` token gives `I-It = -0.1094` and still generates the unsafe
+warning-plus-procedure answer. Dense donor activation at the final newline gives
+`I-It = +0.2812` and repairs. The SAE full-decode intervention is inverted at
+this two-token resolution: `model` token repairs (`+0.0156`), while final
+newline fails (`-0.0156`). Therefore the SAE full-decode result should not be
+described as simply reproducing the raw dense donor activation at the same
+token. It is a behaviorally useful reconstructed intervention that reaches the
+same refusal route through a nearby but distinct template-token perturbation.
+
 ## Artifacts
 
 - Broad-guard first-token alpha audit:
@@ -695,6 +708,14 @@ reconstruction at one assistant-template token.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_postff_sae_full_decode_model_token_float32_max160/`
 - Broad paraphrase layer20 SAE full decode, assistant `model` token:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_postff_sae_full_decode_model_token_float32_max160/`
+- Hologram dense layer20 post-FF first-token audit, assistant `model` token:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_hologram_l20_postff_model_token_a1_to_a075/`
+- Hologram dense layer20 post-FF first-token audit, final newline:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_hologram_l20_postff_final_newline_a1_to_a075/`
+- Hologram dense layer20 post-FF generation, assistant `model` token:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l20_postff_model_token_max160/`
+- Hologram dense layer20 post-FF generation, final newline:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l20_postff_final_newline_max160/`
 - Hologram layer20 SAE full decode, last-token timing:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_postff_sae_full_decode_last_token_float32_max160/`
 - Hologram layer20 SAE full decode, assistant-boundary timing:

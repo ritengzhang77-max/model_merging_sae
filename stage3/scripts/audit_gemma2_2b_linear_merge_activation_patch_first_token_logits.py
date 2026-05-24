@@ -21,11 +21,13 @@ sys.path.insert(0, str(ROOT / "stage2" / "scripts"))
 sys.path.insert(0, str(ROOT / "stage3" / "scripts"))
 from run_gemma2_2b_activation_patch_target_loss import (  # noqa: E402
     MODEL_IDS,
-    install_hooks,
+    first_tensor,
+    module_for,
     parse_specs,
     remove_hooks,
+    replace_first_tensor,
 )
-from run_gemma2_2b_gemmascope_mlp_sae_feature_subsets import chat_prompt  # noqa: E402
+from run_gemma2_2b_gemmascope_mlp_sae_feature_subsets import chat_prompt, patch_position_mask  # noqa: E402
 from run_gemma2_2b_linear_merge_sae_bundle_patch import load_prompt_rows, write_csv  # noqa: E402
 from run_gemma2_2b_linear_weight_merge_sweep import set_linear_merge_weights  # noqa: E402
 
@@ -52,10 +54,50 @@ def first_token_logits(model, tokenizer, user: str, device: str) -> torch.Tensor
 def patched_first_token_logits(donor, recipient, tokenizer, user: str, patch_points, args) -> torch.Tensor:
     prompt = chat_prompt(tokenizer, user)
     enc = tokenizer(prompt, return_tensors="pt").to(args.device)
-    cache, donor_handles, recipient_handles = install_hooks(donor, recipient, patch_points, args.position)
+    prompt_length = int(enc["input_ids"].shape[1])
+    cache: dict[tuple[int, str], torch.Tensor] = {}
+    donor_handles = []
+    recipient_handles = []
+    current_mask = None
+
+    def make_donor_hook(key):
+        def hook(_module, _inputs, output):
+            tensor, _rest = first_tensor(output)
+            cache[key] = tensor.detach()
+
+        return hook
+
+    def make_recipient_hook(key):
+        def hook(_module, _inputs, output):
+            tensor, _rest = first_tensor(output)
+            donor_tensor = cache[key].to(device=tensor.device, dtype=tensor.dtype)
+            if args.position == "all":
+                patched = donor_tensor
+            else:
+                assert current_mask is not None
+                mask = current_mask.to(device=tensor.device).unsqueeze(-1)
+                patched = torch.where(mask, donor_tensor, tensor)
+            return replace_first_tensor(output, patched)
+
+        return hook
+
+    for key in patch_points:
+        layer, kind = key
+        donor_handles.append(module_for(donor, layer, kind).register_forward_hook(make_donor_hook(key)))
+        recipient_handles.append(module_for(recipient, layer, kind).register_forward_hook(make_recipient_hook(key)))
+
     try:
         cache.clear()
         donor(**enc, use_cache=False)
+        if args.position != "all":
+            mask_mode = "last_token" if args.position == "target" else args.position
+            current_mask = patch_position_mask(
+                tokenizer,
+                enc["input_ids"],
+                enc["attention_mask"],
+                mask_mode,
+                prompt_length=prompt_length,
+            )
         out = recipient(**enc, use_cache=False)
         return out.logits[0, -1].detach().float().cpu()
     finally:
@@ -157,7 +199,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--recipient-alpha", type=float, default=0.75)
     ap.add_argument("--prompt-jsonl", type=Path, required=True)
     ap.add_argument("--patch-specs", required=True)
-    ap.add_argument("--position", choices=("all", "target"), default="all")
+    ap.add_argument("--position", default="all")
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     return ap.parse_args()
 
