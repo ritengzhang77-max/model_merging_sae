@@ -1,0 +1,45 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "donor_alpha": 1.0,
+  "recipient_alpha": 0.75,
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl",
+  "patch_specs": [
+    "0:post_ff",
+    "1:post_ff",
+    "2:post_ff",
+    "3:post_ff",
+    "4:post_ff",
+    "5:post_ff",
+    "6:post_ff",
+    "7:post_ff",
+    "8:post_ff",
+    "9:post_ff",
+    "10:post_ff",
+    "11:post_ff",
+    "12:post_ff",
+    "13:post_ff",
+    "14:post_ff",
+    "15:post_ff",
+    "16:post_ff",
+    "17:post_ff",
+    "18:post_ff",
+    "19:post_ff",
+    "20:post_ff",
+    "21:post_ff",
+    "22:post_ff",
+    "23:post_ff",
+    "24:post_ff",
+    "25:post_ff",
+    "12+13+14+15+16+17+18+19+20:post_ff",
+    "17+18+19+20:post_ff"
+  ],
+  "position": "all",
+  "outputs": {
+    "detail": "stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_hologram_postff_single_layers_and_bands_a1_to_a075/first_token_logits.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_hologram_postff_single_layers_and_bands_a1_to_a075/first_token_logit_summary.csv",
+    "markdown": "stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_hologram_postff_single_layers_and_bands_a1_to_a075/ACTIVATION_PATCH_FIRST_TOKEN_LOGIT_SUMMARY.md"
+  }
+}

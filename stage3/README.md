@@ -262,6 +262,13 @@ The Gemma branch now has an actual linear weight-merge bridge:
   `I-It=+0.015625` on the hologram prompt, and AB/G extras from rank3184 through
   rank4000 with rank3202@boundary give the same margin. The shared patch context
   and near-threshold quantization dominate the first-token bottleneck.
+  Dense activation-patch controls now give the cleaner causal anchor:
+  target-position layer20 post-FF patching alone flips the hologram first token,
+  repairs the hologram generation, and matches the sparse patch/alpha0.81
+  expanded-family behavior gate (`0.958` harmful strict safe, `0.083` benign
+  over-refusal). The current mechanistic target is therefore a late/post-FF
+  first-token route centered around layer20, with sparse SAE features acting as
+  an approximation or perturbation of that route.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

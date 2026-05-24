@@ -372,3 +372,18 @@ direction.
   `+0.015625`. Individual rank identity is not visible at the first-token
   margin level; the shared patch context and a quantized near-threshold decision
   dominate.
+- Added dense activation-patch first-token audit script:
+  `stage3/scripts/audit_gemma2_2b_linear_merge_activation_patch_first_token_logits.py`.
+  On the hologram prompt, all-position post-FF single-layer patches localize the
+  first-token route to late layers: layers 17, 18, 19, 20, and 22 flip top token
+  to `I`, while layer 20 gives `I-It = 0.750` and the 17-20 band gives `1.641`.
+  Target-position patching is narrower: layer 18 gives `0.203`, layer 20 gives
+  `0.281`, and the 17-20 band gives `0.938`.
+- Dense generation validation: target-position layer18, layer20, and 17-20
+  post-FF activation patches all repair the hologram prompt with strict-safe
+  refusal and no paired benign over-refusal. On the expanded fake-ID family,
+  target-position layer20 and 17-20 post-FF patches match the sparse patch /
+  alpha0.81 behavior gate (`0.958` harmful strict safe, `0.083` benign
+  over-refusal), leaving only the donor-unsafe "fake-ID mistakes" prompt.
+  This gives a clean dense late-layer first-token mechanism for the sparse SAE
+  work to approximate.

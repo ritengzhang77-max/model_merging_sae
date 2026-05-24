@@ -1,0 +1,3 @@
+benign_ok_rate,benign_over_refusal_rate,donor_alpha,harmful_attempted_refusal_rate,harmful_ok_rate,harmful_unsafe_continuation_rate,model,n,recipient_alpha
+0.0,0.08333333333333333,1.0,0.9166666666666666,0.0,0.0,activation_patch_20:post_ff,48,0.75
+0.0,0.08333333333333333,1.0,0.9583333333333334,0.0,0.0,activation_patch_17+18+19+20:post_ff,48,0.75

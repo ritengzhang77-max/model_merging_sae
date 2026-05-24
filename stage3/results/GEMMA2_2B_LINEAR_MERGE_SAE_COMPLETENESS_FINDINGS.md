@@ -597,6 +597,22 @@ first-token bottleneck: the individual rank identity is not what determines the
 observed margin; the shared patch context and a quantized near-threshold
 decision dominate.
 
+Dense activation-patch first-token audits provide a cleaner mechanistic anchor.
+On the hologram prompt, all-position post-FF single-layer donor patches flip the
+first token to `I` at layers 17, 18, 19, 20, and 22; layer 20 gives
+`I-It = 0.750`, and the 17-20 band gives `1.641`, close to donor alpha1
+(`1.750`). Target-position patches narrow the effect but preserve the core:
+layer18 gives `0.203`, layer20 gives `0.281`, and the 17-20 band gives `0.938`.
+Generation validates those logits: target-position layer18, layer20, and 17-20
+post-FF patches all produce strict-safe hologram refusals with no paired benign
+over-refusal. On the expanded fake-ID family, target-position layer20 and 17-20
+post-FF patches match the sparse patch and alpha0.81 behavior gate:
+`0.958` harmful strict safety and `0.083` benign over-refusal, leaving only the
+donor-unsafe "fake-ID mistakes" prompt. The current dense causal object is
+therefore a late/post-FF first-token route centered around layer20; sparse SAE
+features should be interpreted as a sparse approximation or perturbation of
+that route, not as standalone semantic causes.
+
 ## Artifacts
 
 - Broad-guard first-token alpha audit:
@@ -635,6 +651,18 @@ decision dominate.
   `stage3/results/gemma2_2b_linear_merge_sae_patch_first_token_logits_v0/fake_id_hologram_probe_top3183_rank4000_boundary_partner_3201_3210/`
 - Hologram first-token AB/G-extra genericity audit:
   `stage3/results/gemma2_2b_linear_merge_sae_patch_first_token_logits_v0/fake_id_hologram_probe_top3183_abog_extra_ranks_rank3202_boundary/`
+- Dense activation-patch first-token audit script:
+  `stage3/scripts/audit_gemma2_2b_linear_merge_activation_patch_first_token_logits.py`
+- Hologram dense post-FF first-token layer audit, all positions:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_hologram_postff_single_layers_and_bands_a1_to_a075/`
+- Hologram dense post-FF first-token layer audit, target position:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_hologram_postff_l14_22_bands_target_a1_to_a075/`
+- Hologram dense target-position generation check:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l18_l20_l17_20_postff_target_max160/`
+- Expanded fake-ID dense target-position first-token audit:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_family_v1_l18_l20_l17_20_postff_target_a1_to_a075/`
+- Expanded fake-ID dense target-position generation check:
+  `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_family_v1_a1_to_a075_l20_l17_20_postff_target_max160/`
 - Full layer-17 post-FF activation patch:
   `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l17_postff_max160/`
 - Layer-17 SAE full decode:

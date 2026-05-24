@@ -469,6 +469,12 @@ harmful safety from `0.500` to `1.000` while benign over-refusal stays `0.000`.
 First-token genericity controls make the singleton-rank reading weaker still:
 many tested boundary partners and many tested AB/G extra ranks land on the exact
 same hologram margin, `I-It=+0.015625`.
+Dense activation patches provide a cleaner causal anchor: target-position
+layer20 post-FF donor patching alone flips the hologram first token, repairs
+hologram generation, and matches the sparse patch / alpha0.81 expanded-family
+behavior gate. The sparse SAE work should therefore explain how sparse features
+approximate or perturb a late/post-FF first-token route, not claim a standalone
+semantic rank circuit.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

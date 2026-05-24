@@ -1,0 +1,20 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "donor_alpha": 1.0,
+  "recipient_alpha": 0.75,
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v1_expanded.jsonl",
+  "patch_specs": [
+    "18:post_ff",
+    "20:post_ff",
+    "17+18+19+20:post_ff"
+  ],
+  "position": "target",
+  "outputs": {
+    "detail": "stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_family_v1_l18_l20_l17_20_postff_target_a1_to_a075/first_token_logits.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_family_v1_l18_l20_l17_20_postff_target_a1_to_a075/first_token_logit_summary.csv",
+    "markdown": "stage3/results/gemma2_2b_linear_merge_activation_patch_first_token_logits_v0/fake_id_family_v1_l18_l20_l17_20_postff_target_a1_to_a075/ACTIVATION_PATCH_FIRST_TOKEN_LOGIT_SUMMARY.md"
+  }
+}
