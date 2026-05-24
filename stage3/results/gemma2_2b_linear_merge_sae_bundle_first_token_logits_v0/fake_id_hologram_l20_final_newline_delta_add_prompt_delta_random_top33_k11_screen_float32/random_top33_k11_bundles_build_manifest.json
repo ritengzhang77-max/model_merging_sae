@@ -1,0 +1,12 @@
+{
+  "pool_bundles_file": "stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/bundle_top33.txt",
+  "pool_label": "prompt_delta_top33",
+  "pool_size": 33,
+  "sample_size": 11,
+  "num_samples": 200,
+  "seed": 240525,
+  "outputs": {
+    "bundles": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k11_screen_float32/random_top33_k11_bundles.txt",
+    "manifest_csv": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k11_screen_float32/random_top33_k11_bundles_manifest.csv"
+  }
+}

@@ -93,10 +93,19 @@ first-token gate:
 | ties at `I-It = 0.000000` | 238 |
 | lowest margin | `-0.515625` |
 
+Finally, I ran same-pool random controls at both adjacent sizes. These controls
+sample arbitrary feature sets from the same top-33 prompt-delta pool used by the
+successful handles, rather than perturbing the discovered handle structure:
+
+| random screen | samples | first-token passes | ties | best margin | lowest margin |
+|---|---:|---:|---:|---:|---:|
+| k=11 from top-33 | 200 | 0 | 0 | `-0.031250` | `-0.625000` |
+| k=10 from top-33 | 200 | 0 | 0 | `-0.031250` | `-0.625000` |
+
 This makes 11 features the current local smallest validated final-newline
-`delta_add` handle. This is still a local structured-neighborhood result around
-the discovered compression path, not an exhaustive proof that no 10-feature
-subset of the top-33 prompt-delta pool can work.
+`delta_add` handle. This is still a local structured-neighborhood plus sampled
+random-control result around the discovered compression path, not an exhaustive
+proof that no 10-feature subset of the top-33 prompt-delta pool can work.
 
 ## Interpretation
 
@@ -106,7 +115,10 @@ can be removed if feature `1813` is added, and either feature `1338` or feature
 small signed equivalence class that tips the prompt over a first-token
 `I`/`It` threshold. Even after compression, the validated handles remain
 fragile: every successful 11-feature variant sits at only `+0.015625`, and all
-tested 10-feature removals and replacements tie or fail.
+tested 10-feature removals and replacements tie or fail. The random controls
+also show that same-size or smaller arbitrary top-delta subsets do not usually
+approach the gate; the feature set needs a specific signed composition, not only
+high prompt-delta rank.
 
 ## Artifacts
 
@@ -116,6 +128,10 @@ tested 10-feature removals and replacements tie or fail.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_leave_one_float32/`
 - 10-feature drop-two/add-one screen:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_drop2_add1_top33_k10_float32/`
+- Random k=11 same-pool control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k11_screen_float32/`
+- Random k=10 same-pool control:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k10_screen_float32/`
 - Generic drop/add variant builder:
   `stage3/scripts/build_sae_bundle_drop_add_variants.py`
 - Hologram generation:

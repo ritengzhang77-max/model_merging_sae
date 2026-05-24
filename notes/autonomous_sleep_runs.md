@@ -631,3 +631,10 @@ direction.
   and the worst margin was `-0.515625`. This strengthens local 11-feature
   minimality within the explored structured neighborhood, but it is still not
   an exhaustive proof over all top-33 10-feature subsets.
+- Random k=11/k=10 control update: 200 same-pool random k=11 subsets and 200
+  same-pool random k=10 subsets from the top-33 prompt-delta pool both produced
+  0 first-token passes and 0 ties on the hologram prompt. The best margin in
+  both screens was only `I-It = -0.031250`, with worst margin `-0.625000`.
+  This strengthens the signed-combination interpretation: the validated
+  11-feature handles are not explained by simply selecting any high-rank
+  prompt-delta features of similar size.

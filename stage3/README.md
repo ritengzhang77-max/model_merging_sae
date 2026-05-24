@@ -663,8 +663,10 @@ Feature-ID causality follow-up:
   while 0/22 one-feature removals from the two 11-feature handles cross the
   hologram first-token gate. A larger structured 10-feature replacement screen
   over those two 11-feature handles also found 0/2165 first-token passes, with
-  238 ties at zero. Current local smallest validated final-newline `delta_add`
-  handle: 11 features.
+  238 ties at zero. Same-pool random controls at k=11 and k=10 each tested 200
+  top-33 subsets, found 0 first-token passes and no ties, and topped out at
+  `I-It = -0.031250`. Current local smallest validated final-newline
+  `delta_add` handle: 11 features.
 
 Main artifacts:
 
@@ -739,6 +741,8 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_leave_one_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_leave_one_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_drop2_add1_top33_k10_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k11_screen_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k10_screen_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
