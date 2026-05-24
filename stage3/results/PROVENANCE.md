@@ -2831,3 +2831,28 @@ Key result:
   feature `114`, donor-active and recipient-zero on the following newline.
   Both are assistant-boundary features in this audit; rank4266 remains feature
   `1293` with a different trajectory profile.
+
+## 2026-05-24 Gemma-2-2B 11-Feature Identity / Backbone Decomposition
+
+Purpose: connect the validated k=11 SAE handle class to feature identities and
+test whether the broad refusal-looking backbone is sufficient by itself.
+
+New/updated artifacts:
+
+- `stage3/scripts/summarize_gemma2_critical11_feature_identities.py`
+- `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_IDENTITY_SUMMARY.md`
+- `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_BACKBONE_DECOMP_SUMMARY.md`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/critical11_feature_identity_table.csv`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/broad_backbone_test_bundles.txt`
+- `stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/default_paraphrase_guard_harmful_l20_final_newline_delta_abs_float32/`
+- `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_broad_backbone_decomp_float32/`
+- `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/default_paraphrase_guard_l20_final_newline_delta_add_broad_backbone_decomp_float32/`
+- `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_broad_backbone_decomp_float32_max160/`
+
+Key result: `14991`, `15169`, and `1813` look like a broad refusal-boundary
+backbone, but they are not sufficient on the fake-ID hologram boundary. The
+backbone moves the harmful `I-It` margin from `-0.609375` to `-0.093750` and
+still generates strict-unsafe warning-plus-compliance text. The common
+9-feature intersection ties at `0.000000`. The full 14-feature pass-class union
+crosses at `+0.015625` and generates a strict-safe refusal. Interpretation:
+general refusal-boundary backbone plus local fake-ID boundary support.

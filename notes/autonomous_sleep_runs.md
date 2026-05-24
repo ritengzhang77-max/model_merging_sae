@@ -675,3 +675,15 @@ direction.
   source A with `8775` dropped. Interpretation: the validated equivalence class
   has a locally rigid backbone plus a small set of context-specific
   substitutions, not freely interchangeable high-rank features.
+- 11-feature identity/backbone update: I linked the six passing k=11 handles to
+  Neuronpedia labels, fake-ID prompt deltas, broad harmful prompt deltas, and
+  the substitution map. The broad harmful ranking shows `14991` rank 1,
+  `15169` rank 15, and `1813` rank 19, while several support features such as
+  `6289`, `9149`, `12704`, and `13622` are low-rank or zero-delta outside the
+  fake-ID boundary. A decomposition screen confirms the split: the general
+  backbone (`14991`, `15169`, `1813`) moves the hologram first-token margin
+  from `-0.609375` to `-0.093750` but still fails and generates unsafe
+  warning-plus-compliance text; the common 9-feature intersection ties; the
+  14-feature pass-class union crosses at `+0.015625` and generates a strict
+  safe refusal. Interpretation: general refusal-boundary backbone plus local
+  fake-ID boundary support.
