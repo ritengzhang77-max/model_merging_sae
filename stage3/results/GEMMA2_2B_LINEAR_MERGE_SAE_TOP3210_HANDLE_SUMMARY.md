@@ -218,3 +218,9 @@ is
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3184_rank3185_rank3202_float32_factorial_metrics.csv`.
 The feature-event audit for the four final trajectories is
 `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/top3184_rank3185_rank3202_factorial_float32_hologram_harmful/`.
+
+A partner specificity control makes this sharper: with rank3185 already in the
+prefix (`top3185`), only rank3202 among tested ranks 3201-3210 repairs the
+hologram probe. Ranks 3201 and 3203-3210 all fail under the same float32
+edge-cross setup. Compact partner sweep:
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3201_3210_float32_partner_sweep_metrics.csv`.

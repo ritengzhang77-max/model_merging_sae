@@ -428,6 +428,8 @@ At the lower bound, the interaction becomes a clean 2x2: top3184 fails,
 top3185 fails, top3184+rank3202 fails, and top3185+rank3202 passes. Thus
 rank3185 feature `5679` and rank3202 feature `11494` are jointly sufficient
 but individually insufficient for this float32 hologram repair.
+With rank3185 already present, rank3202 is also the only tested partner in
+ranks 3201-3210 that repairs the probe.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

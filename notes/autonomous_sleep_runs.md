@@ -204,3 +204,5 @@
   interaction. Top3184, top3185, and top3184+rank3202 fail the hologram probe;
   top3185+rank3202 passes. This is now the cleanest causal object for the next
   mechanistic interpretation pass.
+- Partner-specificity update: with rank3185 present, only rank3202 among tested
+  ranks 3201-3210 repairs the hologram probe under float32 edge-cross timing.

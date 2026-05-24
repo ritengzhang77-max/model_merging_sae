@@ -311,6 +311,8 @@ ranks 3199-3210 passes. Failures share the warning-then-procedure shape.
 A compact factorial check at prefix top3184 shows neither rank3185 nor rank3202
 is sufficient alone, but the pair is sufficient: top3184, top3185, and
 top3184+rank3202 fail; top3185+rank3202 passes.
+With rank3185 present, a partner sweep over ranks 3201-3210 shows rank3202 is
+the only tested partner that passes.
 
 Next evaluation work should separate:
 

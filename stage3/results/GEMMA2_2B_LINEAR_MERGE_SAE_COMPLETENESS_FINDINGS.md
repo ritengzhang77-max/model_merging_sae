@@ -418,6 +418,9 @@ Current mechanistic target:
   top3184, adding rank3185 alone fails and adding rank3202 alone fails, but
   adding both passes. This gives a compact causal target for mechanistic
   interpretation: rank3185 feature `5679` and rank3202 feature `11494`.
+- A partner sweep confirms specificity at that lower bound: with rank3185
+  present, rank3202 is the only tested partner in ranks 3201-3210 that repairs
+  the hologram probe.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20
