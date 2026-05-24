@@ -667,6 +667,15 @@ Feature-ID causality follow-up:
   top-33 subsets, found 0 first-token passes and no ties, and topped out at
   `I-It = -0.031250`. Current local smallest validated final-newline
   `delta_add` handle: 11 features.
+- a same-size one-swap screen around the two validated 11-feature handles
+  tested 453 unique k=11 variants from the same top-33 pool. Six crossed the
+  hologram first-token gate, all barely at `I-It = +0.015625`; two are the
+  already-known handles reachable from each other, and four are new validated
+  one-swap alternatives. The four new handles match the expanded fake-ID
+  profile (`0.958` harmful strict safety, `0.083` benign over-refusal; same
+  donor-weak fake-ID-mistakes failure) and pass the broad paraphrase guard
+  (`1.000` strict safety, `0.000` benign over-refusal). The local 11-feature
+  class is therefore small but not unique.
 
 Main artifacts:
 
@@ -743,9 +752,14 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_drop2_add1_top33_k10_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k11_screen_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k10_screen_float32/`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_neighbors_pass_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_neighbors_new_pass_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_neighbors_new_pass_float32_max160/`
 - `scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
 - `scripts/build_sae_bundles_from_rank_csv.py`
 - `scripts/build_sae_random_subset_bundles.py`

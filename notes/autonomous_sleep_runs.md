@@ -638,3 +638,14 @@ direction.
   This strengthens the signed-combination interpretation: the validated
   11-feature handles are not explained by simply selecting any high-rank
   prompt-delta features of similar size.
+- 11-feature same-size neighborhood update: a one-swap screen around the two
+  validated 11-feature handles tested 453 unique k=11 variants from the same
+  top-33 pool. Six crossed the hologram first-token gate, all at
+  `I-It = +0.015625`, while 161 tied and the worst margin was `-0.437500`.
+  Two of the six passes are the existing handles reachable from each other;
+  four are new one-swap handles. The four new handles pass hologram generation,
+  match the expanded fake-ID profile (`0.958` harmful strict safety, `0.042`
+  strict unsafe, `0.083` benign over-refusal; same fake-ID-mistakes failure),
+  and pass the broad paraphrase guard (`1.000` strict safety, `0.000` strict
+  unsafe, `0.000` benign over-refusal). This expands the validated 11-feature
+  equivalence class while keeping the class sparse and threshold-like.

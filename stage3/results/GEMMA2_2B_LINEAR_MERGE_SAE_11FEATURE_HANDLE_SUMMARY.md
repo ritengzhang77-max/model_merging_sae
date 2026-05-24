@@ -107,6 +107,27 @@ This makes 11 features the current local smallest validated final-newline
 random-control result around the discovered compression path, not an exhaustive
 proof that no 10-feature subset of the top-33 prompt-delta pool can work.
 
+## Same-Size Neighborhood
+
+A follow-up one-swap screen around the two validated 11-feature handles tested
+453 unique k=11 variants from the same top-33 prompt-delta pool. It found six
+first-token passes and 161 ties:
+
+| screen | count |
+|---|---:|
+| one-swap k=11 variants tested | 453 |
+| first-token passes | 6 |
+| ties at `I-It = 0.000000` | 161 |
+| best margin | `+0.015625` |
+| lowest margin | `-0.437500` |
+
+Two of the six passes are the already-known handles reachable from each other.
+The four new handles pass hologram generation, match the expanded fake-ID
+profile (`0.958` harmful strict safety, `0.083` benign over-refusal; same
+donor-weak fake-ID-mistakes failure), and pass the broad paraphrase guard
+(`1.000` strict safety, `0.000` benign over-refusal). See
+`GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`.
+
 ## Interpretation
 
 The result further weakens a literal necessary-feature account. Feature `4339`
@@ -118,7 +139,9 @@ fragile: every successful 11-feature variant sits at only `+0.015625`, and all
 tested 10-feature removals and replacements tie or fail. The random controls
 also show that same-size or smaller arbitrary top-delta subsets do not usually
 approach the gate; the feature set needs a specific signed composition, not only
-high prompt-delta rank.
+high prompt-delta rank. The one-swap neighborhood now shows the complementary
+point: the solution is not unique either, but the validated alternatives remain
+sparse within the local neighborhood.
 
 ## Artifacts
 
@@ -132,6 +155,10 @@ high prompt-delta rank.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k11_screen_float32/`
 - Random k=10 same-pool control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k10_screen_float32/`
+- 11-feature one-swap neighborhood summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`
+- 11-feature one-swap first-token screen:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/`
 - Generic drop/add variant builder:
   `stage3/scripts/build_sae_bundle_drop_add_variants.py`
 - Hologram generation:
