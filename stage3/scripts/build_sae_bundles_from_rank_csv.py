@@ -52,10 +52,16 @@ def main() -> int:
         default=(),
         help="Optional semicolon-separated specs like label=1-32,34;single33=33.",
     )
+    ap.add_argument(
+        "--leave-one-out-top-k",
+        type=int,
+        default=0,
+        help="Emit full_topK and topK_minus_rankNNN bundles for ranks 1..K.",
+    )
     ap.add_argument("--prefix", default="prompt_delta_top")
     ap.add_argument("--output", type=Path, required=True)
     args = ap.parse_args()
-    if not args.cutoffs and not args.rank_sets:
+    if not args.cutoffs and not args.rank_sets and args.leave_one_out_top_k <= 0:
         raise SystemExit("provide --cutoffs or --rank-sets")
 
     with args.ranking_csv.open("r", encoding="utf-8", newline="") as f:
@@ -70,6 +76,15 @@ def main() -> int:
         selected = feature_ids[: min(cutoff, len(feature_ids))]
         spec = ",".join(f"{layer}:{feature_id}" for feature_id in selected)
         parts.append(f"{args.prefix}{cutoff}={spec}")
+    if args.leave_one_out_top_k > 0:
+        k = min(args.leave_one_out_top_k, len(feature_ids))
+        top = feature_ids[:k]
+        full_spec = ",".join(f"{layer}:{feature_id}" for feature_id in top)
+        parts.append(f"top{k}_full={full_spec}")
+        for rank in range(1, k + 1):
+            selected = top[: rank - 1] + top[rank:]
+            spec = ",".join(f"{layer}:{feature_id}" for feature_id in selected)
+            parts.append(f"top{k}_minus_rank{rank:03d}={spec}")
     for label, ranks in args.rank_sets:
         selected = []
         for rank in ranks:

@@ -492,3 +492,14 @@ direction.
   procedural/request/caution/document/code/organization labels, not a clean
   safety/refusal semantic story. This keeps the interpretation at "compact
   causal boundary-crossing bundle" rather than "interpreted refusal circuit."
+- Signed top-33 controls: positive-only donor-higher features fail, negative-only
+  recipient-higher suppression features fail, and the full signed top-33 bundle
+  passes. Sign-prefix sweeps are nonmonotone: positive-all plus negative-prefix
+  10 passes, prefix 11 fails, and prefix 12 passes; negative-all plus positive
+  prefixes only passes at 20/21 and 21/21 positives. Leave-one-out controls show
+  21 removals still pass and 12 removals fail (ranks `1`, `2`, `7`, `9`, `14`,
+  `16`, `20`, `24`, `25`, `27`, `28`, `33`). First-token audits align with
+  generation: passing variants cross to top token `I` with `I-It >= +0.015625`,
+  while failing variants stay at top token `It` with `I-It <= 0`. This is
+  strong evidence for a near-threshold first-token basin flip rather than a
+  clean semantic refusal feature.

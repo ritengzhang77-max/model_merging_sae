@@ -247,6 +247,12 @@ The Gemma branch now has an actual linear weight-merge bridge:
   guard. Rank-edge controls and Neuronpedia labels argue against a clean
   singleton or semantic-refusal-feature interpretation: this is currently a
   compact prompt-local causal handle, not a fully interpreted circuit.
+  Signed-delta and leave-one-out controls strengthen the threshold account:
+  positive-only and negative-only signed subsets both fail, while the full
+  signed top-33 bundle passes. Removing 21/33 individual features still passes,
+  but removing 12 specific features fails. First-token audits explain the text
+  behavior: passing variants barely cross to top token `I` (`I-It >= +0.015625`),
+  while failing variants stay at top token `It` (`I-It <= 0`).
   Timing splits show the generic rank4000 perturbation still needs the combined
   `assistant_boundary_or_generated` trajectory: with rank3201 or rank3202 at
   the assistant boundary, rank4000 AB/G repairs the hologram probe, but

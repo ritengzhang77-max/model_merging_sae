@@ -995,6 +995,30 @@ top-33 bundle has already been semantically interpreted. The current claim
 should stay causal and behavioral: a small, prompt-local SAE delta bundle can
 recover the donor-like refusal gate, but the feature semantics remain unresolved.
 
+Signed-delta controls reinforce the threshold interpretation. Splitting the
+top-33 harmful-token deltas by sign shows that the 21 donor-higher features
+alone fail and the 12 recipient-higher/suppressed features alone fail. The full
+33-feature signed bundle passes. Prefix-combination sweeps show no clean
+monotone sign story: all positive features plus the first 10 negative features
+passes, adding the 11th negative feature fails, and adding the 12th restores
+the pass. Conversely, all negative features plus the first 20/21 positive
+features pass, while all smaller positive prefixes fail. A leave-one-out sweep
+shows that removing 21/33 features still passes, while removing 12 specific
+features fails: ranks `1`, `2`, `7`, `9`, `14`, `16`, `20`, `24`, `25`, `27`,
+`28`, and `33` (features `15169`, `12963`, `14991`, `12704`, `8775`, `4339`,
+`4326`, `9135`, `13622`, `12652`, `1338`, `6289`). These required-in-context
+features include both donor-higher and recipient-higher directions.
+
+First-token logit audits explain the sign and leave-one-out behavior. On the
+hologram prompt, the full top-33 final-newline `delta_add` bundle reaches only
+`I-It = +0.015625`, just across the direct-refusal boundary. Positive-only is
+still negative (`-0.015625`), negative-only is far negative (`-0.578125`), and
+every pass/fail in the signed-prefix and leave-one-out sweeps matches the
+first-token gate: passing variants have top token `I` with `I-It >= +0.015625`,
+while failing variants have top token `It` with `I-It <= 0`. The compact
+top-33 route therefore appears to reproduce the same near-threshold
+first-token basin flip seen in earlier dense and sparse controls.
+
 Artifacts:
 
 - Prompt-token delta ranking:
@@ -1015,6 +1039,15 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_family_harmful_prompt_delta_top33_float32_max160/`
 - Rank-edge controls:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_rank33_controls_float32_max160/`
+- Signed-delta decomposition and leave-one-out controls:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_sign_controls_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_sign_prefix_sweeps_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_leave_one_out_float32_max160/`
+- Bundle first-token logit audits:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_sign_prefix_sweeps_float32/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_leave_one_out_float32/`
 - Scripts:
   `stage3/scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
   `stage3/scripts/build_sae_bundles_from_rank_csv.py`
+  `stage3/scripts/build_sae_bundles_from_delta_detail.py`
+  `stage3/scripts/audit_gemma2_2b_linear_merge_sae_bundle_first_token_logits.py`

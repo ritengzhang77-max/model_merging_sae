@@ -1,0 +1,18 @@
+{
+  "detail_csv": "stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/prompt_token_delta_detail_top33.csv",
+  "split": "harmful",
+  "top_k": 33,
+  "layer": 20,
+  "eps": 1e-09,
+  "labels": [
+    "positive",
+    "negative",
+    "nonzero"
+  ],
+  "output": "stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_sign_controls_float32_max160/signed_top33_bundles.txt",
+  "counts": {
+    "top33_positive_harmful_delta": 21,
+    "top33_negative_harmful_delta": 12,
+    "top33_nonzero_harmful_delta": 33
+  }
+}
