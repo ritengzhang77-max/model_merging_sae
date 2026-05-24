@@ -228,3 +228,12 @@
   rank3202@assistant_boundary` probe passes, while rank3184 boundary-only and
   generated-only fail. Treat rank3184 as part of the broad prefix-timing
   threshold, and use same-filter unioning for equivalence/timing controls.
+- First-step numerics update: rank3184 is feature `6273`, but it is exactly
+  inactive on the assistant-boundary prompt tokens in the hologram probe. The
+  first-step patched activation difference between
+  `top3183+rank3202@boundary` and `top3184+rank3202@boundary` is only
+  `3.8147e-06` max abs, yet it breaks a first-token `I`/`It` tie. This reframes
+  the top3183/top3184 edge as a fragile threshold/numerics phenomenon rather
+  than an interpretable singleton feature. The cleaner mechanistic target
+  remains rank3202 / feature `11494` at the assistant boundary plus the broader
+  prefix reconstruction context.

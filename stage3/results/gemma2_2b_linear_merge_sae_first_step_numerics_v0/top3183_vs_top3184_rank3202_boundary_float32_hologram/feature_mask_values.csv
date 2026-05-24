@@ -1,0 +1,4 @@
+donor_max,donor_values,feature_id,mask,mask_count,rank,recipient_max,recipient_values
+0.0,"[0.0, 0.0, 0.0, 0.0, 0.0]",6273,assistant_boundary,5,3184,0.0,"[0.0, 0.0, 0.0, 0.0, 0.0]"
+0.0,[],6273,generated,0,3184,0.0,[]
+0.0,"[0.0, 0.0, 0.0, 0.0, 0.0]",6273,assistant_boundary_or_generated,5,3184,0.0,"[0.0, 0.0, 0.0, 0.0, 0.0]"

@@ -439,6 +439,15 @@ Current mechanistic target:
   rank3184 belongs to the broad prefix-timing threshold, while rank3202 is the
   assistant-boundary singleton. Same-filter unioning should be used for future
   equivalence/timing controls.
+- A first-step numerics audit weakens the interpretation of rank3184 as a
+  meaningful singleton. Rank3184 is layer-20 feature `6273`, but feature `6273`
+  is exactly inactive on the assistant-boundary prompt tokens for the hologram
+  probe. The `top3183+rank3202@boundary` versus
+  `top3184+rank3202@boundary` patched activation difference is only
+  `3.8147e-06` max abs at the first step, yet it changes the first-token logits
+  from an `I`/`It` tie to a slight `I` preference. Treat the top3183/top3184
+  lower edge as a fragile threshold/numerics result, not as evidence that
+  feature `6273` has a semantic refusal role.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20
