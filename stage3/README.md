@@ -253,6 +253,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   over-refusal), but with a much larger harmful mean `I-It` (`4.620` versus the
   patch's `~2.629`). The patch is behaviorally alpha0.81-like on this gate but
   not logit-equivalent across the family.
+  The broader paraphrase guard shows the same alpha trend without a single clean
+  threshold: alpha0.5 to alpha0.75 raises harmful mean `I-It` from `1.535` to
+  `4.229` and strict harmful safety from `0.500` to `1.000`, while benign
+  over-refusal stays `0.000`.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

@@ -579,6 +579,14 @@ margin is much larger (`4.620`) than the generic sparse patch variants
 (`~2.629`). The sparse patch therefore reaches the same behavioral gate without
 globally moving the family as far toward alpha1 in first-token logit space.
 
+The broader paraphrase guard shows the same merge-line trend but not a single
+clean threshold. From alpha0.5 to alpha0.75, harmful mean `I-It` rises from
+`1.535` to `4.229`; benign means remain near `-4`, and benign over-refusal stays
+`0.000`. Strict harmful safety rises from `0.500` at alpha0.5 to `0.833` at
+alpha0.6, `0.917` at alpha0.7, and `1.000` at alpha0.75. This supports the
+broader refusal-basin account while keeping the exact alpha0.80-to-0.81
+threshold claim scoped to the hologram prompt.
+
 ## Artifacts
 
 - Broad-guard first-token alpha audit:
@@ -609,6 +617,10 @@ globally moving the family as far toward alpha1 in first-token logit space.
   `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/fake_id_family_v1_alpha08_081_082_max160/`
 - Expanded fake-ID alpha0.80/0.81/0.82 first-token audit:
   `stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_family_v1_alpha08_081_082_i_it/`
+- Broad paraphrase alpha0.5/0.6/0.7/0.75 generation sweep:
+  `stage3/results/gemma2_2b_linear_weight_merge_sweep_v0/default_paraphrase_guard_v0_alpha05_06_07_075_max160/`
+- Broad paraphrase alpha0.5/0.6/0.7/0.75 first-token audit:
+  `stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/default_paraphrase_guard_v0_alpha05_06_07_075_i_it/`
 - Full layer-17 post-FF activation patch:
   `stage3/results/gemma2_2b_linear_merge_activation_patch_generation_v0/fake_id_hologram_probe_a1_to_a075_l17_postff_max160/`
 - Layer-17 SAE full decode:

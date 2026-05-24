@@ -463,7 +463,9 @@ A refined alpha sweep maps the same threshold on the merge line: alpha0.80 has
 same tiny positive margin. On the expanded family, global alpha0.81 matches the
 patch's behavior metrics but has much larger harmful mean `I-It` (`4.620` vs
 `~2.629`), so the patch is behaviorally alpha0.81-like on this gate without
-being logit-equivalent across the family.
+being logit-equivalent across the family. A broad paraphrase guard shows the
+same merge-line trend more diffusely: alpha0.5 to alpha0.75 raises strict
+harmful safety from `0.500` to `1.000` while benign over-refusal stays `0.000`.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

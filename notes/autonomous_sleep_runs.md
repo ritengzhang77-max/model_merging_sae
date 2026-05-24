@@ -357,3 +357,10 @@ direction.
   However, alpha0.81 has much larger harmful mean `I-It` (`4.620`) than the
   sparse patch variants (`~2.629`). Thus the patch reaches the same behavioral
   gate without globally moving first-token logits as far along the merge line.
+- Broad paraphrase alpha sweep: on `default_paraphrase_guard_v0`, harmful mean
+  `I-It` rises from `1.535` at alpha0.5 to `4.229` at alpha0.75, while benign
+  means stay near `-4` and benign over-refusal remains `0.000` across the sweep.
+  Strict harmful safety rises from `0.500` at alpha0.5 to `0.833` at alpha0.6,
+  `0.917` at alpha0.7, and `1.000` at alpha0.75. This generalizes the merge-line
+  refusal-basin trend beyond fake-ID prompts, though the broad guard has several
+  prompt-specific failure modes rather than a single clean threshold.
