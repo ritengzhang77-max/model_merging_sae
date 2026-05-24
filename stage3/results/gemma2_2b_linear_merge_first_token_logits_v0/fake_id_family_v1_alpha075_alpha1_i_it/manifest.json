@@ -1,0 +1,18 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v1_expanded.jsonl",
+  "alphas": [
+    0.75,
+    1.0
+  ],
+  "token_i": 235285,
+  "token_it": 1718,
+  "outputs": {
+    "detail": "stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_family_v1_alpha075_alpha1_i_it/first_token_logits.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_family_v1_alpha075_alpha1_i_it/first_token_logit_summary.csv",
+    "markdown": "stage3/results/gemma2_2b_linear_merge_first_token_logits_v0/fake_id_family_v1_alpha075_alpha1_i_it/FIRST_TOKEN_LOGIT_SUMMARY.md"
+  }
+}

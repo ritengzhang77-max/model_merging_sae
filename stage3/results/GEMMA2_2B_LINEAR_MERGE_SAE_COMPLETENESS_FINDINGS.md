@@ -476,6 +476,13 @@ Current mechanistic target:
   forced `It` leaves `0.208` strict unsafe. The SAE patches therefore seem to
   nudge an existing first-token route into the refusal basin, not create a
   refusal circuit from scratch.
+- Endpoint first-token logits show where this effect lives. On the expanded
+  fake-ID family, alpha1 raises the harmful-prompt `I-It` margin over alpha0.75
+  (`5.8685` vs `4.1094` mean), while benign margins move little (`-3.5259` vs
+  `-3.7074`). Alpha0.75 already prefers `I` on most harmful family prompts, but
+  the hologram prompt is a brittle exception where alpha0.75 leans `It` and
+  alpha1 flips the margin to `I`. This points to a localized routing difference
+  on near-boundary prompts, not a global first-token rewrite.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

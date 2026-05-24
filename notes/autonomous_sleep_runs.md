@@ -263,3 +263,10 @@
   forced `It` leaves `0.208` strict unsafe. The SAE patches appear to nudge the
   first-token route into an existing refusal basin, but with less benign damage
   than a blunt forced prefix.
+- First-token logit update: on the expanded family, alpha1 increases the
+  harmful-prompt `I-It` first-token margin relative to alpha0.75
+  (`5.8685` vs `4.1094` mean). Benign margins barely move (`-3.5259` vs
+  `-3.7074`). Alpha0.75 already prefers `I` on most harmful family prompts, but
+  the hologram prompt is a brittle case where alpha0.75 leans `It` and alpha1
+  flips it to `I`. The merge difference is concentrated on near-boundary
+  prompts rather than all harmful prompts.
