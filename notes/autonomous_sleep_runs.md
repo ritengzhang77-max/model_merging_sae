@@ -666,3 +666,12 @@ direction.
   `0.60`, all six fail with mean margins `-0.390625` and `-1.098958`.
   Interpretation: the compressed handles tip a near-boundary refusal route;
   they are not full donor-state restorations or universal low-alpha repairs.
+- 11-feature substitution update: aggregating the 453 one-swap variants gives a
+  local map of rigid vs. exchangeable features. Dropping `15169` or `14991`
+  never ties or passes; dropping `15169` is especially damaging, with best
+  margin only `-0.390625`. Dropping `6289` or `8775` can be repaired, but only
+  by narrow additions: `7531` repairs both source handles when `6289` is
+  dropped and also repairs source A when `8775` is dropped; `9407` repairs only
+  source A with `8775` dropped. Interpretation: the validated equivalence class
+  has a locally rigid backbone plus a small set of context-specific
+  substitutions, not freely interchangeable high-rank features.

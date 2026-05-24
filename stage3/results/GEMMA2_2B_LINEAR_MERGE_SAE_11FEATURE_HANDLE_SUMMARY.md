@@ -161,6 +161,30 @@ general low-alpha rescues:
 
 See `GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_ALPHA_LOCALITY_SUMMARY.md`.
 
+## Local Substitutions
+
+The one-swap screen also gives a local feature-substitution map. All passing
+substitutions are barely positive, but their structure is not uniform:
+
+| role | features / substitutions |
+|---|---|
+| locally core-like | dropping `15169` or `14991` never ties or passes; dropping `15169` is especially damaging |
+| exchangeable in narrow contexts | `6289`, `8775`, and `1338` |
+| contextual substitutes | `7531`, `9407` |
+
+Passing substitutions:
+
+```text
+A - 6289 + 7531
+A - 8775 + 9407
+A - 8775 + 7531
+A - 8775 + 1338  = known handle B
+B - 1338 + 8775  = known handle A
+B - 6289 + 7531
+```
+
+See `GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SUBSTITUTION_SUMMARY.md`.
+
 ## Interpretation
 
 The result further weakens a literal necessary-feature account. Feature `4339`
@@ -178,7 +202,9 @@ sparse within the local neighborhood. The geometry audit adds that coarse
 vector alignment explains random-vs-structured differences, but not the exact
 threshold crossing among near neighbors. The alpha-locality audit adds that the
 handles tip already-near-boundary recipients rather than restoring a full donor
-state from lower-alpha recipients.
+state from lower-alpha recipients. The substitution audit refines the
+equivalence-class account: the handle has a locally rigid backbone plus a small
+number of allowable feature swaps.
 
 ## Artifacts
 
@@ -204,6 +230,10 @@ state from lower-alpha recipients.
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_ALPHA_LOCALITY_SUMMARY.md`
 - 11-feature alpha-locality aggregate:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/critical11_pass_alpha_locality_summary.csv`
+- 11-feature substitution summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SUBSTITUTION_SUMMARY.md`
+- 11-feature substitution aggregates:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/critical11_swap_one_top33_effect_by_drop.csv`
 - Generic drop/add variant builder:
   `stage3/scripts/build_sae_bundle_drop_add_variants.py`
 - Hologram generation:

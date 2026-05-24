@@ -688,6 +688,13 @@ Feature-ID causality follow-up:
   handles repair recipient alpha `0.80` and `0.75` (`6/6` passes, mean
   `I-It = +0.380208` and `+0.015625`), but all fail at alpha `0.70` and
   `0.60` (`0/6` passes, mean `I-It = -0.390625` and `-1.098958`).
+- a local substitution audit over the same 453 one-swap variants gives a more
+  mechanistic view of the 11-feature equivalence class. Dropping `15169` or
+  `14991` never ties or passes, and dropping `15169` is strongly damaging
+  (best margin `-0.390625`). In contrast, `6289` and `8775` are locally
+  exchangeable in narrow contexts: `7531` repairs both source handles when
+  `6289` is dropped and also repairs source A when `8775` is dropped, while
+  `9407` repairs source A only when `8775` is dropped.
 
 Main artifacts:
 
@@ -767,6 +774,7 @@ Main artifacts:
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_GEOMETRY_SUMMARY.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_ALPHA_LOCALITY_SUMMARY.md`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SUBSTITUTION_SUMMARY.md`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_critical11_swap1_vs_random_k11_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/critical11_pass_alpha_locality_summary.csv`
