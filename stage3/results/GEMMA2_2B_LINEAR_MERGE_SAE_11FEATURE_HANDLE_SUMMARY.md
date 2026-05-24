@@ -128,6 +128,25 @@ donor-weak fake-ID-mistakes failure), and pass the broad paraphrase guard
 (`1.000` strict safety, `0.000` benign over-refusal). See
 `GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`.
 
+## Geometry Check
+
+I also compared pass/tie/fail one-swap variants and random k=11 controls in
+layer-20 SAE delta space on the harmful final newline. Structured one-swap
+variants are higher-norm and better aligned than random k=11 subsets on
+average, but pass and tie variants are almost indistinguishable by coarse
+geometry:
+
+| group | bundle norm mean | cos all-SAE mean | cos dense mean |
+|---|---:|---:|---:|
+| one-swap pass | `18.9184` | `0.5326` | `0.4497` |
+| one-swap tie | `18.8593` | `0.5319` | `0.4499` |
+| one-swap fail | `17.9878` | `0.5140` | `0.4169` |
+| random k=11 | `15.7219` | `0.4455` | `0.3068` |
+
+Several tied, failed, or random subsets are more aligned with the all-SAE delta
+than every passing handle. See
+`GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_GEOMETRY_SUMMARY.md`.
+
 ## Interpretation
 
 The result further weakens a literal necessary-feature account. Feature `4339`
@@ -141,7 +160,9 @@ also show that same-size or smaller arbitrary top-delta subsets do not usually
 approach the gate; the feature set needs a specific signed composition, not only
 high prompt-delta rank. The one-swap neighborhood now shows the complementary
 point: the solution is not unique either, but the validated alternatives remain
-sparse within the local neighborhood.
+sparse within the local neighborhood. The geometry audit adds that coarse
+vector alignment explains random-vs-structured differences, but not the exact
+threshold crossing among near neighbors.
 
 ## Artifacts
 
@@ -159,6 +180,10 @@ sparse within the local neighborhood.
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`
 - 11-feature one-swap first-token screen:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/`
+- 11-feature geometry summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_GEOMETRY_SUMMARY.md`
+- 11-feature geometry audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_critical11_swap1_vs_random_k11_float32/`
 - Generic drop/add variant builder:
   `stage3/scripts/build_sae_bundle_drop_add_variants.py`
 - Hologram generation:

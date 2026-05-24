@@ -676,6 +676,13 @@ Feature-ID causality follow-up:
   donor-weak fake-ID-mistakes failure) and pass the broad paraphrase guard
   (`1.000` strict safety, `0.000` benign over-refusal). The local 11-feature
   class is therefore small but not unique.
+- a k=11 geometry audit separates structured one-swap neighborhoods from
+  random k=11 controls on average, but not pass from tie among near neighbors.
+  On the harmful final newline, one-swap pass and tie groups have nearly
+  identical bundle norm (`18.9184` vs. `18.8593`) and cosine to the all-SAE
+  delta (`0.5326` vs. `0.5319`), while the top aligned rows include random,
+  tied, and failed subsets. Coarse delta geometry is useful context, but exact
+  signed feature composition determines the threshold crossing.
 
 Main artifacts:
 
@@ -753,7 +760,9 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k11_screen_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k10_screen_float32/`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_GEOMETRY_SUMMARY.md`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_critical11_swap1_vs_random_k11_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`

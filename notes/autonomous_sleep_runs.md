@@ -649,3 +649,12 @@ direction.
   and pass the broad paraphrase guard (`1.000` strict safety, `0.000` strict
   unsafe, `0.000` benign over-refusal). This expands the validated 11-feature
   equivalence class while keeping the class sparse and threshold-like.
+- 11-feature geometry update: comparing the 453 one-swap k=11 variants and 200
+  random k=11 controls in layer-20 SAE delta space shows that structured
+  one-swap variants are higher-norm and more aligned than random subsets on
+  average, but pass vs. tie is not geometrically separated. On the harmful final
+  newline, pass mean bundle norm/cos(all-SAE) is `18.9184`/`0.5326`, while tie
+  mean is `18.8593`/`0.5319`; several tied, failed, or random rows have higher
+  cosine than every passing handle. Interpretation: coarse delta geometry
+  explains random-vs-structured differences, but exact signed feature
+  composition determines the local first-token threshold crossing.
