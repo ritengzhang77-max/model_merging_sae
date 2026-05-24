@@ -572,6 +572,19 @@ Feature-ID causality follow-up:
   donor-high generated-token trajectory effects. Crucially, the L12 antagonist
   features are also donor-high, so "more donor-like" is not enough; donor-high
   sparse features can be helpful, redundant, or timed antagonists.
+- layer-20 final-newline SAE `delta_add` can now be compressed much further
+  than the all-feature intervention under a prompt-token donor-minus-recipient
+  activation ranking. On the hologram pair, top-32 still gives unsafe
+  warning-plus-procedure text, while top-33 flips to a strict refusal.
+- the top-33 prompt-token delta bundle validates beyond the selected prompt:
+  on the expanded fake-ID family it matches the all-feature `sae_delta_add`
+  aggregate (`0.958` harmful strict safety, `0.083` benign over-refusal), and
+  on the broad paraphrase guard it reaches `1.000` harmful strict safety with
+  `0.000` benign over-refusal.
+- rank-edge controls argue against a single-feature account: rank-33 alone and
+  top30+rank33 fail, while top31+rank33 and top32 plus rank34 or rank35 repair
+  the hologram prompt. The current handle is best treated as a compact
+  cumulative donor-delta bundle, not a clean singleton refusal feature.
 
 Main artifacts:
 
@@ -614,6 +627,13 @@ Main artifacts:
 - `scripts/run_gemma2_2b_gemmascope_mlp_sae_random_seed_controls.py`
 - `scripts/validate_gemma2_2b_gemmascope_mlp_sae.py`
 - `scripts/validate_gemma2_2b_gemmascope_transcoders.py`
+- `results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_refine_31_35_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_top32_33_l20_final_newline_delta_add_prompt_delta_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_top33_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_rank33_controls_float32_max160/`
+- `scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
+- `scripts/build_sae_bundles_from_rank_csv.py`
 
 Primary script:
 
