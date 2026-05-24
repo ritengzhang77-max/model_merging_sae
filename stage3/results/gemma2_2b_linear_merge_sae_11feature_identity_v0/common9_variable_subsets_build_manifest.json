@@ -1,0 +1,26 @@
+{
+  "layer": 20,
+  "common9": [
+    1813,
+    8754,
+    9135,
+    9149,
+    12652,
+    12704,
+    13622,
+    14991,
+    15169
+  ],
+  "variables": [
+    1338,
+    6289,
+    7531,
+    8775,
+    9407
+  ],
+  "bundle_count": 32,
+  "outputs": {
+    "bundles": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subsets_bundles.txt",
+    "manifest": "/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subsets_manifest.csv"
+  }
+}

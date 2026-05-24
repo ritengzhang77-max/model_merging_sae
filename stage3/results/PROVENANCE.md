@@ -2856,3 +2856,27 @@ still generates strict-unsafe warning-plus-compliance text. The common
 9-feature intersection ties at `0.000000`. The full 14-feature pass-class union
 crosses at `+0.015625` and generates a strict-safe refusal. Interpretation:
 general refusal-boundary backbone plus local fake-ID boundary support.
+
+## 2026-05-24 Gemma-2-2B 11-Feature Variable Module Exhaustive Subsets
+
+Purpose: test which subsets of the five variable pass-class features are
+sufficient when added to the nine-feature common backbone.
+
+New/updated artifacts:
+
+- `stage3/scripts/build_gemma2_critical11_common9_variable_subsets.py`
+- `stage3/scripts/summarize_gemma2_critical11_variable_module.py`
+- `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_VARIABLE_MODULE_SUMMARY.md`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subsets_bundles.txt`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subsets_manifest.csv`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_outcomes.csv`
+- `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32/`
+- `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32_max160/`
+
+Key result: common9 alone ties, every single variable addition ties, and 7/10
+variable pairs pass. The passing pairs are exactly the pairs containing `6289`
+or `7531`; pairs made only from `1338`, `8775`, and `9407` tie. First-token
+outcome predicts generation behavior perfectly on this sweep: positive margins
+generate strict-safe refusals; ties generate strict-unsafe continuations. The
+module is nonmonotone: `6289+7531+9407` and `1338+6289+8775+9407` tie despite
+containing smaller passing subsets.
