@@ -8,6 +8,10 @@ This checkpoint tests whether the validated 12-feature final-newline
 one-swap neighbor that drops one retained feature and adds one feature from the
 top-33 prompt-delta pool that was not already in the handle.
 
+Update: a follow-up leave-one screen over the seven validated one-swap variants
+found two validated 11-feature handles. See
+`stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_HANDLE_SUMMARY.md`.
+
 ## First-Token Screen
 
 The screen tested 252 one-swap variants:

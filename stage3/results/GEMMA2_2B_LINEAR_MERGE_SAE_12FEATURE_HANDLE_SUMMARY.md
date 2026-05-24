@@ -5,6 +5,10 @@ Date: 2026-05-24
 This checkpoint follows the validated 13-feature final-newline `delta_add`
 handles and asks whether a smaller local handle exists.
 
+Update: a follow-up swap-neighborhood screen compressed this result further to
+validated 11-feature handles. See
+`stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_HANDLE_SUMMARY.md`.
+
 ## Compression Path
 
 The 13-feature screen had three passing variants. Leaving one additional
@@ -123,6 +127,10 @@ over-refusal), and pass the broad paraphrase guard (`1.000` strict harmful
 safety, `0.000` benign over-refusal). The original handle is therefore locally
 small, but not locally unique.
 
+A follow-up leave-one screen over those seven one-swap variants found two
+validated 11-feature handles, both derived from the swap that drops feature
+`4339` and adds feature `1813`.
+
 ## Interpretation
 
 The result further weakens a literal independent-feature story. Ranks `2` and
@@ -152,6 +160,8 @@ the `I`/`It` boundary.
   `stage3/scripts/build_sae_random_subset_bundles.py`
 - One-swap neighborhood summary:
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_12FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`
+- 11-feature follow-up summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_HANDLE_SUMMARY.md`
 - One-swap neighborhood first-token screen:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_swap_one_top33_float32/`
 - One-swap generation validations:

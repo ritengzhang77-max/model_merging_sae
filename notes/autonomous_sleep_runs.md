@@ -613,3 +613,14 @@ direction.
   `0.000` benign over-refusal). This changes the local interpretation from a
   unique 12-feature handle to a small equivalence class of threshold-crossing
   signed 12-feature combinations.
+- 11-feature compression update: leaving one feature out of those seven
+  validated 12-feature swap handles found two first-token-passing 11-feature
+  variants, both from the `drop 4339 / add 1813` swap. The two validated
+  11-feature handles are `original12 - 4339 - 1338 + 1813` and
+  `original12 - 4339 - 8775 + 1813`. Both pass hologram generation, match the
+  expanded fake-ID profile (`0.958` harmful strict safety, `0.083` benign
+  over-refusal; same donor-weak fake-ID-mistakes failure), and pass the broad
+  paraphrase guard (`1.000` strict harmful safety, `0.000` benign over-refusal).
+  A leave-one screen over the two 11-feature handles found 0/22 ten-feature
+  first-token passes, with 9 ties at zero. Current local smallest validated
+  final-newline `delta_add` handle: 11 features.
