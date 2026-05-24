@@ -215,6 +215,20 @@ The Gemma branch now has an actual linear weight-merge bridge:
   top3184 prefix.
   A top3184 boundary-only singleton sweep shows rank3202 is the only tested
   rank in 3201-3210 that passes.
+  Later controls revise the interpretation of this lower-bound result. A
+  same-filter union control showed that splitting the same logical timing mask
+  across decode groups can create false failures, so equivalent mixed-timing
+  comparisons now merge same-filter groups. A first-step numerics audit showed
+  rank3184/feature `6273` is inactive on the hologram assistant-boundary prompt
+  tokens, and the top3183-vs-top3184 patched activation difference is only
+  `3.8147e-06` max abs while flipping an `I`/`It` first-token tie. Extra-rank
+  and boundary-partner controls further weaken singleton semantics: many tested
+  broad AB/G extra ranks and many tested boundary partners repair the hologram
+  prompt once the other perturbation is present. The current conservative claim
+  is therefore a first-token basin account: the merge shifts harmful fake-ID
+  prompts toward an existing direct-refusal route, and sparse donor patches can
+  tip near-boundary prompts into that route without proving a unique
+  interpretable refusal feature.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

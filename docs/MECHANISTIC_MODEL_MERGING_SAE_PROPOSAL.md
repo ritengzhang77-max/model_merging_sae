@@ -432,6 +432,24 @@ passes, so rank3185 is not required for the validated repair. Rank3202's timing
 is boundary-like: assistant-boundary-only passes, while generated-only fails.
 At top3184, rank3202 is also the only tested assistant-boundary extra among
 ranks 3201-3210 that repairs the hologram probe.
+Later same-filter, numerics, and partner controls substantially reframe this
+lower-bound result. Splitting identical timing filters into separate decode
+groups introduced a false failure mode, so same-filter groups must be unioned
+before comparing mixed timing variants. With that control, adding rank3184 at
+`assistant_boundary_or_generated` plus rank3202 at the assistant boundary can
+repair top3183, but rank3184 itself is inactive at the assistant-boundary prompt
+tokens in the hologram probe and changes the first-step patched activation by
+only `3.8147e-06` max absolute difference. That tiny numerical difference breaks
+an `I`/`It` first-token tie. Broad perturbation controls weaken the idea that
+rank3184 or rank3202 is a unique semantic safety feature: with top3183 fixed and
+a boundary partner present, tested AB/G extra ranks through rank4000 repair the
+hologram probe; with rank4000@AB/G fixed, every tested boundary partner in
+ranks 3201-3210 repairs it. Forced-prefix and endpoint-logit controls point to
+the stronger current account: alpha `1.00` moves harmful fake-ID prompts toward
+an existing direct-refusal first-token basin relative to alpha `0.75`, while
+benign prompts remain mostly away from that basin. Sparse SAE patches can nudge
+near-boundary prompts into that route, but they are not yet evidence for a
+cleanly interpretable singleton refusal feature.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

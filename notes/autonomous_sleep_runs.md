@@ -283,3 +283,18 @@
   and move only slightly (`-3.9206`, `-3.7074`, `-3.5259`). This supports a
   merge-coefficient story: the safety endpoint mainly shifts harmful prompts
   toward an existing direct-refusal first-token basin.
+
+## 2026-05-24 20-hour autonomous continuation
+
+Start: `2026-05-24 02:08 PDT`. Requested window: 20 hours. Target stop:
+`2026-05-24 22:08 PDT`.
+
+Operating claim for this run: stay on the Gemma-2-2B linear merge, layer-20
+GemmaScope MLP-SAE, fake-ID/hologram refusal-vs-compliance case. The current
+unit of analysis is not a clean singleton safety feature. The strongest live
+claim is that the merge coefficient shifts harmful fake-ID prompts toward an
+existing first-token direct-refusal basin, while sparse donor-feature patches
+can expose and perturb that near-boundary decision. Continue by correcting stale
+docs, then testing whether this first-token account generalizes beyond the
+fake-ID family and whether patch variants move first-step logits in the expected
+direction.
