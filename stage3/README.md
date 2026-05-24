@@ -159,8 +159,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not
   generated-token features. Rank3211 and rank3214 are layer-20 features `4983`
-  and `2451` and appear more like generated refusal-trajectory supports. This
-  is a smaller causal handle, not yet a semantic feature-level circuit.
+  and `2451`; broad paraphrase audits show they also activate on benign advice
+  and formatting tokens, so they look more like response-trajectory supports
+  than safety-semantic features. This is a smaller causal handle, not yet a
+  semantic feature-level circuit.
 - This gives the SAE feature-trajectory work a concrete parameter-space merge
   curve to explain.
 

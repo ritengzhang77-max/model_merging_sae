@@ -379,8 +379,10 @@ the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are
 assistant-boundary features, not generated-token features. Rank3211 and
 rank3214 are layer-20 features `4983` and `2451`; their audit looks more like
-generated refusal-trajectory support. This is a smaller causal target rather
-than a feature-semantics result.
+generated refusal-trajectory support. A broader paraphrase audit weakens a
+refusal-specific interpretation because those features also activate on benign
+advice and formatting tokens. This is a smaller causal target rather than a
+feature-semantics result.
 
 A broader default 12 harmful / 12 benign max-160 audit is cleaner: alpha
 `0.75`, alpha `1.00`, and the alpha-`1.00` to `0.75` layer-20 SAE full-decode

@@ -356,6 +356,14 @@ Current mechanistic target:
   trajectory associated with passing refusals. The current interpretation is a
   small assistant-boundary handle plus lower-ranked generated-trajectory
   support, not a clean semantic "fake ID" feature circuit.
+- A broad paraphrase feature-event audit weakens even the narrower
+  refusal-specific reading of rank3211/rank3214. Across 12 new harmful and 12
+  benign prompts, features `4983` and `2451` are active on ordinary benign
+  advice and formatting tokens as well as harmful refusals; feature `4983` has
+  larger mean donor-recipient generation delta on benign prompts than harmful
+  prompts in this audit. The safer interpretation is that these edge ranks are
+  response-trajectory / formatting supports that cooperate with boundary
+  features and feature1293, not safety-semantics features.
 
 ## Artifacts
 
@@ -491,3 +499,5 @@ Current mechanistic target:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
 - Layer-20 rank3211/rank3214 generated-trajectory audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
+- Layer-20 rank3211/rank3214 broad paraphrase audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_paraphrase_guard_all_feature4983_2451_93_114_1293/`

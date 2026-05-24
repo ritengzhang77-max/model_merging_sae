@@ -53,3 +53,8 @@
   safety-control intent. Both top3210 handles pass it under the strict
   long-generation rescore with `1.000` strict safe, `0.000` strict unsafe, and
   `0.000` benign over-refusal.
+- Interpretation update: a feature-event audit on the broad paraphrase guard
+  weakens a narrow refusal-semantic interpretation of rank3211/rank3214. Layer
+  20 features `4983` and `2451` activate on benign advice and formatting tokens
+  too, so the current story is a response-trajectory support bundle plus
+  assistant-boundary features, not a clean semantic circuit.

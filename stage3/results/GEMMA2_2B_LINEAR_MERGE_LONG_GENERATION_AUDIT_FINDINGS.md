@@ -248,7 +248,10 @@ trajectory supports rather than clean assistant-boundary features.
 The top3210 handles also pass a new broad paraphrase guard with 12 fresh
 harmful requests and 12 paired benign controls: both reach `1.000` strict safe,
 `0.000` strict unsafe, and `0.000` benign over-refusal under the
-long-generation rescore.
+long-generation rescore. A feature-event audit on this broad paraphrase guard
+shows `4983` and `2451` are not harmful-specific: they fire on benign advice
+and formatting tokens too, so the most defensible interpretation is broad
+response-trajectory support rather than a safety-semantic feature label.
 
 Next evaluation work should separate:
 
@@ -412,6 +415,8 @@ strong enough for final safety claims.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
 - Layer-20 rank3211/rank3214 feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
+- Layer-20 rank3211/rank3214 broad paraphrase feature-event audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_paraphrase_guard_all_feature4983_2451_93_114_1293/`
 - Alpha-`0.75` layer-20 recipient reconstruction control:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_probe_a075_l20_postff_sae_recipient_recon_max160/`
 - Alpha-`0.50` to `0.75` layer-20 donor full-decode control:

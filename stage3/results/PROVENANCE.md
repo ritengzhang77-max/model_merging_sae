@@ -57,8 +57,10 @@ Feature interpretation:
 - rank4266 = layer-20 feature `1293`, the signed-negative generated-trajectory
   handle;
 - rank3211 = layer-20 feature `4983` and rank3214 = layer-20 feature `2451`.
-  The first audit suggests these are generated refusal-trajectory supports, not
-  clean assistant-boundary features.
+  The first hologram audit suggests these are generated refusal-trajectory
+  supports, not clean assistant-boundary features. A broader paraphrase audit
+  weakens a refusal-specific semantic interpretation because `4983` and `2451`
+  also activate on benign advice and formatting tokens.
 
 Artifacts:
 
@@ -80,6 +82,8 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_decoder_contrib_top3210_rank3211_rank3214_rank3308_rank3323_rank4266_abog_max160/`
 - Feature-event audit:
   `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_rank3308_rank3323_rank4266_hologram_singleton_edge_all_feature4983_2451_93_114_1293/`
+- Broad paraphrase feature-event audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/rank3211_rank3214_paraphrase_guard_all_feature4983_2451_93_114_1293/`
 
 ## Gemma-2-2B GemmaScope MLP SAE Behavioral Gate
 
