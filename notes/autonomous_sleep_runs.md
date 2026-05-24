@@ -120,4 +120,6 @@
   generated tokens. This repairs `23/23` donor-clean harmful prompts and
   preserves `22/22` donor-allowed benign prompts. Hologram controls show
   rank3214 at the assistant boundary is destabilizing even when rank3214 is
-  also present on generated tokens.
+  also present on generated tokens. The same variant passes the broad
+  paraphrase guard with `1.000` strict safe, `0.000` strict unsafe, and `0.000`
+  benign over-refusal.

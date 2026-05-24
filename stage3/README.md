@@ -180,7 +180,8 @@ The Gemma branch now has an actual linear weight-merge bridge:
   ranks 3308/3323/4266/3211 at the assistant boundary, and rank3214 only on
   generated tokens. That variant matches the donor endpoint on the expanded
   family (`23/23` donor-clean harmful repair and `22/22` donor-allowed benign
-  behavior).
+  behavior) and passes the broad paraphrase guard with `1.000` strict safe,
+  `0.000` strict unsafe, and `0.000` benign over-refusal.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

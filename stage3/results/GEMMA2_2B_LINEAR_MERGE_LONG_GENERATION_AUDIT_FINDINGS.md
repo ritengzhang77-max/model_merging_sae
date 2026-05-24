@@ -282,7 +282,9 @@ the assistant boundary, and rank3214 only on generated tokens. This matches the
 donor endpoint on the expanded family (`23/23` donor-clean harmful repair and
 `22/22` donor-allowed benign behavior). Hologram controls show rank3214 at the
 assistant boundary is destabilizing even when rank3214 is also present on
-generated tokens.
+generated tokens. The edge-cross variant also passes the broad paraphrase guard
+with `1.000` strict safe, `0.000` strict unsafe, and `0.000` benign
+over-refusal.
 
 Next evaluation work should separate:
 

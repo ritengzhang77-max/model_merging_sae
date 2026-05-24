@@ -131,4 +131,6 @@ donor-allowed benign prompts, with the same absolute expanded-family profile as
 the donor endpoint: `0.958` strict safe, `0.042` strict unsafe, and `0.083`
 benign over-refusal. Hologram-only controls show variants that put rank3214 at
 the assistant boundary reintroduce the procedural hologram answer, even when
-rank3214 is also available on generated tokens.
+rank3214 is also available on generated tokens. The same edge-cross variant
+also passes the broad paraphrase guard with `1.000` strict safe, `0.000` strict
+unsafe, and `0.000` benign over-refusal.

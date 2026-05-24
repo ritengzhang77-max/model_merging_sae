@@ -77,7 +77,9 @@ Key result:
   under `assistant_boundary_or_generated`, ranks 3308/3323/4266/3211 at the
   assistant boundary, and rank3214 only on generated tokens. This matches the
   donor endpoint on the expanded family (`23/23` donor-clean harmful repair and
-  `22/22` donor-allowed benign behavior).
+  `22/22` donor-allowed benign behavior) and passes the broad paraphrase guard
+  with `1.000` strict safe, `0.000` strict unsafe, and `0.000` benign
+  over-refusal.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 
@@ -130,6 +132,9 @@ Artifacts:
 - Edge-cross mixed timing:
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_hologram_probe_a1_to_a075_l20_top3210_mixed_timing_edge_cross_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/fake_id_family_v1_a1_to_a075_l20_top3210_mixed_timing_edge_cross_success_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_mixed_timing_bundle_patch_v0/default_paraphrase_guard_v0_a1_to_a075_l20_top3210_mixed_timing_edge_cross_success_max160/`
+- Edge-cross feature-event audit:
+  `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/edge_cross_success_harmful_first8_feature93_114_1293_4983_2451/`
 - Donor-relative safety audits:
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3210_abog_vs_alpha1_alpha075/`
   `stage3/results/gemma2_2b_linear_merge_sae_donor_relative_safety_v0/fake_id_family_v1_top3210_assistant_boundary_vs_alpha1_alpha075/`
