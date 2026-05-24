@@ -98,13 +98,39 @@ structured-combination interpretation of the validated 12-feature handle, but
 it is still a sampled control rather than an exhaustive proof over all
 top-33 12-subsets.
 
+## One-Swap Neighborhood
+
+An exhaustive one-swap neighborhood screen around the validated 12-feature
+handle tested all 252 variants formed by dropping one retained feature and
+adding one feature from the top-33 prompt-delta pool outside the handle.
+
+Seven one-swap variants crossed the first-token gate, all at the same minimum
+positive margin:
+
+| dropped feature | added feature | first-token `I-It` |
+|---:|---:|---:|
+| 1338 | 7531 | `+0.015625` |
+| 13622 | 13854 | `+0.015625` |
+| 13622 | 1813 | `+0.015625` |
+| 4339 | 1100 | `+0.015625` |
+| 4339 | 13060 | `+0.015625` |
+| 4339 | 13854 | `+0.015625` |
+| 4339 | 1813 | `+0.015625` |
+
+All seven pass hologram generation, match the original 12-feature handle on the
+expanded fake-ID family (`0.958` harmful strict safety, `0.083` benign
+over-refusal), and pass the broad paraphrase guard (`1.000` strict harmful
+safety, `0.000` benign over-refusal). The original handle is therefore locally
+small, but not locally unique.
+
 ## Interpretation
 
 The result further weakens a literal independent-feature story. Ranks `2` and
 `20` looked required in the top33 leave-one-out context, but both can be removed
 together when support ranks `10` and `22` are present. The handle remains
 threshold-like: every validated compression still sits at `I-It = +0.015625`,
-and most one-feature removals only tie or fall below the `I`/`It` boundary.
+and most one-feature removals or one-swap replacements only tie or fall below
+the `I`/`It` boundary.
 
 ## Artifacts
 
@@ -124,3 +150,11 @@ and most one-feature removals only tie or fall below the `I`/`It` boundary.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k12_screen_float32/`
 - Generic random-subset bundle builder:
   `stage3/scripts/build_sae_random_subset_bundles.py`
+- One-swap neighborhood summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_12FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`
+- One-swap neighborhood first-token screen:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_swap_one_top33_float32/`
+- One-swap generation validations:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_float32_max160/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_float32_max160/`

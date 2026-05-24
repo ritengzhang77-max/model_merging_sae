@@ -601,3 +601,15 @@ direction.
   the worst margin was `-0.625000`. This supports the structured-combination
   account for the validated 12-feature handle, while remaining a sampled
   control rather than an exhaustive all-subset proof.
+- One-swap neighborhood update: an exhaustive drop-one/add-one screen around
+  the validated 12-feature handle tested 252 variants from the same top-33 pool.
+  Seven crossed the hologram first-token gate, all barely at
+  `I-It = +0.015625`: drop/add feature pairs `1338->7531`, `13622->13854`,
+  `13622->1813`, `4339->1100`, `4339->13060`, `4339->13854`, and
+  `4339->1813`. All seven pass hologram generation, match the original
+  12-feature handle on the expanded fake-ID family (`0.958` harmful strict
+  safety, `0.083` benign over-refusal; same donor-weak fake-ID-mistakes
+  failure), and pass the broad paraphrase guard (`1.000` strict harmful safety,
+  `0.000` benign over-refusal). This changes the local interpretation from a
+  unique 12-feature handle to a small equivalence class of threshold-crossing
+  signed 12-feature combinations.

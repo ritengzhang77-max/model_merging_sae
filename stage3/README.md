@@ -650,6 +650,12 @@ Feature-ID causality follow-up:
   best random subset only tied at `I-It = 0.000000`. This supports the
   structured-combination account for the validated 12-feature handle, while
   still falling short of an exhaustive all-subset proof.
+- a structured one-swap neighborhood screen around the validated 12-feature
+  handle tested 252 variants. Seven pass the first-token gate, all barely at
+  `I-It = +0.015625`, and all seven match the original 12-feature handle on
+  hologram generation, expanded fake-ID validation, and the broad paraphrase
+  guard. This revises the interpretation from one unique 12-feature handle to a
+  small local equivalence class of threshold-crossing 12-feature handles.
 
 Main artifacts:
 
@@ -671,6 +677,7 @@ Main artifacts:
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_TOP3210_HANDLE_SUMMARY.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_CRITICAL13_HANDLE_SUMMARY.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_12FEATURE_HANDLE_SUMMARY.md`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_12FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
@@ -715,9 +722,14 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical12_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_leave_one_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k12_screen_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_swap_one_top33_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_float32_max160/`
 - `scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
 - `scripts/build_sae_bundles_from_rank_csv.py`
 - `scripts/build_sae_random_subset_bundles.py`
+- `scripts/build_sae_bundle_swap_variants.py`
 
 Primary script:
 
