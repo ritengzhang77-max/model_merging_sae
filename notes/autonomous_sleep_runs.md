@@ -190,3 +190,7 @@
   fake-ID family (`23/23` donor-clean harmful repair, `22/22` donor-allowed
   benign behavior) plus the broad paraphrase guard. Robust-handle claim moves
   one step lower, from top3200+rank3202 to top3199+rank3202.
+- Local singleton-sweep update: with float32 SAE at prefix top3199, ranks 3202,
+  3203, 3205, 3207, and 3210 repair the hologram probe; ranks 3201, 3204,
+  3206, 3208, and 3209 fail. This weakens any single-feature semantic story
+  for rank3202 and strengthens the high-order local interaction account.

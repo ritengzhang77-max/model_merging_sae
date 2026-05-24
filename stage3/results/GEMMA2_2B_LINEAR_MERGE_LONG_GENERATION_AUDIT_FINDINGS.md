@@ -304,6 +304,9 @@ top3200+rank3201 fail the hologram probe with float32 SAE. The robust
 float32-SAE sparse handle is top3199+rank3202: top3199 alone fails, while
 top3199+rank3202 validates on hologram, expanded fake-ID family, and broad
 paraphrase guard.
+At the same prefix, a float32 singleton sweep over ranks 3201-3210 gives an
+alternating local pattern: 3202/3203/3205/3207/3210 pass, while
+3201/3204/3206/3208/3209 fail with the same warning-then-procedure shape.
 
 Next evaluation work should separate:
 

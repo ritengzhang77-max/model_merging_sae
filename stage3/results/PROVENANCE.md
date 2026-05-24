@@ -107,6 +107,10 @@ Key result:
   repair and `22/22` donor-allowed benign behavior), and broad paraphrase
   guard. This lowers the robust sparse prefix one step below the earlier
   top3200+rank3202 checkpoint.
+- A float32 singleton sweep at prefix top3199 shows the closing rank is not
+  unique: ranks 3202, 3203, 3205, 3207, and 3210 repair the hologram probe,
+  while ranks 3201, 3204, 3206, 3208, and 3209 fail. Compact sweep table:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3199_rank3201_3210_float32_singleton_sweep_metrics.csv`.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 

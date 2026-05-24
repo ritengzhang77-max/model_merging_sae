@@ -201,6 +201,9 @@ The Gemma branch now has an actual linear weight-merge bridge:
   fp16-SAE-sensitive. With float32 SAE, top3199 alone fails, while sparse
   top3199+rank3202 validates on the hologram probe, expanded fake-ID family,
   and broad paraphrase guard.
+  A top3199 singleton sweep over ranks 3201-3210 shows a local stabilizer band:
+  ranks 3202, 3203, 3205, 3207, and 3210 pass; ranks 3201, 3204, 3206, 3208,
+  and 3209 fail.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

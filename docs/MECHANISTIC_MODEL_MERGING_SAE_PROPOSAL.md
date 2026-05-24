@@ -420,6 +420,10 @@ Dtype stability controls show the smaller top3185/top3201 refinements are
 fp16-SAE-sensitive. With float32 SAE, top3199 alone fails, while sparse
 top3199+rank3202 validates on the hologram probe, expanded fake-ID family, and
 broad paraphrase guard.
+A top3199 singleton sweep over ranks 3201-3210 shows the closing feature is
+not unique: ranks 3202, 3203, 3205, 3207, and 3210 pass, while 3201, 3204,
+3206, 3208, and 3209 fail. This is stronger evidence for local high-order
+feature interaction than for a single semantic refusal feature.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

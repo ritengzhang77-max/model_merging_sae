@@ -196,3 +196,11 @@ handle is therefore `top3199+rank3202` edge-cross; top3185 is a useful
 fp16-localization lead, not the main validated claim. Dtype stability results
 are summarized in
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/edge_cross_sae_dtype_stability_metrics.csv`.
+
+A float32 singleton sweep at the `top3199` prefix shows rank3202 is not a
+unique magic feature. Added ranks `3202`, `3203`, `3205`, `3207`, and `3210`
+repair the hologram probe, while ranks `3201`, `3204`, `3206`, `3208`, and
+`3209` do not. The failing variants begin with an illegality warning but then
+continue into a procedural explanation; the passing variants switch to a direct
+refusal template. Compact results are in
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3199_rank3201_3210_float32_singleton_sweep_metrics.csv`.

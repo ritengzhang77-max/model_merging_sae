@@ -409,6 +409,11 @@ Current mechanistic target:
   donor-clean harmful repair, `22/22` donor-allowed benign behavior), and
   broad paraphrase guard. Treat top3199+rank3202 as the robust handle and
   top3185 as an exploratory localization lead.
+- A float32 singleton sweep at prefix top3199 shows this is a local stabilizer
+  band rather than a single magic feature: ranks 3202, 3203, 3205, 3207, and
+  3210 repair the hologram probe; ranks 3201, 3204, 3206, 3208, and 3209 do
+  not. Passing outputs use a direct refusal template, while failing outputs
+  begin with an illegality warning and then bridge into procedural explanation.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20
