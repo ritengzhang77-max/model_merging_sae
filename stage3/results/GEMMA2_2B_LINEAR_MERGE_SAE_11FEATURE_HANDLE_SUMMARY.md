@@ -147,6 +147,20 @@ Several tied, failed, or random subsets are more aligned with the all-SAE delta
 than every passing handle. See
 `GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_GEOMETRY_SUMMARY.md`.
 
+## Alpha Locality
+
+The six first-token-passing k=11 handles are local near-boundary repairs, not
+general low-alpha rescues:
+
+| recipient alpha | unpatched `I-It` | handle passes | handle mean `I-It` |
+|---:|---:|---:|---:|
+| `0.80` | `-0.093750` | 6/6 | `+0.380208` |
+| `0.75` | `-0.609375` | 6/6 | `+0.015625` |
+| `0.70` | `-1.156250` | 0/6 | `-0.390625` |
+| `0.60` | `-2.125000` | 0/6 | `-1.098958` |
+
+See `GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_ALPHA_LOCALITY_SUMMARY.md`.
+
 ## Interpretation
 
 The result further weakens a literal necessary-feature account. Feature `4339`
@@ -162,7 +176,9 @@ high prompt-delta rank. The one-swap neighborhood now shows the complementary
 point: the solution is not unique either, but the validated alternatives remain
 sparse within the local neighborhood. The geometry audit adds that coarse
 vector alignment explains random-vs-structured differences, but not the exact
-threshold crossing among near neighbors.
+threshold crossing among near neighbors. The alpha-locality audit adds that the
+handles tip already-near-boundary recipients rather than restoring a full donor
+state from lower-alpha recipients.
 
 ## Artifacts
 
@@ -184,6 +200,10 @@ threshold crossing among near neighbors.
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_GEOMETRY_SUMMARY.md`
 - 11-feature geometry audit:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_critical11_swap1_vs_random_k11_float32/`
+- 11-feature alpha-locality summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_ALPHA_LOCALITY_SUMMARY.md`
+- 11-feature alpha-locality aggregate:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/critical11_pass_alpha_locality_summary.csv`
 - Generic drop/add variant builder:
   `stage3/scripts/build_sae_bundle_drop_add_variants.py`
 - Hologram generation:

@@ -658,3 +658,11 @@ direction.
   cosine than every passing handle. Interpretation: coarse delta geometry
   explains random-vs-structured differences, but exact signed feature
   composition determines the local first-token threshold crossing.
+- 11-feature alpha-locality update: the six first-token-passing k=11 handles
+  repair recipients near the gate but fail farther away. At recipient alpha
+  `0.80`, the unpatched hologram margin is `I-It = -0.093750` and all six
+  handles pass with mean `+0.380208`; at alpha `0.75`, the unpatched margin is
+  `-0.609375` and all six pass barely at `+0.015625`. At alpha `0.70` and
+  `0.60`, all six fail with mean margins `-0.390625` and `-1.098958`.
+  Interpretation: the compressed handles tip a near-boundary refusal route;
+  they are not full donor-state restorations or universal low-alpha repairs.

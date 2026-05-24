@@ -683,6 +683,11 @@ Feature-ID causality follow-up:
   delta (`0.5326` vs. `0.5319`), while the top aligned rows include random,
   tied, and failed subsets. Coarse delta geometry is useful context, but exact
   signed feature composition determines the threshold crossing.
+- an alpha-locality audit confirms that the compressed k=11 handles are
+  near-boundary repairs, not universal rescues. All six first-token-passing
+  handles repair recipient alpha `0.80` and `0.75` (`6/6` passes, mean
+  `I-It = +0.380208` and `+0.015625`), but all fail at alpha `0.70` and
+  `0.60` (`0/6` passes, mean `I-It = -0.390625` and `-1.098958`).
 
 Main artifacts:
 
@@ -761,8 +766,10 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_random_top33_k10_screen_float32/`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_GEOMETRY_SUMMARY.md`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_ALPHA_LOCALITY_SUMMARY.md`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_delta_geometry_v0/fake_id_hologram_l20_final_newline_delta_add_critical11_swap1_vs_random_k11_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/critical11_pass_alpha_locality_summary.csv`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
