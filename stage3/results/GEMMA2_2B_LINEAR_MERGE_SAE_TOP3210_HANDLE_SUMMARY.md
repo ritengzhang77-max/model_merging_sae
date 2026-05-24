@@ -224,3 +224,10 @@ prefix (`top3185`), only rank3202 among tested ranks 3201-3210 repairs the
 hologram probe. Ranks 3201 and 3203-3210 all fail under the same float32
 edge-cross setup. Compact partner sweep:
 `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3201_3210_float32_partner_sweep_metrics.csv`.
+
+Timing for rank3202 is also localized: with `top3185` fixed, rank3202 patched
+only at the assistant boundary is sufficient, while rank3202 patched only on
+generated tokens fails. Thus the rank3202 partner looks like a boundary/setup
+feature for this repair, not a generated-token-only continuation feature.
+Timing probe:
+`stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3202_float32_timing_probe_metrics.csv`.

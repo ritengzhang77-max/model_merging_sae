@@ -206,3 +206,6 @@
   mechanistic interpretation pass.
 - Partner-specificity update: with rank3185 present, only rank3202 among tested
   ranks 3201-3210 repairs the hologram probe under float32 edge-cross timing.
+- Rank3202 timing update: with top3185 fixed, rank3202 at the assistant
+  boundary is sufficient; rank3202 on generated tokens only fails. This points
+  to boundary/setup state rather than a generated-token-only repair.

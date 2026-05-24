@@ -421,6 +421,9 @@ Current mechanistic target:
 - A partner sweep confirms specificity at that lower bound: with rank3185
   present, rank3202 is the only tested partner in ranks 3201-3210 that repairs
   the hologram probe.
+- A timing probe localizes rank3202's contribution: with top3185 fixed,
+  rank3202 at the assistant boundary is sufficient, while rank3202 on generated
+  tokens only fails.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

@@ -430,6 +430,8 @@ rank3185 feature `5679` and rank3202 feature `11494` are jointly sufficient
 but individually insufficient for this float32 hologram repair.
 With rank3185 already present, rank3202 is also the only tested partner in
 ranks 3201-3210 that repairs the probe.
+Rank3202's timing is boundary-like: with top3185 fixed, assistant-boundary-only
+rank3202 passes, while generated-only rank3202 fails.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

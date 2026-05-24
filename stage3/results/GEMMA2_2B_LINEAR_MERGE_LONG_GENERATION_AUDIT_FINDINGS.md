@@ -313,6 +313,8 @@ is sufficient alone, but the pair is sufficient: top3184, top3185, and
 top3184+rank3202 fail; top3185+rank3202 passes.
 With rank3185 present, a partner sweep over ranks 3201-3210 shows rank3202 is
 the only tested partner that passes.
+Rank3202 timing is boundary-like: assistant-boundary-only rank3202 passes, but
+generated-only rank3202 fails.
 
 Next evaluation work should separate:
 

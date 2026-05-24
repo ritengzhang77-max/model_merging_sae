@@ -125,6 +125,9 @@ Key result:
   tested ranks 3201-3210 repairs the hologram probe under float32 edge-cross
   timing. Compact partner sweep:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3201_3210_float32_partner_sweep_metrics.csv`.
+- Rank3202 timing control: with top3185 fixed, assistant-boundary-only rank3202
+  passes, while generated-only rank3202 fails. Compact timing table:
+  `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/top3185_rank3202_float32_timing_probe_metrics.csv`.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 

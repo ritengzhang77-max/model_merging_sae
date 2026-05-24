@@ -264,12 +264,45 @@ def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int, extra_pro
     for extra_rank in extra_probe_ranks:
         if extra_rank <= prefix_top_k:
             continue
-        prefix_plus = prefix + [rank_to_feature[extra_rank]]
+        extra_feature = rank_to_feature[extra_rank]
+        prefix_plus = prefix + [extra_feature]
         variants.append(
             {
                 "label": f"top{prefix_top_k}_plus_rank{extra_rank}_edge_cross_extra_probe",
                 "groups": [
                     {"name": "prefix_plus", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix_plus},
+                    {
+                        "name": "boundary_base_edge3211",
+                        "filter": "assistant_boundary",
+                        "layer": 20,
+                        "features": boundary + generated_base + [edge3211_feature],
+                    },
+                    {"name": "edge3214", "filter": "generated", "layer": 20, "features": [edge3214_feature]},
+                ],
+            }
+        )
+        variants.append(
+            {
+                "label": f"top{prefix_top_k}_plus_rank{extra_rank}_extra_boundary_only",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {"name": "extra", "filter": "assistant_boundary", "layer": 20, "features": [extra_feature]},
+                    {
+                        "name": "boundary_base_edge3211",
+                        "filter": "assistant_boundary",
+                        "layer": 20,
+                        "features": boundary + generated_base + [edge3211_feature],
+                    },
+                    {"name": "edge3214", "filter": "generated", "layer": 20, "features": [edge3214_feature]},
+                ],
+            }
+        )
+        variants.append(
+            {
+                "label": f"top{prefix_top_k}_plus_rank{extra_rank}_extra_generated_only",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {"name": "extra", "filter": "generated", "layer": 20, "features": [extra_feature]},
                     {
                         "name": "boundary_base_edge3211",
                         "filter": "assistant_boundary",
