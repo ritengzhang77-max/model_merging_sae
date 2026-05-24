@@ -1,0 +1,13 @@
+{
+  "source_bundles_file": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_leave_one_float32/critical11_swap1_pass_bundles.txt",
+  "pool_bundles_file": "stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/bundle_top33.txt",
+  "pool_label": "prompt_delta_top33",
+  "drop_count": 2,
+  "add_count": 1,
+  "variant_count": 2165,
+  "skipped_duplicate_feature_sets": 255,
+  "outputs": {
+    "bundles": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_drop2_add1_top33_k10_float32/critical11_drop2_add1_top33_k10_bundles.txt",
+    "manifest_csv": "stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_drop2_add1_top33_k10_float32/critical11_drop2_add1_top33_k10_bundles_manifest.csv"
+  }
+}

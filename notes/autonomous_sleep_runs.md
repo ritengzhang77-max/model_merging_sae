@@ -624,3 +624,10 @@ direction.
   A leave-one screen over the two 11-feature handles found 0/22 ten-feature
   first-token passes, with 9 ties at zero. Current local smallest validated
   final-newline `delta_add` handle: 11 features.
+- Structured 10-feature replacement update: a drop-two/add-one screen around
+  the two validated 11-feature handles generated 2,165 unique 10-feature
+  candidates from the same top-33 prompt-delta pool after duplicate removal.
+  It found 0/2165 first-token passes; 238 variants tied at `I-It = 0.000000`
+  and the worst margin was `-0.515625`. This strengthens local 11-feature
+  minimality within the explored structured neighborhood, but it is still not
+  an exhaustive proof over all top-33 10-feature subsets.

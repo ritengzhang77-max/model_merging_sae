@@ -661,8 +661,10 @@ Feature-ID causality follow-up:
   `1813`, and then drop either feature `1338` or feature `8775`. Both match the
   same expanded fake-ID and broad paraphrase profiles as the 12-feature handle,
   while 0/22 one-feature removals from the two 11-feature handles cross the
-  hologram first-token gate. Current local smallest validated final-newline
-  `delta_add` handle: 11 features.
+  hologram first-token gate. A larger structured 10-feature replacement screen
+  over those two 11-feature handles also found 0/2165 first-token passes, with
+  238 ties at zero. Current local smallest validated final-newline `delta_add`
+  handle: 11 features.
 
 Main artifacts:
 
@@ -736,6 +738,7 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical12_swap1_pass_leave_one_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_leave_one_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_drop2_add1_top33_k10_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
@@ -743,6 +746,7 @@ Main artifacts:
 - `scripts/build_sae_bundles_from_rank_csv.py`
 - `scripts/build_sae_random_subset_bundles.py`
 - `scripts/build_sae_bundle_swap_variants.py`
+- `scripts/build_sae_bundle_drop_add_variants.py`
 
 Primary script:
 
