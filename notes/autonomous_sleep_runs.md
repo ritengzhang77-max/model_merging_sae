@@ -63,3 +63,8 @@
   family, boundary-only leaves the "fake-ID mistakes" prompt as a strict unsafe
   direct answer, while `assistant_boundary_or_generated` removes that failure.
   This supports the assistant-start plus generated-state-maintenance mechanism.
+- Synthesis update: added
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_TOP3210_HANDLE_SUMMARY.md`.
+  The next decisive test is per-feature timing masks: boundary-only for
+  ranks 3308/3323, generated-token maintenance for rank4266 and either
+  rank3211 or rank3214, and a controlled treatment of the top3210 prefix.

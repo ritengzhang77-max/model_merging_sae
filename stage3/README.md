@@ -444,6 +444,7 @@ Main artifacts:
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_FEATURE_TRAJECTORY_FINDINGS.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_TRANSITION_FEATURE_SEARCH_FINDINGS.md`
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_BUNDLE_PATCH_FINDINGS.md`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_TOP3210_HANDLE_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_random_seed_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_feature_audit_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_FEATURE_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_gemmascope_mlp_sae_content_token_feature_controls_v0/GEMMA2_2B_GEMMASCOPE_MLP_SAE_RANDOM_SEED_SUMMARY.md`

@@ -24,6 +24,8 @@ figures, or decision memos.
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_COMPLETENESS_FINDINGS.md`
 - Long-generation audit memo:
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_LONG_GENERATION_AUDIT_FINDINGS.md`
+- Top3210 handle summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_TOP3210_HANDLE_SUMMARY.md`
 - Consolidated prefix table:
   `stage3/results/gemma2_2b_linear_merge_sae_timing_mask_summary_v0/rank4266_abog_prefix_refinement_metrics.csv`
 
