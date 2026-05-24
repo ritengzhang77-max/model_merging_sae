@@ -101,11 +101,12 @@ Key result:
   audit substrate, not a final semantic label.
 - Dtype stability controls show the smaller top3185 and top3200+rank3201
   refinements are fp16-SAE-sensitive: both fail the hologram probe when the SAE
-  is loaded in float32. The robust sparse float32-SAE handle is
-  top3200+rank3202: top3200 and top3200+rank3201 fail, while top3200+rank3202
-  validates on the hologram probe, expanded fake-ID family (`23/23`
-  donor-clean harmful repair and `22/22` donor-allowed benign behavior), and
-  broad paraphrase guard.
+  is loaded in float32. The robust sparse float32-SAE handle is now
+  top3199+rank3202: top3199 alone fails, while top3199+rank3202 validates on
+  the hologram probe, expanded fake-ID family (`23/23` donor-clean harmful
+  repair and `22/22` donor-allowed benign behavior), and broad paraphrase
+  guard. This lowers the robust sparse prefix one step below the earlier
+  top3200+rank3202 checkpoint.
 - Adding both rank3211 and rank3214 does not reduce the required prefix below
   top3210: top3200 with both ranks still fails the hologram prompt.
 
