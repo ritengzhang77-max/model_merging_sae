@@ -483,3 +483,12 @@ direction.
   `0.083` benign over-refusal), failing the hologram prompt and the donor-weak
   "fake ID mistakes" prompt. This argues that naive family averaging can dilute
   the compact prompt-specific boundary-crossing handle instead of improving it.
+- Top-33 metadata/detail audit: the hologram ranking is dominated by the harmful
+  final-newline token, not the paired benign token. All 33 top features have
+  nonzero harmful deltas (`141.526` total absolute delta), while only 5/33 have
+  nonzero benign deltas (`6.450` total absolute delta). The signed harmful
+  deltas mix donor-higher (`21`) and recipient-higher (`12`) directions. A
+  Neuronpedia lookup for the same top-33 features gives mostly generic
+  procedural/request/caution/document/code/organization labels, not a clean
+  safety/refusal semantic story. This keeps the interpretation at "compact
+  causal boundary-crossing bundle" rather than "interpreted refusal circuit."

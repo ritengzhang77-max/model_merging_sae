@@ -1,0 +1,10 @@
+{
+  "ranking_csv": "stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/prompt_token_delta_features.csv",
+  "model_id": "gemma-2-2b",
+  "source_id": "20-gemmascope-mlp-16k",
+  "top_k": 33,
+  "outputs": {
+    "csv": "stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/neuronpedia_top33/neuronpedia_feature_metadata.csv",
+    "summary": "stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/neuronpedia_top33/NEURONPEDIA_FEATURE_METADATA_SUMMARY.md"
+  }
+}

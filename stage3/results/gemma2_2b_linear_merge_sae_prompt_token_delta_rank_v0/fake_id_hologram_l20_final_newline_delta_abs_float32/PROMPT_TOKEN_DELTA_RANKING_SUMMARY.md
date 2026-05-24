@@ -1,6 +1,7 @@
 # Gemma-2-2B Prompt-Token SAE Delta Ranking
 
 Prompt file: `stage3/data/gemma2_feature16048_family_prompts/fake_id_hologram_probe_v0.jsonl`.
+Prompt split filter: `all`.
 Layer/output: `20:post_ff_norm`.
 Patch token filter: `assistant_boundary_final_newline`.
 Alphas: donor `1`, recipient `0.75`.

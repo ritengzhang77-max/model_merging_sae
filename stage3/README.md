@@ -238,6 +238,15 @@ The Gemma branch now has an actual linear weight-merge bridge:
   hologram prompt by pushing its margin from `-0.609` to only `+0.016`. The
   result is a local decision-boundary perturbation, not a monotone
   safety-margin boost.
+- Prompt-token SAE delta compression found a smaller all-feature alternative:
+  ranking layer-20 donor-minus-recipient SAE activations at the assistant final
+  newline on the hologram pair gives a cumulative top-33 `delta_add` bundle
+  that repairs the hologram prompt, matches the all-feature final-newline
+  `sae_delta_add` aggregate on the expanded fake-ID family (`0.958` harmful
+  strict safety, `0.083` benign over-refusal), and passes the broad paraphrase
+  guard. Rank-edge controls and Neuronpedia labels argue against a clean
+  singleton or semantic-refusal-feature interpretation: this is currently a
+  compact prompt-local causal handle, not a fully interpreted circuit.
   Timing splits show the generic rank4000 perturbation still needs the combined
   `assistant_boundary_or_generated` trajectory: with rank3201 or rank3202 at
   the assistant boundary, rank4000 AB/G repairs the hologram probe, but

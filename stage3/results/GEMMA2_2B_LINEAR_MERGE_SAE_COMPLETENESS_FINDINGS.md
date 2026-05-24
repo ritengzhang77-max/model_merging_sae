@@ -981,10 +981,26 @@ family, failing the hologram prompt and the donor-weak fake-ID-mistakes prompt.
 This suggests naive prompt averaging can dilute the compact hologram-specific
 boundary-crossing handle rather than producing a more robust small bundle.
 
+Two follow-up audits clarify what the top-33 handle is and is not. First, the
+per-token detail file shows the ranking is overwhelmingly driven by the harmful
+hologram final-newline token: all 33 top features have nonzero harmful deltas
+with total absolute delta `141.526`, while only 5/33 have nonzero benign-pair
+deltas with total absolute delta `6.450`. The signed harmful deltas are mixed
+(`21` donor-higher, `12` recipient-higher), so the bundle is not just adding
+donor-high refusal activations; it also suppresses recipient-high directions.
+Second, Neuronpedia autointerp labels for the top-33 features are mostly
+generic procedural/request/caution/document/code/organization labels rather
+than obvious safety or refusal concepts. This weakens any claim that the
+top-33 bundle has already been semantically interpreted. The current claim
+should stay causal and behavioral: a small, prompt-local SAE delta bundle can
+recover the donor-like refusal gate, but the feature semantics remain unresolved.
+
 Artifacts:
 
 - Prompt-token delta ranking:
   `stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/`
+  `stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/prompt_token_delta_detail_top33.csv`
+  `stage3/results/gemma2_2b_linear_merge_sae_prompt_token_delta_rank_v0/fake_id_hologram_l20_final_newline_delta_abs_float32/neuronpedia_top33/`
 - Coarse and refined hologram prefix sweeps:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_topk_float32_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_refine_15_50_float32_max160/`

@@ -52,7 +52,7 @@ def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
 
 
 @torch.no_grad()
-def collect_features(model, tokenizer, sae, prompts, args) -> torch.Tensor:
+def collect_features(model, tokenizer, sae, prompts, args) -> tuple[torch.Tensor, list[dict[str, object]]]:
     cache: dict[str, torch.Tensor] = {}
 
     def hook(_module, _inputs, output):
@@ -61,8 +61,9 @@ def collect_features(model, tokenizer, sae, prompts, args) -> torch.Tensor:
 
     handle = module_mlp(model, args.layer, args.output_mode).register_forward_hook(hook)
     parts = []
+    meta_rows: list[dict[str, object]] = []
     try:
-        for split, user in prompts:
+        for prompt_index, (split, user) in enumerate(prompts, start=1):
             cache.clear()
             prompt = chat_prompt(tokenizer, user)
             enc = tokenizer(prompt, return_tensors="pt").to(args.device)
@@ -78,9 +79,23 @@ def collect_features(model, tokenizer, sae, prompts, args) -> torch.Tensor:
                 raise ValueError(f"empty mask for prompt: {user}")
             feats = sae.encode(cache["acts"][:, mask, :]).detach().float().cpu()
             parts.append(feats.reshape(-1, feats.shape[-1]))
+            token_positions = torch.nonzero(mask, as_tuple=False).reshape(-1).detach().cpu().tolist()
+            input_ids = enc["input_ids"][0].detach().cpu().tolist()
+            for token_position in token_positions:
+                token_id = int(input_ids[int(token_position)])
+                meta_rows.append(
+                    {
+                        "prompt_index": prompt_index,
+                        "split": split,
+                        "prompt": user,
+                        "token_position": int(token_position),
+                        "token_id": token_id,
+                        "token": tokenizer.decode([token_id], skip_special_tokens=False).replace("\n", "\\n"),
+                    }
+                )
     finally:
         remove_hooks([handle])
-    return torch.cat(parts, dim=0)
+    return torch.cat(parts, dim=0), meta_rows
 
 
 def rank_rows(donor_f: torch.Tensor, recipient_f: torch.Tensor, layer: int, top_k: int) -> list[dict[str, object]]:
@@ -122,6 +137,37 @@ def bundle_string(rows: list[dict[str, object]], layer: int, cutoffs: tuple[int,
         spec = ",".join(f"{layer}:{feature_id}" for feature_id in selected)
         parts.append(f"prompt_delta_top{cutoff}={spec}")
     return ";".join(parts)
+
+
+def detail_rows(
+    donor_f: torch.Tensor,
+    recipient_f: torch.Tensor,
+    metas: list[dict[str, object]],
+    ranked_rows: list[dict[str, object]],
+    detail_top_k: int,
+) -> list[dict[str, object]]:
+    if detail_top_k <= 0:
+        return []
+    delta = donor_f - recipient_f
+    out = []
+    for rank_row in ranked_rows[: min(detail_top_k, len(ranked_rows))]:
+        feature_id = int(rank_row["feature_id"])
+        for token_index, meta in enumerate(metas):
+            donor_value = float(donor_f[token_index, feature_id].item())
+            recipient_value = float(recipient_f[token_index, feature_id].item())
+            delta_value = float(delta[token_index, feature_id].item())
+            out.append(
+                {
+                    **meta,
+                    "rank": int(rank_row["rank"]),
+                    "feature_id": feature_id,
+                    "donor_value": donor_value,
+                    "recipient_value": recipient_value,
+                    "delta_value": delta_value,
+                    "abs_delta_value": abs(delta_value),
+                }
+            )
+    return out
 
 
 def write_summary(path: Path, args, rows, bundles: str) -> None:
@@ -169,6 +215,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--patch-token-filter", default="assistant_boundary_final_newline")
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--top-k", type=int, default=16000)
+    ap.add_argument("--detail-top-k", type=int, default=0)
     ap.add_argument("--bundle-cutoffs", type=parse_cutoffs, default=parse_cutoffs("10,50,100,200,500,1000,2000,4000,8000,12000,16000"))
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
     return ap.parse_args()
@@ -203,18 +250,22 @@ def main() -> int:
 
     print("[features] donor", flush=True)
     set_linear_merge_weights(merge_model, base_model, recipient_params_cpu, args.donor_alpha, args.device)
-    donor_f = collect_features(merge_model, tokenizer, sae, prompts, args)
+    donor_f, metas = collect_features(merge_model, tokenizer, sae, prompts, args)
     print("[features] recipient", flush=True)
     set_linear_merge_weights(merge_model, base_model, recipient_params_cpu, args.recipient_alpha, args.device)
-    recipient_f = collect_features(merge_model, tokenizer, sae, prompts, args)
+    recipient_f, recipient_metas = collect_features(merge_model, tokenizer, sae, prompts, args)
+    if metas != recipient_metas:
+        raise RuntimeError("donor and recipient prompt-token metadata mismatch")
 
     rows = rank_rows(donor_f, recipient_f, args.layer, args.top_k)
     bundles = bundle_string(rows, args.layer, args.bundle_cutoffs)
     csv_path = args.result_dir / "prompt_token_delta_features.csv"
     bundle_path = args.result_dir / "bundles.txt"
     summary_path = args.result_dir / "PROMPT_TOKEN_DELTA_RANKING_SUMMARY.md"
+    detail_path = args.result_dir / f"prompt_token_delta_detail_top{args.detail_top_k}.csv"
     manifest_path = args.result_dir / "manifest.json"
     write_csv(csv_path, rows)
+    write_csv(detail_path, detail_rows(donor_f, recipient_f, metas, rows, args.detail_top_k))
     bundle_path.write_text(bundles + "\n", encoding="utf-8")
     write_summary(summary_path, args, rows, bundles)
     manifest_path.write_text(
@@ -229,11 +280,13 @@ def main() -> int:
                 "donor_alpha": args.donor_alpha,
                 "recipient_alpha": args.recipient_alpha,
                 "top_k": args.top_k,
+                "detail_top_k": args.detail_top_k,
                 "bundle_cutoffs": list(args.bundle_cutoffs),
                 "outputs": {
                     "features": str(csv_path),
                     "bundles": str(bundle_path),
                     "summary": str(summary_path),
+                    "detail": "" if args.detail_top_k <= 0 else str(detail_path),
                 },
             },
             indent=2,
