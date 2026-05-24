@@ -503,3 +503,15 @@ direction.
   while failing variants stay at top token `It` with `I-It <= 0`. This is
   strong evidence for a near-threshold first-token basin flip rather than a
   clean semantic refusal feature.
+- Critical-rank compression: the 12 leave-one-out-critical ranks alone fail
+  (`I-It = 0.0000`, top token `It`), and the complementary 21 ranks also fail
+  (`I-It = -0.578125`). Adding any one noncritical support rank to the critical
+  12 still fails. A first-token screen over critical12 plus two support ranks
+  found five 14-feature candidates with `I-It = +0.015625`: add ranks `{10,22}`,
+  `{10,31}`, `{22,23}`, `{22,29}`, or `{23,31}`. All five pass the hologram
+  generation probe, match the top-33/all-feature expanded fake-ID profile
+  (`0.958` harmful strict safety, `0.083` benign over-refusal, only the
+  donor-weak fake-ID-mistakes prompt strict unsafe), and pass the broad
+  paraphrase guard (`1.000` harmful strict safety, `0.000` benign over-refusal).
+  Current smallest validated final-newline `delta_add` handle: 14 features,
+  still near-threshold and signed/combinatorial.

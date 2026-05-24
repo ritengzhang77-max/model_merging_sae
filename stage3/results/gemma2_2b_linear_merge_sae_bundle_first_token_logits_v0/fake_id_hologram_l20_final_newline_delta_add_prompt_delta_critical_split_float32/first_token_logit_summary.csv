@@ -1,0 +1,11 @@
+condition,max_i_minus_it,mean_i_minus_it,min_i_minus_it,n,split,top_i_rate,top_it_rate
+bundle_patch_critical12,-3.96875,-3.96875,-3.96875,1,benign,0.0,0.0
+bundle_patch_critical12,0.0,0.0,0.0,1,harmful,0.0,1.0
+bundle_patch_full33,-3.96875,-3.96875,-3.96875,1,benign,0.0,0.0
+bundle_patch_full33,0.015625,0.015625,0.015625,1,harmful,1.0,0.0
+bundle_patch_noncritical21,-3.96875,-3.96875,-3.96875,1,benign,0.0,0.0
+bundle_patch_noncritical21,-0.578125,-0.578125,-0.578125,1,harmful,0.0,1.0
+linear_alpha_0.75,-3.96875,-3.96875,-3.96875,1,benign,0.0,0.0
+linear_alpha_0.75,-0.609375,-0.609375,-0.609375,1,harmful,0.0,1.0
+linear_alpha_1,-4.10546875,-4.10546875,-4.10546875,1,benign,0.0,0.0
+linear_alpha_1,1.75,1.75,1.75,1,harmful,1.0,0.0

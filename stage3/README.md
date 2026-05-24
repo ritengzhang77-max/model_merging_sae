@@ -253,6 +253,13 @@ The Gemma branch now has an actual linear weight-merge bridge:
   but removing 12 specific features fails. First-token audits explain the text
   behavior: passing variants barely cross to top token `I` (`I-It >= +0.015625`),
   while failing variants stay at top token `It` (`I-It <= 0`).
+  A follow-up combinatorial screen compresses the final-newline `delta_add`
+  handle further to 14 features: the 12 leave-one-out-critical ranks are not
+  sufficient alone, no single support rank fixes them, but five critical12 plus
+  two-support-rank variants cross the first-token gate and validate on the
+  expanded fake-ID family and broad paraphrase guard. This is the current
+  smallest family-validated SAE feature handle, but it remains a brittle
+  signed threshold bundle rather than an interpreted semantic circuit.
   Timing splits show the generic rank4000 perturbation still needs the combined
   `assistant_boundary_or_generated` trajectory: with rank3201 or rank3202 at
   the assistant boundary, rank4000 AB/G repairs the hologram probe, but

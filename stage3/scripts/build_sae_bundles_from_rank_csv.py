@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import itertools
 from pathlib import Path
 
 
@@ -58,10 +59,33 @@ def main() -> int:
         default=0,
         help="Emit full_topK and topK_minus_rankNNN bundles for ranks 1..K.",
     )
+    ap.add_argument(
+        "--base-ranks",
+        type=parse_rank_items,
+        default=(),
+        help="Optional base rank set for base-plus-singleton bundles.",
+    )
+    ap.add_argument(
+        "--extra-singleton-ranks",
+        type=parse_rank_items,
+        default=(),
+        help="Optional extra ranks to add one at a time to --base-ranks.",
+    )
+    ap.add_argument(
+        "--extra-pairs",
+        action="store_true",
+        help="With --base-ranks and --extra-singleton-ranks, also emit all base-plus-two-extra-rank bundles.",
+    )
+    ap.add_argument("--base-label", default="base")
     ap.add_argument("--prefix", default="prompt_delta_top")
     ap.add_argument("--output", type=Path, required=True)
     args = ap.parse_args()
-    if not args.cutoffs and not args.rank_sets and args.leave_one_out_top_k <= 0:
+    if (
+        not args.cutoffs
+        and not args.rank_sets
+        and args.leave_one_out_top_k <= 0
+        and not (args.base_ranks and args.extra_singleton_ranks)
+    ):
         raise SystemExit("provide --cutoffs or --rank-sets")
 
     with args.ranking_csv.open("r", encoding="utf-8", newline="") as f:
@@ -85,6 +109,22 @@ def main() -> int:
             selected = top[: rank - 1] + top[rank:]
             spec = ",".join(f"{layer}:{feature_id}" for feature_id in selected)
             parts.append(f"top{k}_minus_rank{rank:03d}={spec}")
+    if args.base_ranks and args.extra_singleton_ranks:
+        for rank in [*args.base_ranks, *args.extra_singleton_ranks]:
+            if rank < 1 or rank > len(feature_ids):
+                raise ValueError(f"Rank {rank} out of range for {args.ranking_csv}")
+        base_features = [feature_ids[rank - 1] for rank in args.base_ranks]
+        base_spec = ",".join(f"{layer}:{feature_id}" for feature_id in base_features)
+        parts.append(f"{args.base_label}= {base_spec}".replace("= ", "="))
+        for rank in args.extra_singleton_ranks:
+            selected = base_features + [feature_ids[rank - 1]]
+            spec = ",".join(f"{layer}:{feature_id}" for feature_id in selected)
+            parts.append(f"{args.base_label}_plus_rank{rank:03d}={spec}")
+        if args.extra_pairs:
+            for left, right in itertools.combinations(args.extra_singleton_ranks, 2):
+                selected = base_features + [feature_ids[left - 1], feature_ids[right - 1]]
+                spec = ",".join(f"{layer}:{feature_id}" for feature_id in selected)
+                parts.append(f"{args.base_label}_plus_rank{left:03d}_rank{right:03d}={spec}")
     for label, ranks in args.rank_sets:
         selected = []
         for rank in ranks:
