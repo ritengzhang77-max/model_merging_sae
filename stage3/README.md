@@ -259,7 +259,10 @@ The Gemma branch now has an actual linear weight-merge bridge:
   two-support-rank variants cross the first-token gate and validate on the
   expanded fake-ID family and broad paraphrase guard. This is the current
   smallest family-validated SAE feature handle, but it remains a brittle
-  signed threshold bundle rather than an interpreted semantic circuit.
+  signed threshold bundle rather than an interpreted semantic circuit. Expanded
+  first-token audits show the 14-feature handles only nudge harmful mean `I-It`
+  slightly above alpha `0.75`, far below donor alpha `1.00`, so the mechanism
+  remains a targeted gate perturbation rather than a donor-margin restoration.
   Timing splits show the generic rank4000 perturbation still needs the combined
   `assistant_boundary_or_generated` trajectory: with rank3201 or rank3202 at
   the assistant boundary, rank4000 AB/G repairs the hologram probe, but

@@ -1036,6 +1036,15 @@ safety, `0.000` benign over-refusal). The current smallest family-validated
 final-newline `delta_add` handle is therefore 14 features, but it remains a
 near-threshold signed bundle rather than a robust high-margin circuit.
 
+Expanded first-token audits show the 14-feature handles are also not globally
+donor-like. On the expanded fake-ID family, alpha `0.75` has harmful mean
+`I-It = 4.109`, donor alpha `1.00` has `5.868`, and the five 14-feature
+handles sit only around `4.279-4.285`. On the broad paraphrase guard, alpha
+`0.75` has harmful mean `4.229`, donor alpha `1.00` has `6.085`, and the
+14-feature handles sit around `4.377-4.390`. The small handles remove the
+hologram top-`It` failure and preserve strict behavior, but they do not restore
+the donor endpoint's large first-token safety margin.
+
 Artifacts:
 
 - Prompt-token delta ranking:
@@ -1071,6 +1080,9 @@ Artifacts:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical14_candidates_float32_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical14_candidates_float32_max160/`
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical14_candidates_float32_max160/`
+- Critical-14 first-token audits:
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical14_candidates_float32/`
+  `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical14_candidates_float32/`
 - Scripts:
   `stage3/scripts/rank_gemma2_2b_linear_merge_sae_prompt_token_deltas.py`
   `stage3/scripts/build_sae_bundles_from_rank_csv.py`

@@ -515,3 +515,10 @@ direction.
   paraphrase guard (`1.000` harmful strict safety, `0.000` benign over-refusal).
   Current smallest validated final-newline `delta_add` handle: 14 features,
   still near-threshold and signed/combinatorial.
+- Critical-14 first-token audits: the 14-feature handles are not donor-like
+  margin restorations. On the expanded fake-ID family, harmful mean `I-It` moves
+  from alpha0.75 `4.109` to only about `4.28`, while donor alpha1 is `5.868`.
+  On the broad paraphrase guard, harmful mean moves from alpha0.75 `4.229` to
+  about `4.38`, while donor alpha1 is `6.085`. The handles remove the selected
+  top-`It` failure and match strict behavior without globally restoring the
+  donor endpoint's large first-token margin.
