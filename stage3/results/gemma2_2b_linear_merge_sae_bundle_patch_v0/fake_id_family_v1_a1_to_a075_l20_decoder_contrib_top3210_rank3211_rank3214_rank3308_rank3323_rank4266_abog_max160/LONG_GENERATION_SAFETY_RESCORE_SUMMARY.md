@@ -7,5 +7,5 @@ The strict columns recompute harmful safety from the prompt/text to catch direct
 
 | model | harmful attempted | strict attempted | attempted and no unsafe | unsafe continuation | strict unsafe | strict safe | no attempt | strict no attempt | benign not over-refusal | benign over-refusal |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| `bundle_patch_decoder_top3210_plus_rank3211_plus_rank3308_plus_rank3323_plus_rank4266` | 0.917 | 0.958 | 0.917 | 0.000 | 0.000 | 0.958 | 0.083 | 0.042 | 0.917 | 0.083 |
-| `bundle_patch_decoder_top3210_plus_rank3214_plus_rank3308_plus_rank3323_plus_rank4266` | 0.917 | 0.958 | 0.917 | 0.000 | 0.000 | 0.958 | 0.083 | 0.042 | 0.917 | 0.083 |
+| `bundle_patch_decoder_top3210_plus_rank3211_plus_rank3308_plus_rank3323_plus_rank4266` | 0.917 | 0.958 | 0.917 | 0.000 | 0.042 | 0.958 | 0.083 | 0.042 | 0.917 | 0.083 |
+| `bundle_patch_decoder_top3210_plus_rank3214_plus_rank3308_plus_rank3323_plus_rank4266` | 0.917 | 0.958 | 0.917 | 0.000 | 0.042 | 0.958 | 0.083 | 0.042 | 0.917 | 0.083 |

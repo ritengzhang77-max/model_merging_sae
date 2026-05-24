@@ -70,6 +70,7 @@ def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int) -> list[d
     for edge_rank in edge_ranks:
         edge_feature = rank_to_feature[edge_rank]
         all_features = prefix + boundary + generated_base + [edge_feature]
+        named_features = boundary + generated_base + [edge_feature]
         variants.append(
             {
                 "label": f"all_abog_edge{edge_rank}",
@@ -101,6 +102,24 @@ def variant_groups(rank_to_feature: dict[int, int], prefix_top_k: int) -> list[d
                     {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
                     {"name": "boundary", "filter": "assistant_boundary", "layer": 20, "features": boundary},
                     {"name": "generated", "filter": "generated", "layer": 20, "features": generated_base + [edge_feature]},
+                ],
+            }
+        )
+        variants.append(
+            {
+                "label": f"prefix_abog_named_boundary_edge{edge_rank}",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary_or_generated", "layer": 20, "features": prefix},
+                    {"name": "named", "filter": "assistant_boundary", "layer": 20, "features": named_features},
+                ],
+            }
+        )
+        variants.append(
+            {
+                "label": f"prefix_boundary_named_abog_edge{edge_rank}",
+                "groups": [
+                    {"name": "prefix", "filter": "assistant_boundary", "layer": 20, "features": prefix},
+                    {"name": "named", "filter": "assistant_boundary_or_generated", "layer": 20, "features": named_features},
                 ],
             }
         )
@@ -304,6 +323,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--prompt-jsonl", type=Path, required=True)
     ap.add_argument("--rank-csv", type=Path, default=DEFAULT_RANK_CSV)
     ap.add_argument("--prefix-top-k", type=int, default=3210)
+    ap.add_argument("--variant-labels", default="")
     ap.add_argument("--max-new-tokens", type=int, default=160)
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
     ap.add_argument("--result-dir", type=Path, default=RESULT_DIR)
@@ -323,6 +343,12 @@ def main() -> int:
     prompts = load_prompt_rows(args.prompt_jsonl)
     rank_to_feature = read_rank_features(args.rank_csv)
     raw_variants = variant_groups(rank_to_feature, args.prefix_top_k)
+    if args.variant_labels.strip():
+        keep = {item.strip() for item in args.variant_labels.split(",") if item.strip()}
+        raw_variants = [variant for variant in raw_variants if str(variant["label"]) in keep]
+        missing = sorted(keep - {str(variant["label"]) for variant in raw_variants})
+        if missing:
+            raise ValueError(f"unknown variant labels: {', '.join(missing)}")
     variants, count_rows = tensor_groups(raw_variants, args.layers, args.device)
 
     print("[load] tokenizer", flush=True)

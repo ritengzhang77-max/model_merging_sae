@@ -339,18 +339,18 @@ layer-20 feature `1293`, a donor-lower / signed-negative feature in the
 decoder-contribution table. Top4266 and `top4200 + rank4266` match layer-20
 full decode on the expanded fake-ID family and pass the broad default 12/12
 max-160 guard. Prefix controls show rank4266 is not standalone: top3500 plus
-rank4266 is weaker, while top3600 plus rank4266 matches the full-decode
-strict-safe rate and benign tradeoff while avoiding strict unsafe continuation
-in this run; it also passes the broad default guard. The prefix effect is nonmonotone
+rank4266 is weaker, while top3600 plus rank4266 matches the full-decode and
+donor-endpoint strict-safe rate, strict-unsafe rate, and benign tradeoff; it
+also passes the broad default guard. The prefix effect is nonmonotone
 under hologram-only tests. Top3600 alone, top3600 plus neighboring rank4267,
 and three random3600 plus rank4266 controls all fail, so this is now a ranked
 broad-prefix plus signed-feature interaction. Timing controls put the causal
 effect at the assistant boundary: generated-only and content-token-only
 patching fail, while assistant-boundary-only patching repairs the expanded
 family but adds one broad benign over-refusal. Follow-up timing controls show
-`assistant_boundary_or_generated` is cleaner: it keeps expanded-family strict
-safety, removes the assistant-boundary-only strict unsafe failure, and restores
-broad default benign behavior. `contentish_or_generated` and `last_token` fail
+`assistant_boundary_or_generated` is cleaner: it keeps the expanded-family
+donor-endpoint profile and restores broad default benign behavior.
+`contentish_or_generated` and `last_token` fail
 on the hologram probe, while `prompt_template_or_generated` succeeds. The best
 current interpretation is assistant-start/template state plus generated-token
 history, not harmful content tokens or the current next-token state alone.
@@ -368,8 +368,11 @@ passes, while singleton rank3211 or rank3214 closes the top3210 hologram gap.
 The current smallest validated handles are
 `top3210 + rank3211 + rank3308 + rank3323 + rank4266` and
 `top3210 + rank3214 + rank3308 + rank3323 + rank4266`, both matching the same
-expanded-family profile and broad default strict guard. Adding both rank3211
-and rank3214 does not lower the required prefix below top3210. The local
+expanded-family donor-endpoint profile and broad default strict guard. The one
+absolute strict-unsafe prompt in that family is also unsafe for the alpha-`1.00`
+donor; donor-relative repair is `23/23` on harmful prompts where the donor is
+clean and `22/22` allowed on benign prompts where the donor allows. Adding both
+rank3211 and rank3214 does not lower the required prefix below top3210. The local
 prefix effect remains nonmonotone: top3375 fails while top3390/top3400 pass.
 Both top3210 handles also pass a new broad paraphrase guard of 12 harmful and
 12 benign prompts under the strict long-generation rescore (`1.000` strict
@@ -377,12 +380,19 @@ safe, `0.000` strict unsafe, `0.000` benign over-refusal).
 Timing controls preserve the response-state trajectory interpretation:
 `assistant_boundary` alone repairs the single hologram probe, `generated` alone
 fails it, and boundary-only patching leaves the "fake-ID mistakes" prompt as a
-strict unsafe direct answer on the expanded fake-ID family. The cleaner
-family-level intervention is still `assistant_boundary_or_generated`.
+strict unsafe direct answer on the expanded fake-ID family. The corrected
+rescore shows `assistant_boundary_or_generated` leaves that donor-unsafe prompt
+direct as well; its value is donor-relative repair of the alpha-`0.75`-specific
+hologram failure, not absolute safety beyond the donor endpoint.
 A first mixed per-feature timing smoke test is negative: all-feature sanity
 variants reproduce known behavior, but assigning audited boundary features only
 to boundary positions and audited trajectory features only to generated
 positions fails. Timing roles are nonadditive under donor-subset decode.
+Expanded-family mixed-timing controls add a useful asymmetry: rank3211 remains
+at `23/23` donor-clean harmful repair under two coarse prefix/named splits,
+while rank3214 falls to `22/23` by reintroducing the hologram/lamination unsafe
+continuation. Full all-boundary and full all-ABOG rank3214 handles both repair
+`23/23`, so the split timing assignment itself causes the failure.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

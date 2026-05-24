@@ -118,8 +118,8 @@ The Gemma branch now has an actual linear weight-merge bridge:
   donor-lower / signed-negative feature. Top4266 and `top4200 + rank4266`
   match layer-20 full decode on the expanded fake-ID family and pass the broad
   default 12/12 max-160 guard. Rank4266 is not standalone: top3500+rank4266
-  is weaker, while top3600+rank4266 matches the full-decode strict-safe rate
-  and benign tradeoff while avoiding strict unsafe continuation in this run;
+  is weaker, while top3600+rank4266 matches the full-decode/donor-endpoint
+  strict-safe rate, strict-unsafe rate, and benign tradeoff;
   it also passes the broad default guard. The prefix effect is nonmonotone, since
   top3800+rank4266 fails on the hologram probe while top3600/top3700/top3900
   pass. Prefix-specificity controls show top3600 alone, top3600+rank4267, and
@@ -128,9 +128,9 @@ The Gemma branch now has an actual linear weight-merge bridge:
   assistant boundary: generated-only and content-token-only patching fail,
   while assistant-boundary-only patching repairs the expanded family but
   introduces one broad benign over-refusal. The cleaner temporal mask is
-  `assistant_boundary_or_generated`: it preserves expanded-family strict safety,
-  removes the assistant-boundary-only strict unsafe failure, and restores broad
-  default benign behavior. `contentish_or_generated` and `last_token` fail on
+  `assistant_boundary_or_generated`: it preserves the expanded-family donor
+  endpoint profile and restores broad default benign behavior.
+  `contentish_or_generated` and `last_token` fail on
   the hologram probe, while `prompt_template_or_generated` succeeds, pointing
   to assistant-start/template state plus generated-token history rather than
   harmful content tokens or the current next-token state alone. Under that
@@ -148,8 +148,11 @@ The Gemma branch now has an actual linear weight-merge bridge:
   validated handles are
   `top3210 + rank3211 + rank3308 + rank3323 + rank4266` and
   `top3210 + rank3214 + rank3308 + rank3323 + rank4266`, both matching the
-  same expanded fake-ID family profile and broad default strict guard. Adding
-  both rank3211 and rank3214 still does not lower the prefix below top3210.
+  same expanded fake-ID donor-endpoint profile and broad default strict guard.
+  The one absolute strict-unsafe prompt in that family is also unsafe for the
+  alpha-`1.00` donor; donor-relative repair is `23/23` on harmful prompts where
+  the donor is clean and `22/22` allowed on benign prompts where the donor
+  allows. Adding both rank3211 and rank3214 still does not lower the prefix below top3210.
   The local prefix effect is still nonmonotone: top3375 fails while
   top3390/top3400 pass.
   Both top3210 handles also pass a new broad paraphrase guard of 12 harmful
@@ -157,13 +160,20 @@ The Gemma branch now has an actual linear weight-merge bridge:
   strict safe, `0.000` strict unsafe, `0.000` benign over-refusal).
   Top3210 timing controls show the boundary is enough for the single hologram
   probe, but not for the broader fake-ID family: `assistant_boundary` alone
-  leaves the "fake-ID mistakes" prompt as a strict unsafe direct answer, while
-  `assistant_boundary_or_generated` removes it. `generated` alone fails the
-  hologram probe. This preserves the response-state trajectory interpretation.
+  leaves the "fake-ID mistakes" prompt as a strict unsafe direct answer, and
+  the corrected rescore shows `assistant_boundary_or_generated` leaves that
+  donor-unsafe prompt direct as well. `generated` alone fails the hologram
+  probe. This preserves the donor-relative response-state trajectory
+  interpretation without claiming absolute safety beyond the donor endpoint.
   A first mixed per-feature timing smoke test is negative: the all-feature
   sanity variants reproduce known behavior, but splitting the audited boundary
   ranks to boundary positions and trajectory ranks to generated positions fails.
-  Timing roles are nonadditive under donor-subset decode.
+  Timing roles are nonadditive under donor-subset decode. Expanded-family
+  mixed-timing controls show rank3211 is robust under two prefix/named splits
+  (`23/23` donor-clean harmful repair), while rank3214 falls to `22/23` by
+  reintroducing the hologram/lamination unsafe continuation. Full all-boundary
+  and full all-ABOG rank3214 handles both repair `23/23`, so the split timing
+  assignment itself causes the failure.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not

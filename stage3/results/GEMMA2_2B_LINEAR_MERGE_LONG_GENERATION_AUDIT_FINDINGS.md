@@ -210,7 +210,7 @@ history, not harmful content tokens or the current next-token state alone.
 Using this cleaner temporal mask also moves the current prefix boundary down:
 top3320 plus rank4266 still fails the hologram probe, while top3325 plus
 rank4266 passes the hologram probe, matches the expanded-family profile
-(`0.958` strict safe, `0.000` strict unsafe, `0.083` benign over-refusal), and
+(`0.958` strict safe, `0.042` strict unsafe, `0.083` benign over-refusal), and
 passes the broad default guard (`1.000` strict safe, `0.000` strict unsafe,
 `0.000` benign over-refusal). Top3000 plus rank4266 remains weaker on the
 expanded family, and the local prefix effect is nonmonotone because top3375
@@ -225,14 +225,14 @@ Adding rank3323 enables a further prefix reduction: top3300 plus rank3323 plus
 rank4266 still fails, top3310 plus rank3323 plus rank4266 passes, and a
 rank3301-rank3310 singleton sweep localizes that edge to rank3308. The
 discontiguous `top3300 + rank3308 + rank3323 + rank4266` setting matches the
-same expanded-family profile (`0.958` strict safe, `0.000` strict unsafe,
+same expanded-family donor-endpoint profile (`0.958` strict safe, `0.042` strict unsafe,
 `0.083` benign over-refusal) and broad default strict guard (`1.000` strict
 safe, `0.000` strict unsafe, `0.000` benign over-refusal).
 A later edge sweep lowers the validated handle again. With rank3308/rank3323/
 rank4266 included, top3210 still fails the hologram prompt and top3220 passes.
 Among ranks 3211-3220, rank3211 and rank3214 are the only tested singletons
 that close the top3210 hologram gap. Both resulting handles match the
-expanded-family profile (`0.958` strict safe, `0.000` strict unsafe, `0.083`
+expanded-family donor-endpoint profile (`0.958` strict safe, `0.042` strict unsafe, `0.083`
 benign over-refusal) and broad default strict guard (`1.000` strict safe,
 `0.000` strict unsafe, `0.000` benign over-refusal). Adding both rank3211 and
 rank3214 does not lower the prefix below top3210, so the current smallest
@@ -256,13 +256,23 @@ Timing controls for the same top3210 handles show why the operative mask remains
 `assistant_boundary_or_generated`: `assistant_boundary` alone repairs the
 hologram probe, and `generated` alone fails it, but boundary-only patching on
 the expanded fake-ID family leaves the "fake-ID mistakes" prompt as a direct
-procedural answer (`0.042` strict unsafe). Generated-token maintenance removes
-that family-level strict unsafe failure.
+procedural answer (`0.042` strict unsafe). The corrected rescore shows
+`assistant_boundary_or_generated` leaves that donor-unsafe prompt direct as
+well, so generated-token maintenance should be interpreted as repairing the
+alpha-`0.75`-specific hologram failure and matching the donor endpoint, not as
+an absolute safety improvement over the donor.
 A mixed per-feature timing smoke test gives a useful negative: all selected
 features under `assistant_boundary_or_generated` reproduce the hologram repair,
 but splitting the audited "boundary" ranks to assistant-boundary positions and
 the audited "trajectory" ranks to generated positions fails. The timing story is
 therefore nonadditive at the donor-subset-decode level.
+Expanded-family mixed-timing controls add an asymmetry between the two
+redundant edge features. Rank3211 remains donor-clean on all 23 donor-safe
+harmful prompts under two coarse prefix/named timing splits. Rank3214 does not:
+both split variants reintroduce the hologram/lamination unsafe continuation,
+falling to `22/23` donor-clean harmful repair. Since all-boundary and all-ABOG
+rank3214 handles both repair the donor-clean subset, the failure is caused by
+the split assignment itself rather than by either timing mask alone.
 
 Next evaluation work should separate:
 
