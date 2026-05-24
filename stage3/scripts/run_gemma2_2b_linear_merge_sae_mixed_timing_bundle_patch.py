@@ -382,6 +382,46 @@ def tensor_groups(variants: list[dict[str, object]], layers: tuple[int, ...], de
     return out, count_rows
 
 
+def merge_same_filter_groups(variants: list[dict[str, object]]) -> list[dict[str, object]]:
+    """Union feature groups with identical layer/filter before SAE decoding.
+
+    Splitting a logically identical feature set across same-filter groups changes
+    floating-point accumulation order. This option makes equivalence controls use
+    the same decoded union as unsplit prefix variants.
+    """
+    merged_variants = []
+    for variant in variants:
+        buckets: dict[tuple[int, str], dict[str, object]] = {}
+        order: list[tuple[int, str]] = []
+        for group in variant["groups"]:
+            layer = int(group["layer"])
+            patch_filter = str(group["filter"])
+            key = (layer, patch_filter)
+            if key not in buckets:
+                buckets[key] = {
+                    "name_parts": [],
+                    "filter": patch_filter,
+                    "layer": layer,
+                    "features": [],
+                }
+                order.append(key)
+            buckets[key]["name_parts"].append(str(group["name"]))
+            buckets[key]["features"].extend(int(feature_id) for feature_id in group["features"])
+        groups = []
+        for key in order:
+            bucket = buckets[key]
+            groups.append(
+                {
+                    "name": "union_" + "+".join(bucket["name_parts"]),
+                    "filter": bucket["filter"],
+                    "layer": bucket["layer"],
+                    "features": bucket["features"],
+                }
+            )
+        merged_variants.append({"label": variant["label"], "groups": groups})
+    return merged_variants
+
+
 def apply_mixed_donor_subset_decode(sae, recipient_out, donor_out, groups, masks):
     donor_f = sae.encode(donor_out)
     patch_sum = torch.zeros_like(recipient_out)
@@ -526,6 +566,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--prefix-top-k", type=int, default=3210)
     ap.add_argument("--extra-probe-ranks", default="3215,3250,3300,3400,3600,4000")
     ap.add_argument("--timing-pair-ranks", default="")
+    ap.add_argument("--merge-same-filter-groups", action="store_true")
     ap.add_argument("--variant-labels", default="")
     ap.add_argument("--max-new-tokens", type=int, default=160)
     ap.add_argument("--output-mode", choices=("post_ff_norm", "raw_mlp"), default="post_ff_norm")
@@ -554,6 +595,8 @@ def main() -> int:
         missing = sorted(keep - {str(variant["label"]) for variant in raw_variants})
         if missing:
             raise ValueError(f"unknown variant labels: {', '.join(missing)}")
+    if args.merge_same_filter_groups:
+        raw_variants = merge_same_filter_groups(raw_variants)
     variants, count_rows = tensor_groups(raw_variants, args.layers, args.device)
 
     print("[load] tokenizer", flush=True)
@@ -600,6 +643,8 @@ def main() -> int:
                 "rank_csv": str(args.rank_csv),
                 "prefix_top_k": args.prefix_top_k,
                 "extra_probe_ranks": args.extra_probe_ranks,
+                "timing_pair_ranks": args.timing_pair_ranks,
+                "merge_same_filter_groups": bool(args.merge_same_filter_groups),
                 "donor_alpha": args.donor_alpha,
                 "recipient_alpha": args.recipient_alpha,
                 "variants": raw_variants,

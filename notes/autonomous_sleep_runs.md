@@ -221,3 +221,10 @@
   SSH-command/configuration related, not safety-related. Local prompt-scope
   audit is more informative: the top donor-minus-recipient event is at the
   assistant `model` boundary token on the repaired trajectory.
+- Same-filter union control: the first `top3183 + rank3184 + rank3202` pair
+  timing probe falsely failed all variants because it split rank3184 out of the
+  broad prefix group. After adding `--merge-same-filter-groups`, the equivalent
+  `top3183 + rank3184@assistant_boundary_or_generated +
+  rank3202@assistant_boundary` probe passes, while rank3184 boundary-only and
+  generated-only fail. Treat rank3184 as part of the broad prefix-timing
+  threshold, and use same-filter unioning for equivalence/timing controls.

@@ -430,6 +430,15 @@ Current mechanistic target:
   rank3202 passes, while generated-only and boundary-or-generated rank3202 fail;
   at top3185, assistant-boundary rank3202 also passes and generated-only
   rank3202 fails.
+- A same-filter union control resolves an apparent contradiction in the
+  rank3184/rank3202 pair timing test. The unmerged probe split rank3184 out of
+  the prefix group and failed all variants. With `--merge-same-filter-groups`,
+  the equivalent `top3183 + rank3184@assistant_boundary_or_generated +
+  rank3202@assistant_boundary` variant passes, while rank3184 boundary-only and
+  generated-only variants fail. This supports the current handle decomposition:
+  rank3184 belongs to the broad prefix-timing threshold, while rank3202 is the
+  assistant-boundary singleton. Same-filter unioning should be used for future
+  equivalence/timing controls.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20
