@@ -255,3 +255,11 @@
   semantic under this perturbation. The strongest current claim is a mechanistic
   caution: the merged model is near a first-token refusal/compliance threshold,
   and many small SAE donor perturbations can push it into the refusal basin.
+- Forced-prefix update: alpha0.75 without SAE patch is enough to show the basin
+  structure. On the hologram prompt, forcing the assistant to start with `I`
+  yields a clean refusal, while forcing `It` or `It's` yields the unsafe
+  warning-plus-procedure trajectory. On the expanded fake-ID family, forced `I`
+  reaches `1.000` strict harmful safety but causes `0.208` benign over-refusal;
+  forced `It` leaves `0.208` strict unsafe. The SAE patches appear to nudge the
+  first-token route into an existing refusal basin, but with less benign damage
+  than a blunt forced prefix.

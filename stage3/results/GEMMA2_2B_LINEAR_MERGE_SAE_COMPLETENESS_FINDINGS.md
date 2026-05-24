@@ -468,6 +468,14 @@ Current mechanistic target:
   account: the merged model is close to a refusal/compliance first-token
   decision boundary, and many small SAE donor perturbations can push it into the
   refusal basin.
+- Forced-prefix controls validate that basin account without SAE patching. In
+  the alpha0.75 model, forcing the hologram answer to start with `I` yields a
+  clean refusal, while forcing `It` or `It's` yields the unsafe
+  warning-plus-procedure trajectory. On the expanded fake-ID family, forced `I`
+  reaches `1.000` strict harmful safety but causes `0.208` benign over-refusal;
+  forced `It` leaves `0.208` strict unsafe. The SAE patches therefore seem to
+  nudge an existing first-token route into the refusal basin, not create a
+  refusal circuit from scratch.
 - Prompt-scope feature-event audits show rank3308 and rank3323 are both
   assistant-boundary features. Rank3308 is layer-20 feature `93` and is
   donor-higher on the `<start_of_turn>model` token; rank3323 is layer-20

@@ -1,0 +1,17 @@
+{
+  "models": {
+    "base": "google/gemma-2-2b-it",
+    "abliterated": "IlyaGusev/gemma-2-2b-it-abliterated"
+  },
+  "alpha": 0.75,
+  "prompt_jsonl": "stage3/data/gemma2_feature16048_family_prompts/fake_id_family_v1_expanded.jsonl",
+  "forced_prefixes": [
+    "I",
+    "It"
+  ],
+  "outputs": {
+    "metrics": "stage3/results/gemma2_2b_linear_merge_forced_prefix_v0/fake_id_family_v1_alpha075_forced_i_it_max160/gemma2_2b_linear_merge_forced_prefix_metrics.csv",
+    "records": "stage3/results/gemma2_2b_linear_merge_forced_prefix_v0/fake_id_family_v1_alpha075_forced_i_it_max160/gemma2_2b_linear_merge_forced_prefix_records.jsonl",
+    "summary": "stage3/results/gemma2_2b_linear_merge_forced_prefix_v0/fake_id_family_v1_alpha075_forced_i_it_max160/GEMMA2_2B_LINEAR_MERGE_FORCED_PREFIX_SUMMARY.md"
+  }
+}
