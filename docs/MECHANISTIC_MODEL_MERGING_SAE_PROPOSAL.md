@@ -449,7 +449,11 @@ the stronger current account: alpha `1.00` moves harmful fake-ID prompts toward
 an existing direct-refusal first-token basin relative to alpha `0.75`, while
 benign prompts remain mostly away from that basin. Sparse SAE patches can nudge
 near-boundary prompts into that route, but they are not yet evidence for a
-cleanly interpretable singleton refusal feature.
+cleanly interpretable singleton refusal feature. A follow-up patch-logit audit
+sharpens this: the generic patch variants fix the hologram prompt by moving
+`I-It` from `-0.609` to only `+0.016`, while reducing average harmful `I-It`
+margin on the expanded fake-ID family. The patch is a local decision-boundary
+perturbation, not a global donor-like safety-margin boost.
 Prompt-scope audits show rank3308 is layer-20 feature `93`, donor-higher at
 the `<start_of_turn>model` token; rank3323 is layer-20 feature `114`,
 donor-active and recipient-zero on the following newline. These are

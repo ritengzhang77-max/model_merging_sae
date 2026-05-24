@@ -229,6 +229,15 @@ The Gemma branch now has an actual linear weight-merge bridge:
   prompts toward an existing direct-refusal route, and sparse donor patches can
   tip near-boundary prompts into that route without proving a unique
   interpretable refusal feature.
+  Follow-up first-token controls separate merge-endpoint movement from patch
+  movement. On the broad paraphrase guard, harmful `I-It` margins move smoothly
+  with alpha (`1.535`, `4.229`, `6.085` for alpha0.5/0.75/1.0), while benign
+  margins remain negative. But the generic sparse patch variants do not imitate
+  donor alpha1 globally: on the expanded fake-ID family, they reduce harmful
+  mean `I-It` from alpha0.75 `4.109` to about `2.629`, while fixing the
+  hologram prompt by pushing its margin from `-0.609` to only `+0.016`. The
+  result is a local decision-boundary perturbation, not a monotone
+  safety-margin boost.
   Prompt-scope audits show rank3308 is layer-20 feature `93` active at the
   `<start_of_turn>model` token, while rank3323 is layer-20 feature `114`
   active on the following newline; both are assistant-boundary features, not
