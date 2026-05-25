@@ -4,6 +4,9 @@ Research checkpoint decks for the model-merging SAE project.
 
 Recent decks:
 
+- `model_merging_sae/2026-05-24-1812-stage1-teaching-checkpoint/`: 88-slide
+  teaching/checkpoint deck explaining model merging from zero, the Gemma
+  model-merging SAE results, and the next go/no-go decision.
 - `2026-05-22-2001-gemmascope-feature16048-validation/`: validation and
   reframing of layer-19 feature `16048` as a narrow causal switch requiring a
   cooperating prefix.
