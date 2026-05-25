@@ -714,6 +714,15 @@ Feature-ID causality follow-up:
   causally useful at the final newline. The causal object is therefore still a
   prompt-boundary decision handle, not a fully human-readable generated-text
   refusal module.
+- a prompt-boundary event audit at the actual assistant final newline shows the
+  handle is explicitly signed. Strong donor-higher boundary features include
+  `15169` (`+12.269577`), `14991` (`+5.046618`), `8754` (`+4.639405`), `8775`
+  (`+4.046347`), and `7531` (`+3.676389`), while recipient-higher boundary
+  features include `12704` (`-4.584393`), `9149` (`-3.716339`), `13622`
+  (`-3.584885`), `6289` (`-3.425846`), and `9407` (`-2.121596`). This explains
+  why positive-only and negative-only interpretations fail: the causal handle
+  both adds donor-side boundary state and suppresses recipient-side boundary
+  state.
 
 Main artifacts:
 
@@ -814,6 +823,9 @@ Main artifacts:
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_EVENT_AUDIT_SUMMARY.md`
 - `results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/common9_variable_subsets_harmful_l20_core_variable_float32/`
 - `results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_feature_event_outcome_aggregate.csv`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_PROMPT_BOUNDARY_EVENT_SUMMARY.md`
+- `results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/common9_prompt_boundary_harmful_l20_core_variable_float32/`
+- `results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_prompt_boundary_feature_events.csv`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`

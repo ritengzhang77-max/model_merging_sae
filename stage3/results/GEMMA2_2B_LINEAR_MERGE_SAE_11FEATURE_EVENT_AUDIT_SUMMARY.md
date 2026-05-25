@@ -73,3 +73,4 @@ module.
 - Outcome aggregate CSV: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_feature_event_outcome_aggregate.csv`
 - Event examples CSV: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_feature_event_examples.csv`
 - Source records: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32_max160/gemma2_2b_linear_merge_sae_bundle_patch_records.jsonl`
+- Prompt-boundary companion summary: `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_PROMPT_BOUNDARY_EVENT_SUMMARY.md`

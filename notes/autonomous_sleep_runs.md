@@ -726,3 +726,13 @@ direction.
   Feature `7531` has zero generated-token activation in this audit despite its
   final-newline causal role. Interpretation: the causal object remains a
   prompt-boundary decision handle, not a complete generated-text refusal module.
+- Prompt-boundary event update: I audited the same 14 features at the actual
+  assistant final newline where the `delta_add` patch is applied. The handle is
+  explicitly signed. Donor-higher boundary features include `15169`
+  (`+12.269577`), `14991` (`+5.046618`), `8754` (`+4.639405`), `8775`
+  (`+4.046347`), and `7531` (`+3.676389`); recipient-higher boundary features
+  include `12704` (`-4.584393`), `9149` (`-3.716339`), `13622` (`-3.584885`),
+  `6289` (`-3.425846`), and `9407` (`-2.121596`). This is a strong mechanistic
+  refinement: the sparse handle both adds donor boundary state and suppresses
+  recipient boundary state, explaining why positive-only and negative-only
+  feature stories are not enough.

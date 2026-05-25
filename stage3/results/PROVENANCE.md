@@ -2936,3 +2936,26 @@ warning/refusal preamble that can still precede unsafe continuation. Feature
 at the final newline. Interpretation: the sparse handle is best treated as a
 prompt-boundary decision handle; generated-token activations mix warning
 preamble, redirection/legal-consequence text, and domain/procedural text.
+
+## 2026-05-24 Gemma-2-2B 11-Feature Prompt-Boundary Event Audit
+
+Purpose: inspect the same 14 features at the actual intervention site: the
+assistant-boundary final newline where the `delta_add` patch is applied.
+
+New/updated artifacts:
+
+- `stage3/scripts/summarize_gemma2_critical11_prompt_boundary_events.py`
+- `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_PROMPT_BOUNDARY_EVENT_SUMMARY.md`
+- `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/common9_prompt_boundary_harmful_l20_core_variable_float32/`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_prompt_boundary_feature_events.csv`
+
+Key result: the final-newline handle is explicitly signed. Strong donor-higher
+features at the assistant final newline include `15169` (`+12.269577`), `14991`
+(`+5.046618`), `8754` (`+4.639405`), `8775` (`+4.046347`), `7531`
+(`+3.676389`), `9135` (`+3.654759`), `12652` (`+3.551477`), and `1338`
+(`+3.544194`). Strong recipient-higher features include `12704` (`-4.584393`),
+`9149` (`-3.716339`), `13622` (`-3.584885`), `6289` (`-3.425846`), and `9407`
+(`-2.121596`). Interpretation: the causal patch both adds donor-side boundary
+features and suppresses recipient-side boundary features. This explains why
+positive-only and negative-only feature stories fail, and why feature `7531`
+can be causal at the final newline while having zero generated-token activation.

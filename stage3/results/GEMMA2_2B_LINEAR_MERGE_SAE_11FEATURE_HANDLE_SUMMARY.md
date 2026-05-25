@@ -233,6 +233,13 @@ newline but inactive during generated text. The handle should therefore remain
 framed as a prompt-boundary decision handle rather than a fully semantic
 refusal module.
 
+The prompt-boundary event audit sharpens that point at the actual intervention
+site. At the assistant final newline, the selected features include both
+donor-higher activations (`15169`, `14991`, `8754`, `8775`, `7531`, etc.) and
+recipient-higher activations (`12704`, `9149`, `13622`, `6289`, `9407`). The
+`delta_add` patch is therefore a signed boundary-state edit: it adds some
+donor-side features and suppresses some recipient-side features.
+
 ## Artifacts
 
 - 11-feature first-token source:
@@ -265,6 +272,8 @@ refusal module.
   `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_alpha_locality.csv`
 - 11-feature generated-token event audit summary:
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_EVENT_AUDIT_SUMMARY.md`
+- 11-feature prompt-boundary event audit summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_PROMPT_BOUNDARY_EVENT_SUMMARY.md`
 - 11-feature substitution aggregates:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/critical11_swap_one_top33_effect_by_drop.csv`
 - Generic drop/add variant builder:
