@@ -736,3 +736,13 @@ direction.
   refinement: the sparse handle both adds donor boundary state and suppresses
   recipient boundary state, explaining why positive-only and negative-only
   feature stories are not enough.
+- Signed-component causal split update: I split the 14-feature local class by
+  donor-higher vs. recipient-higher final-newline components and ran a
+  first-token causal audit. Donor-higher features alone improve the harmful
+  hologram margin from `-0.609375` to `-0.062500` but still fail;
+  recipient-higher features alone only reach `-0.562500`. The signed common9
+  backbone ties exactly at `0.000000`. Adding either donor-side variable
+  features or recipient-side variable suppression crosses at `+0.015625`.
+  Single recipient-higher additions to the donor-higher bundle still fail. This
+  is now the cleanest causal evidence that the handle is a cooperative signed
+  boundary edit.

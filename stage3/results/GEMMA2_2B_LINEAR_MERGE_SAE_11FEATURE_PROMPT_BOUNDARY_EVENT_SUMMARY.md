@@ -60,6 +60,12 @@ The handle is not just adding refusal-looking donor features. It also
 removes recipient-side boundary features that otherwise hold the prompt near
 or below the `I`/`It` gate.
 
+A follow-up signed-component causal split confirms this reading: donor-higher
+features alone still fail at `I-It=-0.062500`, recipient-higher features alone
+still fail at `-0.562500`, the signed common9 backbone ties at `0.000000`, and
+adding either donor-side variables or recipient-side variable suppression
+crosses at `+0.015625`.
+
 Feature `7531` is especially clarifying: it is donor-higher by `+3.676` at
 the assistant final newline but has zero generated-token activation in the
 generated-token audit. Its role is boundary-state control, not recurring
@@ -70,3 +76,4 @@ semantic content in the refusal answer.
 - Prompt-boundary audit directory: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/common9_prompt_boundary_harmful_l20_core_variable_float32`
 - Boundary event CSV: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_prompt_boundary_feature_events.csv`
 - Generated-token event summary: `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_EVENT_AUDIT_SUMMARY.md`
+- Signed-component causal summary: `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_BOUNDARY_SIGNED_COMPONENT_SUMMARY.md`

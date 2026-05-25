@@ -723,6 +723,14 @@ Feature-ID causality follow-up:
   why positive-only and negative-only interpretations fail: the causal handle
   both adds donor-side boundary state and suppresses recipient-side boundary
   state.
+- a signed-component causal split confirms that event-level interpretation.
+  Donor-higher boundary features alone improve the hologram margin from
+  `-0.609375` to `-0.062500` but still fail; recipient-higher features alone
+  only reach `-0.562500`. The signed common9 backbone reaches exactly
+  `0.000000`, and adding either donor-side variable features or recipient-side
+  variable suppression crosses to `+0.015625`. Single recipient-higher additions
+  to the donor-higher bundle still fail. The mechanism is a cooperative signed
+  boundary edit, not a single positive or negative feature.
 
 Main artifacts:
 
@@ -826,6 +834,9 @@ Main artifacts:
 - `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_PROMPT_BOUNDARY_EVENT_SUMMARY.md`
 - `results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/common9_prompt_boundary_harmful_l20_core_variable_float32/`
 - `results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_prompt_boundary_feature_events.csv`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_BOUNDARY_SIGNED_COMPONENT_SUMMARY.md`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_boundary_signed_components_float32/`
+- `results/gemma2_2b_linear_merge_sae_11feature_identity_v0/boundary_signed_component_outcomes.csv`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`

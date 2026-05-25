@@ -240,6 +240,13 @@ recipient-higher activations (`12704`, `9149`, `13622`, `6289`, `9407`). The
 `delta_add` patch is therefore a signed boundary-state edit: it adds some
 donor-side features and suppresses some recipient-side features.
 
+A direct signed-component causal split confirms this interpretation. The
+donor-higher boundary features alone improve the harmful margin from
+`-0.609375` to `-0.062500` but still fail; recipient-higher features alone
+reach only `-0.562500`. The signed common9 backbone ties exactly at
+`0.000000`. Adding either donor-side variable features or recipient-side
+variable suppression to that signed common backbone crosses at `+0.015625`.
+
 ## Artifacts
 
 - 11-feature first-token source:
@@ -274,6 +281,8 @@ donor-side features and suppresses some recipient-side features.
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_EVENT_AUDIT_SUMMARY.md`
 - 11-feature prompt-boundary event audit summary:
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_PROMPT_BOUNDARY_EVENT_SUMMARY.md`
+- 11-feature signed-component causal summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_BOUNDARY_SIGNED_COMPONENT_SUMMARY.md`
 - 11-feature substitution aggregates:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/critical11_swap_one_top33_effect_by_drop.csv`
 - Generic drop/add variant builder:

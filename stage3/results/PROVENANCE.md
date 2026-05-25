@@ -2959,3 +2959,28 @@ features at the assistant final newline include `15169` (`+12.269577`), `14991`
 features and suppresses recipient-side boundary features. This explains why
 positive-only and negative-only feature stories fail, and why feature `7531`
 can be causal at the final newline while having zero generated-token activation.
+
+## 2026-05-24 Gemma-2-2B 11-Feature Boundary Signed-Component Causal Split
+
+Purpose: causally test the signed interpretation from the prompt-boundary event
+audit by splitting the 14-feature local class into donor-higher and
+recipient-higher final-newline components.
+
+New/updated artifacts:
+
+- `stage3/scripts/summarize_gemma2_critical11_boundary_signed_components.py`
+- `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_BOUNDARY_SIGNED_COMPONENT_SUMMARY.md`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/boundary_signed_component_bundles.txt`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/boundary_signed_component_outcomes.csv`
+- `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_boundary_signed_components_float32/`
+
+Key result: neither sign-side is sufficient alone. Donor-higher boundary
+features improve the harmful hologram `I-It` margin from alpha0.75 `-0.609375`
+to `-0.062500`, but still fail. Recipient-higher features alone reach only
+`-0.562500`. The signed common9 backbone ties exactly at `0.000000`. Adding
+either donor-side variable features or recipient-side variable suppression to
+that signed common backbone crosses at `+0.015625`. Single recipient-higher
+additions to the donor-higher bundle still fail, with the best tested single
+addition (`12704`) at `-0.015625`. Interpretation: the causal handle is a
+cooperative signed boundary edit, not a single positive-feature or
+negative-feature story.
