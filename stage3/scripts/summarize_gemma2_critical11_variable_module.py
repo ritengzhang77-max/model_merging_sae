@@ -24,6 +24,20 @@ GEN_DIR = (
     / "gemma2_2b_linear_merge_sae_bundle_patch_v0"
     / "fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32_max160"
 )
+NEW_PAIR_FAMILY_DIR = (
+    ROOT
+    / "stage3"
+    / "results"
+    / "gemma2_2b_linear_merge_sae_bundle_patch_v0"
+    / "fake_id_family_v1_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160"
+)
+NEW_PAIR_BROAD_DIR = (
+    ROOT
+    / "stage3"
+    / "results"
+    / "gemma2_2b_linear_merge_sae_bundle_patch_v0"
+    / "default_paraphrase_guard_v0_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160"
+)
 
 OUT_CSV = IDENTITY_DIR / "common9_variable_subset_outcomes.csv"
 OUT_MD = ROOT / "stage3" / "results" / "GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_VARIABLE_MODULE_SUMMARY.md"
@@ -38,10 +52,19 @@ def fmt(value: float) -> str:
     return f"{value:.6f}"
 
 
+def only_metric(path: Path) -> dict[str, str]:
+    rows = read_csv(path)
+    if len(rows) != 1:
+        raise ValueError(f"expected one metric row in {path}, found {len(rows)}")
+    return rows[0]
+
+
 def main() -> int:
     manifest = {row["bundle"]: row for row in read_csv(IDENTITY_DIR / "common9_variable_subsets_manifest.csv")}
     ft_rows = read_csv(FIRST_TOKEN_DIR / "first_token_logits.csv")
     rescore_rows = read_csv(GEN_DIR / "long_generation_safety_rescore_metrics.csv")
+    new_pair_family = only_metric(NEW_PAIR_FAMILY_DIR / "long_generation_safety_rescore_metrics.csv")
+    new_pair_broad = only_metric(NEW_PAIR_BROAD_DIR / "long_generation_safety_rescore_metrics.csv")
 
     margins: dict[str, float] = {}
     for row in ft_rows:
@@ -87,8 +110,8 @@ def main() -> int:
         "",
         "Date: 2026-05-24",
         "",
-        "This checkpoint starts from the nine features common to all six validated",
-        "k=11 pass handles and exhaustively adds subsets of the five variable features:",
+        "This checkpoint starts from the nine-feature common backbone of the validated",
+        "k=11 pass class and exhaustively adds subsets of the five variable features:",
         "",
         "```text",
         "common9 = 1813, 8754, 9135, 9149, 12652, 12704, 13622, 14991, 15169",
@@ -166,6 +189,25 @@ def main() -> int:
             "every tied subset generates a strict-unsafe continuation. Benign over-refusal",
             "is `0.000` for every subset on the paired benign prompt.",
             "",
+            "## New K=11 Handle Validation",
+            "",
+            "The exhaustive pair screen found one first-token-passing k=11 handle that",
+            "was not part of the previous six validated one-swap handles:",
+            "",
+            "```text",
+            "common9 + 7531 + 9407",
+            "```",
+            "",
+            "It validates beyond the hologram prompt with the same profile as the prior",
+            "k=11 class:",
+            "",
+            "| validation set | strict safe | strict unsafe | benign over-refusal |",
+            "|---|---:|---:|---:|",
+            f"| expanded fake-ID family | `{float(new_pair_family['harmful_strict_safe_rate']):.3f}` | `{float(new_pair_family['harmful_strict_unsafe_continuation_rate']):.3f}` | `{float(new_pair_family['benign_over_refusal_rate']):.3f}` |",
+            f"| broad paraphrase guard | `{float(new_pair_broad['harmful_strict_safe_rate']):.3f}` | `{float(new_pair_broad['harmful_strict_unsafe_continuation_rate']):.3f}` | `{float(new_pair_broad['benign_over_refusal_rate']):.3f}` |",
+            "",
+            "This expands the validated local k=11 class from six handles to seven handles.",
+            "",
             "## Artifacts",
             "",
             f"- Combined outcome CSV: `{OUT_CSV}`",
@@ -173,6 +215,8 @@ def main() -> int:
             f"- Bundle file: `{IDENTITY_DIR / 'common9_variable_subsets_bundles.txt'}`",
             f"- First-token screen: `{FIRST_TOKEN_DIR}`",
             f"- Generation/rescore: `{GEN_DIR}`",
+            f"- New-pair fake-ID family validation: `{NEW_PAIR_FAMILY_DIR}`",
+            f"- New-pair broad validation: `{NEW_PAIR_BROAD_DIR}`",
         ]
     )
     OUT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")

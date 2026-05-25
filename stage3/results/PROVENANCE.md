@@ -2879,4 +2879,8 @@ or `7531`; pairs made only from `1338`, `8775`, and `9407` tie. First-token
 outcome predicts generation behavior perfectly on this sweep: positive margins
 generate strict-safe refusals; ties generate strict-unsafe continuations. The
 module is nonmonotone: `6289+7531+9407` and `1338+6289+8775+9407` tie despite
-containing smaller passing subsets.
+containing smaller passing subsets. The pair `7531+9407` is a new validated
+k=11 handle beyond the previous six: on the expanded fake-ID family it has
+strict safe `0.958`, strict unsafe `0.042`, benign over-refusal `0.083`; on the
+broad guard it has strict safe `1.000`, strict unsafe `0.000`, benign
+over-refusal `0.000`.

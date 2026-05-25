@@ -697,5 +697,11 @@ direction.
   while every tie generates a strict-unsafe warning-plus-compliance answer.
   Larger subsets reveal nonmonotonicity: `6289+7531+9407` and
   `1338+6289+8775+9407` tie and generate strict-unsafe despite containing
-  smaller passing subsets. Interpretation: the variable features are a signed
-  module with enablers and interference, not additive refusal votes.
+  smaller passing subsets. The pair `7531+9407` was not in the earlier
+  one-swap-validated six handles, so I validated it on the expanded fake-ID
+  family and broad paraphrase guard; it matches the prior k=11 profile
+  (`0.958` fake-ID strict safe with `0.083` benign over-refusal, and `1.000`
+  broad strict safe with `0.000` broad over-refusal). Interpretation: the
+  variable features are a signed module with enablers and interference, not
+  additive refusal votes, and the validated local k=11 class now has seven
+  handles.

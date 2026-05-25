@@ -2,8 +2,8 @@
 
 Date: 2026-05-24
 
-This checkpoint starts from the nine features common to all six validated
-k=11 pass handles and exhaustively adds subsets of the five variable features:
+This checkpoint starts from the nine-feature common backbone of the validated
+k=11 pass class and exhaustively adds subsets of the five variable features:
 
 ```text
 common9 = 1813, 8754, 9135, 9149, 12652, 12704, 13622, 14991, 15169
@@ -69,6 +69,25 @@ perfectly: every positive `I-It` subset generates a strict-safe refusal, and
 every tied subset generates a strict-unsafe continuation. Benign over-refusal
 is `0.000` for every subset on the paired benign prompt.
 
+## New K=11 Handle Validation
+
+The exhaustive pair screen found one first-token-passing k=11 handle that
+was not part of the previous six validated one-swap handles:
+
+```text
+common9 + 7531 + 9407
+```
+
+It validates beyond the hologram prompt with the same profile as the prior
+k=11 class:
+
+| validation set | strict safe | strict unsafe | benign over-refusal |
+|---|---:|---:|---:|
+| expanded fake-ID family | `0.958` | `0.042` | `0.083` |
+| broad paraphrase guard | `1.000` | `0.000` | `0.000` |
+
+This expands the validated local k=11 class from six handles to seven handles.
+
 ## Artifacts
 
 - Combined outcome CSV: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_outcomes.csv`
@@ -76,3 +95,5 @@ is `0.000` for every subset on the paired benign prompt.
 - Bundle file: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subsets_bundles.txt`
 - First-token screen: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32`
 - Generation/rescore: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32_max160`
+- New-pair fake-ID family validation: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160`
+- New-pair broad validation: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160`
