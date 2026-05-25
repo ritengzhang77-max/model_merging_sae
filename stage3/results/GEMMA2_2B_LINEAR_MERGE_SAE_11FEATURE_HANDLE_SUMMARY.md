@@ -226,7 +226,12 @@ equivalence-class account: the handle has a locally rigid backbone plus a small
 number of allowable feature swaps. The later variable-module sweep gives a
 stronger version of the same point: common backbone features plus specific
 variable pairs can tip the boundary, but the effect saturates at alpha `0.80`
-and disappears at alpha `0.70`.
+and disappears at alpha `0.70`. The generated-token feature-event audit adds a
+final caution: some causal features fire on warning preambles that can still be
+followed by unsafe continuation, while feature `7531` is causal at the final
+newline but inactive during generated text. The handle should therefore remain
+framed as a prompt-boundary decision handle rather than a fully semantic
+refusal module.
 
 ## Artifacts
 
@@ -258,6 +263,8 @@ and disappears at alpha `0.70`.
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_VARIABLE_MODULE_SUMMARY.md`
 - Variable-subset alpha-locality CSV:
   `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_alpha_locality.csv`
+- 11-feature generated-token event audit summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_EVENT_AUDIT_SUMMARY.md`
 - 11-feature substitution aggregates:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/critical11_swap_one_top33_effect_by_drop.csv`
 - Generic drop/add variant builder:

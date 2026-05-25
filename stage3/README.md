@@ -705,6 +705,15 @@ Feature-ID causality follow-up:
   variable subsets shows the pair rule is threshold-local: all subsets pass at
   alpha `0.80`, 21/32 pass at alpha `0.75`, and all subsets fail at alpha
   `0.70`.
+- a generated-token event audit over the 14 features in the k=11 local class
+  reinforces the boundary-handle interpretation. Feature `14991` is the
+  cleanest safe-output separator in generated-token donor-recipient means, but
+  features `1813` and `15169` are larger on unsafe warning-plus-compliance
+  continuations because they fire on the initial warning preamble. Feature
+  `7531` has zero generated-token activation in this audit despite being
+  causally useful at the final newline. The causal object is therefore still a
+  prompt-boundary decision handle, not a fully human-readable generated-text
+  refusal module.
 
 Main artifacts:
 
@@ -802,6 +811,9 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_alpha_locality.csv`
+- `results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_EVENT_AUDIT_SUMMARY.md`
+- `results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/common9_variable_subsets_harmful_l20_core_variable_float32/`
+- `results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_feature_event_outcome_aggregate.csv`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`

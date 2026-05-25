@@ -2909,3 +2909,30 @@ alpha `0.70`, all 32 subsets fail, with margins between `-0.406250` and
 equivalence class for tipping the merged model into an existing first-token
 refusal route, not a globally stable refusal module or full donor-state
 restoration.
+
+## 2026-05-24 Gemma-2-2B 11-Feature Generated-Token Event Audit
+
+Purpose: inspect where the 14 features in the `common9 + variable` k=11 local
+class activate on saved harmful hologram continuations, and test whether their
+generated-token behavior supports a simple semantic refusal-feature story.
+
+New/updated artifacts:
+
+- `stage3/scripts/summarize_gemma2_critical11_feature_events.py`
+- `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_EVENT_AUDIT_SUMMARY.md`
+- `stage3/results/gemma2_2b_linear_merge_sae_feature_event_audit_v0/common9_variable_subsets_harmful_l20_core_variable_float32/`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_feature_event_outcome_aggregate.csv`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_feature_event_examples.csv`
+
+Key result: generated-token events do not support a clean semantic refusal
+module. Feature `14991` is the strongest safe-output separator in this audit:
+mean donor-recipient generation delta is `0.051252` on strict-safe
+continuations and `0.000000` on unsafe warning-plus-compliance continuations.
+But `1813` and `15169` have larger donor-recipient deltas on unsafe
+continuations (`1813`: `0.168062` unsafe vs. `0.064681` safe; `15169`:
+`0.086191` unsafe vs. `0.018502` safe), because they fire on the initial
+warning/refusal preamble that can still precede unsafe continuation. Feature
+`7531` has zero generated-token activation here despite being causally useful
+at the final newline. Interpretation: the sparse handle is best treated as a
+prompt-boundary decision handle; generated-token activations mix warning
+preamble, redirection/legal-consequence text, and domain/procedural text.

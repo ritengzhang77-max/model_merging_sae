@@ -715,3 +715,14 @@ direction.
   between `-0.406250` and `-0.359375`. This means the variable-module structure
   is not a stable global refusal circuit; it is the local shape of the
   first-token decision boundary near alpha `0.75`.
+- Generated-token feature-event update: I audited the 14 `common9 + variable`
+  features on the saved harmful hologram continuations from the exhaustive
+  variable-subset sweep. This is descriptive, not causal, because it measures
+  donor/recipient activations on already-generated text. Feature `14991` is the
+  cleanest safe-output separator (`0.051252` donor-recipient mean on strict-safe
+  outputs vs `0.000000` on unsafe warning-plus-compliance outputs), but `1813`
+  and `15169` are actually larger on unsafe outputs because they fire on the
+  initial warning preamble that can still be followed by unsafe continuation.
+  Feature `7531` has zero generated-token activation in this audit despite its
+  final-newline causal role. Interpretation: the causal object remains a
+  prompt-boundary decision handle, not a complete generated-text refusal module.
