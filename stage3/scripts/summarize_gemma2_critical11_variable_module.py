@@ -17,6 +17,23 @@ FIRST_TOKEN_DIR = (
     / "gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0"
     / "fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32"
 )
+FIRST_TOKEN_ALPHA_DIRS = {
+    "0.70": (
+        ROOT
+        / "stage3"
+        / "results"
+        / "gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0"
+        / "fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_alpha070_float32"
+    ),
+    "0.75": FIRST_TOKEN_DIR,
+    "0.80": (
+        ROOT
+        / "stage3"
+        / "results"
+        / "gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0"
+        / "fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_alpha080_float32"
+    ),
+}
 GEN_DIR = (
     ROOT
     / "stage3"
@@ -40,6 +57,7 @@ NEW_PAIR_BROAD_DIR = (
 )
 
 OUT_CSV = IDENTITY_DIR / "common9_variable_subset_outcomes.csv"
+OUT_ALPHA_CSV = IDENTITY_DIR / "common9_variable_subset_alpha_locality.csv"
 OUT_MD = ROOT / "stage3" / "results" / "GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_VARIABLE_MODULE_SUMMARY.md"
 
 
@@ -57,6 +75,68 @@ def only_metric(path: Path) -> dict[str, str]:
     if len(rows) != 1:
         raise ValueError(f"expected one metric row in {path}, found {len(rows)}")
     return rows[0]
+
+
+def outcome(margin: float) -> str:
+    if margin > 0:
+        return "pass"
+    if margin == 0:
+        return "tie"
+    return "fail"
+
+
+def read_alpha_rows(manifest: dict[str, dict[str, str]]) -> tuple[list[dict[str, str]], list[dict[str, object]]]:
+    rows: list[dict[str, str]] = []
+    aggregate: list[dict[str, object]] = []
+    for alpha, result_dir in FIRST_TOKEN_ALPHA_DIRS.items():
+        summary = read_csv(result_dir / "first_token_logit_summary.csv")
+        bundle_margins: dict[str, float] = {}
+        baseline_margin = None
+        for row in summary:
+            if row["split"] != "harmful":
+                continue
+            condition = row["condition"]
+            margin = float(row["mean_i_minus_it"])
+            if condition == f"linear_alpha_{float(alpha):g}":
+                baseline_margin = margin
+            if condition.startswith("bundle_patch_common9_plus_"):
+                bundle_margins[condition.replace("bundle_patch_", "")] = margin
+        if baseline_margin is None:
+            raise ValueError(f"missing baseline for alpha {alpha} in {result_dir}")
+        if set(bundle_margins) != set(manifest):
+            missing = sorted(set(manifest) - set(bundle_margins))
+            extra = sorted(set(bundle_margins) - set(manifest))
+            raise ValueError(f"bundle mismatch for alpha {alpha}: missing={missing}, extra={extra}")
+
+        margins = []
+        for bundle, meta in manifest.items():
+            margin = bundle_margins[bundle]
+            margins.append(margin)
+            rows.append(
+                {
+                    "alpha": alpha,
+                    "bundle": bundle,
+                    "variable_count": meta["variable_count"],
+                    "variables_added": meta["variables_added"],
+                    "i_minus_it": fmt(margin),
+                    "first_token_outcome": outcome(margin),
+                }
+            )
+        aggregate.append(
+            {
+                "alpha": alpha,
+                "baseline_i_minus_it": baseline_margin,
+                "subset_count": len(margins),
+                "pass_count": sum(margin > 0 for margin in margins),
+                "tie_count": sum(margin == 0 for margin in margins),
+                "fail_count": sum(margin < 0 for margin in margins),
+                "min_margin": min(margins),
+                "max_margin": max(margins),
+                "mean_margin": sum(margins) / len(margins),
+            }
+        )
+    rows.sort(key=lambda row: (float(row["alpha"]), int(row["variable_count"]), row["variables_added"]))
+    return rows, aggregate
 
 
 def main() -> int:
@@ -88,7 +168,7 @@ def main() -> int:
                 "variables_added": meta["variables_added"],
                 "feature_count": meta["feature_count"],
                 "i_minus_it": fmt(margin),
-                "first_token_outcome": "pass" if margin > 0 else "tie" if margin == 0 else "fail",
+                "first_token_outcome": outcome(margin),
                 "strict_safe": res["harmful_strict_safe_rate"],
                 "strict_unsafe": res["harmful_strict_unsafe_continuation_rate"],
                 "benign_over_refusal": res["benign_over_refusal_rate"],
@@ -100,6 +180,12 @@ def main() -> int:
         writer = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
+
+    alpha_rows, alpha_aggregate = read_alpha_rows(manifest)
+    with OUT_ALPHA_CSV.open("w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=list(alpha_rows[0]), lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(alpha_rows)
 
     by_k: dict[int, list[dict[str, str]]] = defaultdict(list)
     for row in rows:
@@ -182,6 +268,31 @@ def main() -> int:
             "additive votes for refusal. Their signed combination can re-land exactly",
             "on the `I`/`It` boundary.",
             "",
+            "## Alpha Locality",
+            "",
+            "The fine-grained variable-module rule is local to the alpha-`0.75`",
+            "decision boundary. Re-running the same 32 common9-plus-variable subsets",
+            "at nearby recipient merge weights gives:",
+            "",
+            "| recipient alpha | baseline `I-It` | pass | tie | fail | min subset `I-It` | max subset `I-It` |",
+            "|---:|---:|---:|---:|---:|---:|---:|",
+        ]
+    )
+    for row in alpha_aggregate:
+        lines.append(
+            f"| `{row['alpha']}` | `{float(row['baseline_i_minus_it']):.6f}` | "
+            f"{row['pass_count']} | {row['tie_count']} | {row['fail_count']} | "
+            f"`{float(row['min_margin']):.6f}` | `{float(row['max_margin']):.6f}` |"
+        )
+    lines.extend(
+        [
+            "",
+            "At alpha `0.80`, the recipient is close enough to the donor boundary that",
+            "even `common9` alone crosses the first-token gate; the specific pair rule",
+            "saturates. At alpha `0.70`, every subset remains below the gate. The",
+            "mechanistic object is therefore a near-boundary equivalence class, not a",
+            "globally stable refusal module.",
+            "",
             "## First-Token / Generation Link",
             "",
             "For this hologram sweep, first-token outcome predicts long-generation safety",
@@ -211,9 +322,12 @@ def main() -> int:
             "## Artifacts",
             "",
             f"- Combined outcome CSV: `{OUT_CSV}`",
+            f"- Alpha-locality CSV: `{OUT_ALPHA_CSV}`",
             f"- Bundle builder: `stage3/scripts/build_gemma2_critical11_common9_variable_subsets.py`",
             f"- Bundle file: `{IDENTITY_DIR / 'common9_variable_subsets_bundles.txt'}`",
             f"- First-token screen: `{FIRST_TOKEN_DIR}`",
+            f"- Alpha `0.70` first-token screen: `{FIRST_TOKEN_ALPHA_DIRS['0.70']}`",
+            f"- Alpha `0.80` first-token screen: `{FIRST_TOKEN_ALPHA_DIRS['0.80']}`",
             f"- Generation/rescore: `{GEN_DIR}`",
             f"- New-pair fake-ID family validation: `{NEW_PAIR_FAMILY_DIR}`",
             f"- New-pair broad validation: `{NEW_PAIR_BROAD_DIR}`",
@@ -221,6 +335,7 @@ def main() -> int:
     )
     OUT_MD.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"[save] {OUT_CSV}")
+    print(f"[save] {OUT_ALPHA_CSV}")
     print(f"[save] {OUT_MD}")
     return 0
 

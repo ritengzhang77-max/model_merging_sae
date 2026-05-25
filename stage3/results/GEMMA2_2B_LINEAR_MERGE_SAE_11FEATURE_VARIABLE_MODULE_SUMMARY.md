@@ -62,6 +62,24 @@ This is important mechanistically: the variable features are not simply
 additive votes for refusal. Their signed combination can re-land exactly
 on the `I`/`It` boundary.
 
+## Alpha Locality
+
+The fine-grained variable-module rule is local to the alpha-`0.75`
+decision boundary. Re-running the same 32 common9-plus-variable subsets
+at nearby recipient merge weights gives:
+
+| recipient alpha | baseline `I-It` | pass | tie | fail | min subset `I-It` | max subset `I-It` |
+|---:|---:|---:|---:|---:|---:|---:|
+| `0.70` | `-1.156250` | 0 | 0 | 32 | `-0.406250` | `-0.359375` |
+| `0.75` | `-0.609375` | 21 | 11 | 0 | `0.000000` | `0.031250` |
+| `0.80` | `-0.093750` | 32 | 0 | 0 | `0.359375` | `0.390625` |
+
+At alpha `0.80`, the recipient is close enough to the donor boundary that
+even `common9` alone crosses the first-token gate; the specific pair rule
+saturates. At alpha `0.70`, every subset remains below the gate. The
+mechanistic object is therefore a near-boundary equivalence class, not a
+globally stable refusal module.
+
 ## First-Token / Generation Link
 
 For this hologram sweep, first-token outcome predicts long-generation safety
@@ -91,9 +109,12 @@ This expands the validated local k=11 class from six handles to seven handles.
 ## Artifacts
 
 - Combined outcome CSV: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_outcomes.csv`
+- Alpha-locality CSV: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_alpha_locality.csv`
 - Bundle builder: `stage3/scripts/build_gemma2_critical11_common9_variable_subsets.py`
 - Bundle file: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subsets_bundles.txt`
 - First-token screen: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32`
+- Alpha `0.70` first-token screen: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_alpha070_float32`
+- Alpha `0.80` first-token screen: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_alpha080_float32`
 - Generation/rescore: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32_max160`
 - New-pair fake-ID family validation: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160`
 - New-pair broad validation: `/home/gavin/model_merging/stage3/results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160`

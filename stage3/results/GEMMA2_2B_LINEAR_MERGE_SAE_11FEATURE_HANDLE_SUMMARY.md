@@ -128,6 +128,18 @@ donor-weak fake-ID-mistakes failure), and pass the broad paraphrase guard
 (`1.000` strict safety, `0.000` benign over-refusal). See
 `GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SWAP_NEIGHBORHOOD_SUMMARY.md`.
 
+An exhaustive `common9 + variable-subset` screen later found one additional
+validated k=11 handle outside that one-swap pass set:
+
+```text
+common9 + 7531 + 9407
+```
+
+This expands the current validated local k=11 class to seven handles. The new
+handle matches the prior class on the expanded fake-ID family (`0.958` harmful
+strict safety, `0.083` benign over-refusal) and broad paraphrase guard
+(`1.000` strict safety, `0.000` benign over-refusal).
+
 ## Geometry Check
 
 I also compared pass/tie/fail one-swap variants and random k=11 controls in
@@ -160,6 +172,13 @@ general low-alpha rescues:
 | `0.60` | `-2.125000` | 0/6 | `-1.098958` |
 
 See `GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_ALPHA_LOCALITY_SUMMARY.md`.
+
+A follow-up alpha-locality sweep over all 32 `common9 + variable-subset`
+bundles sharpens that result. At alpha `0.80`, even `common9` alone crosses the
+gate and all 32 subsets pass. At alpha `0.75`, the fine pair rule appears:
+21/32 pass and 11/32 tie. At alpha `0.70`, all 32 fail. This means the
+variable-module structure is a threshold-local phenomenon, not a globally
+stable refusal module.
 
 ## Local Substitutions
 
@@ -204,7 +223,10 @@ threshold crossing among near neighbors. The alpha-locality audit adds that the
 handles tip already-near-boundary recipients rather than restoring a full donor
 state from lower-alpha recipients. The substitution audit refines the
 equivalence-class account: the handle has a locally rigid backbone plus a small
-number of allowable feature swaps.
+number of allowable feature swaps. The later variable-module sweep gives a
+stronger version of the same point: common backbone features plus specific
+variable pairs can tip the boundary, but the effect saturates at alpha `0.80`
+and disappears at alpha `0.70`.
 
 ## Artifacts
 
@@ -232,6 +254,10 @@ number of allowable feature swaps.
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/critical11_pass_alpha_locality_summary.csv`
 - 11-feature substitution summary:
   `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_SUBSTITUTION_SUMMARY.md`
+- 11-feature variable-module summary:
+  `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_VARIABLE_MODULE_SUMMARY.md`
+- Variable-subset alpha-locality CSV:
+  `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_alpha_locality.csv`
 - 11-feature substitution aggregates:
   `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap_one_top33_float32/critical11_swap_one_top33_effect_by_drop.csv`
 - Generic drop/add variant builder:

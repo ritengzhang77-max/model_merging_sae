@@ -2884,3 +2884,28 @@ k=11 handle beyond the previous six: on the expanded fake-ID family it has
 strict safe `0.958`, strict unsafe `0.042`, benign over-refusal `0.083`; on the
 broad guard it has strict safe `1.000`, strict unsafe `0.000`, benign
 over-refusal `0.000`.
+
+## 2026-05-24 Gemma-2-2B Common9 Variable-Subset Alpha Locality
+
+Purpose: test whether the alpha-`0.75` variable-pair rule is stable across
+nearby recipient merge weights or only appears at the local first-token
+boundary.
+
+New/updated artifacts:
+
+- `stage3/scripts/summarize_gemma2_critical11_variable_module.py`
+- `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_VARIABLE_MODULE_SUMMARY.md`
+- `stage3/results/GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_HANDLE_SUMMARY.md`
+- `stage3/results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_alpha_locality.csv`
+- `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_alpha070_float32/`
+- `stage3/results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_alpha080_float32/`
+
+Key result: the pair rule is local to the alpha-`0.75` decision boundary. At
+alpha `0.80`, the unpatched hologram margin is only `I-It=-0.093750`, common9
+alone crosses to `+0.359375`, and all 32 common9-plus-variable subsets pass. At
+alpha `0.75`, 21/32 subsets pass and 11/32 tie, exposing the fine pair rule. At
+alpha `0.70`, all 32 subsets fail, with margins between `-0.406250` and
+`-0.359375`. Interpretation: the discovered SAE handles are a near-boundary
+equivalence class for tipping the merged model into an existing first-token
+refusal route, not a globally stable refusal module or full donor-state
+restoration.

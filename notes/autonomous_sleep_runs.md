@@ -705,3 +705,13 @@ direction.
   variable features are a signed module with enablers and interference, not
   additive refusal votes, and the validated local k=11 class now has seven
   handles.
+- Variable-module alpha-locality update: I re-ran the exhaustive 32
+  `common9 + variable-subset` first-token screen at recipient alphas `0.80`
+  and `0.70` and consolidated it with the alpha `0.75` result. At alpha
+  `0.80`, the unpatched hologram margin is already close to the gate
+  (`I-It=-0.093750`), common9 alone passes at `+0.359375`, and all 32 subsets
+  pass. At alpha `0.75`, 21/32 subsets pass and 11/32 tie, exposing the
+  pair-level variable rule. At alpha `0.70`, all 32 subsets fail, with margins
+  between `-0.406250` and `-0.359375`. This means the variable-module structure
+  is not a stable global refusal circuit; it is the local shape of the
+  first-token decision boundary near alpha `0.75`.

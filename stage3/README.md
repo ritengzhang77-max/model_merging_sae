@@ -684,8 +684,8 @@ Feature-ID causality follow-up:
   tied, and failed subsets. Coarse delta geometry is useful context, but exact
   signed feature composition determines the threshold crossing.
 - an alpha-locality audit confirms that the compressed k=11 handles are
-  near-boundary repairs, not universal rescues. All six first-token-passing
-  handles repair recipient alpha `0.80` and `0.75` (`6/6` passes, mean
+  near-boundary repairs, not universal rescues. The six one-swap
+  first-token-passing handles repair recipient alpha `0.80` and `0.75` (`6/6` passes, mean
   `I-It = +0.380208` and `+0.015625`), but all fail at alpha `0.70` and
   `0.60` (`0/6` passes, mean `I-It = -0.390625` and `-1.098958`).
 - a local substitution audit over the same 453 one-swap variants gives a more
@@ -695,6 +695,16 @@ Feature-ID causality follow-up:
   exchangeable in narrow contexts: `7531` repairs both source handles when
   `6289` is dropped and also repairs source A when `8775` is dropped, while
   `9407` repairs source A only when `8775` is dropped.
+- a `common9 + variable-subset` exhaustive screen expands the validated local
+  k=11 class from six one-swap handles to seven handles by adding
+  `common9 + 7531 + 9407`. At recipient alpha `0.75`, common9 alone and all
+  single-variable additions tie, while 7/10 two-variable additions pass; the
+  passing pairs are exactly the pairs containing `6289` or `7531`. Larger
+  subsets are nonmonotone: `6289+7531+9407` and `1338+6289+8775+9407` tie
+  despite containing smaller passing subsets. Alpha-locality over all 32
+  variable subsets shows the pair rule is threshold-local: all subsets pass at
+  alpha `0.80`, 21/32 pass at alpha `0.75`, and all subsets fail at alpha
+  `0.70`.
 
 Main artifacts:
 
@@ -786,9 +796,12 @@ Main artifacts:
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_broad_backbone_decomp_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_broad_backbone_decomp_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_alpha070_float32/`
+- `results/gemma2_2b_linear_merge_sae_bundle_first_token_logits_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_alpha080_float32/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_common9_variable_subsets_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_common9_pair7531_9407_float32_max160/`
+- `results/gemma2_2b_linear_merge_sae_11feature_identity_v0/common9_variable_subset_alpha_locality.csv`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_hologram_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/fake_id_family_v1_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
 - `results/gemma2_2b_linear_merge_sae_bundle_patch_v0/default_paraphrase_guard_v0_l20_final_newline_delta_add_prompt_delta_critical11_swap1_pass_float32_max160/`
