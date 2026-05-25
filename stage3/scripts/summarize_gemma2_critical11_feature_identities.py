@@ -34,6 +34,7 @@ SWAP_DIR = (
 OUT_DIR = RESULTS / "gemma2_2b_linear_merge_sae_11feature_identity_v0"
 OUT_CSV = OUT_DIR / "critical11_feature_identity_table.csv"
 OUT_MD = RESULTS / "GEMMA2_2B_LINEAR_MERGE_SAE_11FEATURE_IDENTITY_SUMMARY.md"
+NEW_PAIR_BUNDLE_FILE = OUT_DIR / "common9_new_pair_7531_9407_bundle.txt"
 
 
 def read_csv_by_int(path: Path, key: str) -> dict[int, dict[str, str]]:
@@ -119,6 +120,10 @@ def main() -> int:
     drop_rows = read_csv_by_key(SWAP_DIR / "critical11_swap_one_top33_effect_by_drop.csv")
     add_rows = read_csv_by_key(SWAP_DIR / "critical11_swap_one_top33_effect_by_add.csv")
     pass_bundles = parse_bundle_features((SWAP_DIR / "critical11_swap_one_top33_pass_bundles.txt").read_text(encoding="utf-8"))
+    if NEW_PAIR_BUNDLE_FILE.exists():
+        for bundle in parse_bundle_features(NEW_PAIR_BUNDLE_FILE.read_text(encoding="utf-8")):
+            if bundle not in pass_bundles:
+                pass_bundles.append(bundle)
 
     feature_union = sorted(set().union(*pass_bundles))
     feature_counts = {feature: sum(feature in bundle for bundle in pass_bundles) for feature in feature_union}
@@ -200,7 +205,7 @@ def main() -> int:
         "",
         "Date: 2026-05-24",
         "",
-        "This memo links the six validated k=11 first-token-passing handles to",
+        "This memo links the current validated k=11 first-token-passing handle class to",
         "local feature identities. The goal is not to assign final semantic labels;",
         "it is to separate three things that were previously mixed together:",
         "",
@@ -213,7 +218,7 @@ def main() -> int:
         "",
         "## Pass-Class Feature Set",
         "",
-        f"The one-swap screen has `{pass_bundle_count}` first-token-passing k=11 handles.",
+        f"The current local class has `{pass_bundle_count}` first-token-passing k=11 handles.",
         f"Their feature union has `{len(feature_union)}` features, and their intersection has `{len(feature_intersection)}` features:",
         "",
         "```text",
@@ -231,7 +236,7 @@ def main() -> int:
     ]
     for row in rows:
         lines.append(
-            f"| `{row['feature_id']}` | {row['pass_handle_count']}/6 | "
+            f"| `{row['feature_id']}` | {row['pass_handle_count']}/{pass_bundle_count} | "
             f"{row['hologram_rank'] or '-'} | {row['family_rank'] or '-'} | "
             f"{row['broad_harmful_rank'] or '-'} | {row['broad_harmful_signed_delta'] or '-'} | "
             f"{row['drop_passes'] or '0'}/{row['drop_ties'] or '0'} | "
@@ -247,7 +252,7 @@ def main() -> int:
             "The current pass class looks less like a clean semantic refusal circuit and",
             "more like a signed first-token control bundle. The strongest local backbone",
             "evidence is feature `15169`: it is the largest hologram-prompt delta, appears",
-            "in all six pass handles, and every one-swap replacement after dropping it",
+            "in all current pass handles, and every one-swap replacement after dropping it",
             "fails far below the gate. Feature `14991` is also core-like: it appears in",
             "all pass handles, is the top fake-ID-family harmful delta, and no one-swap",
             "replacement even ties after dropping it.",

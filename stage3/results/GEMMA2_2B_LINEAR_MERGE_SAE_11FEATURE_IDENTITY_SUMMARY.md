@@ -2,7 +2,7 @@
 
 Date: 2026-05-24
 
-This memo links the six validated k=11 first-token-passing handles to
+This memo links the current validated k=11 first-token-passing handle class to
 local feature identities. The goal is not to assign final semantic labels;
 it is to separate three things that were previously mixed together:
 
@@ -15,7 +15,7 @@ causal-swap evidence takes priority over autointerp wording.
 
 ## Pass-Class Feature Set
 
-The one-swap screen has `6` first-token-passing k=11 handles.
+The current local class has `7` first-token-passing k=11 handles.
 Their feature union has `14` features, and their intersection has `9` features:
 
 ```text
@@ -30,27 +30,27 @@ dropped, while several other intersection features can tie but not pass.
 
 | feature | in passes | hologram rank | fake-ID family rank | broad harmful rank | broad delta | drop pass/tie | add pass/tie | local role | weak Neuronpedia label |
 |---:|---:|---:|---:|---:|---:|---:|---:|---|---|
-| `1338` | 2/6 | 28 | 207 | 346 | -3.982 | 1/0 | 1/6 | source feature with passing one-swap replacements | titles and roles related to leadership in marketing |
-| `1813` | 6/6 | 31 | 31 | 19 | 25.337 | 0/20 | 0/0 | common support; removals can tie but not pass | expressive statements of excitement and emotion |
-| `6289` | 4/6 | 33 | 651 | 6425 | 0.000 | 2/30 | 0/0 | source feature with passing one-swap replacements | phrases related to organizational structure and leadership transitions |
-| `7531` | 3/6 | 23 | 108 | 60 | 4.576 | 0/0 | 3/10 | contextual substitute in pass handles | sections of code, specifically highlighting variable declarations and control structures in programming |
-| `8754` | 6/6 | 10 | 120 | 387 | 3.133 | 0/27 | 0/0 | common support; removals can tie but not pass | information about specific individuals, particularly athletes and their backgrounds |
-| `8775` | 2/6 | 14 | 271 | 914 | -1.509 | 3/12 | 1/0 | source feature with passing one-swap replacements | requests or commands directed at others |
-| `9135` | 6/6 | 24 | 191 | 412 | -4.456 | 0/12 | 0/0 | common support; removals can tie but not pass | references to file and package management in a coding environment |
-| `9149` | 6/6 | 22 | 618 | 13737 | 0.000 | 0/21 | 0/0 | common support; removals can tie but not pass | key phrases related to established organizations and their foundations |
-| `9407` | 1/6 | 6 | 557 | 704 | -2.989 | 0/0 | 1/6 | contextual substitute in pass handles | phrases related to self-reflection and personal growth |
-| `12652` | 6/6 | 27 | 155 | 233 | -6.501 | 0/18 | 0/0 | common support; removals can tie but not pass | elements related to API requests and responses in code |
-| `12704` | 6/6 | 9 | 580 | 9501 | 0.000 | 0/1 | 0/0 | near-core; replacements mostly fail | features and elements related to software and its functionality |
-| `13622` | 6/6 | 25 | 489 | 8641 | 0.000 | 0/20 | 0/0 | common support; removals can tie but not pass | phrases related to limits and convergence in mathematical contexts |
-| `14991` | 6/6 | 7 | 1 | 1 | 152.319 | 0/0 | 0/0 | core-like; no one-swap replacement ties | queries and requests for confirmation or clarification in discussions |
-| `15169` | 6/6 | 1 | 4 | 15 | 14.088 | 0/0 | 0/0 | core-like; no one-swap replacement ties | key phrases and indicators of parental concerns and decision-making processes |
+| `1338` | 2/7 | 28 | 207 | 346 | -3.982 | 1/0 | 1/6 | source feature with passing one-swap replacements | titles and roles related to leadership in marketing |
+| `1813` | 7/7 | 31 | 31 | 19 | 25.337 | 0/20 | 0/0 | common support; removals can tie but not pass | expressive statements of excitement and emotion |
+| `6289` | 4/7 | 33 | 651 | 6425 | 0.000 | 2/30 | 0/0 | source feature with passing one-swap replacements | phrases related to organizational structure and leadership transitions |
+| `7531` | 4/7 | 23 | 108 | 60 | 4.576 | 0/0 | 3/10 | contextual substitute in pass handles | sections of code, specifically highlighting variable declarations and control structures in programming |
+| `8754` | 7/7 | 10 | 120 | 387 | 3.133 | 0/27 | 0/0 | common support; removals can tie but not pass | information about specific individuals, particularly athletes and their backgrounds |
+| `8775` | 2/7 | 14 | 271 | 914 | -1.509 | 3/12 | 1/0 | source feature with passing one-swap replacements | requests or commands directed at others |
+| `9135` | 7/7 | 24 | 191 | 412 | -4.456 | 0/12 | 0/0 | common support; removals can tie but not pass | references to file and package management in a coding environment |
+| `9149` | 7/7 | 22 | 618 | 13737 | 0.000 | 0/21 | 0/0 | common support; removals can tie but not pass | key phrases related to established organizations and their foundations |
+| `9407` | 2/7 | 6 | 557 | 704 | -2.989 | 0/0 | 1/6 | contextual substitute in pass handles | phrases related to self-reflection and personal growth |
+| `12652` | 7/7 | 27 | 155 | 233 | -6.501 | 0/18 | 0/0 | common support; removals can tie but not pass | elements related to API requests and responses in code |
+| `12704` | 7/7 | 9 | 580 | 9501 | 0.000 | 0/1 | 0/0 | near-core; replacements mostly fail | features and elements related to software and its functionality |
+| `13622` | 7/7 | 25 | 489 | 8641 | 0.000 | 0/20 | 0/0 | common support; removals can tie but not pass | phrases related to limits and convergence in mathematical contexts |
+| `14991` | 7/7 | 7 | 1 | 1 | 152.319 | 0/0 | 0/0 | core-like; no one-swap replacement ties | queries and requests for confirmation or clarification in discussions |
+| `15169` | 7/7 | 1 | 4 | 15 | 14.088 | 0/0 | 0/0 | core-like; no one-swap replacement ties | key phrases and indicators of parental concerns and decision-making processes |
 
 ## What This Says Mechanistically
 
 The current pass class looks less like a clean semantic refusal circuit and
 more like a signed first-token control bundle. The strongest local backbone
 evidence is feature `15169`: it is the largest hologram-prompt delta, appears
-in all six pass handles, and every one-swap replacement after dropping it
+in all current pass handles, and every one-swap replacement after dropping it
 fails far below the gate. Feature `14991` is also core-like: it appears in
 all pass handles, is the top fake-ID-family harmful delta, and no one-swap
 replacement even ties after dropping it.
